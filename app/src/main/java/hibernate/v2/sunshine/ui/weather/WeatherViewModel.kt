@@ -20,7 +20,7 @@ class WeatherViewModel(private val repo: DataRepository) : BaseViewModel() {
         viewModelScope.launch {
             try {
                 launch {
-                    oneCallData.postValue(repo.currentWeather(22.313188, 114.259646))
+                    oneCallData.postValue(repo.currentWeather(22.32215, 114.16994))
                 }
             } catch (e: Exception) {
                 Logger.e(e, "net error")
