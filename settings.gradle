@@ -1,3 +1,4 @@
 rootProject.name = "Android TV"
 include ':app'
 include ':api-service'
+include ':logger-lib'

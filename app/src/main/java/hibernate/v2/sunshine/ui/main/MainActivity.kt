@@ -16,9 +16,13 @@ class MainActivity : BaseActivity<ActivityEtaBinding>() {
 
         supportFragmentManager.beginTransaction()
             .replace(viewBinding.containerTopLeft.id, EtaFragment())
+            .commit()
+        supportFragmentManager.beginTransaction()
             .replace(viewBinding.containerTopRight.id, TrafficFragment())
+            .commit()
+        supportFragmentManager.beginTransaction()
             .replace(viewBinding.containerBottom.id, WeatherFragment())
-            .commitNow()
+            .commit()
 
         setupAlarm()
     }

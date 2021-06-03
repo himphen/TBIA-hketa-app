@@ -2,7 +2,7 @@ package hibernate.v2.sunshine.ui.eta
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.orhanobut.logger.Logger
+import com.himphen.logger.Logger
 import hibernate.v2.api.model.Route
 import hibernate.v2.api.model.RouteEtaStop
 import hibernate.v2.api.model.Stop

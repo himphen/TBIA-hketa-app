@@ -2,7 +2,7 @@ package hibernate.v2.sunshine.api
 
 import android.content.Context
 import com.google.gson.Gson
-import com.orhanobut.logger.Logger
+import com.himphen.logger.Logger
 import hibernate.v2.api.service.ApiConverterFactory
 import hibernate.v2.api.service.EtaService
 import hibernate.v2.api.service.HkoWeatherService
@@ -30,7 +30,7 @@ open class ApiManager(val context: Context) {
             .connectTimeout(connectTimeout, TimeUnit.SECONDS)
             .readTimeout(readTimeout, TimeUnit.SECONDS)
             .writeTimeout(writeTimeout, TimeUnit.SECONDS)
-            .addInterceptor(HttpLoggingInterceptor(HttpLogger()).apply {
+            .addNetworkInterceptor(HttpLoggingInterceptor(HttpLogger()).apply {
                 level =
                     if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
             })
@@ -86,7 +86,7 @@ class HttpLogger : HttpLoggingInterceptor.Logger {
         if (message.startsWith("{") && message.endsWith("}") ||
             message.startsWith("[") && message.endsWith("]")
         ) {
-            tempMessage = JsonUtil.formatJson(JsonUtil.decodeUnicode(message))
+            tempMessage = JsonUtil.formatJson(message)
         }
         mMessage.append(tempMessage + "\n")
 
@@ -94,19 +94,4 @@ class HttpLogger : HttpLoggingInterceptor.Logger {
             Logger.log(Logger.INFO, "api", mMessage.toString(), null)
         }
     }
-
-//    override fun log(message: String) {
-//        if (message.startsWith("{") || message.startsWith("[")) {
-//            try {
-//                val prettyPrintJson = GsonBuilder().setPrettyPrinting()
-//                    .create().toJson(JsonParser().parse(message))
-//                Logger.log(Logger.INFO, "api", prettyPrintJson, null)
-//            } catch (m: JsonSyntaxException) {
-//                Logger.log(Logger.INFO, "api", message, null)
-//            }
-//        } else {
-//            Logger.log(Logger.INFO, "api", message, null)
-//            return
-//        }
-//    }
 }

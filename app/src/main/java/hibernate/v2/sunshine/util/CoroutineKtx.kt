@@ -1,11 +1,10 @@
 package hibernate.v2.sunshine.util
 
 import androidx.lifecycle.viewModelScope
-import com.orhanobut.logger.Logger
+import com.himphen.logger.Logger
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -34,27 +33,6 @@ fun <T> BaseViewModel.callApiService(
             }
         }
         sIsLoading.send(false)
-    }
-}
-
-fun <T> GlobalScope.callApiService(
-    callApi: suspend () -> T,
-    handlerData: (data: T) -> Unit,
-    handlerError: (data: Exception) -> Unit = {}
-) {
-    launch {
-        try {
-            val data = withContext(Dispatchers.IO) {
-                callApi()
-            }
-
-            handlerData(data)
-        } catch (e: Exception) {
-            Logger.e(e, "net error")
-            withContext(Dispatchers.Main) {
-                handlerError(e)
-            }
-        }
     }
 }
 

@@ -38,11 +38,19 @@ class EtaItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     private fun getEtaMinuteText(eta: Eta?): String {
-        val minutes = DateUtil.getTimeDiffInMin(
-            DateUtil.getDate(eta?.eta, DateFormat.ISO_WITHOUT_MS.value) ?: Date(),
-            Date()
-        )
-        return (minutes + 1).toString() + " 分鐘"
+        eta?.eta?.let { etaString ->
+            val minutes = DateUtil.getTimeDiffInMin(
+                DateUtil.getDate(etaString, DateFormat.ISO_WITHOUT_MS.value)!!,
+                Date()
+            )
+            return (minutes + 1).toString() + " 分鐘"
+        } ?: run {
+            eta?.rmkTc?.let { rmkTc ->
+                if (rmkTc.isNotEmpty()) return rmkTc
+            }
+
+            return "-"
+        }
     }
 
     private fun getEtaTimeText(etaList: List<Eta>): String {

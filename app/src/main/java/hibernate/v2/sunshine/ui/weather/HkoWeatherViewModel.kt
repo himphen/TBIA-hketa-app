@@ -2,7 +2,7 @@ package hibernate.v2.sunshine.ui.weather
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.orhanobut.logger.Logger
+import com.himphen.logger.Logger
 import hibernate.v2.api.model.hko.TodayForecast
 import hibernate.v2.api.model.hko.TodayWeather
 import hibernate.v2.sunshine.api.DataRepository

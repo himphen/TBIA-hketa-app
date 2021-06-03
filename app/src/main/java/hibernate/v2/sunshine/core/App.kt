@@ -2,9 +2,9 @@ package hibernate.v2.sunshine.core
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.Logger
-import com.orhanobut.logger.PrettyFormatStrategy
+import com.himphen.logger.AndroidLogAdapter
+import com.himphen.logger.Logger
+import com.himphen.logger.PrettyFormatStrategy
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.api.DataRepository
 import hibernate.v2.sunshine.ui.eta.EtaViewModel

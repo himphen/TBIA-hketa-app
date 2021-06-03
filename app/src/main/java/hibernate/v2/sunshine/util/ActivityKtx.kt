@@ -20,28 +20,40 @@ fun Context?.isDoomed(): Boolean = when (this) {
 }
 
 fun Context.setupAlarm() {
-    val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val intent = Intent(this, WakeUpReceiver::class.java)
+    val pendingIntent = PendingIntent.getBroadcast(
+        this,
+        10000,
+        intent,
+        PendingIntent.FLAG_IMMUTABLE
+    )
+    val calNow = Calendar.getInstance()
     val calendar = Calendar.getInstance().apply {
-        timeInMillis = System.currentTimeMillis()
         set(Calendar.HOUR_OF_DAY, 8)
-        set(Calendar.MINUTE, 10)
+        set(Calendar.MINUTE, 5)
         set(Calendar.SECOND, 0)
+
+        if (compareTo(calNow) <= 0) {
+            add(Calendar.DATE, 1)
+        }
     }
+    val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
     alarmManager.setInexactRepeating(
         AlarmManager.RTC_WAKEUP,
         calendar.timeInMillis,
         AlarmManager.INTERVAL_DAY,
-        getAlarmIntent(this)
+        pendingIntent
     )
 }
 
 fun Context.cancelAlarm() {
+    val intent = Intent(this, WakeUpReceiver::class.java)
+    val pendingIntent = PendingIntent.getBroadcast(
+        this,
+        10000,
+        intent,
+        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_NO_CREATE
+    )
     val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    alarmManager.cancel(getAlarmIntent(this))
-}
-
-fun getAlarmIntent(context: Context): PendingIntent? {
-    val intent = Intent(context, WakeUpReceiver::class.java)
-    return PendingIntent.getBroadcast(context, 10000, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
+    alarmManager.cancel(pendingIntent)
 }

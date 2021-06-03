@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import hibernate.v2.api.model.Eta
 import hibernate.v2.api.model.RouteEtaStop
 import hibernate.v2.api.request.EtaRequest
 import hibernate.v2.api.request.RouteRequest
@@ -18,7 +19,6 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import java.util.Date
 
 class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
@@ -39,7 +39,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     private var refreshEtaJob: Deferred<Unit>? = null
 
     init {
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             launch {
                 viewModel.routeEtaStopList.observe(this@EtaFragment, {
                     processEtaList(it)
@@ -64,17 +64,25 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     private fun processEtaList(list: List<RouteEtaStop>) {
         val updatedList = list.sortedBy { item -> item.route.route }
         updatedList.forEach { routeEtaStop ->
-            routeEtaStop.etaList = routeEtaStop.etaList.filter { eta ->
-                DateUtil.getTimeDiffInMin(
-                    DateUtil.getDate(
-                        eta.eta,
+            routeEtaStop.etaList = routeEtaStop.etaList.filter { eta: Eta ->
+                eta.eta?.let { etaString ->
+                    val etaDate = DateUtil.getDate(
+                        etaString,
                         DateFormat.ISO_WITHOUT_MS.value
-                    ) ?: Date(),
-                    DateUtil.getDate(
+                    )
+
+                    val currentDate = DateUtil.getDate(
                         eta.dataTimestamp,
                         DateFormat.ISO_WITHOUT_MS.value
-                    ) ?: Date()
-                ) > 0
+                    )
+
+                    DateUtil.getTimeDiffInMin(
+                        etaDate!!,
+                        currentDate!!
+                    ) > 0
+                } ?: run {
+                    false
+                }
             }
         }
 
@@ -116,6 +124,15 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 RouteRequest(routeId = "290X", bound = RouteRequest.Bound.OUTBOUND)
             )
         )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        refreshEtaJob?.cancel()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.getRouteAndStopList(etaRequests)
     }
 }
