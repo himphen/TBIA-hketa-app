@@ -14,16 +14,16 @@ class MainActivity : BaseActivity<ActivityEtaBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportFragmentManager.beginTransaction()
-            .replace(viewBinding.containerTopLeft.id, EtaFragment())
-            .commit()
+//        supportFragmentManager.beginTransaction()
+//            .replace(viewBinding.containerTopLeft.id, EtaFragment())
+//            .commit()
         supportFragmentManager.beginTransaction()
             .replace(viewBinding.containerTopRight.id, TrafficFragment())
             .commit()
-        supportFragmentManager.beginTransaction()
-            .replace(viewBinding.containerBottom.id, WeatherFragment())
-            .commit()
+//        supportFragmentManager.beginTransaction()
+//            .replace(viewBinding.containerBottom.id, WeatherFragment())
+//            .commit()
 
-        setupAlarm()
+//        setupAlarm()
     }
 }
