@@ -25,3 +25,23 @@ data class Route(
     @SerializedName("service_type")
     val serviceType: String? = null
 ) : Parcelable
+
+enum class Bound(val short: String, val full: String) {
+    INBOUND("I", "inbound"),
+    OUTBOUND("O", "outbound");
+
+    companion object {
+        @Suppress("MemberVisibilityCanBePrivate")
+        fun valueOfShort(value: String?): Bound? = values().find { it.short == value }
+        @Suppress("MemberVisibilityCanBePrivate")
+        fun valueOfFull(value: String?): Bound? = values().find { it.full == value }
+
+        fun matchShortAndFull(short: String?, full: String?): Boolean {
+            val shortT = valueOfShort(short)
+            val fullT = valueOfFull(full)
+
+            if (shortT == null || fullT == null) return false
+            return shortT == fullT
+        }
+    }
+}

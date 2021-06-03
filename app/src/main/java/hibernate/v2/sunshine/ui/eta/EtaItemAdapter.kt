@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.api.model.Eta
-import hibernate.v2.api.model.RouteEtaStop
+import hibernate.v2.sunshine.model.RouteEtaStop
 import hibernate.v2.sunshine.databinding.ListItemEtaBinding
 import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil

@@ -6,11 +6,12 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class RouteRequest(
-    @SerializedName("bound") val bound: Bound,
+    @SerializedName("bound") val bound: String,
     @SerializedName("route") val routeId: String,
+    @SerializedName("serviceType") val serviceType: String,
 ) : Parcelable {
-    enum class Bound(val value: String, val param: String) {
-        INBOUND("I", "inbound"),
-        OUTBOUND("O", "outbound"),
+
+    fun hashId(): String {
+        return routeId + bound + serviceType
     }
 }

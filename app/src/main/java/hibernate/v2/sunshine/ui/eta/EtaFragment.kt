@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import hibernate.v2.api.model.Bound
 import hibernate.v2.api.model.Eta
-import hibernate.v2.api.model.RouteEtaStop
-import hibernate.v2.api.request.EtaRequest
-import hibernate.v2.api.request.RouteRequest
 import hibernate.v2.sunshine.databinding.FragmentEtaBinding
+import hibernate.v2.sunshine.model.RouteEtaStop
+import hibernate.v2.sunshine.db.eta.EtaEntity
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil
@@ -35,7 +35,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     private lateinit var adapter: EtaItemAdapter
     private val viewModel by inject<EtaViewModel>()
     private val routeEtaStopList = arrayListOf<RouteEtaStop>()
-    private val etaRequests = arrayListOf<EtaRequest>()
+    private val etaEntityList = arrayListOf<EtaEntity>()
     private var refreshEtaJob: Deferred<Unit>? = null
 
     init {
@@ -50,7 +50,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                     if (it) {
                         refreshEtaJob =
                             CoroutineScope(Dispatchers.IO).launchPeriodicAsync(REFRESH_TIME) {
-                                viewModel.getEtaList(etaRequests)
+                                viewModel.getEtaList(etaEntityList)
                             }
                     } else {
                         refreshEtaJob?.cancel()
@@ -106,22 +106,44 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     }
 
     private fun initData() {
-        etaRequests.add(
-            EtaRequest(
-                "9D208FE6B2CFD450",
-                RouteRequest(routeId = "290", bound = RouteRequest.Bound.OUTBOUND)
+        etaEntityList.add(
+            EtaEntity(
+                stopId = "9D208FE6B2CFD450",
+                routeId = "290",
+                bound = Bound.OUTBOUND.full,
+                serviceType = "1"
             )
         )
-        etaRequests.add(
-            EtaRequest(
-                "9D208FE6B2CFD450",
-                RouteRequest(routeId = "290A", bound = RouteRequest.Bound.OUTBOUND)
+        etaEntityList.add(
+            EtaEntity(
+                stopId = "9D208FE6B2CFD450",
+                routeId = "290X",
+                bound = Bound.OUTBOUND.full,
+                serviceType = "1"
             )
         )
-        etaRequests.add(
-            EtaRequest(
-                "9D208FE6B2CFD450",
-                RouteRequest(routeId = "290X", bound = RouteRequest.Bound.OUTBOUND)
+        etaEntityList.add(
+            EtaEntity(
+                stopId = "403881982F9E7209",
+                routeId = "296A",
+                bound = Bound.OUTBOUND.full,
+                serviceType = "1"
+            )
+        )
+        etaEntityList.add(
+            EtaEntity(
+                stopId = "5527FF8CC85CF139",
+                routeId = "296C",
+                bound = Bound.OUTBOUND.full,
+                serviceType = "1"
+            )
+        )
+        etaEntityList.add(
+            EtaEntity(
+                stopId = "21E3E95EAEB2048C",
+                routeId = "296D",
+                bound = Bound.OUTBOUND.full,
+                serviceType = "1"
             )
         )
     }
@@ -133,6 +155,6 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getRouteAndStopList(etaRequests)
+        viewModel.getRouteAndStopList(etaEntityList)
     }
 }

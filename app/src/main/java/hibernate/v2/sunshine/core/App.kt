@@ -8,8 +8,8 @@ import com.himphen.logger.PrettyFormatStrategy
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.api.DataRepository
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
-import hibernate.v2.sunshine.ui.weather.WeatherViewModel
 import hibernate.v2.sunshine.ui.traffic.TrafficViewModel
+import hibernate.v2.sunshine.ui.weather.WeatherViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -46,7 +46,7 @@ class App : Application() {
         single { ApiManager(androidContext()) }
         single { DataRepository(get()) }
         // ViewModels
-        viewModel { EtaViewModel(get()) }
+        viewModel { EtaViewModel(get(), get()) }
         viewModel { WeatherViewModel(get()) }
         viewModel { TrafficViewModel(get()) }
     }

@@ -10,5 +10,5 @@ data class Minutely(
     @SerializedName("dt")
     val dt: Int? = null,
     @SerializedName("precipitation")
-    val precipitation: Int? = null
+    val precipitation: Double? = null
 ) : Parcelable

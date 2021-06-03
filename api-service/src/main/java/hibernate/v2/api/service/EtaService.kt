@@ -23,6 +23,6 @@ interface EtaService {
     suspend fun getRoute(
         @Path("route") route: String,
         @Path("bound") bound: String,
-        @Path("service_type") serviceType: Int
+        @Path("service_type") serviceType: String
     ): RouteResponse
 }

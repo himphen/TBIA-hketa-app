@@ -3,7 +3,6 @@ package hibernate.v2.sunshine.api
 import hibernate.v2.api.model.hko.TodayForecast
 import hibernate.v2.api.model.hko.TodayWeather
 import hibernate.v2.api.model.openweather.OneCall
-import hibernate.v2.api.request.RouteRequest
 import hibernate.v2.api.response.EtaResponse
 import hibernate.v2.api.response.RouteResponse
 import hibernate.v2.api.response.StopResponse
@@ -25,11 +24,11 @@ class DataRepository(private val apiManager: ApiManager) : BaseRepository() {
         )
     }
 
-    suspend fun getRoute(routeId: String, bound: RouteRequest.Bound): RouteResponse {
+    suspend fun getRoute(routeId: String, bound: String, serviceType: String): RouteResponse {
         return apiManager.etaService.getRoute(
             route = routeId,
-            bound = bound.param,
-            serviceType = 1
+            bound = bound,
+            serviceType = serviceType
         )
     }
 
@@ -42,6 +41,12 @@ class DataRepository(private val apiManager: ApiManager) : BaseRepository() {
     }
 
     suspend fun currentWeather(lat: Double, lon: Double): OneCall {
-        return apiManager.openWeatherService.oneCall(lat, lon, "", BuildConfig.OPEN_WEATHER_API_KEY, "metric")
+        return apiManager.openWeatherService.oneCall(
+            lat,
+            lon,
+            "",
+            BuildConfig.OPEN_WEATHER_API_KEY,
+            "metric"
+        )
     }
 }
