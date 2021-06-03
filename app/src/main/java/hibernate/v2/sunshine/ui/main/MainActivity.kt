@@ -6,6 +6,7 @@ import hibernate.v2.sunshine.ui.base.BaseActivity
 import hibernate.v2.sunshine.ui.eta.EtaFragment
 import hibernate.v2.sunshine.ui.traffic.TrafficFragment
 import hibernate.v2.sunshine.ui.weather.WeatherFragment
+import hibernate.v2.sunshine.util.setupAlarm
 
 class MainActivity : BaseActivity<ActivityEtaBinding>() {
     override fun getActivityViewBinding() = ActivityEtaBinding.inflate(layoutInflater)
@@ -18,5 +19,7 @@ class MainActivity : BaseActivity<ActivityEtaBinding>() {
             .replace(viewBinding.containerTopRight.id, TrafficFragment())
             .replace(viewBinding.containerBottom.id, WeatherFragment())
             .commitNow()
+
+        setupAlarm()
     }
 }
