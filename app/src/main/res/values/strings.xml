@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">巴士到站時間</string>
+
+    <string-array name="leftMenu">
+        <item>主頁</item>
+        <item>設定</item>
+    </string-array>
 </resources>

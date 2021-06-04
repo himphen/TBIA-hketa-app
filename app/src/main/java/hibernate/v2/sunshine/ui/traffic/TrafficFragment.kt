@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.ktx.awaitMap
 import hibernate.v2.sunshine.databinding.FragmentTrafficBinding
+import hibernate.v2.sunshine.model.TrafficLocation
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +33,7 @@ class TrafficFragment : BaseFragment<FragmentTrafficBinding>() {
     private var refreshMapJob: Deferred<Unit>? = null
     private var googleMap: GoogleMap? = null
     private val viewModel by inject<TrafficViewModel>()
-    private val locationList = arrayListOf<LatLngBounds>()
+    private val locationList = arrayListOf<TrafficLocation>()
     var index = 0
 
     companion object {
@@ -58,13 +59,33 @@ class TrafficFragment : BaseFragment<FragmentTrafficBinding>() {
         googleMap = mapFragment.awaitMap()
 
         // TKO
-        locationList.add(LatLngBounds(LatLng(22.312927, 114.246113), LatLng(22.321684, 114.262467)))
+        locationList.add(
+            TrafficLocation(
+                "將軍澳隧道",
+                LatLngBounds(LatLng(22.312927, 114.246113), LatLng(22.321684, 114.262467))
+            )
+        )
         // Choi Hung
-        locationList.add(LatLngBounds(LatLng(22.328550, 114.207262), LatLng(22.336399, 114.223178)))
+        locationList.add(
+            TrafficLocation(
+                "彩虹",
+                LatLngBounds(LatLng(22.328550, 114.207262), LatLng(22.336399, 114.223178))
+            )
+        )
         // Wong Tai Sin
-        locationList.add(LatLngBounds(LatLng(22.338078, 114.187849), LatLng(22.344369, 114.201274)))
+        locationList.add(
+            TrafficLocation(
+                "黃大仙",
+                LatLngBounds(LatLng(22.338078, 114.187849), LatLng(22.344369, 114.201274))
+            )
+        )
         // Lung Cheung Road
-        locationList.add(LatLngBounds(LatLng(22.337313, 114.142713), LatLng(22.344762, 114.168350)))
+        locationList.add(
+            TrafficLocation(
+                "龍翔道",
+                LatLngBounds(LatLng(22.337313, 114.142713), LatLng(22.344762, 114.168350))
+            )
+        )
 
         refreshMapJob = initRefreshMapJob()
         googleMap?.isTrafficEnabled = true
@@ -91,7 +112,8 @@ class TrafficFragment : BaseFragment<FragmentTrafficBinding>() {
                 index = 0
                 nextLocation = locationList[index]
             }
-            googleMap?.moveCamera(CameraUpdateFactory.newLatLngBounds(nextLocation, 10))
+            googleMap?.moveCamera(CameraUpdateFactory.newLatLngBounds(nextLocation.bounds, 10))
+            viewBinding?.locationNameTv?.text = nextLocation.name
             ObjectAnimator.ofInt(viewBinding?.progressHorizontal, "progress", 100000, 0)
                 .apply {
                     duration = REFRESH_TIME

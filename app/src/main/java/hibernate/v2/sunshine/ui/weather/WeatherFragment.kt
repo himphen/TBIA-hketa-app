@@ -36,6 +36,9 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
 
     @SuppressLint("SetTextI18n")
     private fun processData(oneCall: OneCall) {
+        viewBinding?.humidityTv?.text =
+            (oneCall.current?.humidity?.toString() ?: "-") + "%"
+
         viewBinding?.feelLikeTempTv?.text =
             (oneCall.current?.feelsLike?.roundToInt()?.toString() ?: "-") + "°C"
 

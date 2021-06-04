@@ -6,8 +6,10 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import hibernate.v2.sunshine.receiver.WakeUpReceiver
 import java.util.Calendar
+import kotlin.math.roundToInt
 
 /**
  * Returns true when [Context] is unavailable or is about to become unavailable
@@ -56,4 +58,8 @@ fun Context.cancelAlarm() {
     )
     val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
     alarmManager.cancel(pendingIntent)
+}
+
+fun dpToPx(dp: Int): Int {
+    return (dp * Resources.getSystem().displayMetrics.density).roundToInt()
 }

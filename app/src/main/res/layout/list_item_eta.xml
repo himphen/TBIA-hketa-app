@@ -12,9 +12,8 @@
     android:paddingBottom="8dp">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="80dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:gravity="center_vertical">
 
         <TextView
@@ -77,7 +76,7 @@
             android:id="@+id/etaTimeTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|end"
             android:textSize="12sp"
             tools:text="07:30    07:50    08:10" />
     </LinearLayout>

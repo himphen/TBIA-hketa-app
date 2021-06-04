@@ -11,6 +11,7 @@ import hibernate.v2.sunshine.databinding.FragmentEtaBinding
 import hibernate.v2.sunshine.model.RouteEtaStop
 import hibernate.v2.sunshine.db.eta.EtaEntity
 import hibernate.v2.sunshine.ui.base.BaseFragment
+import hibernate.v2.sunshine.ui.main.MainFragment
 import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.launchPeriodicAsync
@@ -30,6 +31,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
     companion object {
         private const val REFRESH_TIME = 60L * 1000
+        fun getInstance() = EtaFragment()
     }
 
     private lateinit var adapter: EtaItemAdapter
@@ -111,7 +113,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 stopId = "9D208FE6B2CFD450",
                 routeId = "290",
                 bound = Bound.OUTBOUND.full,
-                serviceType = "1"
+                serviceType = "1",
+                seq = 2
             )
         )
         etaEntityList.add(
@@ -119,7 +122,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 stopId = "9D208FE6B2CFD450",
                 routeId = "290X",
                 bound = Bound.OUTBOUND.full,
-                serviceType = "1"
+                serviceType = "1",
+                seq = 12
             )
         )
         etaEntityList.add(
@@ -127,7 +131,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 stopId = "403881982F9E7209",
                 routeId = "296A",
                 bound = Bound.OUTBOUND.full,
-                serviceType = "1"
+                serviceType = "1",
+                seq = 1
             )
         )
         etaEntityList.add(
@@ -135,7 +140,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 stopId = "5527FF8CC85CF139",
                 routeId = "296C",
                 bound = Bound.OUTBOUND.full,
-                serviceType = "1"
+                serviceType = "1",
+                seq = 1
             )
         )
         etaEntityList.add(
@@ -143,7 +149,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 stopId = "21E3E95EAEB2048C",
                 routeId = "296D",
                 bound = Bound.OUTBOUND.full,
-                serviceType = "1"
+                serviceType = "1",
+                seq = 1
             )
         )
     }

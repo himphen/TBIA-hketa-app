@@ -13,10 +13,11 @@ data class EtaEntity(
     val stopId: String,
     val routeId: String,
     val bound: String,
-    val serviceType: String
+    val serviceType: String,
+    val seq: Int
 ) : Parcelable, Comparable<EtaEntity> {
 
-    fun hashId(): String {
+    fun routeHashId(): String {
         return routeId + bound + serviceType
     }
 

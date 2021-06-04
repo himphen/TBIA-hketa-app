@@ -59,9 +59,9 @@ class EtaViewModel(
     }
 
     fun getRouteAndStopList(list: List<EtaEntity>) {
-        Logger.d("lifecycle getRouteAndStopList")
-        routeAndStopListReady.postValue(false)
         viewModelScope.launch {
+            routeAndStopListReady.postValue(false)
+            Logger.d("lifecycle getRouteAndStopList")
             try {
                 val stopResult = hashMapOf<String, Stop>()
                 val routeResult = hashMapOf<String, Route>()
@@ -100,11 +100,12 @@ class EtaViewModel(
                     }
                 }
 
+                Logger.d("lifecycle getRouteAndStopList done")
                 routeHashMap.postValue(routeResult)
                 stopHashMap.postValue(stopResult)
                 routeAndStopListReady.postValue(true)
             } catch (e: Exception) {
-                Logger.e(e, "net error")
+                Logger.e(e, "lifecycle getRouteAndStopList error")
                 routeAndStopListReady.postValue(false)
                 withContext(Dispatchers.Main) {
                 }
@@ -113,17 +114,16 @@ class EtaViewModel(
     }
 
     fun getEtaList(list: List<EtaEntity>) {
-        Logger.d("lifecycle getEtaList")
         viewModelScope.launch {
+            Logger.d("lifecycle getEtaList")
             try {
                 val routeEtaStopResult = arrayListOf<RouteEtaStop>()
-
                 coroutineScope {
                     list.forEach { entity ->
                         launch EtaAPI@{ // this will allow us to run multiple tasks in parallel
                             val stop = stopHashMap.value?.get(entity.stopId)
                             val route =
-                                routeHashMap.value?.get(entity.hashId())
+                                routeHashMap.value?.get(entity.routeHashId())
 
                             if (stop == null || route == null) return@EtaAPI
 
@@ -134,9 +134,9 @@ class EtaViewModel(
                                     RouteEtaStop(
                                         route = route,
                                         stop = stop,
-                                        etaList = etaList.filter {
+                                        etaList = etaList.filter { eta ->
                                             // Filter not same bound in bus terminal stops
-                                            Bound.matchShortAndFull(it.dir, entity.bound)
+                                            Bound.matchShortAndFull(eta.dir, entity.bound) && eta.seq == entity.seq
                                         }
                                     )
                                 )
@@ -145,9 +145,10 @@ class EtaViewModel(
                     }
                 }  // coroutineScope block will wait here until all child tasks are completed
 
+                Logger.d("lifecycle getEtaList done")
                 routeEtaStopList.postValue(routeEtaStopResult)
             } catch (e: Exception) {
-                Logger.e(e, "net error")
+                Logger.e(e, "lifecycle getEtaList error")
                 withContext(Dispatchers.Main) {
                 }
             }

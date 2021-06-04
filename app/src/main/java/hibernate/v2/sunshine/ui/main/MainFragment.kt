@@ -12,6 +12,10 @@ import hibernate.v2.sunshine.ui.weather.WeatherFragment
 
 class MainFragment : BaseFragment<FragmentMainBinding>() {
 
+    companion object {
+        fun getInstance() = MainFragment()
+    }
+
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,5 +35,4 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             .replace(viewBinding!!.containerBottom.id, WeatherFragment())
             .commit()
     }
-
 }
