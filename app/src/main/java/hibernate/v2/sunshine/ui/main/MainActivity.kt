@@ -1,28 +1,17 @@
 package hibernate.v2.sunshine.ui.main
 
 import android.os.Bundle
-import hibernate.v2.sunshine.databinding.ActivityEtaBinding
+import hibernate.v2.sunshine.databinding.ActivityMainBinding
 import hibernate.v2.sunshine.ui.base.BaseActivity
-import hibernate.v2.sunshine.ui.eta.EtaFragment
-import hibernate.v2.sunshine.ui.traffic.TrafficFragment
-import hibernate.v2.sunshine.ui.weather.WeatherFragment
-import hibernate.v2.sunshine.util.setupAlarm
 
-class MainActivity : BaseActivity<ActivityEtaBinding>() {
-    override fun getActivityViewBinding() = ActivityEtaBinding.inflate(layoutInflater)
+class MainActivity : BaseActivity<ActivityMainBinding>() {
+    override fun getActivityViewBinding() = ActivityMainBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        supportFragmentManager.beginTransaction()
-//            .replace(viewBinding.containerTopLeft.id, EtaFragment())
-//            .commit()
-        supportFragmentManager.beginTransaction()
-            .replace(viewBinding.containerTopRight.id, TrafficFragment())
-            .commit()
-//        supportFragmentManager.beginTransaction()
-//            .replace(viewBinding.containerBottom.id, WeatherFragment())
-//            .commit()
+        viewBinding.viewPager.adapter = MainViewPagerAdapter(supportFragmentManager)
+        viewBinding.tabLayout.setupWithViewPager(viewBinding.viewPager)
 
 //        setupAlarm()
     }

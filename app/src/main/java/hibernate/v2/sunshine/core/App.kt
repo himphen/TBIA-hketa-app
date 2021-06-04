@@ -1,7 +1,6 @@
 package hibernate.v2.sunshine.core
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatDelegate
 import com.himphen.logger.AndroidLogAdapter
 import com.himphen.logger.Logger
 import com.himphen.logger.PrettyFormatStrategy
@@ -18,10 +17,6 @@ import org.koin.core.logger.Level.ERROR
 import org.koin.dsl.module
 
 class App : Application() {
-
-    init {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-    }
 
     override fun onCreate() {
         super.onCreate()

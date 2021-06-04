@@ -7,7 +7,8 @@ buildscript {
         okhttp_version = '4.9.0'
         koin_version = '3.0.2'
         kotlinx_coroutines_core = '1.4.2'
-        room_version = '2.2.6'
+        room_version = '2.3.0'
+        leanback_version = '1.1.0-rc01'
     }
 
     repositories {
