@@ -12,4 +12,7 @@
     <color name="fluorescent_orange_trans">#332196F3</color>
     <color name="bg_mapview_title">#D82196F3</color>
     <color name="white">#ffffff</color>
+
+    <color name="settings_card_background">#0277BD</color>
+    <color name="settings_card_background_focussed">#01579B</color>
 </resources>

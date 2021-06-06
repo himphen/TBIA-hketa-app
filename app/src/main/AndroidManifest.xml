@@ -32,6 +32,7 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.settings.eta.SettingsEtaActivity" />
 
         <receiver android:name=".receiver.WakeUpReceiver" />
         <receiver

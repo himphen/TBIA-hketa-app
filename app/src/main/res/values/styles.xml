@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <style name="AppTheme" parent="@style/Theme.Leanback" />
@@ -8,4 +9,80 @@
         <item name="android:layout_marginStart">14dp</item>
         <item name="android:gravity">center_vertical</item>
     </style>
+
+    <style name="DefaultCardTheme" parent="Theme.Leanback">
+        <item name="imageCardViewStyle">@style/DefaultCardStyle</item>
+        <item name="imageCardViewImageStyle">@style/DefaultCardImageStyle</item>
+    </style>
+
+    <style name="DefaultCardStyle" parent="Widget.Leanback.ImageCardViewStyle">
+        <item name="cardBackground">@null</item>
+    </style>
+
+    <style name="DefaultCardImageStyle" parent="Widget.Leanback.ImageCardView.ImageStyle">
+        <item name="android:layout_width">@dimen/default_image_card_width</item>
+        <item name="android:layout_height">@dimen/default_image_card_height</item>
+    </style>
+
+    <style name="IconCardTheme" parent="Theme.Leanback">
+        <item name="imageCardViewStyle">@style/IconCardViewStyle</item>
+        <item name="imageCardViewTitleStyle">@style/IconCardTitleStyle</item>
+        <item name="imageCardViewImageStyle">@style/IconCardImageStyle</item>
+        <item name="imageCardViewInfoAreaStyle">@style/IconCardInfoAreaStyle</item>
+    </style>
+
+    <style name="SettingIconCardTheme" parent="Theme.Leanback">
+        <item name="imageCardViewTitleStyle">@style/IconCardTitleStyle</item>
+        <item name="imageCardViewImageStyle">@style/IconCardImageStyle</item>
+        <item name="imageCardViewInfoAreaStyle">@style/IconCardInfoAreaStyle</item>
+    </style>
+
+    <style name="IconCardViewStyle" parent="DefaultCardStyle">
+        <item name="lbImageCardViewType">Title</item>
+    </style>
+
+    <style name="IconCardImageStyle" parent="Widget.Leanback.ImageCardView.ImageStyle">
+        <item name="android:layout_width">96dp</item>
+        <item name="android:layout_height">96dp</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="IconCardTitleStyle" parent="Widget.Leanback.ImageCardView.TitleStyle">
+        <item name="android:maxLines">2</item>
+        <item name="android:minLines">2</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="IconCardInfoAreaStyle" parent="Widget.Leanback.ImageCardView.InfoAreaStyle">
+        <item name="android:layout_width">96dp</item>
+        <item name="android:background">@null</item>
+        <item name="layout_viewType">main</item>
+    </style>
+
+    <style name="SingleLineCardTheme" parent="Theme.Leanback">
+        <item name="imageCardViewStyle">@style/SingleLineCardStyle</item>
+        <item name="imageCardViewTitleStyle">@style/SingleLineCardTitleStyle</item>
+        <item name="imageCardViewImageStyle">@style/SingleLineCardImageStyle</item>
+        <item name="imageCardViewInfoAreaStyle">@style/SingleLineCardInfoAreaStyle</item>
+    </style>
+
+    <style name="SingleLineCardTitleStyle" parent="Widget.Leanback.ImageCardView.TitleStyle">
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="SingleLineCardInfoAreaStyle" parent="Widget.Leanback.ImageCardView.InfoAreaStyle">
+        <item name="android:layout_width">@dimen/square_image_card_width</item>
+        <item name="layout_viewType">main</item>
+    </style>
+
+    <style name="SingleLineCardImageStyle" parent="Widget.Leanback.ImageCardView.ImageStyle">
+        <item name="android:layout_width">@dimen/square_image_card_width</item>
+        <item name="android:layout_height">@dimen/square_image_card_height</item>
+    </style>
+
+    <style name="SingleLineCardStyle" parent="DefaultCardStyle">
+        <item name="lbImageCardViewType">Title</item>
+    </style>
+
 </resources>

@@ -1,6 +1,5 @@
-package hibernate.v2.sunshine.ui.settings
+package hibernate.v2.sunshine.ui.settings.eta
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,15 +8,14 @@ import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.VerticalGridPresenter
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.ui.settings.eta.SettingsEtaActivity
 
-class SettingsFragment : VerticalGridSupportFragment() {
+class SettingsEtaFragment : VerticalGridSupportFragment() {
 
     companion object {
-        private const val COLUMNS = 4
+        private const val COLUMNS = 1
         private const val ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_MEDIUM
 
-        fun getInstance() = SettingsFragment()
+        fun getInstance() = SettingsEtaFragment()
     }
 
     private var mAdapter: ArrayObjectAdapter? = null
@@ -32,23 +30,7 @@ class SettingsFragment : VerticalGridSupportFragment() {
         val gridPresenter = VerticalGridPresenter(ZOOM_FACTOR)
         gridPresenter.numberOfColumns = COLUMNS
         setGridPresenter(gridPresenter)
-        val cardPresenter =
-            SettingsIconPresenter(requireContext(), object : SettingsIconPresenter.ClickListener {
-                override fun onItemClick(card: Card.SettingsCard) {
-                    when (card.type) {
-                        Card.SettingsCard.Type.ETA -> {
-                            startActivity(
-                                Intent(context, SettingsEtaActivity::class.java)
-                            )
-                        }
-                        Card.SettingsCard.Type.TRAFFIC -> {
-                        }
-                        Card.SettingsCard.Type.NONE -> {
-                        }
-                    }
-                }
-
-            })
+        val cardPresenter = SettingsEtaCardPresenter(requireContext())
         mAdapter = ArrayObjectAdapter(cardPresenter)
         adapter = mAdapter
         prepareEntranceTransition()

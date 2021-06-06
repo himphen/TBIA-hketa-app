@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityMainBinding
 import hibernate.v2.sunshine.ui.base.BaseActivity
+import hibernate.v2.sunshine.ui.settings.SettingsFragment
 import hibernate.v2.sunshine.ui.widget.SideMenuView
 import hibernate.v2.sunshine.util.dpToPx
 
@@ -47,7 +48,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), SideMenuView.MenuItemC
         when (menuId) {
             SideMenuView.SETTING_MENU -> {
                 viewBinding.sideMenuView.setCurrentSelected(SideMenuView.SETTING_MENU)
-                fragment = MainFragment.getInstance()
+                fragment = SettingsFragment.getInstance()
                 tag = SideMenuView.TAG_SETTINGS
             }
             else -> {
