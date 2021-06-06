@@ -19,7 +19,7 @@ class SettingsIconPresenter(
     context: Context,
     private val listener: ClickListener
 ) : AbstractCardPresenter<ImageCardView, Card.SettingsCard>(
-    ContextThemeWrapper(context, R.style.IconCardTheme)
+    ContextThemeWrapper(context, R.style.SettingIconCardTheme)
 ) {
     interface ClickListener {
         fun onItemClick(card: Card.SettingsCard)

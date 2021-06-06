@@ -1,4 +1,12 @@
 <resources>
 
     <style name="Theme.MyApplication" parent="@style/Theme.Leanback" />
+
+    <style name="Theme.MyApplication.SettingEta" parent="Theme.MyApplication">
+        <item name="itemsVerticalGridStyle">@style/VerticalGridView.SettingEta</item>
+    </style>
+
+    <style name="VerticalGridView.SettingEta" parent="@style/Widget.Leanback.GridItems.VerticalGridView">
+        <item name="android:layout_width">match_parent</item>
+    </style>
 </resources>

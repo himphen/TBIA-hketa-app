@@ -32,7 +32,7 @@ open class ApiManager(val context: Context) {
             .writeTimeout(writeTimeout, TimeUnit.SECONDS)
             .addNetworkInterceptor(HttpLoggingInterceptor(HttpLogger()).apply {
                 level =
-                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.HEADERS else HttpLoggingInterceptor.Level.NONE
             })
             .addInterceptor(ApiLogInterceptor())
             .build()

@@ -1,8 +1,24 @@
 <resources>
     <string name="app_name">巴士到站時間</string>
+    <string name="title_activity_settings_eta">更改到站提示</string>
+
+    <string name="title_fragment_home">主頁</string>
+    <string name="title_fragment_settings">設定</string>
+    <string name="title_activity_add_eta">加入到站提示</string>
+
+    <string name="dialog_remove_eta_title">是否要移除 $1%s $2%s 到站選項？</string>
+    <string name="dialog_remove_eta_description">移除後將不能復原，你需要重新加入選項。</string>
+    <string name="dialog_remove_eta_pos_btn">移除</string>
+    <string name="dialog_remove_eta_neg_btn">取消</string>
 
     <string-array name="leftMenu">
-        <item>主頁</item>
-        <item>設定</item>
+        <item>@string/title_fragment_home</item>
+        <item>@string/title_fragment_settings</item>
     </string-array>
+
+    <string-array name="settingsMenu">
+        <item>@string/title_activity_settings_eta</item>
+    </string-array>
+
+
 </resources>

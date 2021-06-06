@@ -29,7 +29,7 @@ class EtaItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val item = list[position]
         holder as ItemViewHolder
         val itemBinding = holder.viewBinding
-        itemBinding.routeIdTv.text = item.route.route
+        itemBinding.routeIdTv.text = item.route.routeId
         itemBinding.stopNameTv.text = item.stop.nameTc
         itemBinding.routeDirectionTv.text = item.route.destTc
         itemBinding.etaMinuteTv.text =

@@ -28,11 +28,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         childFragmentManager.beginTransaction()
             .replace(viewBinding!!.containerTopLeft.id, EtaFragment())
             .commit()
-        childFragmentManager.beginTransaction()
-            .replace(viewBinding!!.containerTopRight.id, TrafficFragment())
-            .commit()
-        childFragmentManager.beginTransaction()
-            .replace(viewBinding!!.containerBottom.id, WeatherFragment())
-            .commit()
+//        childFragmentManager.beginTransaction()
+//            .replace(viewBinding!!.containerTopRight.id, TrafficFragment())
+//            .commit()
+//        childFragmentManager.beginTransaction()
+//            .replace(viewBinding!!.containerBottom.id, WeatherFragment())
+//            .commit()
     }
 }

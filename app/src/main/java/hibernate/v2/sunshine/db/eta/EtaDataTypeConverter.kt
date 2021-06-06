@@ -1,6 +1,7 @@
 package hibernate.v2.sunshine.db.eta
 
 import androidx.room.TypeConverter
+import hibernate.v2.api.model.Bound
 import java.util.UUID
 
 class EtaDataTypeConverter {
@@ -13,5 +14,15 @@ class EtaDataTypeConverter {
     @TypeConverter
     fun toUUID(uuid: String?): UUID? {
         return UUID.fromString(uuid)
+    }
+
+    @TypeConverter
+    fun fromBound(value: Bound): String {
+        return value.value
+    }
+
+    @TypeConverter
+    fun toBound(value: String): Bound {
+        return Bound.from(value)
     }
 }

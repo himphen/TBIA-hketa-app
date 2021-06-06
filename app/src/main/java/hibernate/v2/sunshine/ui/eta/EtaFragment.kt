@@ -8,10 +8,9 @@ import androidx.lifecycle.lifecycleScope
 import hibernate.v2.api.model.Bound
 import hibernate.v2.api.model.Eta
 import hibernate.v2.sunshine.databinding.FragmentEtaBinding
-import hibernate.v2.sunshine.model.RouteEtaStop
 import hibernate.v2.sunshine.db.eta.EtaEntity
+import hibernate.v2.sunshine.model.RouteEtaStop
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.main.MainFragment
 import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.launchPeriodicAsync
@@ -40,6 +39,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     private val etaEntityList = arrayListOf<EtaEntity>()
     private var refreshEtaJob: Deferred<Unit>? = null
 
+    private var routeAndStopListReady = false
+
     init {
         lifecycleScope.launch {
             launch {
@@ -49,22 +50,86 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
             }
             launch {
                 viewModel.routeAndStopListReady.observe(this@EtaFragment, {
-                    if (it) {
-                        refreshEtaJob =
-                            CoroutineScope(Dispatchers.IO).launchPeriodicAsync(REFRESH_TIME) {
-                                viewModel.getEtaList(etaEntityList)
-                            }
-                    } else {
-                        refreshEtaJob?.cancel()
-                        refreshEtaJob = null
-                    }
+                    routeAndStopListReady = it
+                    getRouteEtaStopList()
                 })
             }
         }
+        lifecycleScope.launchWhenResumed {
+            getRouteAndStopList()
+        }
+    }
+
+    private fun getRouteEtaStopList() {
+        if (routeAndStopListReady) {
+            refreshEtaJob =
+                CoroutineScope(Dispatchers.IO).launchPeriodicAsync(REFRESH_TIME) {
+                    viewModel.getEtaList(etaEntityList)
+                }
+        } else {
+            refreshEtaJob?.cancel()
+            refreshEtaJob = null
+        }
+    }
+
+    private suspend fun getRouteAndStopList() {
+        val savedRouteStopList = viewModel.getData()
+
+        if (savedRouteStopList.isNotEmpty()) {
+            etaEntityList.addAll(savedRouteStopList)
+        } else {
+            etaEntityList.add(
+                EtaEntity(
+                    stopId = "9D208FE6B2CFD450",
+                    routeId = "290",
+                    bound = Bound.OUTBOUND,
+                    serviceType = "1",
+                    seq = "2"
+                )
+            )
+            etaEntityList.add(
+                EtaEntity(
+                    stopId = "9D208FE6B2CFD450",
+                    routeId = "290X",
+                    bound = Bound.OUTBOUND,
+                    serviceType = "1",
+                    seq = "12"
+                )
+            )
+            etaEntityList.add(
+                EtaEntity(
+                    stopId = "403881982F9E7209",
+                    routeId = "296A",
+                    bound = Bound.OUTBOUND,
+                    serviceType = "1",
+                    seq = "1"
+                )
+            )
+            etaEntityList.add(
+                EtaEntity(
+                    stopId = "5527FF8CC85CF139",
+                    routeId = "296C",
+                    bound = Bound.OUTBOUND,
+                    serviceType = "1",
+                    seq = "1"
+                )
+            )
+            etaEntityList.add(
+                EtaEntity(
+                    stopId = "21E3E95EAEB2048C",
+                    routeId = "296D",
+                    bound = Bound.OUTBOUND,
+                    serviceType = "1",
+                    seq = "1"
+                )
+            )
+        }
+
+        viewModel.getRouteAndStopList(etaEntityList)
     }
 
     private fun processEtaList(list: List<RouteEtaStop>) {
-        val updatedList = list.sortedBy { item -> item.route.route }
+        val updatedList = list.sortedBy { item -> item.route.routeId }
         updatedList.forEach { routeEtaStop ->
             routeEtaStop.etaList = routeEtaStop.etaList.filter { eta: Eta ->
                 eta.eta?.let { etaString ->
@@ -103,65 +168,10 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         adapter = EtaItemAdapter()
         viewBinding!!.rvlist.adapter = adapter
         adapter.setData(routeEtaStopList)
-
-        initData()
-    }
-
-    private fun initData() {
-        etaEntityList.add(
-            EtaEntity(
-                stopId = "9D208FE6B2CFD450",
-                routeId = "290",
-                bound = Bound.OUTBOUND.full,
-                serviceType = "1",
-                seq = 2
-            )
-        )
-        etaEntityList.add(
-            EtaEntity(
-                stopId = "9D208FE6B2CFD450",
-                routeId = "290X",
-                bound = Bound.OUTBOUND.full,
-                serviceType = "1",
-                seq = 12
-            )
-        )
-        etaEntityList.add(
-            EtaEntity(
-                stopId = "403881982F9E7209",
-                routeId = "296A",
-                bound = Bound.OUTBOUND.full,
-                serviceType = "1",
-                seq = 1
-            )
-        )
-        etaEntityList.add(
-            EtaEntity(
-                stopId = "5527FF8CC85CF139",
-                routeId = "296C",
-                bound = Bound.OUTBOUND.full,
-                serviceType = "1",
-                seq = 1
-            )
-        )
-        etaEntityList.add(
-            EtaEntity(
-                stopId = "21E3E95EAEB2048C",
-                routeId = "296D",
-                bound = Bound.OUTBOUND.full,
-                serviceType = "1",
-                seq = 1
-            )
-        )
     }
 
     override fun onPause() {
         super.onPause()
         refreshEtaJob?.cancel()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getRouteAndStopList(etaEntityList)
     }
 }

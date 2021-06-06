@@ -147,3 +147,4 @@ fabric.properties
 
 secrets.properties
 runConfigurations.xml
+deploymentTargetDropDown.xml

@@ -24,13 +24,6 @@
         <item name="android:layout_height">@dimen/default_image_card_height</item>
     </style>
 
-    <style name="IconCardTheme" parent="Theme.Leanback">
-        <item name="imageCardViewStyle">@style/IconCardViewStyle</item>
-        <item name="imageCardViewTitleStyle">@style/IconCardTitleStyle</item>
-        <item name="imageCardViewImageStyle">@style/IconCardImageStyle</item>
-        <item name="imageCardViewInfoAreaStyle">@style/IconCardInfoAreaStyle</item>
-    </style>
-
     <style name="SettingIconCardTheme" parent="Theme.Leanback">
         <item name="imageCardViewTitleStyle">@style/IconCardTitleStyle</item>
         <item name="imageCardViewImageStyle">@style/IconCardImageStyle</item>
@@ -60,29 +53,11 @@
     </style>
 
     <style name="SingleLineCardTheme" parent="Theme.Leanback">
-        <item name="imageCardViewStyle">@style/SingleLineCardStyle</item>
-        <item name="imageCardViewTitleStyle">@style/SingleLineCardTitleStyle</item>
-        <item name="imageCardViewImageStyle">@style/SingleLineCardImageStyle</item>
-        <item name="imageCardViewInfoAreaStyle">@style/SingleLineCardInfoAreaStyle</item>
+        <item name="baseCardViewStyle">@style/CharacterCardStyle</item>
     </style>
 
-    <style name="SingleLineCardTitleStyle" parent="Widget.Leanback.ImageCardView.TitleStyle">
-        <item name="android:textAlignment">center</item>
-        <item name="android:gravity">center</item>
-    </style>
+    <style name="CharacterCardStyle" parent="Widget.Leanback.BaseCardViewStyle">
 
-    <style name="SingleLineCardInfoAreaStyle" parent="Widget.Leanback.ImageCardView.InfoAreaStyle">
-        <item name="android:layout_width">@dimen/square_image_card_width</item>
-        <item name="layout_viewType">main</item>
-    </style>
-
-    <style name="SingleLineCardImageStyle" parent="Widget.Leanback.ImageCardView.ImageStyle">
-        <item name="android:layout_width">@dimen/square_image_card_width</item>
-        <item name="android:layout_height">@dimen/square_image_card_height</item>
-    </style>
-
-    <style name="SingleLineCardStyle" parent="DefaultCardStyle">
-        <item name="lbImageCardViewType">Title</item>
     </style>
 
 </resources>

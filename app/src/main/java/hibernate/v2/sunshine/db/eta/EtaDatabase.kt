@@ -5,18 +5,32 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
-private const val DATABASE_NAME = "eta_data"
+private const val DATABASE_NAME = "saved_eta"
 
 /**
  * Database for storing all tracking data.
  */
-@Database(entities = [EtaEntity::class], version = 1)
+@Database(
+    entities = [EtaEntity::class],
+    version = 1
+)
 @TypeConverters(EtaDataTypeConverter::class)
 abstract class EtaDatabase : RoomDatabase() {
     abstract fun etaDao(): EtaDao
 
     companion object {
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+//                database.execSQL(
+//                    "CREATE TABLE `Fruit` (`id` INTEGER, `name` TEXT, " +
+//                            "PRIMARY KEY(`id`))"
+//                )
+            }
+        }
+
         // For Singleton instantiation
         @Volatile
         private var INSTANCE: EtaDatabase? = null

@@ -16,8 +16,8 @@ abstract class AbstractCardPresenter<T : BaseCardView, U : Card>(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
-        val settingsCard = item as U
-        onBindViewHolder(settingsCard, viewHolder.view as T)
+        val card = item as U
+        onBindViewHolder(card, viewHolder.view as T)
     }
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder) {

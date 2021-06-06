@@ -4,18 +4,20 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import hibernate.v2.api.model.Bound
 
 @Dao
 interface EtaDao {
-    @Query("SELECT * FROM eta_data ORDER BY routeId ASC")
-    fun get(): List<EtaEntity>
+    @Query("SELECT * FROM saved_eta ORDER BY routeId ASC")
+    suspend fun get(): List<EtaEntity>
 
-    @Query("SELECT * FROM eta_data WHERE stopId=(:stopId) AND routeId=(:routeId) AND bound=(:bound) AND serviceType=(:serviceType)")
+    @Query("SELECT * FROM saved_eta WHERE stopId=(:stopId) AND routeId=(:routeId) AND bound=(:bound) AND serviceType=(:serviceType) AND seq=(:seq)")
     fun get(
         stopId: String,
         routeId: String,
-        bound: String,
-        serviceType: String
+        bound: Bound,
+        serviceType: String,
+        seq: String
     ): List<EtaEntity>
 
     @Update
@@ -27,14 +29,15 @@ interface EtaDao {
     @Insert
     fun add(entityList: List<EtaEntity>)
 
-    @Query("DELETE FROM eta_data WHERE stopId=(:stopId) AND routeId=(:routeId) AND bound=(:bound) AND serviceType=(:serviceType)")
+    @Query("DELETE FROM saved_eta WHERE stopId=(:stopId) AND routeId=(:routeId) AND bound=(:bound) AND serviceType=(:serviceType) AND seq=(:seq)")
     fun clear(
         stopId: String,
         routeId: String,
-        bound: String,
-        serviceType: String
+        bound: Bound,
+        serviceType: String,
+        seq: String
     )
 
-    @Query("DELETE FROM eta_data")
+    @Query("DELETE FROM saved_eta")
     fun clearAll()
 }

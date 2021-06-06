@@ -1,6 +1,7 @@
 package hibernate.v2.sunshine.repository
 
 import android.content.Context
+import hibernate.v2.api.model.Bound
 import hibernate.v2.sunshine.db.eta.EtaDatabase
 import hibernate.v2.sunshine.db.eta.EtaEntity
 
@@ -12,22 +13,23 @@ class EtaRepository private constructor(database: EtaDatabase) {
     /**
      * Returns all recorded tracking data from database.
      */
-    fun getData(): List<EtaEntity> = dao.get()
+    suspend fun getData(): List<EtaEntity> = dao.get()
 
-    // Not being used now but could in future versions.
     /**
      * Returns specific tracking data in database.
      */
     fun getData(
         stopId: String,
         routeId: String,
-        bound: String,
-        serviceType: String
+        bound: Bound,
+        serviceType: String,
+        seq: String
     ): List<EtaEntity> = dao.get(
         stopId,
         routeId,
         bound,
-        serviceType
+        serviceType,
+        seq
     )
 
     /**
@@ -45,7 +47,8 @@ class EtaRepository private constructor(database: EtaDatabase) {
             entity.stopId,
             entity.routeId,
             entity.bound,
-            entity.serviceType
+            entity.serviceType,
+            entity.seq
         )
     }
 

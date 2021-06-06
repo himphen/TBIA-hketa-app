@@ -7,41 +7,73 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Route(
     @SerializedName("bound")
-    val bound: String? = null,
+    val bound: Bound,
     @SerializedName("dest_en")
-    val destEn: String? = null,
+    val destEn: String,
     @SerializedName("dest_sc")
-    val destSc: String? = null,
+    val destSc: String,
     @SerializedName("dest_tc")
-    val destTc: String? = null,
+    val destTc: String,
     @SerializedName("orig_en")
-    val origEn: String? = null,
+    val origEn: String,
     @SerializedName("orig_sc")
-    val origSc: String? = null,
+    val origSc: String,
     @SerializedName("orig_tc")
-    val origTc: String? = null,
+    val origTc: String,
     @SerializedName("route")
-    val route: String? = null,
+    val routeId: String,
     @SerializedName("service_type")
-    val serviceType: String? = null
-) : Parcelable
+    val serviceType: String,
 
-enum class Bound(val short: String, val full: String) {
-    INBOUND("I", "inbound"),
-    OUTBOUND("O", "outbound");
+    var routeParsed: Boolean = false,
+    var routePrefix: String? = null,
+    var routeNumber: Int? = null,
+    var routeSuffix: String? = null
+) : Parcelable, Comparable<Route> {
+    override fun compareTo(other: Route): Int {
+        parseRouteNumber()
+        other.parseRouteNumber()
+
+        val routePrefixCompare = routePrefix!!.compareTo(other.routePrefix!!)
+        if (routePrefixCompare != 0) return routePrefixCompare
+
+        val routeCompare = routeNumber!!.compareTo(other.routeNumber!!)
+        if (routeCompare != 0) return routeCompare
+
+        val routeSuffixCompare = routeSuffix!!.compareTo(other.routeSuffix!!)
+        if (routeSuffixCompare != 0) return routeSuffixCompare
+
+        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
+        if (serviceTypeCompare != 0) return serviceTypeCompare
+
+        return bound.compareTo(other.bound)
+    }
+
+    fun routeHashId(): String {
+        return routeId + bound.value + serviceType
+    }
+
+    fun isSpecialRoute(): Boolean = serviceType != "1"
+    private fun parseRouteNumber() {
+        if (!routeParsed) {
+            Regex("([A-Z]*)(\\d+)([A-Z]*)").find(routeId)?.let { match ->
+                routePrefix = match.destructured.component1()
+                routeNumber = match.destructured.component2().toInt()
+                routeSuffix = match.destructured.component3()
+            }
+            routeParsed = true
+        }
+    }
+}
+
+enum class Bound(val value: String) {
+    @SerializedName("I")
+    INBOUND("inbound"),
+
+    @SerializedName("O")
+    OUTBOUND("outbound");
 
     companion object {
-        @Suppress("MemberVisibilityCanBePrivate")
-        fun valueOfShort(value: String?): Bound? = values().find { it.short == value }
-        @Suppress("MemberVisibilityCanBePrivate")
-        fun valueOfFull(value: String?): Bound? = values().find { it.full == value }
-
-        fun matchShortAndFull(short: String?, full: String?): Boolean {
-            val shortT = valueOfShort(short)
-            val fullT = valueOfFull(full)
-
-            if (shortT == null || fullT == null) return false
-            return shortT == fullT
-        }
+        fun from(type: String?) = values().find { it.value == type } ?: INBOUND
     }
 }

@@ -1,7 +1,10 @@
 package hibernate.v2.api.service
 
 import hibernate.v2.api.response.EtaResponse
+import hibernate.v2.api.response.RouteListResponse
 import hibernate.v2.api.response.RouteResponse
+import hibernate.v2.api.response.RouteStopListResponse
+import hibernate.v2.api.response.StopListResponse
 import hibernate.v2.api.response.StopResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -25,4 +28,13 @@ interface EtaService {
         @Path("bound") bound: String,
         @Path("service_type") serviceType: String
     ): RouteResponse
+
+    @GET("v1/transport/kmb/route/")
+    suspend fun getRouteList(): RouteListResponse
+
+    @GET("v1/transport/kmb/stop/")
+    suspend fun getStopList(): StopListResponse
+
+    @GET("v1/transport/kmb/route-stop/")
+    suspend fun getRouteStopList(): RouteStopListResponse
 }

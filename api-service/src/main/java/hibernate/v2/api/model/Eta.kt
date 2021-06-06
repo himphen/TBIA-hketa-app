@@ -17,7 +17,7 @@ data class Eta(
     @SerializedName("dest_tc")
     val destTc: String? = null,
     @SerializedName("dir")
-    val dir: String? = null,
+    val dir: Bound? = null,
     @SerializedName("eta")
     val eta: String? = null,
     @SerializedName("eta_seq")
@@ -31,7 +31,7 @@ data class Eta(
     @SerializedName("route")
     val route: String? = null,
     @SerializedName("seq")
-    val seq: Int? = null,
+    val seq: String? = null,
     @SerializedName("service_type")
     val serviceType: Int? = null
 ) : Parcelable

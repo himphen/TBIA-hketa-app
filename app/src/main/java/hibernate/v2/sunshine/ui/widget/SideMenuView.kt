@@ -47,11 +47,11 @@ class SideMenuView : LinearLayout {
     }
 
     constructor(context: Context) : super(context) {
-        setupMenuUI(context)
+        setupUI(context)
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        setupMenuUI(context)
+        setupUI(context)
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
@@ -59,10 +59,10 @@ class SideMenuView : LinearLayout {
         attrs,
         defStyleAttr
     ) {
-        setupMenuUI(context)
+        setupUI(context)
     }
 
-    private fun setupMenuUI(context: Context) {
+    private fun setupUI(context: Context) {
         menuItemClick = context as MenuItemClickListener
         menuTitles = resources.getStringArray(R.array.leftMenu)
         orientation = VERTICAL

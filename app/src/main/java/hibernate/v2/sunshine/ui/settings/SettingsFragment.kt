@@ -8,8 +8,9 @@ import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.VerticalGridPresenter
+import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.ui.settings.eta.SettingsEtaActivity
+import hibernate.v2.sunshine.ui.settings.eta.listing.SettingsEtaActivity
 
 class SettingsFragment : VerticalGridSupportFragment() {
 
@@ -24,7 +25,7 @@ class SettingsFragment : VerticalGridSupportFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = "Meow"
+        title = getString(R.string.title_fragment_settings)
         setupRowAdapter()
     }
 
@@ -32,8 +33,8 @@ class SettingsFragment : VerticalGridSupportFragment() {
         val gridPresenter = VerticalGridPresenter(ZOOM_FACTOR)
         gridPresenter.numberOfColumns = COLUMNS
         setGridPresenter(gridPresenter)
-        val cardPresenter =
-            SettingsIconPresenter(requireContext(), object : SettingsIconPresenter.ClickListener {
+        val cardPresenter = SettingsIconPresenter(requireContext(),
+            object : SettingsIconPresenter.ClickListener {
                 override fun onItemClick(card: Card.SettingsCard) {
                     when (card.type) {
                         Card.SettingsCard.Type.ETA -> {
@@ -48,7 +49,8 @@ class SettingsFragment : VerticalGridSupportFragment() {
                     }
                 }
 
-            })
+            }
+        )
         mAdapter = ArrayObjectAdapter(cardPresenter)
         adapter = mAdapter
         prepareEntranceTransition()
@@ -62,29 +64,8 @@ class SettingsFragment : VerticalGridSupportFragment() {
         val list = arrayListOf<Card.SettingsCard>()
         list.add(
             Card.SettingsCard(
-                title = "title",
+                title = getString(R.string.title_activity_settings_eta),
                 type = Card.SettingsCard.Type.ETA,
-                localImageResourceName = "ic_settings_settings"
-            )
-        )
-        list.add(
-            Card.SettingsCard(
-                title = "title",
-                type = Card.SettingsCard.Type.NONE,
-                localImageResourceName = "ic_settings_settings"
-            )
-        )
-        list.add(
-            Card.SettingsCard(
-                title = "title",
-                type = Card.SettingsCard.Type.NONE,
-                localImageResourceName = "ic_settings_settings"
-            )
-        )
-        list.add(
-            Card.SettingsCard(
-                title = "title",
-                type = Card.SettingsCard.Type.NONE,
                 localImageResourceName = "ic_settings_settings"
             )
         )

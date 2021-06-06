@@ -7,15 +7,17 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Stop(
     @SerializedName("lat")
-    val lat: String? = null,
+    val lat: String,
     @SerializedName("long")
-    val long: String? = null,
+    val long: String,
     @SerializedName("name_en")
-    val nameEn: String? = null,
+    val nameEn: String,
     @SerializedName("name_sc")
-    val nameSc: String? = null,
+    val nameSc: String,
     @SerializedName("name_tc")
-    val nameTc: String? = null,
+    val nameTc: String,
     @SerializedName("stop")
-    val stopId: String? = null
+    val stopId: String,
+
+    var seq: String? = null
 ) : Parcelable
