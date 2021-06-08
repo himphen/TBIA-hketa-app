@@ -15,11 +15,11 @@ class EditEtaDialogFragment : GuidedStepSupportFragment() {
     private var afterId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
         currentEditEta = arguments?.getParcelable(EditEtaDialogActivity.ARG_SELECTED_ETA)!!
         beforeId = arguments?.getString(EditEtaDialogActivity.ARG_BEFORE_ETA_ID)
         afterId = arguments?.getString(EditEtaDialogActivity.ARG_AFTER_ETA_ID)
+
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateGuidance(savedInstanceState: Bundle?): Guidance {
@@ -40,34 +40,34 @@ class EditEtaDialogFragment : GuidedStepSupportFragment() {
 
         if (beforeId != null) {
             action = GuidedAction.Builder(context)
-                .id(ACTION_ID_MOVE_UP.toLong())
+                .id(ACTION_ID_MOVE_UP)
                 .title(getString(R.string.dialog_edit_eta_move_up_btn)).build()
             actions.add(action)
         }
 
         if (afterId != null) {
             action = GuidedAction.Builder(context)
-                .id(ACTION_ID_MOVE_DOWN.toLong())
+                .id(ACTION_ID_MOVE_DOWN)
                 .title(getString(R.string.dialog_edit_eta_move_down_btn)).build()
             actions.add(action)
         }
 
         action = GuidedAction.Builder(context)
-            .id(ACTION_ID_REMOVE.toLong())
+            .id(ACTION_ID_REMOVE)
             .title(getString(R.string.dialog_edit_eta_remove_btn)).build()
         actions.add(action)
 
         action = GuidedAction.Builder(context)
-            .id(ACTION_ID_CANCEL.toLong())
+            .id(ACTION_ID_CANCEL)
             .title(getString(R.string.dialog_edit_eta_cancel_btn)).build()
         actions.add(action)
     }
 
     override fun onGuidedActionClicked(action: GuidedAction) {
         when (action.id) {
-            ACTION_ID_MOVE_UP.toLong(),
-            ACTION_ID_MOVE_DOWN.toLong(),
-            ACTION_ID_REMOVE.toLong() -> {
+            ACTION_ID_MOVE_UP,
+            ACTION_ID_MOVE_DOWN,
+            ACTION_ID_REMOVE -> {
                 activity?.setResult(Activity.RESULT_OK, Intent().apply {
                     putExtra(EditEtaDialogActivity.ARG_RESULT_CODE, action.id)
                 })
@@ -79,9 +79,9 @@ class EditEtaDialogFragment : GuidedStepSupportFragment() {
     companion object {
         fun getInstance(bundle: Bundle?) = EditEtaDialogFragment().apply { arguments = bundle }
 
-        const val ACTION_ID_MOVE_UP = 1
-        const val ACTION_ID_MOVE_DOWN = 2
-        const val ACTION_ID_REMOVE = 3
-        const val ACTION_ID_CANCEL = 4
+        const val ACTION_ID_MOVE_UP = 1L
+        const val ACTION_ID_MOVE_DOWN = 2L
+        const val ACTION_ID_REMOVE = 3L
+        const val ACTION_ID_CANCEL = 4L
     }
 }

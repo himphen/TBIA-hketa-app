@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
-import hibernate.v2.api.model.Bound
 import hibernate.v2.api.model.Route
 import hibernate.v2.api.model.Stop
 import hibernate.v2.api.response.RouteStopListResponse
@@ -37,24 +36,6 @@ class SettingsEtaViewModel(
     val editCard = MutableLiveData<Card.SettingsEtaCard>()
 
     suspend fun getEtaList() = withContext(Dispatchers.IO) { etaRepository.getEtaList() }
-
-    suspend fun getEtaList(
-        stopId: String,
-        routeId: String,
-        bound: Bound,
-        serviceType: String,
-        seq: String
-    ) = withContext(Dispatchers.IO) {
-        etaRepository.getEtaList(
-            stopId,
-            routeId,
-            bound,
-            serviceType,
-            seq
-        )
-    }
-
-    suspend fun addEta(item: EtaEntity) = withContext(Dispatchers.IO) { etaRepository.addEta(item) }
 
     suspend fun clearData(item: EtaEntity) =
         withContext(Dispatchers.IO) {

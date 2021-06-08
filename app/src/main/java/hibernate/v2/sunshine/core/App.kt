@@ -8,6 +8,7 @@ import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.api.DataRepository
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.ui.settings.eta.SettingsEtaViewModel
+import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.traffic.TrafficViewModel
 import hibernate.v2.sunshine.ui.weather.WeatherViewModel
 import org.koin.android.ext.koin.androidContext
@@ -44,6 +45,7 @@ class App : Application() {
         // ViewModels
         viewModel { EtaViewModel(get(), get()) }
         viewModel { SettingsEtaViewModel(get(), get()) }
+        viewModel { AddEtaViewModel(get()) }
         viewModel { WeatherViewModel(get()) }
         viewModel { TrafficViewModel(get()) }
     }

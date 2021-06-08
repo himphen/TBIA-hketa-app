@@ -14,18 +14,15 @@ import com.himphen.logger.Logger
 import hibernate.v2.sunshine.db.eta.EtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.repository.RouteStopListDataHolder
-import hibernate.v2.sunshine.ui.settings.eta.SettingsEtaViewModel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResultProvider {
 
     private lateinit var mRowsAdapter: ArrayObjectAdapter
-    private val viewModel by inject<SettingsEtaViewModel>()
+    private val viewModel by inject<AddEtaViewModel>()
 
     private var mQuery: String = ""
-    private var mResultsFound = false
 
     private val clickListener = object : AddEtaCardPresenter.ClickListener {
         override fun onItemClick(card: Card.RouteStopCard) {
@@ -72,39 +69,39 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = "加入"
-
+        title = "路線編號"
         mRowsAdapter = ArrayObjectAdapter(ListRowPresenter())
         loadRows()
         setSearchResultProvider(this)
     }
 
     private fun loadRows() {
-        RouteStopListDataHolder.data?.let { list ->
-            list.forEachIndexed { index, routeStopList ->
-                // Init Title
-                val route = routeStopList.route
-                val headerTitle = if (route.isSpecialRoute()) {
-                    "${route.routeId} 特別線 (${route.serviceType}) - ${routeStopList.route.origTc} 往 ${routeStopList.route.destTc}"
-                } else {
-                    "${route.routeId} - ${routeStopList.route.origTc} 往 ${routeStopList.route.destTc}"
-                }
-
-                if (mQuery.isNotEmpty() && !headerTitle.contains(mQuery)) return@forEachIndexed
-
-                // Init Row
-                val listRowAdapter =
-                    ArrayObjectAdapter(AddEtaCardPresenter(requireContext(), clickListener))
-                listRowAdapter.addAll(0, routeStopList.stopList.map {
-                    Card.RouteStopCard(
-                        route = routeStopList.route,
-                        stop = it
-                    )
-                })
-                val header = HeaderItem(index.toLong(), headerTitle)
-                val listRow = ListRow(header, listRowAdapter)
-                mRowsAdapter.add(listRow)
+        mRowsAdapter.clear()
+        viewModel.allList?.forEachIndexed { index, routeStopList ->
+            // Init Title
+            val route = routeStopList.route
+            val headerTitle = if (route.isSpecialRoute()) {
+                "${route.routeId} 特別線 (${route.serviceType}) - ${routeStopList.route.origTc} 往 ${routeStopList.route.destTc}"
+            } else {
+                "${route.routeId} - ${routeStopList.route.origTc} 往 ${routeStopList.route.destTc}"
             }
+
+            if (mQuery.isNotEmpty() && (route.routePrefix?.startsWith(mQuery) != true
+                        && route.routeNumber?.toString()?.startsWith(mQuery) != true)
+            ) return@forEachIndexed
+
+            // Init Row
+            val listRowAdapter =
+                ArrayObjectAdapter(AddEtaCardPresenter(requireContext(), clickListener))
+            listRowAdapter.addAll(0, routeStopList.stopList.map {
+                Card.RouteStopCard(
+                    route = routeStopList.route,
+                    stop = it
+                )
+            })
+            val header = HeaderItem(index.toLong(), headerTitle)
+            val listRow = ListRow(header, listRowAdapter)
+            mRowsAdapter.add(listRow)
         }
     }
 
@@ -114,7 +111,9 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
 
     override fun onQueryTextChange(newQuery: String): Boolean {
         Logger.d(String.format("Search text changed: %s", newQuery))
-//        loadQuery(newQuery)
+        if (newQuery.isEmpty()) {
+            loadQuery("")
+        }
         return true
     }
 
@@ -127,7 +126,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
     private fun loadQuery(query: String) {
         query.trim().let {
             if (it != mQuery) {
-                mQuery = query
+                mQuery = it
                 loadRows()
             }
         }

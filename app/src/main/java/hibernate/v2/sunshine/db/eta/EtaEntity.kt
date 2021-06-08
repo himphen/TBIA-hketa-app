@@ -6,6 +6,8 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import hibernate.v2.api.model.Bound
 import hibernate.v2.api.request.RouteRequest
+import hibernate.v2.sunshine.model.RouteEtaStop
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
 

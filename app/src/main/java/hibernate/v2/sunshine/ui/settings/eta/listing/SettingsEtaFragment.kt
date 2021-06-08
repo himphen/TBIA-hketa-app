@@ -24,7 +24,6 @@ import hibernate.v2.sunshine.ui.settings.eta.edit.EditEtaDialogActivity.Companio
 import hibernate.v2.sunshine.ui.settings.eta.edit.EditEtaDialogFragment.Companion.ACTION_ID_MOVE_DOWN
 import hibernate.v2.sunshine.ui.settings.eta.edit.EditEtaDialogFragment.Companion.ACTION_ID_MOVE_UP
 import hibernate.v2.sunshine.ui.settings.eta.edit.EditEtaDialogFragment.Companion.ACTION_ID_REMOVE
-import hibernate.v2.sunshine.util.moveAt
 import hibernate.v2.sunshine.util.swap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,41 +40,39 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
     var editEtaLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             lifecycleScope.launch(Dispatchers.Main) {
-                when (result.data?.getIntExtra(ARG_RESULT_CODE, -1)) {
+                when (result.data?.getLongExtra(ARG_RESULT_CODE, -1)) {
                     ACTION_ID_MOVE_UP -> {
                         viewModel.editCard.value?.let { card ->
                             val position = list.indexOf(card)
-                            val oldPosition = position + OFFSET
-                            val newPosition = position + OFFSET + 1
+                            val newPosition = position - 1
 
                             val currentEtaOrderList = viewModel.getEtaOrderList().toMutableList()
-                            currentEtaOrderList.swap(oldPosition, newPosition)
+                            currentEtaOrderList.swap(position - OFFSET, newPosition - OFFSET)
                             val updatedEtaOrderList =
                                 currentEtaOrderList.mapIndexed { index, etaOrderEntity ->
                                     EtaOrderEntity(id = etaOrderEntity.id, position = index)
                                 }
                             viewModel.updateEtaOrderList(updatedEtaOrderList)
 
-                            mAdapter?.move(oldPosition, newPosition)
-                            list.moveAt(oldPosition, newPosition)
+                            mAdapter?.move(position, newPosition)
+                            list.swap(position, newPosition)
                         }
                     }
                     ACTION_ID_MOVE_DOWN -> {
                         viewModel.editCard.value?.let { card ->
                             val position = list.indexOf(card)
-                            val oldPosition = position + OFFSET
-                            val newPosition = position + OFFSET - 1
+                            val newPosition = position + 1
 
                             val currentEtaOrderList = viewModel.getEtaOrderList().toMutableList()
-                            currentEtaOrderList.swap(oldPosition, newPosition)
+                            currentEtaOrderList.swap(position - OFFSET, newPosition - OFFSET)
                             val updatedEtaOrderList =
                                 currentEtaOrderList.mapIndexed { index, etaOrderEntity ->
                                     EtaOrderEntity(id = etaOrderEntity.id, position = index)
                                 }
                             viewModel.updateEtaOrderList(updatedEtaOrderList)
 
-                            mAdapter?.move(oldPosition, newPosition)
-                            list.moveAt(oldPosition, newPosition)
+                            mAdapter?.move(position, newPosition)
+                            list.swap(position, newPosition)
                         }
                     }
                     ACTION_ID_REMOVE -> {
@@ -166,6 +163,21 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
                                                     stop = card.stop!!
                                                 )
                                             )
+
+                                            val currentPosition = list.indexOf(card)
+                                            if (currentPosition > 1) {
+                                                putString(
+                                                    EditEtaDialogActivity.ARG_BEFORE_ETA_ID,
+                                                    list.getOrNull(currentPosition - 1)?.entity?.id?.toString()
+                                                )
+                                            }
+
+                                            if (currentPosition < list.lastIndex) {
+                                                putString(
+                                                    EditEtaDialogActivity.ARG_AFTER_ETA_ID,
+                                                    list.getOrNull(currentPosition + 1)?.entity?.id?.toString()
+                                                )
+                                            }
                                         }
                                     )
                                 }
