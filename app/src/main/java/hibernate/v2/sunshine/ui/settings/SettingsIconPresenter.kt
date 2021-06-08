@@ -5,7 +5,7 @@ import android.view.ContextThemeWrapper
 import android.view.View.OnFocusChangeListener
 import androidx.core.content.ContextCompat
 import androidx.leanback.widget.ImageCardView
-import com.bumptech.glide.Glide
+import coil.load
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.card.AbstractCardPresenter
@@ -48,10 +48,7 @@ class SettingsIconPresenter(
         cardView.contentText = card.description
         val resourceId = card.getLocalImageResourceId(context)
         if (resourceId != 0) {
-            Glide.with(context)
-                .asBitmap()
-                .load(resourceId)
-                .into(cardView.mainImageView)
+            cardView.mainImageView.load(resourceId)
         }
     }
 

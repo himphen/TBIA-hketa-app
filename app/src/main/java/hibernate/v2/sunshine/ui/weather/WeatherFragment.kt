@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import coil.load
 import hibernate.v2.api.model.openweather.OneCall
 import hibernate.v2.sunshine.databinding.FragmentWeatherBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.util.loadImage
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import kotlin.math.roundToInt
@@ -64,8 +64,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
             "weather_icon_01d"
         }
 
-        viewBinding?.weatherIconIv?.loadImage(
-            context,
+        viewBinding?.weatherIconIv?.load(
             resources.getIdentifier(resName, "drawable", activity?.packageName)
         )
     }
@@ -79,9 +78,8 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
     private fun initData() {
         viewModel.getWeatherInfo()
 
-        viewBinding?.backdropIv?.loadImage(
-            context,
-            url = "https://source.unsplash.com/1920x1080/?nature,water"
+        viewBinding?.backdropIv?.load(
+           "https://source.unsplash.com/1920x1080/?nature,water"
         )
     }
 }
