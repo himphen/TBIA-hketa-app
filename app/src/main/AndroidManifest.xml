@@ -25,7 +25,7 @@
         </activity>
         <activity android:name=".ui.settings.eta.listing.SettingsEtaActivity" />
         <activity android:name=".ui.settings.eta.add.AddEtaActivity" />
-        <activity android:name=".ui.settings.eta.remove.RemoveEtaDialogActivity" />
+        <activity android:name=".ui.settings.eta.edit.EditEtaDialogActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"

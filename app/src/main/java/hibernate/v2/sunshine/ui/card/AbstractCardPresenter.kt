@@ -43,8 +43,4 @@ abstract class AbstractCardPresenter<T : BaseCardView, U : Card>(
      * @see Presenter.onBindViewHolder
      */
     abstract fun onBindViewHolder(card: U, cardView: T)
-
-    companion object {
-        private const val TAG = "AbstractCardPresenter"
-    }
 }

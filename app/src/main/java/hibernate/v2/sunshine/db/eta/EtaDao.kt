@@ -8,11 +8,11 @@ import hibernate.v2.api.model.Bound
 
 @Dao
 interface EtaDao {
-    @Query("SELECT * FROM saved_eta ORDER BY routeId ASC")
+    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta.id = saved_eta_order.id ORDER BY saved_eta_order.position ASC")
     suspend fun get(): List<EtaEntity>
 
-    @Query("SELECT * FROM saved_eta WHERE stopId=(:stopId) AND routeId=(:routeId) AND bound=(:bound) AND serviceType=(:serviceType) AND seq=(:seq)")
-    fun get(
+    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta.id = saved_eta_order.id WHERE stopId=(:stopId) AND routeId=(:routeId) AND bound=(:bound) AND serviceType=(:serviceType) AND seq=(:seq)")
+    suspend fun get(
         stopId: String,
         routeId: String,
         bound: Bound,
@@ -21,16 +21,16 @@ interface EtaDao {
     ): List<EtaEntity>
 
     @Update
-    fun update(entity: EtaEntity)
+    suspend fun update(entity: EtaEntity)
 
     @Insert
-    fun add(entity: EtaEntity)
+    suspend fun add(entity: EtaEntity)
 
     @Insert
-    fun add(entityList: List<EtaEntity>)
+    suspend fun add(entityList: List<EtaEntity>)
 
     @Query("DELETE FROM saved_eta WHERE stopId=(:stopId) AND routeId=(:routeId) AND bound=(:bound) AND serviceType=(:serviceType) AND seq=(:seq)")
-    fun clear(
+    suspend fun clear(
         stopId: String,
         routeId: String,
         bound: Bound,
@@ -39,5 +39,5 @@ interface EtaDao {
     )
 
     @Query("DELETE FROM saved_eta")
-    fun clearAll()
+    suspend fun clearAll()
 }

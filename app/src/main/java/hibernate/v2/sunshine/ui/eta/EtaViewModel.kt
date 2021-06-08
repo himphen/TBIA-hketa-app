@@ -31,7 +31,7 @@ class EtaViewModel(
     val stopHashMap = MutableLiveData<HashMap<String, Stop>>()
     val routeAndStopListReady = MutableLiveData<Boolean>()
 
-    suspend fun getData() = etaRepository.getData()
+    suspend fun getEtaList() = etaRepository.getEtaList()
 
     fun getRouteAndStopList(list: List<EtaEntity>) {
         viewModelScope.launch {

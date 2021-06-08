@@ -11,9 +11,11 @@ import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.db.eta.EtaEntity
+import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.RouteStopList
 import hibernate.v2.sunshine.repository.RouteStopListDataHolder
+import hibernate.v2.sunshine.ui.settings.eta.SettingsEtaViewModel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -21,7 +23,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
 
     private lateinit var mRowsAdapter: ArrayObjectAdapter
     private lateinit var list: ArrayList<RouteStopList>
-    private val viewModel by inject<AddEtaViewModel>()
+    private val viewModel by inject<SettingsEtaViewModel>()
 
     companion object {
         fun getInstance() = AddEtaFragment()
@@ -29,7 +31,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = "Search"
+        title = "加入"
 
         list = RouteStopListDataHolder.data ?: arrayListOf()
 
@@ -42,7 +44,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
         val listener = object : AddEtaCardPresenter.ClickListener {
             override fun onItemClick(card: Card.RouteStopCard) {
                 lifecycleScope.launch {
-                    val data = viewModel.getData(
+                    val data = viewModel.getEtaList(
                         stopId = card.stop.stopId,
                         routeId = card.route.routeId,
                         bound = card.route.bound,
@@ -55,15 +57,22 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
                         return@launch
                     }
 
-                    viewModel.addData(
-                        EtaEntity(
-                            stopId = card.stop.stopId,
-                            routeId = card.route.routeId,
-                            bound = card.route.bound,
-                            serviceType = card.route.serviceType,
-                            seq = card.stop.seq!!
-                        )
+                    val newEta = EtaEntity(
+                        stopId = card.stop.stopId,
+                        routeId = card.route.routeId,
+                        bound = card.route.bound,
+                        serviceType = card.route.serviceType,
+                        seq = card.stop.seq!!
                     )
+                    viewModel.addEta(newEta)
+
+                    val currentEtaOrderList = viewModel.getEtaOrderList()
+                    val updatedEtaOrderList = mutableListOf<EtaOrderEntity>()
+                    updatedEtaOrderList.add(EtaOrderEntity(id = newEta.id, position = 0))
+                    updatedEtaOrderList.addAll(currentEtaOrderList.map {
+                        EtaOrderEntity(id = it.id, position = it.position + 1)
+                    })
+                    viewModel.updateEtaOrderList(updatedEtaOrderList)
 
                     activity?.setResult(Activity.RESULT_OK)
                     activity?.finish()

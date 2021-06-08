@@ -4,11 +4,14 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
+import hibernate.v2.api.model.Bound
 import hibernate.v2.api.model.Route
 import hibernate.v2.api.model.Stop
 import hibernate.v2.api.response.RouteStopListResponse
 import hibernate.v2.sunshine.api.DataRepository
 import hibernate.v2.sunshine.db.eta.EtaEntity
+import hibernate.v2.sunshine.db.eta.EtaOrderEntity
+import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.RouteStopList
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
@@ -23,7 +26,7 @@ class SettingsEtaViewModel(
     private val repo: DataRepository
 ) : BaseViewModel() {
 
-    val etaRepository = EtaRepository.getInstance(
+    private val etaRepository = EtaRepository.getInstance(
         application.applicationContext
     )
 
@@ -31,24 +34,41 @@ class SettingsEtaViewModel(
     val stopHashMap = MutableLiveData<HashMap<String, Stop>>()
     val routeStopListHashMap = MutableLiveData<HashMap<String, RouteStopList>>()
     val routeAndStopListReady = MutableLiveData<Boolean>()
+    val editCard = MutableLiveData<Card.SettingsEtaCard>()
 
-    suspend fun getData() = withContext(Dispatchers.IO) { etaRepository.getData() }
+    suspend fun getEtaList() = withContext(Dispatchers.IO) { etaRepository.getEtaList() }
 
-    fun clearData(item: EtaEntity) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                etaRepository.clearData(item)
-            }
-        }
+    suspend fun getEtaList(
+        stopId: String,
+        routeId: String,
+        bound: Bound,
+        serviceType: String,
+        seq: String
+    ) = withContext(Dispatchers.IO) {
+        etaRepository.getEtaList(
+            stopId,
+            routeId,
+            bound,
+            serviceType,
+            seq
+        )
     }
 
-    fun clearAllData() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                etaRepository.clearAllData()
-            }
+    suspend fun addEta(item: EtaEntity) = withContext(Dispatchers.IO) { etaRepository.addEta(item) }
+
+    suspend fun clearData(item: EtaEntity) =
+        withContext(Dispatchers.IO) {
+            etaRepository.clearEta(item)
+            etaRepository.clearEta(item)
         }
-    }
+
+    suspend fun clearAllEta() =
+        withContext(Dispatchers.IO) { etaRepository.clearAllEta() }
+
+    suspend fun getEtaOrderList() = withContext(Dispatchers.IO) { etaRepository.getEtaOrderList() }
+
+    suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
+        withContext(Dispatchers.IO) { etaRepository.updateEtaOrderList(entityList) }
 
     fun getAllRouteAndStopList() {
         viewModelScope.launch {

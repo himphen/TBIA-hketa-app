@@ -12,14 +12,20 @@ import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.VerticalGridPresenter
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.db.eta.EtaEntity
+import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.RemoveEta
+import hibernate.v2.sunshine.model.EditEta
 import hibernate.v2.sunshine.model.RouteStopList
 import hibernate.v2.sunshine.repository.RouteStopListDataHolder
 import hibernate.v2.sunshine.ui.settings.eta.SettingsEtaViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaActivity
-import hibernate.v2.sunshine.ui.settings.eta.remove.RemoveEtaDialogActivity
+import hibernate.v2.sunshine.ui.settings.eta.edit.EditEtaDialogActivity
+import hibernate.v2.sunshine.ui.settings.eta.edit.EditEtaDialogActivity.Companion.ARG_RESULT_CODE
+import hibernate.v2.sunshine.ui.settings.eta.edit.EditEtaDialogFragment.Companion.ACTION_ID_MOVE_DOWN
+import hibernate.v2.sunshine.ui.settings.eta.edit.EditEtaDialogFragment.Companion.ACTION_ID_MOVE_UP
+import hibernate.v2.sunshine.ui.settings.eta.edit.EditEtaDialogFragment.Companion.ACTION_ID_REMOVE
+import hibernate.v2.sunshine.util.moveAt
+import hibernate.v2.sunshine.util.swap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -32,19 +38,61 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
         }
     }
 
-    var removeEtaLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+    var editEtaLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val etaEntity = result.data?.getParcelableExtra<EtaEntity>(
-                    RemoveEtaDialogActivity.ARG_REMOVE_ETA_OUTGOING
-                )
+            lifecycleScope.launch(Dispatchers.Main) {
+                when (result.data?.getIntExtra(ARG_RESULT_CODE, -1)) {
+                    ACTION_ID_MOVE_UP -> {
+                        viewModel.editCard.value?.let { card ->
+                            val position = list.indexOf(card)
+                            val oldPosition = position + OFFSET
+                            val newPosition = position + OFFSET + 1
 
-                val position =
-                    result.data?.getIntExtra(RemoveEtaDialogActivity.ARG_REMOVE_ETA_OUTGOING, -1)
+                            val currentEtaOrderList = viewModel.getEtaOrderList().toMutableList()
+                            currentEtaOrderList.swap(oldPosition, newPosition)
+                            val updatedEtaOrderList =
+                                currentEtaOrderList.mapIndexed { index, etaOrderEntity ->
+                                    EtaOrderEntity(id = etaOrderEntity.id, position = index)
+                                }
+                            viewModel.updateEtaOrderList(updatedEtaOrderList)
 
-                if (etaEntity != null && position != null && position != -1) {
-                    viewModel.clearData(etaEntity)
-                    mAdapter?.removeItems(position, 1)
+                            mAdapter?.move(oldPosition, newPosition)
+                            list.moveAt(oldPosition, newPosition)
+                        }
+                    }
+                    ACTION_ID_MOVE_DOWN -> {
+                        viewModel.editCard.value?.let { card ->
+                            val position = list.indexOf(card)
+                            val oldPosition = position + OFFSET
+                            val newPosition = position + OFFSET - 1
+
+                            val currentEtaOrderList = viewModel.getEtaOrderList().toMutableList()
+                            currentEtaOrderList.swap(oldPosition, newPosition)
+                            val updatedEtaOrderList =
+                                currentEtaOrderList.mapIndexed { index, etaOrderEntity ->
+                                    EtaOrderEntity(id = etaOrderEntity.id, position = index)
+                                }
+                            viewModel.updateEtaOrderList(updatedEtaOrderList)
+
+                            mAdapter?.move(oldPosition, newPosition)
+                            list.moveAt(oldPosition, newPosition)
+                        }
+                    }
+                    ACTION_ID_REMOVE -> {
+                        viewModel.editCard.value?.let { card ->
+                            viewModel.clearData(card.entity!!)
+
+                            val currentEtaOrderList = viewModel.getEtaOrderList()
+                            val updatedEtaOrderList = currentEtaOrderList.filterNot {
+                                it.id == card.entity.id
+                            }.mapIndexed { index, etaOrderEntity ->
+                                EtaOrderEntity(id = etaOrderEntity.id, position = index)
+                            }
+                            viewModel.updateEtaOrderList(updatedEtaOrderList)
+
+                            mAdapter?.remove(card.entity)
+                        }
+                    }
                 }
             }
         }
@@ -53,12 +101,14 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
     companion object {
         private const val COLUMNS = 1
         private const val ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_LARGE
+        private const val OFFSET = 1
 
         fun getInstance() = SettingsEtaFragment()
     }
 
     private var mAdapter: ArrayObjectAdapter? = null
     private val viewModel by inject<SettingsEtaViewModel>()
+    private var list: MutableList<Card.SettingsEtaCard> = mutableListOf()
 
     init {
         lifecycleScope.launch {
@@ -98,18 +148,25 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
                             }
                         }
                         Card.SettingsEtaCard.Type.DATA -> {
-                            removeEtaLauncher.launch(
+                            viewModel.editCard.postValue(card)
+
+                            editEtaLauncher.launch(
                                 Intent(
                                     context,
-                                    RemoveEtaDialogActivity::class.java
+                                    EditEtaDialogActivity::class.java
                                 ).apply {
                                     putExtra(
-                                        RemoveEtaDialogActivity.ARG_REMOVE_ETA_INCOMING,
-                                        RemoveEta(
-                                            entity = card.entity!!,
-                                            route = card.route!!,
-                                            stop = card.stop!!
-                                        )
+                                        EditEtaDialogActivity.ARG_BUNDLE,
+                                        Bundle().apply {
+                                            putParcelable(
+                                                EditEtaDialogActivity.ARG_SELECTED_ETA,
+                                                EditEta(
+                                                    entity = card.entity!!,
+                                                    route = card.route!!,
+                                                    stop = card.stop!!
+                                                )
+                                            )
+                                        }
                                     )
                                 }
                             )
@@ -130,9 +187,9 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
 
     private fun updateRows() {
         lifecycleScope.launch(Dispatchers.Main) {
-            val savedRouteStopList = viewModel.getData()
-
-            val list = savedRouteStopList.mapNotNull { etaEntity ->
+            val savedRouteStopList = viewModel.getEtaList()
+            list.clear()
+            list.addAll(savedRouteStopList.mapNotNull { etaEntity ->
                 val route = viewModel.routeHashMap.value?.get(etaEntity.routeHashId())
                 val stop = viewModel.stopHashMap.value?.get(etaEntity.stopId)
 
@@ -144,7 +201,7 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
                     stop = stop,
                     type = Card.SettingsEtaCard.Type.DATA
                 )
-            }.toMutableList()
+            }.toMutableList())
 
             list.add(
                 0,
@@ -156,6 +213,7 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
                 )
             )
 
+            mAdapter?.clear()
             mAdapter?.addAll(0, list)
         }
     }

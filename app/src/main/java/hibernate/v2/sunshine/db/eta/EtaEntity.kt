@@ -2,8 +2,8 @@ package hibernate.v2.sunshine.db.eta
 
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 import hibernate.v2.api.model.Bound
 import hibernate.v2.api.request.RouteRequest
 import kotlinx.parcelize.Parcelize
@@ -17,8 +17,8 @@ data class EtaEntity(
     val routeId: String,
     val bound: Bound,
     val serviceType: String,
-    val seq: String
-) : Parcelable, Comparable<EtaEntity> {
+    val seq: String,
+) : Parcelable {
 
     fun toRouteRequest() = RouteRequest(
         bound = bound,
@@ -28,13 +28,5 @@ data class EtaEntity(
 
     fun routeHashId(): String {
         return routeId + bound.value + serviceType
-    }
-
-    override fun compareTo(other: EtaEntity): Int {
-        return when {
-            stopId > other.stopId -> 1
-            stopId < other.stopId -> -1
-            else -> 0
-        }
     }
 }

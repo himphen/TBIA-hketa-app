@@ -3,6 +3,7 @@ package hibernate.v2.sunshine.ui.settings.eta.listing
 import android.content.Context
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.google.maps.android.ktx.model.cameraPosition
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.card.AbstractCardPresenter
@@ -26,12 +27,12 @@ class SettingsEtaCardPresenter(
             }
         }
         setImageBackground(cardView, R.color.settings_card_background)
-        cardView.setOnClickListener { listener.onItemClick(it.tag as Card.SettingsEtaCard) }
         return cardView
     }
 
     override fun onBindViewHolder(card: Card.SettingsEtaCard, cardView: SettingsEtaCardView) {
         cardView.tag = card
+        cardView.setOnClickListener { listener.onItemClick(it.tag as Card.SettingsEtaCard) }
 
         when (card.type) {
             Card.SettingsEtaCard.Type.DATA -> cardView.updateDataUi(card)

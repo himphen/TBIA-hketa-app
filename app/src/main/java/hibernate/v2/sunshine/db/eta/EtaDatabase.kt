@@ -14,12 +14,13 @@ private const val DATABASE_NAME = "saved_eta"
  * Database for storing all tracking data.
  */
 @Database(
-    entities = [EtaEntity::class],
+    entities = [EtaEntity::class, EtaOrderEntity::class],
     version = 1
 )
 @TypeConverters(EtaDataTypeConverter::class)
 abstract class EtaDatabase : RoomDatabase() {
     abstract fun etaDao(): EtaDao
+    abstract fun etaOrderDao(): EtaOrderDao
 
     companion object {
         private val MIGRATION_1_2 = object : Migration(1, 2) {

@@ -73,7 +73,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     }
 
     private suspend fun getRouteAndStopList() {
-        val savedRouteStopList = viewModel.getData()
+        val savedRouteStopList = viewModel.getEtaList()
 
         if (savedRouteStopList.isNotEmpty()) {
             etaEntityList.addAll(savedRouteStopList)

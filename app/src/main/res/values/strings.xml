@@ -6,10 +6,12 @@
     <string name="title_fragment_settings">設定</string>
     <string name="title_activity_add_eta">加入到站提示</string>
 
-    <string name="dialog_remove_eta_title">是否要移除 %1$s %2$s 到站選項？</string>
-    <string name="dialog_remove_eta_description">移除後將不能復原，你需要重新加入選項。</string>
-    <string name="dialog_remove_eta_pos_btn">移除</string>
-    <string name="dialog_remove_eta_neg_btn">取消</string>
+    <string name="dialog_edit_eta_title">編輯 %1$s %2$s 到站選項</string>
+    <string name="dialog_edit_eta_description">選擇移除後將不能復原，你需要重新加入選項。</string>
+    <string name="dialog_edit_eta_move_up_btn">上移</string>
+    <string name="dialog_edit_eta_move_down_btn">下移</string>
+    <string name="dialog_edit_eta_remove_btn">移除</string>
+    <string name="dialog_edit_eta_cancel_btn">取消</string>
 
     <string-array name="leftMenu">
         <item>@string/title_fragment_home</item>

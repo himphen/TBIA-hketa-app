@@ -4,27 +4,22 @@ import android.content.Context
 import hibernate.v2.api.model.Bound
 import hibernate.v2.sunshine.db.eta.EtaDatabase
 import hibernate.v2.sunshine.db.eta.EtaEntity
+import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 
-class EtaRepository private constructor(database: EtaDatabase) {
+class EtaRepository private constructor(etaDb: EtaDatabase) {
 
-    // Database related fields/methods:
-    private val dao = database.etaDao()
+    private val etaDao = etaDb.etaDao()
+    private val etaOrderDb = etaDb.etaOrderDao()
 
-    /**
-     * Returns all recorded tracking data from database.
-     */
-    suspend fun getData(): List<EtaEntity> = dao.get()
+    suspend fun getEtaList(): List<EtaEntity> = etaDao.get()
 
-    /**
-     * Returns specific tracking data in database.
-     */
-    fun getData(
+    suspend fun getEtaList(
         stopId: String,
         routeId: String,
         bound: Bound,
         serviceType: String,
         seq: String
-    ): List<EtaEntity> = dao.get(
+    ): List<EtaEntity> = etaDao.get(
         stopId,
         routeId,
         bound,
@@ -32,18 +27,12 @@ class EtaRepository private constructor(database: EtaDatabase) {
         seq
     )
 
-    /**
-     * Adds tracking data to the database.
-     */
-    fun addData(entity: EtaEntity) {
-        dao.add(entity)
+    suspend fun addEta(entity: EtaEntity) {
+        etaDao.add(entity)
     }
 
-    /**
-     * Adds list of tracking data to the database.
-     */
-    fun clearData(entity: EtaEntity) {
-        dao.clear(
+    suspend fun clearEta(entity: EtaEntity) {
+        etaDao.clear(
             entity.stopId,
             entity.routeId,
             entity.bound,
@@ -52,11 +41,15 @@ class EtaRepository private constructor(database: EtaDatabase) {
         )
     }
 
-    /**
-     * Clear list of tracking data to the database.
-     */
-    fun clearAllData() {
-        dao.clearAll()
+    suspend fun clearAllEta() {
+        etaDao.clearAll()
+    }
+
+    suspend fun getEtaOrderList() = etaOrderDb.get()
+
+    suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) {
+        etaOrderDb.clearAll()
+        etaOrderDb.add(entityList)
     }
 
     companion object {

@@ -7,7 +7,7 @@ import hibernate.v2.sunshine.db.eta.EtaEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class RemoveEta(
+data class EditEta(
     val entity: EtaEntity,
     val route: Route,
     val stop: Stop
