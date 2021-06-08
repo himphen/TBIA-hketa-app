@@ -87,7 +87,8 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
                             }
                             viewModel.updateEtaOrderList(updatedEtaOrderList)
 
-                            mAdapter?.remove(card.entity)
+                            mAdapter?.remove(card)
+                            list.remove(card)
                         }
                     }
                 }

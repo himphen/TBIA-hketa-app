@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
+import hibernate.v2.api.model.Bound
 import hibernate.v2.api.model.Route
 import hibernate.v2.api.model.Stop
 import hibernate.v2.api.response.RouteStopListResponse
@@ -39,7 +40,6 @@ class SettingsEtaViewModel(
 
     suspend fun clearData(item: EtaEntity) =
         withContext(Dispatchers.IO) {
-            etaRepository.clearEta(item)
             etaRepository.clearEta(item)
         }
 
@@ -90,10 +90,10 @@ class SettingsEtaViewModel(
                 deferred.awaitAll()
 
                 apiRouteStopListResponse?.routeStopList?.forEach { routeStop ->
-                    val stop = stopResult[routeStop.stopId]!!
-                    stop.seq = routeStop.seq
+                    val newStop = stopResult[routeStop.stopId]!!.copy()
+                    newStop.seq = routeStop.seq
 
-                    routeStopListResult[routeStop.routeHashId()]?.stopList?.add(stop)
+                    routeStopListResult[routeStop.routeHashId()]?.stopList?.add(newStop)
                 }
                 Logger.d("lifecycle apiRouteStopListResponse done")
 

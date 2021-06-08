@@ -12,6 +12,7 @@
     <string name="dialog_edit_eta_move_down_btn">下移</string>
     <string name="dialog_edit_eta_remove_btn">移除</string>
     <string name="dialog_edit_eta_cancel_btn">取消</string>
+    <string name="toast_eta_already_added">無法重覆選擇已加入的站位。</string>
 
     <string-array name="leftMenu">
         <item>@string/title_fragment_home</item>

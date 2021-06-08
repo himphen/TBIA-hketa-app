@@ -11,6 +11,7 @@ import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.ObjectAdapter
 import androidx.lifecycle.lifecycleScope
 import com.himphen.logger.Logger
+import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.db.eta.EtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.Card
@@ -36,7 +37,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
                 )
 
                 if (data.isNotEmpty()) {
-                    Toast.makeText(context, "這個已經加入", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.toast_eta_already_added), Toast.LENGTH_SHORT).show()
                     return@launch
                 }
 

@@ -162,8 +162,9 @@ class EtaViewModel(
                         val apiEtaResponse =
                             repo.getStopEta(entity.stopId, entity.routeId)
                         apiEtaResponse.data?.let { etaList ->
+                            Logger.d("stopHashId: " + entity.stopHashId())
                             routeEtaStopHashMapResult.put(
-                                entity.routeHashId(),
+                                entity.stopHashId(),
                                 RouteEtaStop(
                                     route = route,
                                     stop = stop,
@@ -179,7 +180,7 @@ class EtaViewModel(
                 }.awaitAll()
 
                 val routeEtaStopResult = list.mapNotNull { entity ->
-                    routeEtaStopHashMapResult[entity.routeHashId()]
+                    routeEtaStopHashMapResult[entity.stopHashId()]
                 }
 
                 Logger.d("lifecycle getEtaList done")

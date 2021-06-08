@@ -31,4 +31,8 @@ data class EtaEntity(
     fun routeHashId(): String {
         return routeId + bound.value + serviceType
     }
+
+    fun stopHashId(): String {
+        return routeId + bound.value + serviceType + stopId + seq
+    }
 }
