@@ -15,6 +15,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.db.eta.EtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.Card
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -37,7 +38,11 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
                 )
 
                 if (data.isNotEmpty()) {
-                    Toast.makeText(context, getString(R.string.toast_eta_already_added), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        getString(R.string.toast_eta_already_added),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return@launch
                 }
 
@@ -70,39 +75,42 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = "路線編號"
+        title = getString(R.string.title_activity_add_eta)
         mRowsAdapter = ArrayObjectAdapter(ListRowPresenter())
         loadRows()
         setSearchResultProvider(this)
     }
 
     private fun loadRows() {
-        mRowsAdapter.clear()
-        viewModel.allList?.forEachIndexed { index, routeStopList ->
-            // Init Title
-            val route = routeStopList.route
-            val headerTitle = if (route.isSpecialRoute()) {
-                "${route.routeId} 特別線 (${route.serviceType}) - ${routeStopList.route.origTc} 往 ${routeStopList.route.destTc}"
-            } else {
-                "${route.routeId} - ${routeStopList.route.origTc} 往 ${routeStopList.route.destTc}"
+        lifecycleScope.launch(Dispatchers.Main) {
+            mRowsAdapter.clear()
+            viewModel.allList?.forEachIndexed { index, routeStopList ->
+                // Init Title
+                val route = routeStopList.route
+                val headerTitle = if (route.isSpecialRoute()) {
+                    "${route.routeId} 特別線 (${route.serviceType}) - ${routeStopList.route.origTc} 往 ${routeStopList.route.destTc}"
+                } else {
+                    "${route.routeId} - ${routeStopList.route.origTc} 往 ${routeStopList.route.destTc}"
+                }
+
+                if (mQuery.isNotEmpty() && !route.routeId.startsWith(mQuery, true)) return@forEachIndexed
+
+                // Init Row
+                val listRowAdapter =
+                    ArrayObjectAdapter(AddEtaCardPresenter(requireContext(), clickListener))
+
+                val filteredList = routeStopList.stopList.map {
+                    Card.RouteStopCard(
+                        route = routeStopList.route,
+                        stop = it
+                    )
+                }
+
+                listRowAdapter.addAll(0, filteredList)
+                val header = HeaderItem(index.toLong(), headerTitle)
+                val listRow = ListRow(header, listRowAdapter)
+                mRowsAdapter.add(listRow)
             }
-
-            if (mQuery.isNotEmpty() && (route.routePrefix?.startsWith(mQuery) != true
-                        && route.routeNumber?.toString()?.startsWith(mQuery) != true)
-            ) return@forEachIndexed
-
-            // Init Row
-            val listRowAdapter =
-                ArrayObjectAdapter(AddEtaCardPresenter(requireContext(), clickListener))
-            listRowAdapter.addAll(0, routeStopList.stopList.map {
-                Card.RouteStopCard(
-                    route = routeStopList.route,
-                    stop = it
-                )
-            })
-            val header = HeaderItem(index.toLong(), headerTitle)
-            val listRow = ListRow(header, listRowAdapter)
-            mRowsAdapter.add(listRow)
         }
     }
 

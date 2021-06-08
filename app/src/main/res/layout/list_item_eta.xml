@@ -42,6 +42,7 @@
             android:ellipsize="marquee"
             android:maxLines="1"
             android:textSize="20sp"
+            android:autoSizeTextType="uniform"
             tools:text="唐明街公園" />
 
         <TextView
@@ -51,7 +52,8 @@
             android:ellipsize="marquee"
             android:maxLines="1"
             android:textSize="12sp"
-            tools:text="荃灣西站" />
+            android:text="@string/text_eta_destination"
+            tools:text="往 荃灣西站" />
     </LinearLayout>
 
     <Space

@@ -1,17 +1,19 @@
 package hibernate.v2.sunshine.ui.eta
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.api.model.Eta
-import hibernate.v2.sunshine.model.RouteEtaStop
+import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ListItemEtaBinding
+import hibernate.v2.sunshine.model.RouteEtaStop
 import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.DateUtil.formatString
 import java.util.Date
 
-class EtaItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EtaItemAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var list = listOf<RouteEtaStop>()
 
@@ -28,13 +30,14 @@ class EtaItemAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = list[position]
         holder as ItemViewHolder
-        val itemBinding = holder.viewBinding
-        itemBinding.routeIdTv.text = item.route.routeId
-        itemBinding.stopNameTv.text = item.stop.nameTc
-        itemBinding.routeDirectionTv.text = item.route.destTc
-        itemBinding.etaMinuteTv.text =
+        val viewBinding = holder.viewBinding
+        viewBinding.routeIdTv.text = item.route.routeId
+        viewBinding.stopNameTv.text = item.stop.nameTc
+        viewBinding.routeDirectionTv.text =
+            context.getString(R.string.text_eta_destination, item.route.destTc)
+        viewBinding.etaMinuteTv.text =
             getEtaMinuteText(item.etaList.getOrNull(0))
-        itemBinding.etaTimeTv.text = getEtaTimeText(item.etaList)
+        viewBinding.etaTimeTv.text = getEtaTimeText(item.etaList)
     }
 
     private fun getEtaMinuteText(eta: Eta?): String {

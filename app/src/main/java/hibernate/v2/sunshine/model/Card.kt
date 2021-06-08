@@ -1,6 +1,5 @@
 package hibernate.v2.sunshine.model
 
-import android.content.Context
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.Route
@@ -16,18 +15,11 @@ sealed class Card {
         var description: String = "",
         @SerializedName("type")
         var type: Type,
-        @SerializedName("localImageResource")
-        var localImageResourceName: String,
+        @SerializedName("icon")
+        var icon: Int,
     ) : Card() {
-        fun getLocalImageResourceId(context: Context): Int {
-            return context.resources.getIdentifier(
-                localImageResourceName, "drawable",
-                context.packageName
-            )
-        }
-
         enum class Type {
-            ETA, TRAFFIC, NONE
+            ETA, TRAFFIC, NONE, VERSION
         }
     }
 

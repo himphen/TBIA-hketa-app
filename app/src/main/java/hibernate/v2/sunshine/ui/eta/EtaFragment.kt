@@ -110,7 +110,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = EtaItemAdapter()
+        adapter = EtaItemAdapter(requireContext())
         viewBinding!!.rvlist.adapter = adapter
         adapter.setData(routeEtaStopList)
     }

@@ -10,7 +10,7 @@ import hibernate.v2.sunshine.model.Card
 class SettingsEtaCardView(context: Context) : BaseCardView(
     context,
     null,
-    R.style.CharacterCardStyle
+    R.style.BaseCardStyle
 ) {
     var viewBinding = CardSettingsEtaBinding.inflate(LayoutInflater.from(context), this, true)
 
@@ -21,10 +21,14 @@ class SettingsEtaCardView(context: Context) : BaseCardView(
         viewBinding.routeIdTv.text = card.route.routeId
 
         if (card.route.serviceType != "1") {
-            viewBinding.routeDirectionTv.text =
-                "${card.route.destTc} (特別線 ${card.route.serviceType})"
+            viewBinding.routeDirectionTv.text = context.getString(
+                R.string.text_eta_destination_with_sp,
+                card.route.destTc,
+                card.route.serviceType
+            )
         } else {
-            viewBinding.routeDirectionTv.text = card.route.destTc
+            viewBinding.routeDirectionTv.text =
+                context.getString(R.string.text_eta_destination, card.route.destTc)
         }
         viewBinding.routeDirectionTv.visibility = VISIBLE
     }

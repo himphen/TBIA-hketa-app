@@ -47,16 +47,16 @@
     </style>
 
     <style name="IconCardInfoAreaStyle" parent="Widget.Leanback.ImageCardView.InfoAreaStyle">
-        <item name="android:layout_width">96dp</item>
+        <item name="android:layout_width">120dp</item>
         <item name="android:background">@null</item>
         <item name="layout_viewType">main</item>
     </style>
 
     <style name="SingleLineCardTheme" parent="Theme.Leanback">
-        <item name="baseCardViewStyle">@style/CharacterCardStyle</item>
+        <item name="baseCardViewStyle">@style/BaseCardStyle</item>
     </style>
 
-    <style name="CharacterCardStyle" parent="Widget.Leanback.BaseCardViewStyle">
+    <style name="BaseCardStyle" parent="Widget.Leanback.BaseCardViewStyle">
 
     </style>
 

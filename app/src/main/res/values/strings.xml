@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">巴士到站時間</string>
     <string name="title_activity_settings_eta">更改到站提示</string>
+    <string name="title_settings_version">版本 %1$s</string>
 
     <string name="title_fragment_home">主頁</string>
     <string name="title_fragment_settings">設定</string>
-    <string name="title_activity_add_eta">加入到站提示</string>
+    <string name="title_activity_add_eta">路線編號</string>
 
-    <string name="dialog_edit_eta_title">編輯 %1$s %2$s 到站選項</string>
+    <string name="text_eta_destination">往 %1$s</string>
+    <string name="text_eta_destination_with_sp">往 %1$s (特別線 %2$s)</string>
+
+    <string name="dialog_edit_eta_title">編輯 %1$s 號線 %2$s 到站選項</string>
     <string name="dialog_edit_eta_description">選擇移除後將不能復原，你需要重新加入選項。</string>
     <string name="dialog_edit_eta_move_up_btn">上移</string>
     <string name="dialog_edit_eta_move_down_btn">下移</string>

@@ -18,7 +18,7 @@
             android:id="@+id/civHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_home_24" />
+            android:src="@drawable/ic_home_24" />
 
         <TextView
             android:id="@+id/txtHomeMenuLabel"
@@ -43,7 +43,7 @@
             android:id="@+id/civSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_settings_24" />
+            android:src="@drawable/ic_settings_24" />
 
         <TextView
             android:id="@+id/txtSettingsMenuLabel"

@@ -8,6 +8,7 @@ import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.VerticalGridPresenter
+import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.settings.eta.listing.SettingsEtaActivity
@@ -46,6 +47,8 @@ class SettingsFragment : VerticalGridSupportFragment() {
                         }
                         Card.SettingsCard.Type.NONE -> {
                         }
+                        Card.SettingsCard.Type.VERSION -> {
+                        }
                     }
                 }
 
@@ -66,10 +69,17 @@ class SettingsFragment : VerticalGridSupportFragment() {
             Card.SettingsCard(
                 title = getString(R.string.title_activity_settings_eta),
                 type = Card.SettingsCard.Type.ETA,
-                localImageResourceName = "ic_settings_settings"
+                icon = R.drawable.ic_settings_bus_eta_24
+            )
+        )
+        list.add(
+            Card.SettingsCard(
+                title = getString(R.string.title_settings_version, BuildConfig.VERSION_NAME),
+                type = Card.SettingsCard.Type.VERSION,
+                icon = R.drawable.ic_settings_version_24
             )
         )
 
-        mAdapter!!.addAll(0, list)
+        mAdapter?.addAll(0, list)
     }
 }
