@@ -9,7 +9,7 @@ import hibernate.v2.sunshine.databinding.CardSettingsBinding
 class SettingsCardView(context: Context) : BaseCardView(
     context,
     null,
-    R.style.BaseCardStyle
+    R.style.FullCardStyle
 ) {
     var viewBinding = CardSettingsBinding.inflate(LayoutInflater.from(context), this, true)
 

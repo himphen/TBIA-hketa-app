@@ -2,11 +2,21 @@
 
     <style name="Theme.MyApplication" parent="@style/Theme.Leanback" />
 
+    <style name="Theme.Fragment.Eta" parent="Theme.MyApplication">
+        <item name="browseTitleViewLayout">@layout/fragment_title_eta</item>
+        <item name="browseRowsMarginTop">0dp</item>
+        <item name="itemsVerticalGridStyle">@style/VerticalGridView.FullWidth</item>
+    </style>
+
     <style name="Theme.MyApplication.SettingEta" parent="Theme.MyApplication">
         <item name="itemsVerticalGridStyle">@style/VerticalGridView.SettingEta</item>
     </style>
 
+    <style name="VerticalGridView.FullWidth" parent="@style/Widget.Leanback.GridItems.VerticalGridView">
+
+    </style>
+
     <style name="VerticalGridView.SettingEta" parent="@style/Widget.Leanback.GridItems.VerticalGridView">
-        <item name="android:layout_width">match_parent</item>
+
     </style>
 </resources>

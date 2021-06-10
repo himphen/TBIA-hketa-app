@@ -10,7 +10,7 @@ import hibernate.v2.sunshine.model.Card
 class SettingsEtaCardView(context: Context) : BaseCardView(
     context,
     null,
-    R.style.BaseCardStyle
+    R.style.FullCardStyle
 ) {
     var viewBinding = CardSettingsEtaBinding.inflate(LayoutInflater.from(context), this, true)
 

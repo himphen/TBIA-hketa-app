@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.model
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import hibernate.v2.api.model.Eta
 import hibernate.v2.api.model.Route
 import hibernate.v2.api.model.Stop
 import hibernate.v2.sunshine.db.eta.EtaEntity
@@ -9,13 +9,9 @@ import kotlinx.parcelize.Parcelize
 
 sealed class Card {
     data class SettingsCard(
-        @SerializedName("title")
         var title: String,
-        @SerializedName("description")
         var description: String = "",
-        @SerializedName("type")
         var type: Type,
-        @SerializedName("icon")
         var icon: Int,
     ) : Card() {
         enum class Type {
@@ -39,4 +35,12 @@ sealed class Card {
         val route: Route,
         val stop: Stop
     ) : Card()
+
+    @Parcelize
+    data class RouteEtaStopCard(
+        val entity: EtaEntity,
+        val stop: Stop,
+        var etaList: List<Eta>,
+        val route: Route
+    ) : Parcelable, Card()
 }

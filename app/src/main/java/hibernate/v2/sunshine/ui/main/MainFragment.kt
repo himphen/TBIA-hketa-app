@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import hibernate.v2.sunshine.databinding.FragmentMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.EtaFragment
+import hibernate.v2.sunshine.ui.eta.EtaGridFragment
 import hibernate.v2.sunshine.ui.traffic.TrafficFragment
 import hibernate.v2.sunshine.ui.weather.WeatherFragment
 
@@ -26,7 +27,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         childFragmentManager.beginTransaction()
-            .replace(viewBinding!!.containerTopLeft.id, EtaFragment())
+            .replace(viewBinding!!.containerTopLeft.id, EtaGridFragment.getInstance())
             .commit()
 //        childFragmentManager.beginTransaction()
 //            .replace(viewBinding!!.containerTopRight.id, TrafficFragment())

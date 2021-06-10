@@ -7,12 +7,12 @@ import androidx.core.content.ContextCompat
 import coil.load
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.ui.card.AbstractCardPresenter
+import hibernate.v2.sunshine.ui.base.BaseCardPresenter
 
 class SettingsIconPresenter(
     context: Context,
     private val listener: ClickListener
-) : AbstractCardPresenter<SettingsCardView, Card.SettingsCard>(
+) : BaseCardPresenter<SettingsCardView, Card.SettingsCard>(
     ContextThemeWrapper(context, R.style.SettingIconCardTheme)
 ) {
     interface ClickListener {

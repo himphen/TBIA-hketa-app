@@ -9,9 +9,11 @@ import hibernate.v2.api.model.Route
 import hibernate.v2.api.model.Stop
 import hibernate.v2.sunshine.api.DataRepository
 import hibernate.v2.sunshine.db.eta.EtaEntity
-import hibernate.v2.sunshine.model.RouteEtaStop
+import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -27,11 +29,10 @@ class EtaViewModel(
         application.applicationContext
     )
 
-    val etaEntityList = MutableLiveData<List<EtaEntity>>()
-    val routeEtaStopList = MutableLiveData<List<RouteEtaStop>>()
-    val routeHashMap = MutableLiveData<HashMap<String, Route>>()
-    val stopHashMap = MutableLiveData<HashMap<String, Stop>>()
-    val routeAndStopListReady = MutableLiveData<Boolean>()
+    val etaEntityList = MutableLiveData<List<EtaEntity>?>()
+    val routeEtaStopList = MutableLiveData<List<Card.RouteEtaStopCard>>()
+    private val routeHashMap = MutableLiveData<HashMap<String, Route>>()
+    private val stopHashMap = MutableLiveData<HashMap<String, Stop>>()
 
     suspend fun getEtaListFromDb() {
         val savedEtaEntityList = etaRepository.getEtaList()
@@ -89,102 +90,132 @@ class EtaViewModel(
         }
     }
 
-    fun getRouteAndStopList() {
+    fun initRouteEtaStopList() {
         viewModelScope.launch {
-            routeAndStopListReady.postValue(false)
             try {
-                val stopResult = hashMapOf<String, Stop>()
-                val routeResult = hashMapOf<String, Route>()
-
                 val list = etaEntityList.value ?: run {
                     throw Exception("etaEntityList is null")
                 }
 
-                val deferredStopResult = list.map { entity ->
-                    entity.stopId
-                }.distinct().map { stopId ->
-                    async {
-                        val apiStopResponse = repo.getStop(stopId)
-                        apiStopResponse.stop?.let { apiStop ->
-                            stopResult[stopId] = apiStop
-                        }
-                        Logger.d("lifecycle getStop done: $stopId")
-                    }
-                }
-
-                val deferredRouteResult = list.associate { entity ->
-                    val request = entity.toRouteRequest()
-                    request.hashId() to request
-                }.map { (_, route) ->
-                    async {
-                        val apiStopResponse = repo.getRoute(
-                            route.routeId,
-                            route.bound,
-                            route.serviceType
-                        )
-                        apiStopResponse.route?.let { apiRoute ->
-                            routeResult[route.hashId()] = apiRoute
-                        }
-                        Logger.d("lifecycle getRoute done: " + route.hashId())
-                    }
-                }
+                val deferredStopResult = getStopList(this, list)
+                val deferredRouteResult = getRouteList(this, list)
 
                 val deferred = deferredStopResult + deferredRouteResult
                 deferred.awaitAll()
 
-                Logger.d("lifecycle getRouteAndStopList done")
-                routeHashMap.postValue(routeResult)
-                stopHashMap.postValue(stopResult)
-                routeAndStopListReady.postValue(true)
+                initRouteEtaStopList(this, list)
+                Logger.d("lifecycle initRouteEtaStopList done")
             } catch (e: Exception) {
                 Logger.e(e, "lifecycle getRouteAndStopList error")
-                routeAndStopListReady.postValue(false)
                 withContext(Dispatchers.Main) {
                 }
             }
         }
     }
 
-    fun getRouteEtaStopList() {
+    private fun getStopList(
+        scope: CoroutineScope,
+        list: List<EtaEntity>
+    ): List<Deferred<Unit>> {
+        val stopResult = hashMapOf<String, Stop>()
+        val deferredStopResult = list.map { entity ->
+            entity.stopId
+        }.distinct().map { stopId ->
+            scope.async {
+                val apiStopResponse = repo.getStop(stopId)
+                apiStopResponse.stop?.let { apiStop ->
+                    stopResult[stopId] = apiStop
+                }
+                Logger.d("lifecycle getStop done: $stopId")
+            }
+        }
+
+        stopHashMap.postValue(stopResult)
+        return deferredStopResult
+    }
+
+    private fun getRouteList(
+        scope: CoroutineScope,
+        list: List<EtaEntity>
+    ): List<Deferred<Unit>> {
+        val routeResult = hashMapOf<String, Route>()
+        val deferredRouteResult = list.associate { entity ->
+            val request = entity.toRouteRequest()
+            request.hashId() to request
+        }.map { (_, route) ->
+            scope.async {
+                val apiStopResponse = repo.getRoute(
+                    route.routeId,
+                    route.bound,
+                    route.serviceType
+                )
+                apiStopResponse.route?.let { apiRoute ->
+                    routeResult[route.hashId()] = apiRoute
+                }
+                Logger.d("lifecycle getRoute done: " + route.hashId())
+            }
+        }
+
+        routeHashMap.postValue(routeResult)
+        return deferredRouteResult
+    }
+
+    private suspend fun initRouteEtaStopList(
+        scope: CoroutineScope,
+        list: List<EtaEntity>
+    ) {
+        val routeEtaStopHashMapResult = hashMapOf<String, Card.RouteEtaStopCard>()
+        list.map { entity ->
+            scope.async {
+                val stop = stopHashMap.value?.get(entity.stopId)
+                val route =
+                    routeHashMap.value?.get(entity.routeHashId())
+
+                if (stop == null || route == null) return@async
+
+                routeEtaStopHashMapResult[entity.stopHashId()] = Card.RouteEtaStopCard(
+                    entity = entity,
+                    route = route,
+                    stop = stop,
+                    etaList = arrayListOf()
+                )
+                Logger.d("lifecycle getStopEta done: " + entity.stopId + "-" + entity.routeId)
+            }
+        }.awaitAll()
+
+        val routeEtaStopResult = list.mapNotNull { entity ->
+            routeEtaStopHashMapResult[entity.stopHashId()]
+        }
+
+        routeEtaStopList.postValue(routeEtaStopResult)
+    }
+
+    fun updateRouteEtaStopList() {
         viewModelScope.launch {
             Logger.d("lifecycle getEtaList")
             try {
-                val routeEtaStopHashMapResult = hashMapOf<String, RouteEtaStop>()
-                val list = etaEntityList.value!!
-                list.map { entity ->
+                val list = arrayOfNulls<Card.RouteEtaStopCard>(routeEtaStopList.value!!.size)
+
+                routeEtaStopList.value!!.mapIndexed { index, routeEtaStop ->
                     async {
-                        val stop = stopHashMap.value?.get(entity.stopId)
-                        val route =
-                            routeHashMap.value?.get(entity.routeHashId())
-
-                        if (stop == null || route == null) return@async
-
-                        val apiEtaResponse =
-                            repo.getStopEta(entity.stopId, entity.routeId)
+                        val apiEtaResponse = repo.getStopEta(
+                            stopId = routeEtaStop.entity.stopId,
+                            route = routeEtaStop.entity.routeId
+                        )
                         apiEtaResponse.data?.let { etaList ->
-                            Logger.d("stopHashId: " + entity.stopHashId())
-                            routeEtaStopHashMapResult.put(
-                                entity.stopHashId(),
-                                RouteEtaStop(
-                                    route = route,
-                                    stop = stop,
-                                    etaList = etaList.filter { eta ->
-                                        // Filter not same bound in bus terminal stops
-                                        eta.dir == entity.bound && eta.seq == entity.seq
-                                    }
-                                )
-                            )
+                            routeEtaStop.etaList = etaList.filter { eta ->
+                                // Filter not same bound in bus terminal stops
+                                eta.dir == routeEtaStop.entity.bound && eta.seq == routeEtaStop.entity.seq
+                            }
                         }
-                        Logger.d("lifecycle getStopEta done: " + entity.stopId + "-" + entity.routeId)
+
+                        list[index] = routeEtaStop
+                        Logger.d("lifecycle getStopEta done: " + routeEtaStop.entity.stopId + "-" + routeEtaStop.entity.routeId)
                     }
                 }.awaitAll()
 
-                val routeEtaStopResult = list.mapNotNull { entity ->
-                    routeEtaStopHashMapResult[entity.stopHashId()]
-                }
-
                 Logger.d("lifecycle getEtaList done")
-                routeEtaStopList.postValue(routeEtaStopResult)
+                routeEtaStopList.postValue(list.toMutableList().filterNotNull())
             } catch (e: Exception) {
                 Logger.e(e, "lifecycle getEtaList error")
                 withContext(Dispatchers.Main) {

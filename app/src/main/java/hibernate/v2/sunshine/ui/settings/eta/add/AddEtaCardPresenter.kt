@@ -5,12 +5,12 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.ui.card.AbstractCardPresenter
+import hibernate.v2.sunshine.ui.base.BaseCardPresenter
 
 class AddEtaCardPresenter(
     context: Context,
     private val listener: ClickListener
-) : AbstractCardPresenter<AddEtaCardView, Card.RouteStopCard>(context) {
+) : BaseCardPresenter<AddEtaCardView, Card.RouteStopCard>(context) {
 
     interface ClickListener {
         fun onItemClick(card: Card.RouteStopCard)

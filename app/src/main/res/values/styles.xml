@@ -53,11 +53,11 @@
     </style>
 
     <style name="SingleLineCardTheme" parent="Theme.Leanback">
-        <item name="baseCardViewStyle">@style/BaseCardStyle</item>
+        <item name="baseCardViewStyle">@style/FullCardStyle</item>
     </style>
 
-    <style name="BaseCardStyle" parent="Widget.Leanback.BaseCardViewStyle">
-
+    <style name="FullCardStyle" parent="Widget.Leanback.BaseCardViewStyle">
+        <item name="android:layout_width">match_parent</item>
     </style>
 
 </resources>

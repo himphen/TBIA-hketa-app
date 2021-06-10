@@ -10,12 +10,12 @@ import hibernate.v2.sunshine.model.Card
 class AddEtaCardView(context: Context) : BaseCardView(
     context,
     null,
-    R.style.BaseCardStyle
+    R.style.FullCardStyle
 ) {
     var viewBinding = CardAddEtaBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun updateDataUi(card: Card.RouteStopCard) {
-        card.stop!!
+        card.stop
         viewBinding.stopNameTv.text = card.stop.nameTc
     }
 
