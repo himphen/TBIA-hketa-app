@@ -29,8 +29,8 @@ class EtaViewModel(
         application.applicationContext
     )
 
-    val etaEntityList = MutableLiveData<List<EtaEntity>?>()
     val routeEtaStopList = MutableLiveData<List<Card.RouteEtaStopCard>>()
+    private val etaEntityList = MutableLiveData<List<EtaEntity>>()
     private val routeHashMap = MutableLiveData<HashMap<String, Route>>()
     private val stopHashMap = MutableLiveData<HashMap<String, Stop>>()
 
@@ -38,59 +38,15 @@ class EtaViewModel(
         val savedEtaEntityList = etaRepository.getEtaList()
 
         if (savedEtaEntityList.isNotEmpty()) {
-            etaEntityList.postValue(savedEtaEntityList)
+            etaEntityList.setValue(savedEtaEntityList)
         } else {
-            val defaultEtaEntityList = mutableListOf<EtaEntity>()
-            defaultEtaEntityList.add(
-                EtaEntity(
-                    stopId = "9D208FE6B2CFD450",
-                    routeId = "290",
-                    bound = Bound.OUTBOUND,
-                    serviceType = "1",
-                    seq = "2"
-                )
-            )
-            defaultEtaEntityList.add(
-                EtaEntity(
-                    stopId = "9D208FE6B2CFD450",
-                    routeId = "290X",
-                    bound = Bound.OUTBOUND,
-                    serviceType = "1",
-                    seq = "12"
-                )
-            )
-            defaultEtaEntityList.add(
-                EtaEntity(
-                    stopId = "403881982F9E7209",
-                    routeId = "296A",
-                    bound = Bound.OUTBOUND,
-                    serviceType = "1",
-                    seq = "1"
-                )
-            )
-            defaultEtaEntityList.add(
-                EtaEntity(
-                    stopId = "5527FF8CC85CF139",
-                    routeId = "296C",
-                    bound = Bound.OUTBOUND,
-                    serviceType = "1",
-                    seq = "1"
-                )
-            )
-            defaultEtaEntityList.add(
-                EtaEntity(
-                    stopId = "21E3E95EAEB2048C",
-                    routeId = "296D",
-                    bound = Bound.OUTBOUND,
-                    serviceType = "1",
-                    seq = "1"
-                )
-            )
-            etaEntityList.postValue(defaultEtaEntityList)
+            etaEntityList.setValue(getDefaultEtaEntityList())
         }
+
+        prepareRouteEtaStopList()
     }
 
-    fun initRouteEtaStopList() {
+    private fun prepareRouteEtaStopList() {
         viewModelScope.launch {
             try {
                 val list = etaEntityList.value ?: run {
@@ -103,7 +59,30 @@ class EtaViewModel(
                 val deferred = deferredStopResult + deferredRouteResult
                 deferred.awaitAll()
 
-                initRouteEtaStopList(this, list)
+                val routeEtaStopHashMapResult = hashMapOf<String, Card.RouteEtaStopCard>()
+                list.map { entity ->
+                    async {
+                        val stop = stopHashMap.value?.get(entity.stopId)
+                        val route =
+                            routeHashMap.value?.get(entity.routeHashId())
+
+                        if (stop == null || route == null) return@async
+
+                        routeEtaStopHashMapResult[entity.stopHashId()] = Card.RouteEtaStopCard(
+                            entity = entity,
+                            route = route,
+                            stop = stop,
+                            etaList = arrayListOf()
+                        )
+                        Logger.d("lifecycle getStopEta done: " + entity.stopId + "-" + entity.routeId)
+                    }
+                }.awaitAll()
+
+                val routeEtaStopResult = list.mapNotNull { entity ->
+                    routeEtaStopHashMapResult[entity.stopHashId()]
+                }
+
+                routeEtaStopList.postValue(routeEtaStopResult)
                 Logger.d("lifecycle initRouteEtaStopList done")
             } catch (e: Exception) {
                 Logger.e(e, "lifecycle getRouteAndStopList error")
@@ -160,36 +139,6 @@ class EtaViewModel(
         return deferredRouteResult
     }
 
-    private suspend fun initRouteEtaStopList(
-        scope: CoroutineScope,
-        list: List<EtaEntity>
-    ) {
-        val routeEtaStopHashMapResult = hashMapOf<String, Card.RouteEtaStopCard>()
-        list.map { entity ->
-            scope.async {
-                val stop = stopHashMap.value?.get(entity.stopId)
-                val route =
-                    routeHashMap.value?.get(entity.routeHashId())
-
-                if (stop == null || route == null) return@async
-
-                routeEtaStopHashMapResult[entity.stopHashId()] = Card.RouteEtaStopCard(
-                    entity = entity,
-                    route = route,
-                    stop = stop,
-                    etaList = arrayListOf()
-                )
-                Logger.d("lifecycle getStopEta done: " + entity.stopId + "-" + entity.routeId)
-            }
-        }.awaitAll()
-
-        val routeEtaStopResult = list.mapNotNull { entity ->
-            routeEtaStopHashMapResult[entity.stopHashId()]
-        }
-
-        routeEtaStopList.postValue(routeEtaStopResult)
-    }
-
     fun updateRouteEtaStopList() {
         viewModelScope.launch {
             Logger.d("lifecycle getEtaList")
@@ -222,5 +171,55 @@ class EtaViewModel(
                 }
             }
         }
+    }
+
+    private fun getDefaultEtaEntityList(): MutableList<EtaEntity> {
+        val defaultEtaEntityList = mutableListOf<EtaEntity>()
+        defaultEtaEntityList.add(
+            EtaEntity(
+                stopId = "9D208FE6B2CFD450",
+                routeId = "290",
+                bound = Bound.OUTBOUND,
+                serviceType = "1",
+                seq = "2"
+            )
+        )
+        defaultEtaEntityList.add(
+            EtaEntity(
+                stopId = "9D208FE6B2CFD450",
+                routeId = "290X",
+                bound = Bound.OUTBOUND,
+                serviceType = "1",
+                seq = "12"
+            )
+        )
+        defaultEtaEntityList.add(
+            EtaEntity(
+                stopId = "403881982F9E7209",
+                routeId = "296A",
+                bound = Bound.OUTBOUND,
+                serviceType = "1",
+                seq = "1"
+            )
+        )
+        defaultEtaEntityList.add(
+            EtaEntity(
+                stopId = "5527FF8CC85CF139",
+                routeId = "296C",
+                bound = Bound.OUTBOUND,
+                serviceType = "1",
+                seq = "1"
+            )
+        )
+        defaultEtaEntityList.add(
+            EtaEntity(
+                stopId = "21E3E95EAEB2048C",
+                routeId = "296D",
+                bound = Bound.OUTBOUND,
+                serviceType = "1",
+                seq = "1"
+            )
+        )
+        return defaultEtaEntityList
     }
 }

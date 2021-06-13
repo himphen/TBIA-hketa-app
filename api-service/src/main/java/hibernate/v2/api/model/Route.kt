@@ -1,6 +1,7 @@
 package hibernate.v2.api.model
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
@@ -67,9 +68,11 @@ data class Route(
 }
 
 enum class Bound(val value: String) {
+    @Keep
     @SerializedName("I")
     INBOUND("inbound"),
 
+    @Keep
     @SerializedName("O")
     OUTBOUND("outbound");
 

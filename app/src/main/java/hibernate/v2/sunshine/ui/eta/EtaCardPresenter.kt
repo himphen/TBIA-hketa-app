@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.ui.eta
 import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.LinearLayout
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.leanback.widget.BaseCardView
 import hibernate.v2.api.model.Eta
@@ -18,26 +18,29 @@ import java.util.Date
 class EtaCardPresenter(
     context: Context,
     private val fragmentWidth: Int
-) : BaseCardPresenter<EtaCardView, Card.RouteEtaStopCard>(context) {
+) : BaseCardPresenter<EtaCardView, Card.RouteEtaStopCard>(
+    ContextThemeWrapper(context, R.style.Theme_Fragment_Eta)
+) {
 
     override fun onCreateView(): EtaCardView {
-        val cardView = EtaCardView(context)
+        val cardView = EtaCardView(ContextThemeWrapper(context, R.style.FullCardStyle))
+        cardView.isFocusable = true
         cardView.layoutParams = BaseCardView.LayoutParams(
             fragmentWidth,
             FrameLayout.LayoutParams.WRAP_CONTENT
         )
-//        cardView.viewBinding.root.layoutParams = BaseCardView.LayoutParams(
-//            cardView.measuredWidth,
-//            FrameLayout.LayoutParams.WRAP_CONTENT
-//        )
+        cardView.viewBinding.root.layoutParams = BaseCardView.LayoutParams(
+            fragmentWidth,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        )
         cardView.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                setImageBackground(cardView, R.color.settings_card_background)
+                cardView.setBackgroundResource(R.drawable.eta_card_selected_background)
             } else {
-                setImageBackground(cardView, R.color.settings_card_background)
+                cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.eta_card_default_background))
             }
         }
-        setImageBackground(cardView, R.color.settings_card_background)
+        cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.eta_card_default_background))
         return cardView
     }
 
@@ -52,10 +55,6 @@ class EtaCardPresenter(
         viewBinding.etaMinuteTv.text =
             getEtaMinuteText(card.etaList.getOrNull(0))
         viewBinding.etaTimeTv.text = getEtaTimeText(card.etaList)
-    }
-
-    private fun setImageBackground(cardView: EtaCardView, colorId: Int) {
-        cardView.setBackgroundColor(ContextCompat.getColor(context, colorId))
     }
 
     private fun getEtaMinuteText(eta: Eta?): String {

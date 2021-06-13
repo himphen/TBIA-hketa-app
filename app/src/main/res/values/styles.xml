@@ -1,37 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="@style/Theme.Leanback" />
-
     <style name="LeftMenuStyle">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginStart">14dp</item>
         <item name="android:gravity">center_vertical</item>
-    </style>
-
-    <style name="DefaultCardTheme" parent="Theme.Leanback">
-        <item name="imageCardViewStyle">@style/DefaultCardStyle</item>
-        <item name="imageCardViewImageStyle">@style/DefaultCardImageStyle</item>
-    </style>
-
-    <style name="DefaultCardStyle" parent="Widget.Leanback.ImageCardViewStyle">
-        <item name="cardBackground">@null</item>
-    </style>
-
-    <style name="DefaultCardImageStyle" parent="Widget.Leanback.ImageCardView.ImageStyle">
-        <item name="android:layout_width">@dimen/default_image_card_width</item>
-        <item name="android:layout_height">@dimen/default_image_card_height</item>
-    </style>
-
-    <style name="SettingIconCardTheme" parent="Theme.Leanback">
-        <item name="imageCardViewTitleStyle">@style/IconCardTitleStyle</item>
-        <item name="imageCardViewImageStyle">@style/IconCardImageStyle</item>
-        <item name="imageCardViewInfoAreaStyle">@style/IconCardInfoAreaStyle</item>
-    </style>
-
-    <style name="IconCardViewStyle" parent="DefaultCardStyle">
-        <item name="lbImageCardViewType">Title</item>
     </style>
 
     <style name="IconCardImageStyle" parent="Widget.Leanback.ImageCardView.ImageStyle">
@@ -52,12 +26,13 @@
         <item name="layout_viewType">main</item>
     </style>
 
-    <style name="SingleLineCardTheme" parent="Theme.Leanback">
-        <item name="baseCardViewStyle">@style/FullCardStyle</item>
-    </style>
-
     <style name="FullCardStyle" parent="Widget.Leanback.BaseCardViewStyle">
-        <item name="android:layout_width">match_parent</item>
+
     </style>
 
+    <style name="VerticalGridView.FullWidth" parent="@style/Widget.Leanback.GridItems.VerticalGridView">
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:verticalSpacing">1dp</item>
+    </style>
 </resources>

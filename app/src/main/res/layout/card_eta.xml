@@ -80,6 +80,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|end"
             android:textSize="12sp"
+            android:maxLines="2"
             tools:text="07:30    07:50    08:10" />
     </LinearLayout>
 

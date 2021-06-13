@@ -44,11 +44,13 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
-# Change here com.yourcompany.yourpackage
--keep,includedescriptorclasses class com.yourcompany.yourpackage.**$$serializer { *; } # <-- change package name to your app's
--keepclassmembers class com.yourcompany.yourpackage.** { # <-- change package name to your app's
+-keep,includedescriptorclasses class hibernate.v2.api.**$$serializer { *; }
+-keepclassmembers class hibernate.v2.api.** {
     *** Companion;
 }
--keepclasseswithmembers class com.yourcompany.yourpackage.** { # <-- change package name to your app's
+-keepclasseswithmembers class hibernate.v2.api.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
+
+-keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
+-keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.

@@ -31,11 +31,14 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
-# Change here com.yourcompany.yourpackage
--keep,includedescriptorclasses class com.yourcompany.yourpackage.**$$serializer { *; } # <-- change package name to your app's
--keepclassmembers class com.yourcompany.yourpackage.** { # <-- change package name to your app's
+-keep,includedescriptorclasses class hibernate.v2.sunshine.**$$serializer { *; }
+-keepclassmembers class hibernate.v2.sunshine.** {
     *** Companion;
 }
--keepclasseswithmembers class com.yourcompany.yourpackage.** { # <-- change package name to your app's
+-keepclasseswithmembers class hibernate.v2.sunshine.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
+
+# Crashlytics
+-keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
+-keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.

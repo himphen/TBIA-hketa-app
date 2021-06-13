@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.eta
+package hibernate.v2.sunshine.ui.view
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.RelativeLayout
 import androidx.leanback.widget.TitleViewAdapter
 
-class CustomTitleView @JvmOverloads constructor(
+class NoFragmentTitleView @JvmOverloads constructor(
     context: Context?,
     attrs: AttributeSet? = null,
     defStyle: Int = 0

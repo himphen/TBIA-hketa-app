@@ -10,11 +10,16 @@ import coil.load
 import hibernate.v2.api.model.openweather.OneCall
 import hibernate.v2.sunshine.databinding.FragmentWeatherBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
+import hibernate.v2.sunshine.ui.traffic.TrafficFragment
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import kotlin.math.roundToInt
 
 class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
+
+    companion object {
+        fun getInstance() = WeatherFragment()
+    }
 
     override fun getViewBinding(
         inflater: LayoutInflater,

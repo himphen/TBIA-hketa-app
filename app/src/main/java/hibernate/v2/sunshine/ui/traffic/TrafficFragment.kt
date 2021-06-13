@@ -15,6 +15,7 @@ import com.google.maps.android.ktx.awaitMap
 import hibernate.v2.sunshine.databinding.FragmentTrafficBinding
 import hibernate.v2.sunshine.model.TrafficLocation
 import hibernate.v2.sunshine.ui.base.BaseFragment
+import hibernate.v2.sunshine.ui.eta.EtaFragment
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -38,6 +39,7 @@ class TrafficFragment : BaseFragment<FragmentTrafficBinding>() {
 
     companion object {
         private const val REFRESH_TIME = 15L * 1000
+        fun getInstance() = TrafficFragment()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

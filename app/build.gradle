@@ -25,9 +25,6 @@ android {
         properties.load(project.rootProject.file('secrets.properties').newDataInputStream())
 
         debug {
-            debuggable true
-            minifyEnabled false
-            shrinkResources false
             buildConfigField "String", "OPEN_WEATHER_API_KEY", properties.getProperty('open_weather.api_key')
             buildConfigField "String", "GOOGLE_MAP_API_KEY", properties.getProperty('google_map.api_key')
             resValue "string", "GOOGLE_MAP_API_KEY", properties.getProperty("google_map.api_key")
