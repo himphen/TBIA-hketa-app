@@ -1,18 +1,17 @@
 package hibernate.v2.api.model.openweather
 
-
-import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
+import com.google.firebase.database.PropertyName
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FeelsLike(
-    @SerializedName("day")
+    @PropertyName("day")
     val day: Double? = null,
-    @SerializedName("eve")
+    @PropertyName("eve")
     val eve: Double? = null,
-    @SerializedName("morn")
+    @PropertyName("morn")
     val morn: Double? = null,
-    @SerializedName("night")
+    @PropertyName("night")
     val night: Double? = null
 ) : Parcelable

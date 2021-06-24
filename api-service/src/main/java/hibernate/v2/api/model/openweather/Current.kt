@@ -1,40 +1,39 @@
 package hibernate.v2.api.model.openweather
 
-
-import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
+import com.google.firebase.database.PropertyName
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Current(
-    @SerializedName("clouds")
+    @PropertyName("clouds")
     val clouds: Int? = null,
-    @SerializedName("dew_point")
+    @PropertyName("dew_point")
     val dewPoint: Double? = null,
-    @SerializedName("dt")
+    @PropertyName("dt")
     val dt: Int? = null,
-    @SerializedName("feels_like")
+    @PropertyName("feels_like")
     val feelsLike: Double? = null,
-    @SerializedName("humidity")
+    @PropertyName("humidity")
     val humidity: Int? = null,
-    @SerializedName("pressure")
+    @PropertyName("pressure")
     val pressure: Int? = null,
-    @SerializedName("sunrise")
+    @PropertyName("sunrise")
     val sunrise: Int? = null,
-    @SerializedName("sunset")
+    @PropertyName("sunset")
     val sunset: Int? = null,
-    @SerializedName("temp")
+    @PropertyName("temp")
     val temp: Double? = null,
-    @SerializedName("uvi")
+    @PropertyName("uvi")
     val uvi: Double? = null,
-    @SerializedName("visibility")
+    @PropertyName("visibility")
     val visibility: Int? = null,
-    @SerializedName("weather")
+    @PropertyName("weather")
     val weather: List<Weather>? = null,
-    @SerializedName("wind_deg")
+    @PropertyName("wind_deg")
     val windDeg: Int? = null,
-    @SerializedName("wind_gust")
+    @PropertyName("wind_gust")
     val windGust: Double? = null,
-    @SerializedName("wind_speed")
+    @PropertyName("wind_speed")
     val windSpeed: Double? = null
 ) : Parcelable

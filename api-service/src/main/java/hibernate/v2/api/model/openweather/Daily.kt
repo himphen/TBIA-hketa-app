@@ -1,48 +1,47 @@
 package hibernate.v2.api.model.openweather
 
-
-import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
+import com.google.firebase.database.PropertyName
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Daily(
-    @SerializedName("clouds")
+    @PropertyName("clouds")
     val clouds: Int? = null,
-    @SerializedName("dew_point")
+    @PropertyName("dew_point")
     val dewPoint: Double? = null,
-    @SerializedName("dt")
+    @PropertyName("dt")
     val dt: Int? = null,
-    @SerializedName("feels_like")
+    @PropertyName("feels_like")
     val feelsLike: FeelsLike? = null,
-    @SerializedName("humidity")
+    @PropertyName("humidity")
     val humidity: Int? = null,
-    @SerializedName("moon_phase")
+    @PropertyName("moon_phase")
     val moonPhase: Double? = null,
-    @SerializedName("moonrise")
+    @PropertyName("moonrise")
     val moonrise: Int? = null,
-    @SerializedName("moonset")
+    @PropertyName("moonset")
     val moonset: Int? = null,
-    @SerializedName("pop")
+    @PropertyName("pop")
     val pop: Double? = null,
-    @SerializedName("pressure")
+    @PropertyName("pressure")
     val pressure: Int? = null,
-    @SerializedName("rain")
+    @PropertyName("rain")
     val rain: Double? = null,
-    @SerializedName("sunrise")
+    @PropertyName("sunrise")
     val sunrise: Int? = null,
-    @SerializedName("sunset")
+    @PropertyName("sunset")
     val sunset: Int? = null,
-    @SerializedName("temp")
+    @PropertyName("temp")
     val temp: Temp? = null,
-    @SerializedName("uvi")
+    @PropertyName("uvi")
     val uvi: Double? = null,
-    @SerializedName("weather")
+    @PropertyName("weather")
     val weather: List<Weather>? = null,
-    @SerializedName("wind_deg")
+    @PropertyName("wind_deg")
     val windDeg: Int? = null,
-    @SerializedName("wind_gust")
+    @PropertyName("wind_gust")
     val windGust: Double? = null,
-    @SerializedName("wind_speed")
+    @PropertyName("wind_speed")
     val windSpeed: Double? = null
 ) : Parcelable

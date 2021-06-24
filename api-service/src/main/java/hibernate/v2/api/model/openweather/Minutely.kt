@@ -1,14 +1,13 @@
 package hibernate.v2.api.model.openweather
 
-
-import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
+import com.google.firebase.database.PropertyName
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Minutely(
-    @SerializedName("dt")
+    @PropertyName("dt")
     val dt: Int? = null,
-    @SerializedName("precipitation")
+    @PropertyName("precipitation")
     val precipitation: Double? = null
 ) : Parcelable

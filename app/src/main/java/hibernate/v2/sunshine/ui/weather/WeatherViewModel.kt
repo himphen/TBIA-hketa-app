@@ -22,18 +22,16 @@ class WeatherViewModel(private val repo: DataRepository) : BaseViewModel() {
     fun getWeatherInfo() {
         Logger.d("lifecycle getWeatherInfo")
         viewModelScope.launch {
-            val database = Firebase.database
-            val weatherRef = database.getReference("weather")
+            val database =
+                Firebase.database("https://android-tv-c733a-default-rtdb.asia-southeast1.firebasedatabase.app/")
+            val weatherRef = database.reference.child("weather")
+
             weatherRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val value = dataSnapshot.getValue<OneCall>()
-                    value?.let {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.getValue<OneCall>()?.let {
                         oneCallData.postValue(it)
-                    } ?: run {
-                        Logger.w("value == null.")
                     }
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     Logger.e(error.toException(), "Failed to read value.")
                 }

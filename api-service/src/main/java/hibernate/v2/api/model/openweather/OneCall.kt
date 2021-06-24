@@ -1,26 +1,26 @@
 package hibernate.v2.api.model.openweather
 
 
-import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
+import com.google.firebase.database.PropertyName
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class OneCall(
-    @SerializedName("current")
+    @PropertyName("current")
     val current: Current? = null,
-    @SerializedName("daily")
+    @PropertyName("daily")
     val daily: List<Daily>? = null,
-    @SerializedName("hourly")
+    @PropertyName("hourly")
     val hourly: List<Hourly>? = null,
-    @SerializedName("lat")
+    @PropertyName("lat")
     val lat: Double? = null,
-    @SerializedName("lon")
+    @PropertyName("lon")
     val lon: Double? = null,
-    @SerializedName("minutely")
+    @PropertyName("minutely")
     val minutely: List<Minutely>? = null,
-    @SerializedName("timezone")
+    @PropertyName("timezone")
     val timezone: String? = null,
-    @SerializedName("timezone_offset")
+    @PropertyName("timezone_offset")
     val timezoneOffset: Int? = null
 ) : Parcelable
