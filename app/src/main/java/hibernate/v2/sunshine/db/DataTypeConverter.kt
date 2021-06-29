@@ -1,10 +1,10 @@
-package hibernate.v2.sunshine.db.eta
+package hibernate.v2.sunshine.db
 
 import androidx.room.TypeConverter
 import hibernate.v2.api.model.Bound
 import java.util.UUID
 
-class EtaDataTypeConverter {
+class DataTypeConverter {
 
     @TypeConverter
     fun fromUUID(uuid: UUID?): String? {

@@ -24,19 +24,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), SideMenuView.MenuItemC
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-//        viewBinding.viewPager.adapter = MainViewPagerAdapter(supportFragmentManager)
-//        viewBinding.tabLayout.setupWithViewPager(viewBinding.viewPager)
-
 //        setupAlarm()
 
         viewBinding.sideMenuView.setupDefaultMenu(SideMenuView.HOME_MENU)
         replaceSelectedFragment(MainFragment.getInstance(), SideMenuView.TAG_HOME)
         setupFocusListener()
-
-//        viewBinding.ivBg.load(R.drawable.splash_bg) {
-//            transformations(BlurTransformation(baseContext, 15f, 2f))
-//        }
     }
 
     override fun menuItemClick(menuId: Int) {

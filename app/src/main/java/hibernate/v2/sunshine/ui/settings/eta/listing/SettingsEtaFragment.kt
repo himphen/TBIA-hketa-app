@@ -195,7 +195,7 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
             startEntranceTransition()
         }, 1000)
 
-        viewModel.getAllRouteAndStopList()
+        viewModel.getTransportRouteList()
     }
 
     private fun updateRows() {

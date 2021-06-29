@@ -7,7 +7,6 @@ import com.himphen.logger.Logger
 import hibernate.v2.api.model.Bound
 import hibernate.v2.api.model.Route
 import hibernate.v2.api.model.Stop
-import hibernate.v2.sunshine.api.DataRepository
 import hibernate.v2.sunshine.db.eta.EtaEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.repository.EtaRepository
@@ -22,12 +21,8 @@ import kotlinx.coroutines.withContext
 
 class EtaViewModel(
     application: Application,
-    private val repo: DataRepository
+    private val repo: EtaRepository
 ) : BaseViewModel() {
-
-    private val etaRepository = EtaRepository.getInstance(
-        application.applicationContext
-    )
 
     val routeEtaStopList = MutableLiveData<List<Card.RouteEtaStopCard>>()
     private val etaEntityList = MutableLiveData<List<EtaEntity>>()
@@ -35,7 +30,7 @@ class EtaViewModel(
     private val stopHashMap = MutableLiveData<HashMap<String, Stop>>()
 
     suspend fun getEtaListFromDb() {
-        val savedEtaEntityList = etaRepository.getEtaList()
+        val savedEtaEntityList = repo.getEtaList()
 
         if (savedEtaEntityList.isNotEmpty()) {
             etaEntityList.setValue(savedEtaEntityList)
@@ -101,7 +96,7 @@ class EtaViewModel(
             entity.stopId
         }.distinct().map { stopId ->
             scope.async {
-                val apiStopResponse = repo.getStop(stopId)
+                val apiStopResponse = repo.getStopApi(stopId)
                 apiStopResponse.stop?.let { apiStop ->
                     stopResult[stopId] = apiStop
                 }
@@ -123,7 +118,7 @@ class EtaViewModel(
             request.hashId() to request
         }.map { (_, route) ->
             scope.async {
-                val apiStopResponse = repo.getRoute(
+                val apiStopResponse = repo.getRouteApi(
                     route.routeId,
                     route.bound,
                     route.serviceType
@@ -147,7 +142,7 @@ class EtaViewModel(
 
                 routeEtaStopList.value!!.mapIndexed { index, routeEtaStop ->
                     async {
-                        val apiEtaResponse = repo.getStopEta(
+                        val apiEtaResponse = repo.getStopEtaApi(
                             stopId = routeEtaStop.entity.stopId,
                             route = routeEtaStop.entity.routeId
                         )

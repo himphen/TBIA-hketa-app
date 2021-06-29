@@ -1,39 +1,34 @@
 package hibernate.v2.sunshine.ui.settings.eta
 
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
-import hibernate.v2.api.model.Bound
 import hibernate.v2.api.model.Route
 import hibernate.v2.api.model.Stop
-import hibernate.v2.api.response.RouteStopListResponse
-import hibernate.v2.sunshine.api.DataRepository
 import hibernate.v2.sunshine.db.eta.EtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
+import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.RouteStopList
+import hibernate.v2.sunshine.model.TransportRoute
+import hibernate.v2.sunshine.model.TransportStop
 import hibernate.v2.sunshine.repository.EtaRepository
+import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SettingsEtaViewModel(
-    application: Application,
-    private val repo: DataRepository
+    private val kmbRepository: KmbRepository,
+    private val etaRepository: EtaRepository,
 ) : BaseViewModel() {
 
-    private val etaRepository = EtaRepository.getInstance(
-        application.applicationContext
-    )
-
-    val routeHashMap = MutableLiveData<HashMap<String, Route>>()
-    val stopHashMap = MutableLiveData<HashMap<String, Stop>>()
+    val routeHashMap = MutableLiveData<HashMap<String, TransportRoute>>()
+    val stopHashMap = MutableLiveData<HashMap<String, TransportStop>>()
     val routeStopListHashMap = MutableLiveData<HashMap<String, RouteStopList>>()
-    val routeAndStopListReady = MutableLiveData<Boolean>()
+    val transportRouteListReady = MutableSharedFlow<HashMap<String, TransportStop>>()
     val editCard = MutableLiveData<Card.SettingsEtaCard>()
 
     suspend fun getEtaList() = withContext(Dispatchers.IO) { etaRepository.getEtaList() }
@@ -51,56 +46,38 @@ class SettingsEtaViewModel(
     suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
         withContext(Dispatchers.IO) { etaRepository.updateEtaOrderList(entityList) }
 
-    fun getAllRouteAndStopList() {
+    fun getTransportRouteList() {
         viewModelScope.launch {
             routeAndStopListReady.postValue(false)
             try {
-                val stopResult = hashMapOf<String, Stop>()
-                val routeResult = hashMapOf<String, Route>()
-                val routeStopListResult = hashMapOf<String, RouteStopList>()
+                val routeResult = hashMapOf<String, TransportRoute>()
 
-                var apiRouteStopListResponse: RouteStopListResponse? = null
-
-                val deferred = listOf(
-                    async {
-                        val apiStopListResponse = repo.getStopList()
-                        apiStopListResponse.stopList.forEach { stop ->
-                            stop.stopId.let { stopId ->
-                                stopResult[stopId] = stop
-                            }
-                        }
-                        Logger.d("lifecycle getStopList done")
-                    },
-                    async {
-                        val apiRouteListResponse = repo.getRouteList()
-                        apiRouteListResponse.routeList.forEach { route ->
-                            routeResult[route.routeHashId()] = route
-                            routeStopListResult[route.routeHashId()] = RouteStopList(
-                                route = route,
-                                stopList = mutableListOf()
+                val apiRouteList = kmbRepository.getRouteListDb()
+                apiRouteList.forEach { routeEntity ->
+                    val route = KmbRouteEntity.toTransportModel(routeEntity)
+                    route.stopList.addAll(
+                        kmbRepository.getRouteStopDetailsList(
+                            routeId = route.routeId,
+                            bound = route.bound,
+                            serviceType = route.serviceType
+                        ).map {
+                            TransportStop(
+                                lat = it.kmbStopEntity.lat,
+                                long = it.kmbStopEntity.long,
+                                nameEn = it.kmbStopEntity.nameEn,
+                                nameSc = it.kmbStopEntity.nameSc,
+                                nameTc = it.kmbStopEntity.nameTc,
+                                stopId = it.kmbStopEntity.stopId,
+                                seq = it.kmbRouteStopEntity.seq
                             )
                         }
-                        Logger.d("lifecycle getRouteList done")
-                    },
-                    async {
-                        apiRouteStopListResponse = repo.getRouteStopList()
-                        Logger.d("lifecycle getRouteStopList done")
-                    }
-                )
-                deferred.awaitAll()
+                    )
 
-                apiRouteStopListResponse?.routeStopList?.forEach { routeStop ->
-                    val newStop = stopResult[routeStop.stopId]!!.copy()
-                    newStop.seq = routeStop.seq
-
-                    routeStopListResult[routeStop.routeHashId()]?.stopList?.add(newStop)
+                    routeResult[routeEntity.routeHashId()] = route
                 }
-                Logger.d("lifecycle apiRouteStopListResponse done")
 
                 Logger.d("lifecycle getAllRouteAndStopList done")
-                routeHashMap.postValue(routeResult)
-                stopHashMap.postValue(stopResult)
-                routeStopListHashMap.postValue(routeStopListResult)
+                transportRouteListReady.emit(routeResult)
                 routeAndStopListReady.postValue(true)
             } catch (e: Exception) {
                 Logger.e(e, "lifecycle getAllRouteAndStopList error")

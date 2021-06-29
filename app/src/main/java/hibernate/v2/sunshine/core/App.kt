@@ -6,7 +6,11 @@ import com.himphen.logger.Logger
 import com.himphen.logger.PrettyFormatStrategy
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.api.DataRepository
+import hibernate.v2.sunshine.db.MyDatabase
+import hibernate.v2.sunshine.repository.EtaRepository
+import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
+import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.ui.settings.eta.SettingsEtaViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.traffic.TrafficViewModel
@@ -42,8 +46,17 @@ class App : Application() {
         // singleton service
         single { ApiManager(androidContext()) }
         single { DataRepository(get()) }
+        // database
+        single { MyDatabase.getInstance(androidContext()) }
+        single { get<MyDatabase>().etaDao() }
+        single { get<MyDatabase>().etaOrderDao() }
+        single { get<MyDatabase>().kmbDao() }
+        single { EtaRepository(get(), get(), get()) }
+        single { KmbRepository(get(), get()) }
+
         // ViewModels
         viewModel { EtaViewModel(get(), get()) }
+        viewModel { OnboardingViewModel(get()) }
         viewModel { SettingsEtaViewModel(get(), get()) }
         viewModel { AddEtaViewModel(get()) }
         viewModel { WeatherViewModel(get()) }
