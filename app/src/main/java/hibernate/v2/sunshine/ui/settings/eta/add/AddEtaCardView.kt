@@ -14,7 +14,7 @@ class AddEtaCardView(context: Context) : BaseCardView(
 ) {
     var viewBinding = CardAddEtaBinding.inflate(LayoutInflater.from(context), this, true)
 
-    fun updateDataUi(card: Card.RouteStopCard) {
+    fun updateDataUi(card: Card.RouteStopAddCard) {
         card.stop
         viewBinding.stopNameTv.text = card.stop.nameTc
     }

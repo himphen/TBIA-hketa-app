@@ -9,7 +9,7 @@ data class Stop(
     @SerializedName("lat")
     val lat: String,
     @SerializedName("long")
-    val long: String,
+    val lng: String,
     @SerializedName("name_en")
     val nameEn: String,
     @SerializedName("name_sc")

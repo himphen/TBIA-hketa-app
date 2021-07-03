@@ -43,25 +43,23 @@ class EtaFragment : VerticalGridSupportFragment() {
     private var mAdapter: ArrayObjectAdapter? = null
 
     private val viewModel by inject<EtaViewModel>()
-    private var routeEtaStopList: MutableList<Card.RouteEtaStopCard>? = null
+    private var etaCardList: MutableList<Card.EtaCard>? = null
     private var refreshEtaJob: Deferred<Unit>? = null
 
     init {
         lifecycleScope.launch {
-            launch {
-                viewModel.routeEtaStopList.observe(this@EtaFragment, {
-                    routeEtaStopList?.let { routeEtaStopList ->
-                        routeEtaStopList.clear()
-                        routeEtaStopList.addAll(it)
-                        processEtaList()
-                    } ?: run {
-                        routeEtaStopList = it.toMutableList()
-                        mAdapter?.addAll(0, routeEtaStopList)
-                        processEtaList()
+            viewModel.savedEtaCardList.observe(this@EtaFragment) {
+                etaCardList?.let { etaCardList ->
+                    etaCardList.clear()
+                    etaCardList.addAll(it)
+                    processEtaList()
+                } ?: run {
+                    etaCardList = it.toMutableList()
+                    mAdapter?.addAll(0, etaCardList)
+                    processEtaList()
 
-                        viewModel.updateRouteEtaStopList()
-                    }
-                })
+                    viewModel.updateEtaList(etaCardList)
+                }
             }
         }
     }
@@ -114,40 +112,36 @@ class EtaFragment : VerticalGridSupportFragment() {
 
     private fun updateRouteEtaStopList() {
         if (refreshEtaJob == null) {
-            refreshEtaJob = CoroutineScope(Dispatchers.IO).launchPeriodicAsync(REFRESH_TIME) {
-                if (routeEtaStopList?.isNotEmpty() == true) {
-                    viewModel.updateRouteEtaStopList()
-                }
+            refreshEtaJob = CoroutineScope(Dispatchers.Main).launchPeriodicAsync(REFRESH_TIME) {
+                viewModel.updateEtaList(etaCardList)
             }
         }
     }
 
     private fun processEtaList() {
-        routeEtaStopList?.let { routeEtaStopList ->
-            routeEtaStopList.forEachIndexed { index, routeEtaStop ->
-                routeEtaStop.etaList = routeEtaStop.etaList.filter { eta: Eta ->
-                    eta.eta?.let { etaString ->
-                        val etaDate = DateUtil.getDate(
-                            etaString,
-                            DateFormat.ISO_WITHOUT_MS.value
-                        )
+        etaCardList?.forEachIndexed { index, etaCard ->
+            etaCard.etaList = etaCard.etaList.filter { eta: Eta ->
+                eta.eta?.let { etaString ->
+                    val etaDate = DateUtil.getDate(
+                        etaString,
+                        DateFormat.ISO_WITHOUT_MS.value
+                    )
 
-                        val currentDate = DateUtil.getDate(
-                            eta.dataTimestamp,
-                            DateFormat.ISO_WITHOUT_MS.value
-                        )
+                    val currentDate = DateUtil.getDate(
+                        eta.dataTimestamp,
+                        DateFormat.ISO_WITHOUT_MS.value
+                    )
 
-                        DateUtil.getTimeDiffInMin(
-                            etaDate!!,
-                            currentDate!!
-                        ) > 0
-                    } ?: run {
-                        false
-                    }
+                    DateUtil.getTimeDiffInMin(
+                        etaDate!!,
+                        currentDate!!
+                    ) > 0
+                } ?: run {
+                    false
                 }
-
-                mAdapter?.replace(index, routeEtaStop)
             }
+
+            mAdapter?.replace(index, etaCard)
         }
     }
 

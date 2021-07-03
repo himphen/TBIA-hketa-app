@@ -2,13 +2,13 @@ package hibernate.v2.sunshine.ui.settings.eta.add
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.leanback.app.SearchSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
-import androidx.leanback.widget.ObjectAdapter
 import androidx.lifecycle.lifecycleScope
 import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
@@ -27,17 +27,18 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
     private var mQuery: String = ""
 
     private val clickListener = object : AddEtaCardPresenter.ClickListener {
-        override fun onItemClick(card: Card.RouteStopCard) {
+        override fun onItemClick(card: Card.RouteStopAddCard) {
             lifecycleScope.launch {
-                val data = viewModel.getEtaList(
+                val isExisting = viewModel.hasEtaInDb(
                     stopId = card.stop.stopId,
                     routeId = card.route.routeId,
                     bound = card.route.bound,
                     serviceType = card.route.serviceType,
-                    seq = card.stop.seq!!
+                    seq = card.stop.seq!!,
+                    brand = card.route.brand
                 )
 
-                if (data.isNotEmpty()) {
+                if (isExisting) {
                     Toast.makeText(
                         context,
                         getString(R.string.toast_eta_already_added),
@@ -51,7 +52,8 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
                     routeId = card.route.routeId,
                     bound = card.route.bound,
                     serviceType = card.route.serviceType,
-                    seq = card.stop.seq!!
+                    seq = card.stop.seq!!,
+                    brand = card.route.brand
                 )
                 viewModel.addEta(newEta)
 
@@ -74,49 +76,44 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState ?: Bundle())
         title = getString(R.string.title_activity_add_eta)
         mRowsAdapter = ArrayObjectAdapter(ListRowPresenter())
-        loadRows()
         setSearchResultProvider(this)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initEvent()
+
+        loadRows()
+    }
+
+    private fun initEvent() {
+
     }
 
     private fun loadRows() {
         lifecycleScope.launch(Dispatchers.Main) {
             mRowsAdapter.clear()
-            viewModel.allList?.forEachIndexed { index, routeStopList ->
-                // Init Title
-                val route = routeStopList.route
-                val headerTitle = if (route.isSpecialRoute()) {
-                    "${route.routeId} 特別線 (${route.serviceType}) - ${routeStopList.route.origTc} 往 ${routeStopList.route.destTc}"
-                } else {
-                    "${route.routeId} - ${routeStopList.route.origTc} 往 ${routeStopList.route.destTc}"
-                }
-
-                if (mQuery.isNotEmpty() && !route.routeId.startsWith(mQuery, true)) return@forEachIndexed
+            viewModel.allTransportRouteList?.forEachIndexed { index, listForRowAdapter ->
+                if (mQuery.isNotEmpty()
+                    && !listForRowAdapter.route.routeId.startsWith(mQuery, true)
+                ) return@forEachIndexed
 
                 // Init Row
                 val listRowAdapter =
                     ArrayObjectAdapter(AddEtaCardPresenter(requireContext(), clickListener))
 
-                val filteredList = routeStopList.stopList.map {
-                    Card.RouteStopCard(
-                        route = routeStopList.route,
-                        stop = it
-                    )
-                }
-
-                listRowAdapter.addAll(0, filteredList)
-                val header = HeaderItem(index.toLong(), headerTitle)
+                listRowAdapter.addAll(0, listForRowAdapter.filteredList)
+                val header = HeaderItem(index.toLong(), listForRowAdapter.headerTitle)
                 val listRow = ListRow(header, listRowAdapter)
                 mRowsAdapter.add(listRow)
             }
         }
     }
 
-    override fun getResultsAdapter(): ObjectAdapter {
-        return mRowsAdapter
-    }
+    override fun getResultsAdapter() = mRowsAdapter
 
     override fun onQueryTextChange(newQuery: String): Boolean {
         Logger.d(String.format("Search text changed: %s", newQuery))

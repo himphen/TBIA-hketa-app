@@ -10,10 +10,10 @@ import hibernate.v2.sunshine.ui.base.BaseCardPresenter
 class AddEtaCardPresenter(
     context: Context,
     private val listener: ClickListener
-) : BaseCardPresenter<AddEtaCardView, Card.RouteStopCard>(context) {
+) : BaseCardPresenter<AddEtaCardView, Card.RouteStopAddCard>(context) {
 
     interface ClickListener {
-        fun onItemClick(card: Card.RouteStopCard)
+        fun onItemClick(card: Card.RouteStopAddCard)
     }
 
     override fun onCreateView(): AddEtaCardView {
@@ -26,11 +26,11 @@ class AddEtaCardPresenter(
             }
         }
         setImageBackground(cardView, R.color.settings_card_background)
-        cardView.setOnClickListener { listener.onItemClick(it.tag as Card.RouteStopCard) }
+        cardView.setOnClickListener { listener.onItemClick(it.tag as Card.RouteStopAddCard) }
         return cardView
     }
 
-    override fun onBindViewHolder(card: Card.RouteStopCard, cardView: AddEtaCardView) {
+    override fun onBindViewHolder(card: Card.RouteStopAddCard, cardView: AddEtaCardView) {
         cardView.tag = card
         cardView.updateDataUi(card)
     }

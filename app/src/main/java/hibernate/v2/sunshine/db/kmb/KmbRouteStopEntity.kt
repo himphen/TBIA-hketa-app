@@ -1,19 +1,23 @@
 package hibernate.v2.sunshine.db.kmb
 
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
+import androidx.room.PrimaryKey
 import hibernate.v2.api.model.Bound
 import hibernate.v2.api.model.RouteStop
-import kotlinx.parcelize.Parcelize
+import hibernate.v2.sunshine.model.RouteHashable
 
-@Parcelize
 @Entity(
     tableName = "kmb_route_stop",
-    indices = [Index(value = ["stop"])]
+    indices = [
+        Index("stop"),
+        Index("route", "bound", "service_type")
+    ]
 )
 data class KmbRouteStopEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long? = null,
     @ColumnInfo(name = "route")
     val routeId: String,
     val bound: Bound,
@@ -22,10 +26,10 @@ data class KmbRouteStopEntity(
     val seq: String,
     @ColumnInfo(name = "stop")
     val stopId: String,
-) : Parcelable {
+) : RouteHashable {
 
     companion object {
-        fun createFromApiModel(routeStop: RouteStop): KmbRouteStopEntity {
+        fun fromApiModel(routeStop: RouteStop): KmbRouteStopEntity {
             return KmbRouteStopEntity(
                 routeId = routeStop.routeId,
                 bound = routeStop.bound,
@@ -35,4 +39,6 @@ data class KmbRouteStopEntity(
             )
         }
     }
+
+    override fun routeHashId() = routeId + bound.value + serviceType
 }

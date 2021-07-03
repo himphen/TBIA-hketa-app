@@ -2,16 +2,16 @@ package hibernate.v2.sunshine.repository
 
 import hibernate.v2.api.model.Bound
 import hibernate.v2.api.response.EtaResponse
-import hibernate.v2.api.response.RouteListResponse
 import hibernate.v2.api.response.RouteResponse
-import hibernate.v2.api.response.RouteStopListResponse
-import hibernate.v2.api.response.StopListResponse
 import hibernate.v2.api.response.StopResponse
 import hibernate.v2.sunshine.api.ApiManager
+import hibernate.v2.sunshine.db.eta.Brand
 import hibernate.v2.sunshine.db.eta.EtaDao
 import hibernate.v2.sunshine.db.eta.EtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderDao
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class EtaRepository(
     private val apiManager: ApiManager,
@@ -19,21 +19,24 @@ class EtaRepository(
     private val etaOrderDb: EtaOrderDao
 ) {
 
-    suspend fun getEtaList(): List<EtaEntity> = etaDao.get()
+    suspend fun getSavedKmbEtaList() =
+        withContext(Dispatchers.IO) { etaDao.getAllKmbEtaWithOrdering() }
 
-    suspend fun getEtaList(
+    suspend fun hasEtaInDb(
         stopId: String,
         routeId: String,
         bound: Bound,
         serviceType: String,
-        seq: String
-    ): List<EtaEntity> = etaDao.get(
+        seq: String,
+        brand: Brand
+    ): Boolean = etaDao.getSingleEta(
         stopId,
         routeId,
         bound,
         serviceType,
-        seq
-    )
+        seq,
+        brand
+    ) != null
 
     suspend fun addEta(entity: EtaEntity) {
         etaDao.add(entity)
@@ -84,17 +87,5 @@ class EtaRepository(
             bound = bound.value,
             serviceType = serviceType
         )
-    }
-
-    suspend fun getRouteListApi(): RouteListResponse {
-        return apiManager.etaService.getRouteList()
-    }
-
-    suspend fun getStopListApi(): StopListResponse {
-        return apiManager.etaService.getStopList()
-    }
-
-    suspend fun getRouteStopListApi(): RouteStopListResponse {
-        return apiManager.etaService.getRouteStopList()
     }
 }

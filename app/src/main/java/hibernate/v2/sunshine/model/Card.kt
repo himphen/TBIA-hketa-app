@@ -1,11 +1,7 @@
 package hibernate.v2.sunshine.model
 
-import android.os.Parcelable
 import hibernate.v2.api.model.Eta
-import hibernate.v2.api.model.Route
-import hibernate.v2.api.model.Stop
 import hibernate.v2.sunshine.db.eta.EtaEntity
-import kotlinx.parcelize.Parcelize
 
 sealed class Card {
     data class SettingsCard(
@@ -19,28 +15,25 @@ sealed class Card {
         }
     }
 
-    @Parcelize
     data class SettingsEtaCard(
         val entity: EtaEntity? = null,
-        val route: Route? = null,
-        val stop: Stop? = null,
-        val type: Type
-    ) : Parcelable, Card() {
+        val route: TransportRoute? = null,
+        val stop: TransportStop? = null,
+        val type: Type,
+    ) : Card() {
         enum class Type {
             DATA, INSERT_ROW
         }
     }
 
-    data class RouteStopCard(
-        val route: Route,
-        val stop: Stop
+    data class RouteStopAddCard(
+        val route: TransportRoute,
+        val stop: TransportStop,
     ) : Card()
 
-    @Parcelize
-    data class RouteEtaStopCard(
-        val entity: EtaEntity,
-        val stop: Stop,
-        var etaList: List<Eta>,
-        val route: Route
-    ) : Parcelable, Card()
+    data class EtaCard(
+        val route: TransportRoute,
+        val stop: TransportStop,
+        var etaList: List<Eta> = listOf(),
+    ) : Card()
 }

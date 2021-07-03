@@ -55,7 +55,7 @@ class App : Application() {
         single { KmbRepository(get(), get()) }
 
         // ViewModels
-        viewModel { EtaViewModel(get(), get()) }
+        viewModel { EtaViewModel(get()) }
         viewModel { OnboardingViewModel(get()) }
         viewModel { SettingsEtaViewModel(get(), get()) }
         viewModel { AddEtaViewModel(get()) }

@@ -1,22 +1,20 @@
 package hibernate.v2.sunshine.db.kmb
 
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import hibernate.v2.api.model.Stop
 import hibernate.v2.sunshine.model.TransportStop
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 @Entity(
     tableName = "kmb_stop",
-    indices = [Index(value = ["stop"])]
+    indices = [Index("stop")]
 )
 data class KmbStopEntity(
+    @PrimaryKey
     @ColumnInfo(name = "stop")
-    @PrimaryKey val stopId: String,
+    val stopId: String,
     @ColumnInfo(name = "name_en")
     val nameEn: String,
     @ColumnInfo(name = "name_tc")
@@ -24,8 +22,9 @@ data class KmbStopEntity(
     @ColumnInfo(name = "name_sc")
     val nameSc: String,
     val lat: String,
-    val long: String,
-) : Parcelable {
+    @ColumnInfo(name = "long")
+    val lng: String,
+) {
     companion object {
         fun fromApiModel(stop: Stop): KmbStopEntity {
             return KmbStopEntity(
@@ -34,20 +33,32 @@ data class KmbStopEntity(
                 nameTc = stop.nameTc,
                 nameSc = stop.nameSc,
                 lat = stop.lat,
-                long = stop.long
+                lng = stop.lng
             )
         }
+    }
 
-        fun toTransportModel(stop: KmbStopEntity): TransportStop {
-            return TransportStop(
-                stopId = stop.stopId,
-                nameEn = stop.nameEn,
-                nameTc = stop.nameTc,
-                nameSc = stop.nameSc,
-                lat = stop.lat,
-                long = stop.long,
-                seq = null,
-            )
-        }
+    fun toTransportModel(): TransportStop {
+        return TransportStop(
+            stopId = stopId,
+            nameEn = nameEn,
+            nameTc = nameTc,
+            nameSc = nameSc,
+            lat = lat,
+            lng = lng,
+            seq = null,
+        )
+    }
+
+    fun toTransportModelWithSeq(seq: String): TransportStop {
+        return TransportStop(
+            stopId = stopId,
+            nameEn = nameEn,
+            nameTc = nameTc,
+            nameSc = nameSc,
+            lat = lat,
+            lng = lng,
+            seq = seq,
+        )
     }
 }

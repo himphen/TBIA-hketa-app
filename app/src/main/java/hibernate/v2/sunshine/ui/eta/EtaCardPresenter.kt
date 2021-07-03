@@ -18,7 +18,7 @@ import java.util.Date
 class EtaCardPresenter(
     context: Context,
     private val fragmentWidth: Int
-) : BaseCardPresenter<EtaCardView, Card.RouteEtaStopCard>(
+) : BaseCardPresenter<EtaCardView, Card.EtaCard>(
     ContextThemeWrapper(context, R.style.Theme_Fragment_Eta)
 ) {
 
@@ -44,7 +44,7 @@ class EtaCardPresenter(
         return cardView
     }
 
-    override fun onBindViewHolder(card: Card.RouteEtaStopCard, cardView: EtaCardView) {
+    override fun onBindViewHolder(card: Card.EtaCard, cardView: EtaCardView) {
         cardView.tag = card
         val viewBinding = cardView.viewBinding
 

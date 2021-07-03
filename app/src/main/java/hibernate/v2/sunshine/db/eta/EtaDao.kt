@@ -8,17 +8,48 @@ import hibernate.v2.api.model.Bound
 
 @Dao
 interface EtaDao {
-    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta.id = saved_eta_order.id ORDER BY saved_eta_order.position ASC")
-    suspend fun get(): List<EtaEntity>
+    @Query("SELECT * FROM saved_eta " +
+            "JOIN saved_eta_order ON saved_eta.id = saved_eta_order.id " +
+            "JOIN kmb_route ON saved_eta.routeId = kmb_route.route " +
+            "JOIN kmb_stop ON saved_eta.stopId = kmb_stop.stop " +
+            "ORDER BY saved_eta_order.position ASC")
+    suspend fun getAllKmbEtaWithOrdering(): List<EtaKmbDetailsEntity>
 
-    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta.id = saved_eta_order.id WHERE stopId=(:stopId) AND routeId=(:routeId) AND bound=(:bound) AND serviceType=(:serviceType) AND seq=(:seq)")
-    suspend fun get(
+    @Query("SELECT * FROM saved_eta " +
+            "JOIN saved_eta_order ON saved_eta.id = saved_eta_order.id " +
+            "WHERE stopId=(:stopId) " +
+            "AND routeId=(:routeId) " +
+            "AND bound=(:bound) " +
+            "AND serviceType=(:serviceType) " +
+            "AND seq=(:seq) " +
+            "AND brand=(:brand) " +
+            "ORDER BY saved_eta_order.position ASC")
+    suspend fun getEtaWithOrdering(
         stopId: String,
         routeId: String,
         bound: Bound,
         serviceType: String,
-        seq: String
+        seq: String,
+        brand: Brand
     ): List<EtaEntity>
+
+    @Query("SELECT * FROM saved_eta " +
+            "JOIN saved_eta_order ON saved_eta.id = saved_eta_order.id " +
+            "WHERE stopId=(:stopId) " +
+            "AND routeId=(:routeId) " +
+            "AND bound=(:bound) " +
+            "AND serviceType=(:serviceType) " +
+            "AND seq=(:seq) " +
+            "AND brand=(:brand)" +
+            "LIMIT 1")
+    suspend fun getSingleEta(
+        stopId: String,
+        routeId: String,
+        bound: Bound,
+        serviceType: String,
+        seq: String,
+        brand: Brand
+    ): EtaEntity?
 
     @Update
     suspend fun update(entity: EtaEntity)

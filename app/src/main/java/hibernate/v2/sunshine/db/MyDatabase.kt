@@ -7,22 +7,27 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.himphen.logger.Logger
 import hibernate.v2.sunshine.db.eta.EtaDao
 import hibernate.v2.sunshine.db.eta.EtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderDao
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
+import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
+import java.util.concurrent.Executors
 
 private const val DATABASE_NAME = "saved_data"
 
 @Database(
     entities = [
         EtaEntity::class, EtaOrderEntity::class,
-        KmbRouteEntity::class, KmbStopEntity::class
+        KmbRouteEntity::class, KmbStopEntity::class,
+        KmbRouteStopEntity::class
     ],
-    version = 1
+    version = 2,
+    exportSchema = false
 )
 @TypeConverters(DataTypeConverter::class)
 abstract class MyDatabase : RoomDatabase() {
@@ -41,13 +46,16 @@ abstract class MyDatabase : RoomDatabase() {
         }
 
         fun getInstance(context: Context): MyDatabase {
-            return Room.databaseBuilder(
+            val dbBuilder = Room.databaseBuilder(
                 context,
                 MyDatabase::class.java,
                 DATABASE_NAME
             )
-                .allowMainThreadQueries() // TODO check what it is
-                .build()
+            dbBuilder.fallbackToDestructiveMigration()
+            dbBuilder.setQueryCallback({ sqlQuery, bindArgs ->
+                Logger.log(Logger.DEBUG, "SQL", "$sqlQuery SQL Args: $bindArgs", null)
+            }, Executors.newSingleThreadExecutor())
+            return dbBuilder.build()
         }
     }
 }

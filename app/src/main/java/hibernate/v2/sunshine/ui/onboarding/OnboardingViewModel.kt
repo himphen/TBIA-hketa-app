@@ -1,59 +1,65 @@
 package hibernate.v2.sunshine.ui.onboarding
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class OnboardingViewModel(
     private val kmbRepository: KmbRepository,
 ) : BaseViewModel() {
 
-    val fetchTransportDataRequired = MutableSharedFlow<Boolean>()
-    val fetchTransportDataCompleted = MutableSharedFlow<Boolean>()
+    val fetchTransportDataRequired = MutableLiveData<Boolean>()
+    val fetchTransportDataCompleted = MutableLiveData<Boolean>()
 
-    suspend fun checkDbTransportData(scope: CoroutineScope) {
-        val result = arrayListOf<Boolean>()
-        val deferredList = listOf(
-            scope.async { result.add(kmbRepository.isDataExisted()) },
-        )
-        deferredList.awaitAll()
+    fun checkDbTransportData() {
+        viewModelScope.launch {
+            val deferredList = listOf(
+                async {
+                    kmbRepository.isDataExisted()
+                },
+            )
+            val result = deferredList.awaitAll().toMutableList()
 
-        if (result.contains(false)) {
-            fetchTransportDataRequired.emit(true)
-        } else {
-            fetchTransportDataRequired.emit(false)
+            if (result.contains(false)) {
+                fetchTransportDataRequired.postValue(true)
+            } else {
+                fetchTransportDataRequired.postValue(false)
+            }
         }
     }
 
-    suspend fun downloadTransportData(scope: CoroutineScope) {
-        try {
-            listOf(
-                scope.async {
-                    kmbRepository.saveStopListApi()
-                    Logger.d("lifecycle saveStopListApi done")
-                },
-                scope.async {
-                    kmbRepository.saveRouteListApi()
-                    Logger.d("lifecycle saveRouteListApi done")
-                },
-                scope.async {
-                    kmbRepository.saveRouteStopListApi()
-                    Logger.d("lifecycle saveRouteStopListApi done")
-                }
-            ).awaitAll()
+    fun downloadTransportData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                listOf(
+                    async {
+                        kmbRepository.saveStopListApi()
+                        Logger.d("lifecycle saveStopListApi done")
+                    },
+                    async {
+                        kmbRepository.saveRouteListApi()
+                        Logger.d("lifecycle saveRouteListApi done")
+                    },
+                    async {
+                        kmbRepository.saveRouteStopListApi()
+                        Logger.d("lifecycle saveRouteStopListApi done")
+                    }
+                ).awaitAll()
 
-            Logger.d("lifecycle downloadTransportData done")
-            fetchTransportDataCompleted.emit(true)
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle downloadTransportData error")
-            fetchTransportDataCompleted.emit(false)
-            withContext(Dispatchers.Main) {
+                Logger.d("lifecycle downloadTransportData done")
+                fetchTransportDataCompleted.postValue(true)
+            } catch (e: Exception) {
+                Logger.e(e, "lifecycle downloadTransportData error")
+                fetchTransportDataCompleted.postValue(false)
+                withContext(Dispatchers.Main) {
+                }
             }
         }
     }
