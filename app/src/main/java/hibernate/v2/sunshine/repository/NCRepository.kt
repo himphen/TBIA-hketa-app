@@ -7,6 +7,7 @@ import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.nc.NCDao
 import hibernate.v2.sunshine.db.nc.NCRouteEntity
 import hibernate.v2.sunshine.db.nc.NCRouteStopEntity
+import hibernate.v2.sunshine.db.nc.NCRouteWithRouteStop
 import hibernate.v2.sunshine.db.nc.NCStopEntity
 
 class NCRepository(
@@ -56,21 +57,28 @@ class NCRepository(
         ncDao.clearRouteStopList()
     }
 
-    suspend fun saveRoute(route: NCRoute, bound: Bound): List<String> {
-        val outboundListResponse = getRouteStopListApi(route.company, route.routeId, bound)
-        if (outboundListResponse.routeStopList.isNotEmpty()) {
+    suspend fun getRouteWithRouteStop(route: NCRoute, bound: Bound): NCRouteWithRouteStop? {
+        val routeStopList = getRouteStopListApi(route.company, route.routeId, bound).routeStopList
+        if (routeStopList.isNotEmpty()) {
             val ncRouteEntity = NCRouteEntity.fromApiModel(route, bound)
-            ncDao.addRoute(ncRouteEntity)
 
-            val routeStopList = outboundListResponse.routeStopList.map { routeStop ->
-                NCRouteStopEntity.fromApiModel(routeStop)
-            }
-            ncDao.addRouteStopList(routeStopList)
-
-            return routeStopList.map { it.stopId }
+            return NCRouteWithRouteStop(
+                routeEntity = ncRouteEntity,
+                entityList = routeStopList.map { routeStop ->
+                    NCRouteStopEntity.fromApiModel(routeStop)
+                }
+            )
         }
 
-        return emptyList()
+        return null
+    }
+
+    suspend fun saveRouteList(entityList: List<NCRouteEntity>) {
+        ncDao.addRouteList(entityList)
+    }
+
+    suspend fun saveRouteStopList(entityList: List<NCRouteStopEntity>) {
+        ncDao.addRouteStopList(entityList)
     }
 
     suspend fun saveStopList(entityList: List<NCStopEntity>) {

@@ -7,5 +7,5 @@ import hibernate.v2.api.response.BaseResponse
 
 data class NCRouteStopListResponse(
     @SerializedName("data")
-    val routeStopList: List<NCRouteStop>,
+    val routeStopList: List<NCRouteStop> = listOf(),
 ) : BaseResponse()

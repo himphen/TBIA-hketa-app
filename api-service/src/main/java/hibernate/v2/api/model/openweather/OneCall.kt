@@ -1,11 +1,7 @@
 package hibernate.v2.api.model.openweather
 
-
-import android.os.Parcelable
 import com.google.firebase.database.PropertyName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class OneCall(
     @PropertyName("current")
     val current: Current? = null,
@@ -23,4 +19,4 @@ data class OneCall(
     val timezone: String? = null,
     @PropertyName("timezone_offset")
     val timezoneOffset: Int? = null
-) : Parcelable
+)
