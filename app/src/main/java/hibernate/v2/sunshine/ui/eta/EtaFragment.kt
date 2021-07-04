@@ -1,8 +1,6 @@
 package hibernate.v2.sunshine.ui.eta
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +10,7 @@ import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.lifecycle.lifecycleScope
-import hibernate.v2.api.model.Eta
+import hibernate.v2.api.model.eta.Eta
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.FullWidthGridPresenter

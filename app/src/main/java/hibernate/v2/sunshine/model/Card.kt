@@ -1,6 +1,6 @@
 package hibernate.v2.sunshine.model
 
-import hibernate.v2.api.model.Eta
+import hibernate.v2.api.model.eta.Eta
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.model.transport.TransportStop

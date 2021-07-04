@@ -1,6 +1,7 @@
-package hibernate.v2.api.model
+package hibernate.v2.api.model.eta
 
 import com.google.gson.annotations.SerializedName
+import hibernate.v2.api.model.kmb.Bound
 
 data class Eta(
     @SerializedName("co")
@@ -17,8 +18,6 @@ data class Eta(
     val dir: Bound? = null,
     @SerializedName("eta")
     val eta: String? = null,
-    @SerializedName("eta_seq")
-    val etaSeq: Int? = null,
     @SerializedName("rmk_en")
     val rmkEn: String? = null,
     @SerializedName("rmk_sc")

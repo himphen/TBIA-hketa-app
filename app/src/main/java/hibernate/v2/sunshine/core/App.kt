@@ -9,6 +9,7 @@ import hibernate.v2.sunshine.api.WeatherRepository
 import hibernate.v2.sunshine.db.MyDatabase
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.KmbRepository
+import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.ui.settings.eta.SettingsEtaViewModel
@@ -51,12 +52,14 @@ class App : Application() {
         single { get<MyDatabase>().etaDao() }
         single { get<MyDatabase>().etaOrderDao() }
         single { get<MyDatabase>().kmbDao() }
+        single { get<MyDatabase>().ncDao() }
         single { EtaRepository(get(), get(), get()) }
         single { KmbRepository(get(), get()) }
+        single { NCRepository(get(), get()) }
 
         // ViewModels
         viewModel { EtaViewModel(get()) }
-        viewModel { OnboardingViewModel(get()) }
+        viewModel { OnboardingViewModel(get(), get()) }
         viewModel { SettingsEtaViewModel(get(), get()) }
         viewModel { AddEtaViewModel(get()) }
         viewModel { WeatherViewModel(get()) }

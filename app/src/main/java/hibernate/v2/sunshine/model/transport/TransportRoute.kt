@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.model.transport
 
 import android.os.Parcelable
-import hibernate.v2.api.model.Bound
+import hibernate.v2.api.model.kmb.Bound
 import hibernate.v2.sunshine.db.eta.Brand
 import kotlinx.parcelize.Parcelize
 
@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 data class TransportRoute(
     val routeId: String,
     val bound: Bound,
-    val serviceType: String,
+    val serviceType: String = "1",
     val origEn: String,
     val origTc: String,
     val origSc: String,

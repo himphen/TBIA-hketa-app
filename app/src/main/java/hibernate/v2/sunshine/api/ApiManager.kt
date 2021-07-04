@@ -3,9 +3,10 @@ package hibernate.v2.sunshine.api
 import android.content.Context
 import com.google.gson.Gson
 import com.himphen.logger.Logger
-import hibernate.v2.api.service.ApiConverterFactory
-import hibernate.v2.api.service.EtaService
+import hibernate.v2.api.core.ApiConverterFactory
+import hibernate.v2.api.service.KmbService
 import hibernate.v2.api.service.HkoWeatherService
+import hibernate.v2.api.service.NCService
 import hibernate.v2.api.service.OpenWeatherService
 import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.sunshine.util.JsonUtil
@@ -20,7 +21,8 @@ open class ApiManager(val context: Context) {
     private val readTimeout: Long = 15
     private val writeTimeout: Long = 15
     private lateinit var client: OkHttpClient
-    lateinit var etaService: EtaService
+    lateinit var kmbService: KmbService
+    lateinit var ncService: NCService
     lateinit var hkoWeatherService: HkoWeatherService
     lateinit var openWeatherService: OpenWeatherService
 
@@ -37,13 +39,21 @@ open class ApiManager(val context: Context) {
             .addInterceptor(ApiLogInterceptor())
             .build()
 
-        etaService = Retrofit.Builder()
+        kmbService = Retrofit.Builder()
             .baseUrl("https://data.etabus.gov.hk/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ApiConverterFactory(Gson()))
             .build()
-            .create(EtaService::class.java)
+            .create(KmbService::class.java)
+
+        ncService = Retrofit.Builder()
+            .baseUrl("https://rt.data.gov.hk/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(ApiConverterFactory(Gson()))
+            .build()
+            .create(NCService::class.java)
 
         hkoWeatherService = Retrofit.Builder()
             .baseUrl("https://data.weather.gov.hk/")

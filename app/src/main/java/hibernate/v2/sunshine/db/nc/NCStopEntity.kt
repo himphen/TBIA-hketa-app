@@ -1,15 +1,16 @@
-package hibernate.v2.sunshine.db.kmb
+package hibernate.v2.sunshine.db.nc
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import hibernate.v2.api.model.kmb.KmbStop
+import hibernate.v2.api.model.nc.NCStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
 @Entity(
-    tableName = "kmb_stop"
+    tableName = "nc_stop"
 )
-data class KmbStopEntity(
+data class NCStopEntity(
     @PrimaryKey
     @ColumnInfo(name = "stop", index = true)
     val stopId: String,
@@ -24,14 +25,16 @@ data class KmbStopEntity(
     val lng: String,
 ) {
     companion object {
-        fun fromApiModel(stop: KmbStop): KmbStopEntity {
-            return KmbStopEntity(
-                stopId = stop.stopId,
-                nameEn = stop.nameEn,
-                nameTc = stop.nameTc,
-                nameSc = stop.nameSc,
-                lat = stop.lat,
-                lng = stop.lng
+        fun fromApiModel(stop: NCStop): NCStopEntity? {
+            if (!stop.isValid()) return null
+
+            return NCStopEntity(
+                stopId = stop.stopId!!,
+                nameEn = stop.nameEn!!,
+                nameTc = stop.nameTc!!,
+                nameSc = stop.nameSc!!,
+                lat = stop.lat!!,
+                lng = stop.lng!!
             )
         }
     }

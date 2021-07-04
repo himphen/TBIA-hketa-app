@@ -1,6 +1,6 @@
 package hibernate.v2.sunshine.model.transport
 
-import hibernate.v2.api.model.Bound
+import hibernate.v2.api.model.kmb.Bound
 
 data class TransportRouteStop(
     val routeId: String,

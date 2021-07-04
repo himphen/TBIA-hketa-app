@@ -1,11 +1,11 @@
-package hibernate.v2.api.model
+package hibernate.v2.api.model.nc
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
-data class Route(
-    @SerializedName("bound")
-    val bound: Bound,
+data class NCRoute(
+    @SerializedName("co")
+    val company: Company,
     @SerializedName("dest_en")
     val destEn: String,
     @SerializedName("dest_sc")
@@ -20,20 +20,18 @@ data class Route(
     val origTc: String,
     @SerializedName("route")
     val routeId: String,
-    @SerializedName("service_type")
-    val serviceType: String,
 )
 
-enum class Bound(val value: String) {
+enum class Company(val value: String) {
     @Keep
-    @SerializedName("I")
-    INBOUND("inbound"),
+    @SerializedName("CTB")
+    CTB("CTB"),
 
     @Keep
-    @SerializedName("O")
-    OUTBOUND("outbound");
+    @SerializedName("NWFB")
+    NWFB("NWFB");
 
     companion object {
-        fun from(type: String?) = values().find { it.value == type } ?: INBOUND
+        fun from(type: String?) = values().find { it.value == type } ?: NWFB
     }
 }

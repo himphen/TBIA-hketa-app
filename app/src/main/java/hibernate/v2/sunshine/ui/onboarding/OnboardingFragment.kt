@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import hibernate.v2.sunshine.databinding.FragmentOnboardingBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.MainActivity
@@ -43,11 +44,18 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
         }
 
         viewModel.fetchTransportDataCompleted.observe(viewLifecycleOwner) {
-            if (it) {
-                goToMainActivity()
-                // show complete ui
-            } else {
-                goToMainActivity()
+            when (it) {
+                FetchTransportDataCompleted.KMB -> {
+                }
+                FetchTransportDataCompleted.NC -> {
+                }
+                FetchTransportDataCompleted.ALL -> {
+                    Toast.makeText(context, "Done", Toast.LENGTH_LONG).show()
+//                    goToMainActivity()
+                }
+                null -> {
+
+                }
             }
         }
     }

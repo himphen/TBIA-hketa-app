@@ -5,7 +5,7 @@ import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import hibernate.v2.api.model.Bound
+import hibernate.v2.api.model.kmb.Bound
 import hibernate.v2.sunshine.model.transport.RouteHashable
 import hibernate.v2.sunshine.model.transport.StopHashable
 import kotlinx.parcelize.Parcelize

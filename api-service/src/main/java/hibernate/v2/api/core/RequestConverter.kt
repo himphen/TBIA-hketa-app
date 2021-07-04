@@ -1,4 +1,4 @@
-package hibernate.v2.api.service
+package hibernate.v2.api.core
 
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter

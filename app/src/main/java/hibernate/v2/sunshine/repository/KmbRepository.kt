@@ -1,8 +1,8 @@
 package hibernate.v2.sunshine.repository
 
-import hibernate.v2.api.response.RouteListResponse
-import hibernate.v2.api.response.RouteStopListResponse
-import hibernate.v2.api.response.StopListResponse
+import hibernate.v2.api.response.kmb.KmbRouteListResponse
+import hibernate.v2.api.response.kmb.KmbRouteStopListResponse
+import hibernate.v2.api.response.kmb.KmbStopListResponse
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
@@ -47,16 +47,22 @@ class KmbRepository(
         serviceType,
     )
 
-    suspend fun getRouteListApi(): RouteListResponse {
-        return apiManager.etaService.getRouteList()
+    suspend fun getRouteListApi(): KmbRouteListResponse {
+        return apiManager.kmbService.getRouteList()
     }
 
-    suspend fun getStopListApi(): StopListResponse {
-        return apiManager.etaService.getStopList()
+    suspend fun getStopListApi(): KmbStopListResponse {
+        return apiManager.kmbService.getStopList()
     }
 
-    suspend fun getRouteStopListApi(): RouteStopListResponse {
-        return apiManager.etaService.getRouteStopList()
+    suspend fun getRouteStopListApi(): KmbRouteStopListResponse {
+        return apiManager.kmbService.getRouteStopList()
+    }
+
+    suspend fun initDatabase() {
+        kmbDao.clearRouteList()
+        kmbDao.clearStopList()
+        kmbDao.clearRouteStopList()
     }
 
     suspend fun saveRouteListApi() {
@@ -64,7 +70,6 @@ class KmbRepository(
             KmbRouteEntity.fromApiModel(route)
         }
 
-        kmbDao.clearRouteList()
         kmbDao.addRouteList(list)
     }
 
@@ -73,16 +78,14 @@ class KmbRepository(
             KmbStopEntity.fromApiModel(stop)
         }
 
-        kmbDao.clearStopList()
         kmbDao.addStopList(list)
     }
 
     suspend fun saveRouteStopListApi() {
-        val list = getRouteStopListApi().routeStopList.map { route ->
-            KmbRouteStopEntity.fromApiModel(route)
+        val list = getRouteStopListApi().routeStopList.map { routeStop ->
+            KmbRouteStopEntity.fromApiModel(routeStop)
         }
 
-        kmbDao.clearRouteStopList()
         kmbDao.addRouteStopList(list)
     }
 }

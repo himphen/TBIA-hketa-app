@@ -1,8 +1,8 @@
-package hibernate.v2.api.model
+package hibernate.v2.api.model.kmb
 
 import com.google.gson.annotations.SerializedName
 
-data class Stop(
+data class KmbStop(
     @SerializedName("lat")
     val lat: String,
     @SerializedName("long")

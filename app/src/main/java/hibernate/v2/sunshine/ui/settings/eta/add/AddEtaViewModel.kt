@@ -1,6 +1,6 @@
 package hibernate.v2.sunshine.ui.settings.eta.add
 
-import hibernate.v2.api.model.Bound
+import hibernate.v2.api.model.kmb.Bound
 import hibernate.v2.sunshine.db.eta.Brand
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity

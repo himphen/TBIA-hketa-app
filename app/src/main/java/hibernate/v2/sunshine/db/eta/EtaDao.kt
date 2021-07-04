@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import hibernate.v2.api.model.Bound
+import hibernate.v2.api.model.kmb.Bound
 
 @Dao
 interface EtaDao {

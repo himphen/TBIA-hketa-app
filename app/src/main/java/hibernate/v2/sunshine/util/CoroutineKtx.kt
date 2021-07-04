@@ -36,24 +36,3 @@ fun CoroutineScope.launchPeriodicAsync(
         action()
     }
 }
-
-inline fun <T, R> Iterable<T>.parallelMap(
-    dispatcher: ExecutorCoroutineDispatcher,
-    crossinline transform: (T) -> R
-): List<R> = runBlocking {
-
-    val items: Iterable<T> = this@parallelMap
-    val result = ConcurrentSkipListMap<Int, R>()
-
-    launch(dispatcher) {
-        items.withIndex().forEach { (index, item) ->
-            launch {
-                result[index] = transform(item)
-            }
-        }
-    }
-
-    // ConcurrentSkipListMap is a SortedMap
-    // so the values will be in the right order
-    result.values.toList()
-}

@@ -9,13 +9,17 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import hibernate.v2.sunshine.db.eta.EtaDao
-import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderDao
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
+import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
+import hibernate.v2.sunshine.db.nc.NCDao
+import hibernate.v2.sunshine.db.nc.NCRouteEntity
+import hibernate.v2.sunshine.db.nc.NCRouteStopEntity
+import hibernate.v2.sunshine.db.nc.NCStopEntity
 import java.util.concurrent.Executors
 
 private const val DATABASE_NAME = "saved_data"
@@ -24,9 +28,11 @@ private const val DATABASE_NAME = "saved_data"
     entities = [
         SavedEtaEntity::class, EtaOrderEntity::class,
         KmbRouteEntity::class, KmbStopEntity::class,
-        KmbRouteStopEntity::class
+        KmbRouteStopEntity::class,
+        NCRouteEntity::class, NCStopEntity::class,
+        NCRouteStopEntity::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 @TypeConverters(DataTypeConverter::class)
@@ -34,6 +40,7 @@ abstract class MyDatabase : RoomDatabase() {
     abstract fun etaDao(): EtaDao
     abstract fun etaOrderDao(): EtaOrderDao
     abstract fun kmbDao(): KmbDao
+    abstract fun ncDao(): NCDao
 
     companion object {
         private val MIGRATION_1_2 = object : Migration(1, 2) {

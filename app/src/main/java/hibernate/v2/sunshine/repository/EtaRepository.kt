@@ -1,9 +1,9 @@
 package hibernate.v2.sunshine.repository
 
-import hibernate.v2.api.model.Bound
-import hibernate.v2.api.response.EtaResponse
-import hibernate.v2.api.response.RouteResponse
-import hibernate.v2.api.response.StopResponse
+import hibernate.v2.api.model.kmb.Bound
+import hibernate.v2.api.response.eta.EtaResponse
+import hibernate.v2.api.response.kmb.KmbRouteResponse
+import hibernate.v2.api.response.kmb.KmbStopResponse
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.eta.Brand
 import hibernate.v2.sunshine.db.eta.EtaDao
@@ -61,15 +61,15 @@ class EtaRepository(
     }
 
     suspend fun getStopEtaApi(stopId: String, route: String): EtaResponse {
-        return apiManager.etaService.getStopEta(
+        return apiManager.kmbService.getStopEta(
             stopId = stopId,
             route = route,
             serviceType = 1
         )
     }
 
-    suspend fun getStopApi(stopId: String): StopResponse {
-        return apiManager.etaService.getStop(
+    suspend fun getStopApi(stopId: String): KmbStopResponse {
+        return apiManager.kmbService.getStop(
             stopId = stopId
         )
     }
@@ -78,8 +78,8 @@ class EtaRepository(
         routeId: String,
         bound: Bound,
         serviceType: String
-    ): RouteResponse {
-        return apiManager.etaService.getRoute(
+    ): KmbRouteResponse {
+        return apiManager.kmbService.getRoute(
             route = routeId,
             bound = bound.value,
             serviceType = serviceType
