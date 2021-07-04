@@ -10,13 +10,13 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.openweather.OneCall
-import hibernate.v2.sunshine.api.DataRepository
+import hibernate.v2.sunshine.api.WeatherRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class WeatherViewModel(private val repo: DataRepository) : BaseViewModel() {
+class WeatherViewModel(private val repo: WeatherRepository) : BaseViewModel() {
     val oneCallData = MutableLiveData<OneCall>()
 
     fun getWeatherInfo() {

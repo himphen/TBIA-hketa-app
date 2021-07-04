@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.model
+package hibernate.v2.sunshine.model.transport
 
 interface RouteHashable {
     fun routeHashId(): String

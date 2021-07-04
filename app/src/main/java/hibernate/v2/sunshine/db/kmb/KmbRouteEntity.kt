@@ -6,8 +6,8 @@ import androidx.room.Index
 import hibernate.v2.api.model.Bound
 import hibernate.v2.api.model.Route
 import hibernate.v2.sunshine.db.eta.Brand
-import hibernate.v2.sunshine.model.RouteHashable
-import hibernate.v2.sunshine.model.TransportRoute
+import hibernate.v2.sunshine.model.transport.RouteHashable
+import hibernate.v2.sunshine.model.transport.TransportRoute
 
 @Entity(
     tableName = "kmb_route",
@@ -20,11 +20,17 @@ data class KmbRouteEntity(
     val bound: Bound,
     @ColumnInfo(name = "service_type")
     val serviceType: String,
+    @ColumnInfo(name = "orig_en")
     val origEn: String,
+    @ColumnInfo(name = "orig_tc")
     val origTc: String,
+    @ColumnInfo(name = "orig_sc")
     val origSc: String,
+    @ColumnInfo(name = "dest_en")
     val destEn: String,
+    @ColumnInfo(name = "dest_tc")
     val destTc: String,
+    @ColumnInfo(name = "dest_sc")
     val destSc: String,
 ) : RouteHashable {
     companion object {

@@ -1,10 +1,7 @@
 package hibernate.v2.api.model
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class Eta(
     @SerializedName("co")
     val co: String? = null,
@@ -34,4 +31,4 @@ data class Eta(
     val seq: String? = null,
     @SerializedName("service_type")
     val serviceType: Int? = null
-) : Parcelable
+)

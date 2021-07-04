@@ -19,7 +19,7 @@ class OnboardingViewModel(
     val fetchTransportDataCompleted = MutableLiveData<Boolean>()
 
     fun checkDbTransportData() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val deferredList = listOf(
                 async {
                     kmbRepository.isDataExisted()
@@ -37,26 +37,27 @@ class OnboardingViewModel(
 
     fun downloadTransportData() {
         viewModelScope.launch(Dispatchers.IO) {
+            Logger.d("=== lifecycle downloadTransportData start ===")
             try {
                 listOf(
                     async {
                         kmbRepository.saveStopListApi()
-                        Logger.d("lifecycle saveStopListApi done")
+                        Logger.d("lifecycle downloadTransportData kmbRepository.saveStopListApi done")
                     },
                     async {
                         kmbRepository.saveRouteListApi()
-                        Logger.d("lifecycle saveRouteListApi done")
+                        Logger.d("lifecycle downloadTransportData kmbRepository.saveRouteListApi done")
                     },
                     async {
                         kmbRepository.saveRouteStopListApi()
-                        Logger.d("lifecycle saveRouteStopListApi done")
+                        Logger.d("lifecycle downloadTransportData kmbRepository.saveRouteStopListApi done")
                     }
                 ).awaitAll()
 
-                Logger.d("lifecycle downloadTransportData done")
+                Logger.d("=== lifecycle downloadTransportData done ===")
                 fetchTransportDataCompleted.postValue(true)
             } catch (e: Exception) {
-                Logger.e(e, "lifecycle downloadTransportData error")
+                Logger.e(e, "=== lifecycle downloadTransportData error ===")
                 fetchTransportDataCompleted.postValue(false)
                 withContext(Dispatchers.Main) {
                 }

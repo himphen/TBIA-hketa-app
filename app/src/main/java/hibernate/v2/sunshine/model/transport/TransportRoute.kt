@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.model
+package hibernate.v2.sunshine.model.transport
 
 import android.os.Parcelable
 import hibernate.v2.api.model.Bound

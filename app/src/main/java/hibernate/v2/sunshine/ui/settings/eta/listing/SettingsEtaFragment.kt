@@ -3,8 +3,6 @@ package hibernate.v2.sunshine.ui.settings.eta.listing
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.leanback.app.VerticalGridSupportFragment
@@ -205,10 +203,6 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
         )
         mAdapter = ArrayObjectAdapter(cardPresenter)
         adapter = mAdapter
-        prepareEntranceTransition()
-        Handler(Looper.getMainLooper()).postDelayed({
-            startEntranceTransition()
-        }, 1000)
     }
 
     private fun updateRows() {

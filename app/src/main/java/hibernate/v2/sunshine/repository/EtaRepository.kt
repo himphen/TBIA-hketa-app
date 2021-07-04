@@ -7,11 +7,9 @@ import hibernate.v2.api.response.StopResponse
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.eta.Brand
 import hibernate.v2.sunshine.db.eta.EtaDao
-import hibernate.v2.sunshine.db.eta.EtaEntity
+import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderDao
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class EtaRepository(
     private val apiManager: ApiManager,
@@ -19,8 +17,7 @@ class EtaRepository(
     private val etaOrderDb: EtaOrderDao
 ) {
 
-    suspend fun getSavedKmbEtaList() =
-        withContext(Dispatchers.IO) { etaDao.getAllKmbEtaWithOrdering() }
+    suspend fun getSavedKmbEtaList() = etaDao.getAllKmbEtaWithOrdering()
 
     suspend fun hasEtaInDb(
         stopId: String,
@@ -38,11 +35,11 @@ class EtaRepository(
         brand
     ) != null
 
-    suspend fun addEta(entity: EtaEntity) {
+    suspend fun addEta(entity: SavedEtaEntity) {
         etaDao.add(entity)
     }
 
-    suspend fun clearEta(entity: EtaEntity) {
+    suspend fun clearEta(entity: SavedEtaEntity) {
         etaDao.clear(
             entity.stopId,
             entity.routeId,

@@ -3,21 +3,19 @@ package hibernate.v2.sunshine.db.kmb
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
-import androidx.room.PrimaryKey
 import hibernate.v2.api.model.Bound
 import hibernate.v2.api.model.RouteStop
-import hibernate.v2.sunshine.model.RouteHashable
+import hibernate.v2.sunshine.model.transport.RouteHashable
 
 @Entity(
     tableName = "kmb_route_stop",
     indices = [
         Index("stop"),
         Index("route", "bound", "service_type")
-    ]
+    ],
+    primaryKeys = ["route", "bound", "service_type", "seq"]
 )
 data class KmbRouteStopEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long? = null,
     @ColumnInfo(name = "route")
     val routeId: String,
     val bound: Bound,

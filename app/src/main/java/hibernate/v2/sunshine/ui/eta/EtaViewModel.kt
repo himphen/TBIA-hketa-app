@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.Bound
 import hibernate.v2.sunshine.db.eta.Brand
-import hibernate.v2.sunshine.db.eta.EtaEntity
+import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
@@ -13,22 +13,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentSkipListMap
 
 class EtaViewModel(
     private val etaRepository: EtaRepository
 ) : BaseViewModel() {
 
-    val savedEtaCardList = MutableLiveData<List<Card.EtaCard>>().apply {
-        value = listOf()
-    }
+    val savedEtaCardList = MutableLiveData<List<Card.EtaCard>>()
 
     fun getEtaListFromDb() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val savedEtaList = etaRepository.getSavedKmbEtaList()
-            val convertedEtaCardList = savedEtaList.map { etaKmbDetailsEntity ->
+            val convertedEtaCardList = savedEtaList.map { etaKmbDetails ->
                 Card.EtaCard(
-                    route = etaKmbDetailsEntity.kmbRouteEntity.toTransportModel(),
-                    stop = etaKmbDetailsEntity.kmbStopEntity.toTransportModel()
+                    route = etaKmbDetails.route.toTransportModel(),
+                    stop = etaKmbDetails.stop.toTransportModelWithSeq(etaKmbDetails.savedEta.seq)
                 )
             }
 
@@ -46,39 +45,34 @@ class EtaViewModel(
 
         viewModelScope.launch(Dispatchers.IO) {
             Logger.d("lifecycle getEtaList")
-            try {
-                val list = arrayOfNulls<Card.EtaCard>(etaCardList.size)
+            val result = ConcurrentSkipListMap<Int, Card.EtaCard>()
 
-                etaCardList.mapIndexed { index, etaCard ->
-                    async {
-                        val apiEtaResponse = etaRepository.getStopEtaApi(
-                            stopId = etaCard.stop.stopId,
-                            route = etaCard.route.routeId
-                        )
-                        apiEtaResponse.data?.let { etaList ->
-                            etaCard.etaList = etaList.filter { eta ->
-                                // Filter not same bound in bus terminal stops
-                                eta.dir == etaCard.route.bound && eta.seq == etaCard.stop.seq
-                            }.toMutableList()
+            etaCardList.mapIndexed { index, etaCard ->
+                async {
+                    val apiEtaResponse = etaRepository.getStopEtaApi(
+                        stopId = etaCard.stop.stopId,
+                        route = etaCard.route.routeId
+                    )
+                    apiEtaResponse.data?.let { etaList ->
+                        etaCard.etaList = etaList.filter { eta ->
+                            // e.g. Filter not same bound in bus terminal stops
+                            eta.dir == etaCard.route.bound && eta.seq == etaCard.stop.seq
                         }
-
-                        list[index] = etaCard
-                        Logger.d("lifecycle getStopEta done: " + etaCard.stop.stopId + "-" + etaCard.route.routeId)
                     }
-                }.awaitAll()
 
-                Logger.d("lifecycle getEtaList done")
-                savedEtaCardList.postValue(list.filterNotNull())
-            } catch (e: Exception) {
-                Logger.e(e, "lifecycle getEtaList error")
-            }
+                    result[index] = etaCard
+                }
+            }.awaitAll()
+
+            Logger.d("lifecycle getEtaList done")
+            savedEtaCardList.postValue(result.values.toList())
         }
     }
 
-    private fun getDefaultEtaEntityList(): MutableList<EtaEntity> {
-        val defaultEtaEntityList = mutableListOf<EtaEntity>()
+    private fun getDefaultEtaEntityList(): MutableList<SavedEtaEntity> {
+        val defaultEtaEntityList = mutableListOf<SavedEtaEntity>()
         defaultEtaEntityList.add(
-            EtaEntity(
+            SavedEtaEntity(
                 stopId = "9D208FE6B2CFD450",
                 routeId = "290",
                 bound = Bound.OUTBOUND,
@@ -88,7 +82,7 @@ class EtaViewModel(
             )
         )
         defaultEtaEntityList.add(
-            EtaEntity(
+            SavedEtaEntity(
                 stopId = "9D208FE6B2CFD450",
                 routeId = "290X",
                 bound = Bound.OUTBOUND,
@@ -98,7 +92,7 @@ class EtaViewModel(
             )
         )
         defaultEtaEntityList.add(
-            EtaEntity(
+            SavedEtaEntity(
                 stopId = "403881982F9E7209",
                 routeId = "296A",
                 bound = Bound.OUTBOUND,
@@ -108,7 +102,7 @@ class EtaViewModel(
             )
         )
         defaultEtaEntityList.add(
-            EtaEntity(
+            SavedEtaEntity(
                 stopId = "5527FF8CC85CF139",
                 routeId = "296C",
                 bound = Bound.OUTBOUND,
@@ -118,7 +112,7 @@ class EtaViewModel(
             )
         )
         defaultEtaEntityList.add(
-            EtaEntity(
+            SavedEtaEntity(
                 stopId = "21E3E95EAEB2048C",
                 routeId = "296D",
                 bound = Bound.OUTBOUND,

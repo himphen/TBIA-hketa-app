@@ -5,7 +5,7 @@ import com.himphen.logger.AndroidLogAdapter
 import com.himphen.logger.Logger
 import com.himphen.logger.PrettyFormatStrategy
 import hibernate.v2.sunshine.api.ApiManager
-import hibernate.v2.sunshine.api.DataRepository
+import hibernate.v2.sunshine.api.WeatherRepository
 import hibernate.v2.sunshine.db.MyDatabase
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.KmbRepository
@@ -45,7 +45,7 @@ class App : Application() {
     private val appModule = module {
         // singleton service
         single { ApiManager(androidContext()) }
-        single { DataRepository(get()) }
+        single { WeatherRepository(get()) }
         // database
         single { MyDatabase.getInstance(androidContext()) }
         single { get<MyDatabase>().etaDao() }

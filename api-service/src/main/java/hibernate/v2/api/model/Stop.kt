@@ -1,10 +1,7 @@
 package hibernate.v2.api.model
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class Stop(
     @SerializedName("lat")
     val lat: String,
@@ -20,4 +17,4 @@ data class Stop(
     val stopId: String,
 
     var seq: String? = null
-) : Parcelable
+)

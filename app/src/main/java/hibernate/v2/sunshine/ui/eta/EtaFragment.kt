@@ -46,24 +46,6 @@ class EtaFragment : VerticalGridSupportFragment() {
     private var etaCardList: MutableList<Card.EtaCard>? = null
     private var refreshEtaJob: Deferred<Unit>? = null
 
-    init {
-        lifecycleScope.launch {
-            viewModel.savedEtaCardList.observe(this@EtaFragment) {
-                etaCardList?.let { etaCardList ->
-                    etaCardList.clear()
-                    etaCardList.addAll(it)
-                    processEtaList()
-                } ?: run {
-                    etaCardList = it.toMutableList()
-                    mAdapter?.addAll(0, etaCardList)
-                    processEtaList()
-
-                    viewModel.updateEtaList(etaCardList)
-                }
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         updateRouteEtaStopList()
@@ -77,6 +59,22 @@ class EtaFragment : VerticalGridSupportFragment() {
         gridPresenter.numberOfColumns = COLUMNS
         gridPresenter.shadowEnabled = false
         setGridPresenter(gridPresenter)
+    }
+
+    private fun initEvent() {
+        viewModel.savedEtaCardList.observe(viewLifecycleOwner) {
+            etaCardList?.let { etaCardList ->
+                etaCardList.clear()
+                etaCardList.addAll(it)
+                processEtaList()
+            } ?: run {
+                etaCardList = it.toMutableList()
+                mAdapter?.addAll(0, etaCardList)
+                processEtaList()
+
+                viewModel.updateEtaList(etaCardList)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -95,6 +93,7 @@ class EtaFragment : VerticalGridSupportFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initEvent()
 
         lifecycleScope.launch {
             val cardPresenter = EtaCardPresenter(requireContext(), getFragmentWidth(view))
@@ -102,11 +101,6 @@ class EtaFragment : VerticalGridSupportFragment() {
             adapter = mAdapter
 
             viewModel.getEtaListFromDb()
-
-            prepareEntranceTransition()
-            Handler(Looper.getMainLooper()).postDelayed({
-                startEntranceTransition()
-            }, 1000)
         }
     }
 

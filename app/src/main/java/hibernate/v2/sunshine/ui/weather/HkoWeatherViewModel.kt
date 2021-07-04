@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.hko.TodayForecast
 import hibernate.v2.api.model.hko.TodayWeather
-import hibernate.v2.sunshine.api.DataRepository
+import hibernate.v2.sunshine.api.WeatherRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HkoWeatherViewModel(private val repo: DataRepository) : BaseViewModel() {
+class HkoWeatherViewModel(private val repo: WeatherRepository) : BaseViewModel() {
     val todayWeather = MutableLiveData<TodayWeather>()
     val todayForecast = MutableLiveData<TodayForecast>()
 

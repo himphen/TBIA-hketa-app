@@ -1,40 +1,14 @@
 package hibernate.v2.sunshine.util
 
-import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
-import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExecutorCoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
-fun <T> BaseViewModel.callApiService(
-    isSendErrorMsg: Boolean = false,
-    callApi: suspend () -> T,
-    handlerData: (data: T) -> Unit,
-    handlerError: (data: Exception) -> Unit = {}
-) {
-    viewModelScope.launch {
-        sIsLoading.send(true)
-        try {
-            val data = withContext(Dispatchers.IO) {
-                callApi()
-            }
-            handlerData(data)
-        } catch (e: Exception) {
-            if (isSendErrorMsg)
-                sError.send(e)
-            Logger.e(e, "net error")
-            withContext(Dispatchers.Main) {
-                handlerError(e)
-            }
-        }
-        sIsLoading.send(false)
-    }
-}
+import kotlinx.coroutines.runBlocking
+import java.util.concurrent.ConcurrentSkipListMap
 
 suspend fun <T> retry(numOfRetries: Int, block: suspend () -> T): T {
     var throwable: Throwable? = null
@@ -61,4 +35,25 @@ fun CoroutineScope.launchPeriodicAsync(
     } else {
         action()
     }
+}
+
+inline fun <T, R> Iterable<T>.parallelMap(
+    dispatcher: ExecutorCoroutineDispatcher,
+    crossinline transform: (T) -> R
+): List<R> = runBlocking {
+
+    val items: Iterable<T> = this@parallelMap
+    val result = ConcurrentSkipListMap<Int, R>()
+
+    launch(dispatcher) {
+        items.withIndex().forEach { (index, item) ->
+            launch {
+                result[index] = transform(item)
+            }
+        }
+    }
+
+    // ConcurrentSkipListMap is a SortedMap
+    // so the values will be in the right order
+    result.values.toList()
 }

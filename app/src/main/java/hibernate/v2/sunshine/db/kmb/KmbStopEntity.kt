@@ -2,18 +2,16 @@ package hibernate.v2.sunshine.db.kmb
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
 import hibernate.v2.api.model.Stop
-import hibernate.v2.sunshine.model.TransportStop
+import hibernate.v2.sunshine.model.transport.TransportStop
 
 @Entity(
-    tableName = "kmb_stop",
-    indices = [Index("stop")]
+    tableName = "kmb_stop"
 )
 data class KmbStopEntity(
     @PrimaryKey
-    @ColumnInfo(name = "stop")
+    @ColumnInfo(name = "stop", index = true)
     val stopId: String,
     @ColumnInfo(name = "name_en")
     val nameEn: String,

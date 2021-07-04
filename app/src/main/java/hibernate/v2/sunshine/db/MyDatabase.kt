@@ -1,15 +1,15 @@
 package hibernate.v2.sunshine.db
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.himphen.logger.Logger
 import hibernate.v2.sunshine.db.eta.EtaDao
-import hibernate.v2.sunshine.db.eta.EtaEntity
+import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderDao
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.kmb.KmbDao
@@ -22,11 +22,11 @@ private const val DATABASE_NAME = "saved_data"
 
 @Database(
     entities = [
-        EtaEntity::class, EtaOrderEntity::class,
+        SavedEtaEntity::class, EtaOrderEntity::class,
         KmbRouteEntity::class, KmbStopEntity::class,
         KmbRouteStopEntity::class
     ],
-    version = 2,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(DataTypeConverter::class)
@@ -53,7 +53,7 @@ abstract class MyDatabase : RoomDatabase() {
             )
             dbBuilder.fallbackToDestructiveMigration()
             dbBuilder.setQueryCallback({ sqlQuery, bindArgs ->
-                Logger.log(Logger.DEBUG, "SQL", "$sqlQuery SQL Args: $bindArgs", null)
+                Log.d("SQL", "Query: $sqlQuery SQL --- Args: $bindArgs")
             }, Executors.newSingleThreadExecutor())
             return dbBuilder.build()
         }

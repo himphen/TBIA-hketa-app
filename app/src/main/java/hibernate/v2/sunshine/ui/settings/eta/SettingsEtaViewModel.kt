@@ -3,11 +3,11 @@ package hibernate.v2.sunshine.ui.settings.eta
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
-import hibernate.v2.sunshine.db.eta.EtaEntity
+import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.RouteForRowAdapter
-import hibernate.v2.sunshine.model.TransportRouteStopList
+import hibernate.v2.sunshine.model.transport.TransportRouteStopList
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
@@ -15,27 +15,24 @@ import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SettingsEtaViewModel(
     private val kmbRepository: KmbRepository,
     private val etaRepository: EtaRepository,
 ) : BaseViewModel() {
 
-    val savedEtaCardList = MutableLiveData<MutableList<Card.SettingsEtaCard>>().apply {
-        value = mutableListOf()
-    }
+    val savedEtaCardList = MutableLiveData<MutableList<Card.SettingsEtaCard>>()
     val editCard = MutableLiveData<Card.SettingsEtaCard>()
     val addEtaListReady = MutableSharedFlow<Boolean>()
 
     fun getSavedEtaCardList() {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.IO) {
             val savedEtaList = etaRepository.getSavedKmbEtaList()
             val convertedEtaCardList = savedEtaList.map { etaKmbDetailsEntity ->
                 Card.SettingsEtaCard(
-                    entity = etaKmbDetailsEntity.etaEntity,
-                    route = etaKmbDetailsEntity.kmbRouteEntity.toTransportModel(),
-                    stop = etaKmbDetailsEntity.kmbStopEntity.toTransportModel(),
+                    entity = etaKmbDetailsEntity.savedEta,
+                    route = etaKmbDetailsEntity.route.toTransportModel(),
+                    stop = etaKmbDetailsEntity.stop.toTransportModel(),
                     type = Card.SettingsEtaCard.Type.DATA
                 )
             }.toMutableList()
@@ -44,21 +41,17 @@ class SettingsEtaViewModel(
         }
     }
 
-    suspend fun clearData(item: EtaEntity) =
-        withContext(Dispatchers.IO) {
-            etaRepository.clearEta(item)
-        }
+    suspend fun clearData(item: SavedEtaEntity) = etaRepository.clearEta(item)
 
-    suspend fun clearAllEta() =
-        withContext(Dispatchers.IO) { etaRepository.clearAllEta() }
+    suspend fun clearAllEta() = etaRepository.clearAllEta()
 
-    suspend fun getEtaOrderList() = withContext(Dispatchers.IO) { etaRepository.getEtaOrderList() }
+    suspend fun getEtaOrderList() = etaRepository.getEtaOrderList()
 
     suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
-        withContext(Dispatchers.IO) { etaRepository.updateEtaOrderList(entityList) }
+        etaRepository.updateEtaOrderList(entityList)
 
     fun getTransportRouteList() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (RouteAndStopListDataHolder.hasData()) {
                 addEtaListReady.emit(true)
                 return@launch

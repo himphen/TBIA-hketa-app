@@ -3,6 +3,7 @@ package hibernate.v2.sunshine.db.kmb
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 
 @Dao
 interface KmbDao {
@@ -71,6 +72,7 @@ interface KmbDao {
     @Query("SELECT * FROM kmb_route_stop")
     suspend fun getRouteStopList(): List<KmbRouteStopEntity>
 
+    @Transaction
     @Query("SELECT * FROM kmb_route_stop")
     suspend fun getRouteStopDetailsList(): List<KmbRouteStopDetails>
 

@@ -12,7 +12,7 @@ import androidx.leanback.widget.ListRowPresenter
 import androidx.lifecycle.lifecycleScope
 import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.db.eta.EtaEntity
+import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.Card
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +47,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
                     return@launch
                 }
 
-                val newEta = EtaEntity(
+                val newEta = SavedEtaEntity(
                     stopId = card.stop.stopId,
                     routeId = card.route.routeId,
                     bound = card.route.bound,

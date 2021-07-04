@@ -1,7 +1,9 @@
 package hibernate.v2.sunshine.model
 
 import hibernate.v2.api.model.Eta
-import hibernate.v2.sunshine.db.eta.EtaEntity
+import hibernate.v2.sunshine.db.eta.SavedEtaEntity
+import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.transport.TransportStop
 
 sealed class Card {
     data class SettingsCard(
@@ -16,7 +18,7 @@ sealed class Card {
     }
 
     data class SettingsEtaCard(
-        val entity: EtaEntity? = null,
+        val entity: SavedEtaEntity? = null,
         val route: TransportRoute? = null,
         val stop: TransportStop? = null,
         val type: Type,

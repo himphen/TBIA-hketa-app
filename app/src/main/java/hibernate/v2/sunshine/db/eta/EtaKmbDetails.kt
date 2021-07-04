@@ -5,17 +5,17 @@ import androidx.room.Relation
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 
-data class EtaKmbDetailsEntity(
+data class EtaKmbDetails(
     @Embedded
-    val etaEntity: EtaEntity,
+    val savedEta: SavedEtaEntity,
     @Relation(
-        parentColumn = "routeId",
+        parentColumn = "route",
         entityColumn = "route"
     )
-    val kmbRouteEntity: KmbRouteEntity,
+    val route: KmbRouteEntity,
     @Relation(
-        parentColumn = "stopId",
+        parentColumn = "stop",
         entityColumn = "stop"
     )
-    val kmbStopEntity: KmbStopEntity,
+    val stop: KmbStopEntity,
 )

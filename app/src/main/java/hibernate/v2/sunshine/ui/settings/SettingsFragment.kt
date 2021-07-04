@@ -2,8 +2,6 @@ package hibernate.v2.sunshine.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
@@ -56,11 +54,7 @@ class SettingsFragment : VerticalGridSupportFragment() {
         )
         mAdapter = ArrayObjectAdapter(cardPresenter)
         adapter = mAdapter
-        prepareEntranceTransition()
-        Handler(Looper.getMainLooper()).postDelayed({
-            createRows()
-            startEntranceTransition()
-        }, 1000)
+        createRows()
     }
 
     private fun createRows() {
