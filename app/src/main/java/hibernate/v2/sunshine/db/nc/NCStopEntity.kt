@@ -3,7 +3,6 @@ package hibernate.v2.sunshine.db.nc
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import hibernate.v2.api.model.kmb.KmbStop
 import hibernate.v2.api.model.nc.NCStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
@@ -25,18 +24,14 @@ data class NCStopEntity(
     val lng: String,
 ) {
     companion object {
-        fun fromApiModel(stop: NCStop): NCStopEntity? {
-            if (!stop.isValid()) return null
-
-            return NCStopEntity(
-                stopId = stop.stopId!!,
-                nameEn = stop.nameEn!!,
-                nameTc = stop.nameTc!!,
-                nameSc = stop.nameSc!!,
-                lat = stop.lat!!,
-                lng = stop.lng!!
-            )
-        }
+        fun fromApiModel(stop: NCStop) = NCStopEntity(
+            stopId = stop.stopId,
+            nameEn = stop.nameEn,
+            nameTc = stop.nameTc,
+            nameSc = stop.nameSc,
+            lat = stop.lat,
+            lng = stop.lng
+        )
     }
 
     fun toTransportModel(): TransportStop {
@@ -51,7 +46,7 @@ data class NCStopEntity(
         )
     }
 
-    fun toTransportModelWithSeq(seq: String): TransportStop {
+    fun toTransportModelWithSeq(seq: Int): TransportStop {
         return TransportStop(
             stopId = stopId,
             nameEn = nameEn,

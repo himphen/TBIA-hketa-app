@@ -6,7 +6,7 @@ data class TransportRouteStop(
     val routeId: String,
     val bound: Bound,
     val serviceType: String,
-    val seq: String,
+    val seq: Int,
     val stopId: String,
 ) : RouteHashable, StopHashable {
     override fun routeHashId(): String {

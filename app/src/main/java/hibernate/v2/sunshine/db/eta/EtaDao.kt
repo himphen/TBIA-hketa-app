@@ -19,7 +19,7 @@ interface EtaDao {
         routeId: String,
         bound: Bound,
         serviceType: String,
-        seq: String,
+        seq: Int,
         brand: Brand
     ): SavedEtaEntity?
 

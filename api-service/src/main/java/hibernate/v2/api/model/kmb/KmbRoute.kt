@@ -26,14 +26,12 @@ data class KmbRoute(
 
 enum class Bound(val value: String) {
     @Keep
-    @SerializedName("I")
-    INBOUND("inbound"),
+    I("inbound"),
 
     @Keep
-    @SerializedName("O")
-    OUTBOUND("outbound");
+    O("outbound");
 
     companion object {
-        fun from(type: String?) = values().find { it.value == type } ?: INBOUND
+        fun from(type: String?) = values().find { it.value == type } ?: I
     }
 }

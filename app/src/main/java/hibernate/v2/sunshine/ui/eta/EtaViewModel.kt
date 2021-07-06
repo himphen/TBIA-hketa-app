@@ -75,9 +75,9 @@ class EtaViewModel(
             SavedEtaEntity(
                 stopId = "9D208FE6B2CFD450",
                 routeId = "290",
-                bound = Bound.OUTBOUND,
+                bound = Bound.O,
                 serviceType = "1",
-                seq = "2",
+                seq = 2,
                 brand = Brand.KMB
             )
         )
@@ -85,9 +85,9 @@ class EtaViewModel(
             SavedEtaEntity(
                 stopId = "9D208FE6B2CFD450",
                 routeId = "290X",
-                bound = Bound.OUTBOUND,
+                bound = Bound.O,
                 serviceType = "1",
-                seq = "12",
+                seq = 12,
                 brand = Brand.KMB
             )
         )
@@ -95,9 +95,9 @@ class EtaViewModel(
             SavedEtaEntity(
                 stopId = "403881982F9E7209",
                 routeId = "296A",
-                bound = Bound.OUTBOUND,
+                bound = Bound.O,
                 serviceType = "1",
-                seq = "1",
+                seq = 1,
                 brand = Brand.KMB
             )
         )
@@ -105,9 +105,9 @@ class EtaViewModel(
             SavedEtaEntity(
                 stopId = "5527FF8CC85CF139",
                 routeId = "296C",
-                bound = Bound.OUTBOUND,
+                bound = Bound.O,
                 serviceType = "1",
-                seq = "1",
+                seq = 1,
                 brand = Brand.KMB
             )
         )
@@ -115,9 +115,9 @@ class EtaViewModel(
             SavedEtaEntity(
                 stopId = "21E3E95EAEB2048C",
                 routeId = "296D",
-                bound = Bound.OUTBOUND,
+                bound = Bound.O,
                 serviceType = "1",
-                seq = "1",
+                seq = 1,
                 brand = Brand.KMB
             )
         )

@@ -15,6 +15,4 @@ data class KmbStop(
     val nameTc: String,
     @SerializedName("stop")
     val stopId: String,
-
-    var seq: String? = null
 )

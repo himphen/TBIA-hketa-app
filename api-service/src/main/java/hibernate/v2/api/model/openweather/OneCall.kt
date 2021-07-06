@@ -3,20 +3,14 @@ package hibernate.v2.api.model.openweather
 import com.google.firebase.database.PropertyName
 
 data class OneCall(
-    @PropertyName("current")
-    val current: Current? = null,
-    @PropertyName("daily")
-    val daily: List<Daily>? = null,
-    @PropertyName("hourly")
-    val hourly: List<Hourly>? = null,
-    @PropertyName("lat")
-    val lat: Double? = null,
-    @PropertyName("lon")
-    val lon: Double? = null,
-    @PropertyName("minutely")
-    val minutely: List<Minutely>? = null,
-    @PropertyName("timezone")
-    val timezone: String? = null,
-    @PropertyName("timezone_offset")
-    val timezoneOffset: Int? = null
+    var current: Current? = null,
+    var daily: List<Daily>? = null,
+    var hourly: List<Hourly>? = null,
+    var lat: Double? = null,
+    var lon: Double? = null,
+    var minutely: List<Minutely>? = null,
+    var timezone: String? = null,
+    @get:PropertyName("timezone_offset")
+    @set:PropertyName("timezone_offset")
+    var timezoneOffset: Int? = null
 )

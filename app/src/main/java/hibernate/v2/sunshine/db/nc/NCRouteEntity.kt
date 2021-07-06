@@ -34,10 +34,10 @@ data class NCRouteEntity(
     val destSc: String,
 ) : RouteHashable {
     companion object {
-        fun fromApiModel(route: NCRoute, bound: Bound): NCRouteEntity {
+        fun fromApiModel(route: NCRoute): NCRouteEntity {
             return NCRouteEntity(
                 routeId = route.routeId,
-                bound = bound,
+                bound = route.bound,
                 company = route.company,
                 origEn = route.origEn,
                 origTc = route.origTc,
@@ -59,7 +59,10 @@ data class NCRouteEntity(
             destEn = destEn,
             destTc = destTc,
             destSc = destSc,
-            brand = Brand.KMB
+            brand = when (company) {
+                Company.CTB -> Brand.CTB
+                else -> Brand.NWFB
+            }
         )
     }
 

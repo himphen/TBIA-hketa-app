@@ -5,7 +5,7 @@ import hibernate.v2.api.model.kmb.Bound
 
 data class Eta(
     @SerializedName("co")
-    val co: String? = null,
+    val company: String? = null,
     @SerializedName("data_timestamp")
     val dataTimestamp: String? = null,
     @SerializedName("dest_en")
@@ -27,7 +27,7 @@ data class Eta(
     @SerializedName("route")
     val route: String? = null,
     @SerializedName("seq")
-    val seq: String? = null,
+    val seq: Int? = null,
     @SerializedName("service_type")
     val serviceType: Int? = null
 )

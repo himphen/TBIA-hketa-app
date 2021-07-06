@@ -6,7 +6,7 @@ import com.himphen.logger.Logger
 import com.himphen.logger.PrettyFormatStrategy
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.api.WeatherRepository
-import hibernate.v2.sunshine.db.MyDatabase
+import hibernate.v2.sunshine.db.LocalDatabase
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.NCRepository
@@ -48,11 +48,11 @@ class App : Application() {
         single { ApiManager(androidContext()) }
         single { WeatherRepository(get()) }
         // database
-        single { MyDatabase.getInstance(androidContext()) }
-        single { get<MyDatabase>().etaDao() }
-        single { get<MyDatabase>().etaOrderDao() }
-        single { get<MyDatabase>().kmbDao() }
-        single { get<MyDatabase>().ncDao() }
+        single { LocalDatabase.getInstance(androidContext()) }
+        single { get<LocalDatabase>().etaDao() }
+        single { get<LocalDatabase>().etaOrderDao() }
+        single { get<LocalDatabase>().kmbDao() }
+        single { get<LocalDatabase>().ncDao() }
         single { EtaRepository(get(), get(), get()) }
         single { KmbRepository(get(), get()) }
         single { NCRepository(get(), get()) }

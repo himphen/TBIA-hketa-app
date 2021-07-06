@@ -11,5 +11,5 @@ data class TransportStop(
     val nameSc: String,
     val nameTc: String,
     val stopId: String,
-    var seq: String? = null
+    var seq: Int? = null
 ) : Parcelable

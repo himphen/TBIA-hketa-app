@@ -45,16 +45,29 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
 
         viewModel.fetchTransportDataCompleted.observe(viewLifecycleOwner) {
             when (it) {
-                FetchTransportDataCompleted.KMB -> {
+                FetchTransportDataType.KMB -> {
+                    Toast.makeText(context, "Done KMB", Toast.LENGTH_LONG).show()
                 }
-                FetchTransportDataCompleted.NC -> {
+                FetchTransportDataType.NC -> {
+                    Toast.makeText(context, "Done NC", Toast.LENGTH_LONG).show()
                 }
-                FetchTransportDataCompleted.ALL -> {
-                    Toast.makeText(context, "Done", Toast.LENGTH_LONG).show()
-//                    goToMainActivity()
+                FetchTransportDataType.ALL -> {
+                    goToMainActivity()
                 }
-                null -> {
+                else -> {
+                }
+            }
+        }
 
+        viewModel.fetchTransportDataFailed.observe(viewLifecycleOwner) {
+            when (it) {
+                FetchTransportDataType.KMB -> {
+                    Toast.makeText(context, "Failed KMB", Toast.LENGTH_LONG).show()
+                }
+                FetchTransportDataType.NC -> {
+                    Toast.makeText(context, "Failed NC", Toast.LENGTH_LONG).show()
+                }
+                else -> {
                 }
             }
         }

@@ -48,7 +48,7 @@ data class KmbStopEntity(
         )
     }
 
-    fun toTransportModelWithSeq(seq: String): TransportStop {
+    fun toTransportModelWithSeq(seq: Int): TransportStop {
         return TransportStop(
             stopId = stopId,
             nameEn = nameEn,

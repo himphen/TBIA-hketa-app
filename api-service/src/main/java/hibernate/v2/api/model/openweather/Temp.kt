@@ -6,16 +6,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Temp(
-    @PropertyName("day")
-    val day: Double? = null,
-    @PropertyName("eve")
-    val eve: Double? = null,
-    @PropertyName("max")
-    val max: Double? = null,
-    @PropertyName("min")
-    val min: Double? = null,
-    @PropertyName("morn")
-    val morn: Double? = null,
-    @PropertyName("night")
-    val night: Double? = null
+    var day: Double? = null,
+    var eve: Double? = null,
+    var max: Double? = null,
+    var min: Double? = null,
+    var morn: Double? = null,
+    var night: Double? = null
 ) : Parcelable

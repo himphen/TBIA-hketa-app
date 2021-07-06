@@ -24,7 +24,7 @@ class EtaRepository(
         routeId: String,
         bound: Bound,
         serviceType: String,
-        seq: String,
+        seq: Int,
         brand: Brand
     ): Boolean = etaDao.getSingleEta(
         stopId,
@@ -45,7 +45,7 @@ class EtaRepository(
             entity.routeId,
             entity.bound,
             entity.serviceType,
-            entity.seq
+            ""
         )
     }
 

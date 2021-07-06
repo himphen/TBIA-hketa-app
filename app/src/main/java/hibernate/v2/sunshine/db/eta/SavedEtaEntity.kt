@@ -23,7 +23,7 @@ data class SavedEtaEntity(
     val bound: Bound,
     @ColumnInfo(name = "service_type")
     val serviceType: String,
-    val seq: String,
+    val seq: Int,
 ) : Parcelable, RouteHashable, StopHashable {
 
     override fun routeHashId() = routeId + bound.value + serviceType
@@ -37,6 +37,9 @@ enum class Brand(val value: String) {
 
     @Keep
     NWFB("nwfb"),
+
+    @Keep
+    CTB("ctb"),
 
     @Keep
     UNKNOWN("unknown");

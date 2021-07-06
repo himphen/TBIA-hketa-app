@@ -8,7 +8,7 @@ data class KmbRouteStop(
     @SerializedName("route")
     val routeId: String,
     @SerializedName("seq")
-    val seq: String,
+    val seq: Int,
     @SerializedName("service_type")
     val serviceType: String,
     @SerializedName("stop")

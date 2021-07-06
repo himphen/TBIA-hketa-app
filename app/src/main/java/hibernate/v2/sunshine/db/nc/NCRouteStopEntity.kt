@@ -19,20 +19,18 @@ data class NCRouteStopEntity(
     @ColumnInfo(name = "route")
     val routeId: String,
     val bound: Bound,
-    val seq: String,
+    val seq: Int,
     @ColumnInfo(name = "stop")
     val stopId: String,
 ) : RouteHashable {
 
     companion object {
-        fun fromApiModel(routeStop: NCRouteStop): NCRouteStopEntity {
-            return NCRouteStopEntity(
-                routeId = routeStop.routeId,
-                bound = routeStop.bound,
-                seq = routeStop.seq,
-                stopId = routeStop.stopId
-            )
-        }
+        fun fromApiModel(routeStop: NCRouteStop) = NCRouteStopEntity(
+            routeId = routeStop.routeId,
+            bound = routeStop.bound,
+            seq = routeStop.seq,
+            stopId = routeStop.stopId
+        )
     }
 
     override fun routeHashId() = routeId + bound.value

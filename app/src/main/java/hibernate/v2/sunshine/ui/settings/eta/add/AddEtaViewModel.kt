@@ -21,7 +21,7 @@ class AddEtaViewModel(
         routeId: String,
         bound: Bound,
         serviceType: String,
-        seq: String,
+        seq: Int,
         brand: Brand
     ) = withContext(Dispatchers.IO) {
         etaRepository.hasEtaInDb(

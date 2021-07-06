@@ -1,19 +1,61 @@
 package hibernate.v2.sunshine.repository
 
+import com.google.firebase.database.DatabaseException
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import hibernate.v2.api.model.kmb.Bound
 import hibernate.v2.api.model.nc.Company
 import hibernate.v2.api.model.nc.NCRoute
+import hibernate.v2.api.model.nc.NCRouteStop
+import hibernate.v2.api.model.nc.NCStop
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.nc.NCDao
 import hibernate.v2.sunshine.db.nc.NCRouteEntity
 import hibernate.v2.sunshine.db.nc.NCRouteStopEntity
 import hibernate.v2.sunshine.db.nc.NCRouteWithRouteStop
 import hibernate.v2.sunshine.db.nc.NCStopEntity
+import hibernate.v2.sunshine.util.getSnapshotValue
 
 class NCRepository(
     private val apiManager: ApiManager,
     private val ncDao: NCDao,
 ) {
+    val database =
+        Firebase.database("https://android-tv-c733a-default-rtdb.asia-southeast1.firebasedatabase.app/")
+
+    @Throws(DatabaseException::class)
+    suspend fun saveRouteListFromFirebase() {
+        val routeRef = database.reference.child("nwfb_citybus_route")
+        val snapshot = routeRef.getSnapshotValue()
+        snapshot.getValue<List<NCRoute>>()?.let { list ->
+            saveRouteList(list.map { ncRoute ->
+                NCRouteEntity.fromApiModel(ncRoute)
+            })
+        }
+    }
+
+    @Throws(DatabaseException::class)
+    suspend fun saveRouteStopListFromFirebase() {
+        val routeRef = database.reference.child("nwfb_citybus_route_stop")
+        val snapshot = routeRef.getSnapshotValue()
+        snapshot.getValue<List<NCRouteStop>>()?.let { list ->
+            saveRouteStopList(list.map { ncRouteStop ->
+                NCRouteStopEntity.fromApiModel(ncRouteStop)
+            })
+        }
+    }
+
+    @Throws(DatabaseException::class)
+    suspend fun saveStopListFromFirebase() {
+        val routeRef = database.reference.child("nwfb_citybus_stop")
+        val snapshot = routeRef.getSnapshotValue()
+        snapshot.getValue<List<NCStop>>()?.let { list ->
+            saveStopList(list.map { ncStop ->
+                NCStopEntity.fromApiModel(ncStop)
+            })
+        }
+    }
 
     suspend fun getStopListDb() = ncDao.getStopList()
     suspend fun getRouteListDb() = ncDao.getRouteList()
@@ -60,7 +102,7 @@ class NCRepository(
     suspend fun getRouteWithRouteStop(route: NCRoute, bound: Bound): NCRouteWithRouteStop? {
         val routeStopList = getRouteStopListApi(route.company, route.routeId, bound).routeStopList
         if (routeStopList.isNotEmpty()) {
-            val ncRouteEntity = NCRouteEntity.fromApiModel(route, bound)
+            val ncRouteEntity = NCRouteEntity.fromApiModel(route)
 
             return NCRouteWithRouteStop(
                 routeEntity = ncRouteEntity,

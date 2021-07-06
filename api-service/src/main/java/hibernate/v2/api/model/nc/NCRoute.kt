@@ -2,53 +2,44 @@ package hibernate.v2.api.model.nc
 
 import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.kmb.Bound
 
 data class NCRoute(
-    @PropertyName("co")
-    @SerializedName("co")
-    val company: Company = Company.UNKNOWN,
-    @PropertyName("bound")
-    @SerializedName("bound")
-    val bound: Bound = Bound.OUTBOUND,
-    @PropertyName("dest_en")
-    @SerializedName("dest_en")
-    val destEn: String = "",
-    @PropertyName("dest_sc")
-    @SerializedName("dest_sc")
-    val destSc: String = "",
-    @PropertyName("dest_tc")
-    @SerializedName("dest_tc")
-    val destTc: String = "",
-    @PropertyName("orig_en")
-    @SerializedName("orig_en")
-    val origEn: String = "",
-    @PropertyName("orig_sc")
-    @SerializedName("orig_sc")
-    val origSc: String = "",
-    @PropertyName("orig_tc")
-    @SerializedName("orig_tc")
-    val origTc: String = "",
-    @PropertyName("route")
-    @SerializedName("route")
-    val routeId: String = "",
+    @get:PropertyName("co")
+    @set:PropertyName("co")
+    var company: Company = Company.NWFB,
+    var bound: Bound = Bound.O,
+    @get:PropertyName("dest_en")
+    @set:PropertyName("dest_en")
+    var destEn: String = "",
+    @get:PropertyName("dest_sc")
+    @set:PropertyName("dest_sc")
+    var destSc: String = "",
+    @get:PropertyName("dest_tc")
+    @set:PropertyName("dest_tc")
+    var destTc: String = "",
+    @get:PropertyName("orig_en")
+    @set:PropertyName("orig_en")
+    var origEn: String = "",
+    @get:PropertyName("orig_sc")
+    @set:PropertyName("orig_sc")
+    var origSc: String = "",
+    @get:PropertyName("orig_tc")
+    @set:PropertyName("orig_tc")
+    var origTc: String = "",
+    @get:PropertyName("route")
+    @set:PropertyName("route")
+    var routeId: String = "",
 )
 
 enum class Company(val value: String) {
     @Keep
-    @SerializedName("CTB")
     CTB("CTB"),
 
     @Keep
-    @SerializedName("NWFB")
-    NWFB("NWFB"),
-
-    @Keep
-    @SerializedName("UNKNOWN")
-    UNKNOWN("UNKNOWN");
+    NWFB("NWFB");
 
     companion object {
-        fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
+        fun from(type: String?) = values().find { it.value == type } ?: throw Exception("No enum found")
     }
 }

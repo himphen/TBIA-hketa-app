@@ -1,22 +1,20 @@
 package hibernate.v2.api.model.nc
 
-import com.google.gson.annotations.SerializedName
+import com.google.firebase.database.PropertyName
 
 data class NCStop(
-    @SerializedName("lat")
-    val lat: String? = null,
-    @SerializedName("long")
-    val lng: String? = null,
-    @SerializedName("name_en")
-    val nameEn: String? = null,
-    @SerializedName("name_sc")
-    val nameSc: String? = null,
-    @SerializedName("name_tc")
-    val nameTc: String? = null,
-    @SerializedName("stop")
-    val stopId: String? = null,
-
-    var seq: String? = null
-) {
-    fun isValid() = stopId != null
-}
+    var lat: String = "",
+    var lng: String = "",
+    @get:PropertyName("name_en")
+    @set:PropertyName("name_en")
+    var nameEn: String = "",
+    @get:PropertyName("name_sc")
+    @set:PropertyName("name_sc")
+    var nameSc: String = "",
+    @get:PropertyName("name_tc")
+    @set:PropertyName("name_tc")
+    var nameTc: String = "",
+    @get:PropertyName("stop")
+    @set:PropertyName("stop")
+    var stopId: String = ""
+)

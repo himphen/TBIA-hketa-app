@@ -21,7 +21,7 @@ data class KmbRouteStopEntity(
     val bound: Bound,
     @ColumnInfo(name = "service_type")
     val serviceType: String,
-    val seq: String,
+    val seq: Int,
     @ColumnInfo(name = "stop")
     val stopId: String,
 ) : RouteHashable {
