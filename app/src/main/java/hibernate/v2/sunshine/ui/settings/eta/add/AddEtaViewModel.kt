@@ -87,11 +87,12 @@ class AddEtaViewModel(
 
                 allRouteStopList.forEach {
                     val routeHashId = it.routeStopEntity.routeHashId()
-                    transportRouteStopHashMap[routeHashId]?.stopList?.add(
-                        it.stopEntity.toTransportModelWithSeq(
-                            it.routeStopEntity.seq
-                        )
+                    val stop = it.stopEntity?.toTransportModelWithSeq(
+                        it.routeStopEntity.seq
                     )
+                    stop?.let {
+                        transportRouteStopHashMap[routeHashId]?.stopList?.add(stop)
+                    }
                 }
 
                 val transportRouteStopList = transportRouteStopHashMap.values.toMutableList()
@@ -144,7 +145,6 @@ class AddEtaViewModel(
 
                 val transportRouteStopHashMap = allRouteList.associate { entity ->
                     val route = entity.toTransportModel()
-                    Logger.d("route.routeHashId() " + route.routeHashId())
                     route.routeHashId() to TransportRouteStopList(
                         route = route,
                         stopList = mutableListOf()
@@ -153,18 +153,16 @@ class AddEtaViewModel(
 
                 allRouteStopList.forEach {
                     val routeHashId = it.routeStopEntity.routeHashId()
-                    Logger.d("it.routeStopEntity.routeHashId() " + routeHashId)
-                    transportRouteStopHashMap[routeHashId]?.stopList?.add(
-                        it.stopEntity.toTransportModelWithSeq(
-                            it.routeStopEntity.seq
-                        )
+                    val stop = it.stopEntity?.toTransportModelWithSeq(
+                        it.routeStopEntity.seq
                     )
+                    stop?.let {
+                        transportRouteStopHashMap[routeHashId]?.stopList?.add(stop)
+                    }
                 }
 
                 val transportRouteStopList = transportRouteStopHashMap.values.toMutableList()
-                transportRouteStopList.sortWith { o1, o2 ->
-                    o1.compareTo(o2)
-                }
+                transportRouteStopList.sort()
 
                 val transportRouteList =
                     transportRouteStopList.map { routeAndStopList ->

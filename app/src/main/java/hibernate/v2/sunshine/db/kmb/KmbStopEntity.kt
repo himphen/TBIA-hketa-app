@@ -11,7 +11,7 @@ import hibernate.v2.sunshine.model.transport.TransportStop
 )
 data class KmbStopEntity(
     @PrimaryKey
-    @ColumnInfo(name = "stop", index = true)
+    @ColumnInfo(name = "kmb_stop_id")
     val stopId: String,
     @ColumnInfo(name = "name_en")
     val nameEn: String,
@@ -20,7 +20,6 @@ data class KmbStopEntity(
     @ColumnInfo(name = "name_sc")
     val nameSc: String,
     val lat: String,
-    @ColumnInfo(name = "long")
     val lng: String,
 ) {
     companion object {

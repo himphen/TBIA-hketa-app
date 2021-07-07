@@ -8,8 +8,8 @@ data class KmbRouteStopDetails(
     val routeStopEntity: KmbRouteStopEntity,
 
     @Relation(
-        parentColumn = "stop",
-        entityColumn = "stop"
+        parentColumn = "kmb_route_stop_stop_id",
+        entityColumn = "kmb_stop_id"
     )
-    val stopEntity: KmbStopEntity
+    val stopEntity: KmbStopEntity?
 )

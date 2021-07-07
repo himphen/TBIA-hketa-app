@@ -4,8 +4,8 @@ import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.content.ContextCompat
 import androidx.leanback.widget.BaseCardView
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.Eta
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
@@ -33,14 +33,6 @@ class EtaCardPresenter(
             fragmentWidth,
             FrameLayout.LayoutParams.WRAP_CONTENT
         )
-        cardView.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                cardView.setBackgroundResource(R.drawable.eta_card_selected_background)
-            } else {
-                cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.eta_card_default_background))
-            }
-        }
-        cardView.setBackgroundColor(ContextCompat.getColor(context, R.color.eta_card_default_background))
         return cardView
     }
 
@@ -55,6 +47,29 @@ class EtaCardPresenter(
         viewBinding.etaMinuteTv.text =
             getEtaMinuteText(card.etaList.getOrNull(0))
         viewBinding.etaTimeTv.text = getEtaTimeText(card.etaList)
+
+        cardView.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                when (card.route.company) {
+                    Company.KMB -> cardView.setBackgroundResource(R.drawable.eta_card_bg_kmb_selected)
+                    Company.NWFB, Company.CTB -> cardView.setBackgroundResource(R.drawable.eta_card_bg_ctb_selected)
+                    else -> {
+                    }
+                }
+            } else {
+                setDefaultBackground(card, cardView)
+            }
+        }
+        setDefaultBackground(card, cardView)
+    }
+
+    private fun setDefaultBackground(card: Card.EtaCard, cardView: EtaCardView) {
+        when (card.route.company) {
+            Company.KMB -> cardView.setBackgroundResource(R.drawable.eta_card_bg_kmb)
+            Company.NWFB, Company.CTB -> cardView.setBackgroundResource(R.drawable.eta_card_bg_ctb)
+            else -> {
+            }
+        }
     }
 
     private fun getEtaMinuteText(eta: Eta?): String {

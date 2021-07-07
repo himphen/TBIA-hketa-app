@@ -22,11 +22,9 @@ data class TransportRoute(
     var routePrefix: String? = null,
     var routeNumber: Int? = null,
     var routeSuffix: String? = null,
-) : Parcelable, RouteHashable, Comparable<TransportRoute> {
+) : Parcelable, TransportHashable, Comparable<TransportRoute> {
 
-    override fun routeHashId(): String {
-        return company.value + routeId + bound.value + serviceType
-    }
+    fun routeHashId() = routeHashId(company, routeId, bound, serviceType)
 
     override fun compareTo(other: TransportRoute): Int {
         parseRouteNumber()

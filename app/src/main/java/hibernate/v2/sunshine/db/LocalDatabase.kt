@@ -32,7 +32,7 @@ private const val DATABASE_NAME = "saved_data"
         NCRouteEntity::class, NCStopEntity::class,
         NCRouteStopEntity::class
     ],
-    version = 8,
+    version = 9,
     exportSchema = false
 )
 @TypeConverters(DataTypeConverter::class)
@@ -60,7 +60,7 @@ abstract class LocalDatabase : RoomDatabase() {
             )
             dbBuilder.fallbackToDestructiveMigration()
             dbBuilder.setQueryCallback({ sqlQuery, bindArgs ->
-//                Log.d("SQL", "Query: $sqlQuery SQL --- Args: $bindArgs")
+                Log.d("SQL", "Query: $sqlQuery SQL --- Args: $bindArgs")
             }, Executors.newSingleThreadExecutor())
             return dbBuilder.build()
         }

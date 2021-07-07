@@ -117,16 +117,16 @@ class EtaFragment : VerticalGridSupportFragment() {
                     val etaDate = DateUtil.getDate(
                         etaString,
                         DateFormat.ISO_WITHOUT_MS.value
-                    )
+                    ) ?: return@let false
 
                     val currentDate = DateUtil.getDate(
                         eta.dataTimestamp,
                         DateFormat.ISO_WITHOUT_MS.value
-                    )
+                    ) ?: return@let false
 
                     DateUtil.getTimeDiffInMin(
-                        etaDate!!,
-                        currentDate!!
+                        etaDate,
+                        currentDate
                     ) > 0
                 } ?: run {
                     false

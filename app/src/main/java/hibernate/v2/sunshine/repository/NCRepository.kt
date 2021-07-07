@@ -13,7 +13,6 @@ import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.nc.NCDao
 import hibernate.v2.sunshine.db.nc.NCRouteEntity
 import hibernate.v2.sunshine.db.nc.NCRouteStopEntity
-import hibernate.v2.sunshine.db.nc.NCRouteWithRouteStop
 import hibernate.v2.sunshine.db.nc.NCStopEntity
 import hibernate.v2.sunshine.util.getSnapshotValue
 
@@ -97,22 +96,6 @@ class NCRepository(
         ncDao.clearRouteList()
         ncDao.clearStopList()
         ncDao.clearRouteStopList()
-    }
-
-    suspend fun getRouteWithRouteStop(route: NCRoute, bound: Bound): NCRouteWithRouteStop? {
-        val routeStopList = getRouteStopListApi(route.company, route.routeId, bound).routeStopList
-        if (routeStopList.isNotEmpty()) {
-            val ncRouteEntity = NCRouteEntity.fromApiModel(route)
-
-            return NCRouteWithRouteStop(
-                routeEntity = ncRouteEntity,
-                entityList = routeStopList.map { routeStop ->
-                    NCRouteStopEntity.fromApiModel(routeStop)
-                }
-            )
-        }
-
-        return null
     }
 
     suspend fun saveRouteList(entityList: List<NCRouteEntity>) {

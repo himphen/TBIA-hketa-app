@@ -2,23 +2,22 @@ package hibernate.v2.sunshine.db.kmb
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Index
-import hibernate.v2.api.model.transport.KmbRoute
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.sunshine.model.transport.RouteHashable
+import hibernate.v2.api.model.transport.KmbRoute
+import hibernate.v2.sunshine.model.transport.TransportHashable
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
 @Entity(
     tableName = "kmb_route",
-    primaryKeys = ["route", "bound", "service_type"],
-    indices = [Index("route", "bound", "service_type")]
+    primaryKeys = ["kmb_route_id", "kmb_route_bound", "kmb_route_service_type"],
 )
 data class KmbRouteEntity(
-    @ColumnInfo(name = "route")
+    @ColumnInfo(name = "kmb_route_id")
     val routeId: String,
+    @ColumnInfo(name = "kmb_route_bound")
     val bound: Bound,
-    @ColumnInfo(name = "service_type")
+    @ColumnInfo(name = "kmb_route_service_type")
     val serviceType: String,
     @ColumnInfo(name = "orig_en")
     val origEn: String,
@@ -32,7 +31,7 @@ data class KmbRouteEntity(
     val destTc: String,
     @ColumnInfo(name = "dest_sc")
     val destSc: String,
-) : RouteHashable {
+) : TransportHashable {
     companion object {
         fun fromApiModel(route: KmbRoute): KmbRouteEntity {
             return KmbRouteEntity(
@@ -64,5 +63,5 @@ data class KmbRouteEntity(
         )
     }
 
-    override fun routeHashId() = Company.KMB.value + routeId + bound.value + serviceType
+    fun routeHashId() = routeHashId(Company.KMB, routeId, bound, serviceType)
 }

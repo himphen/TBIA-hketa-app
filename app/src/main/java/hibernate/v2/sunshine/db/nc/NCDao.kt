@@ -13,7 +13,7 @@ interface NCDao {
     @Query("SELECT * FROM nc_stop")
     suspend fun getStopList(): List<NCStopEntity>
 
-    @Query("SELECT * FROM nc_stop WHERE stop = (:stop)")
+    @Query("SELECT * FROM nc_stop WHERE nc_stop_id = (:stop)")
     suspend fun getStop(stop: String): List<NCStopEntity>
 
     @Query("SELECT * FROM nc_stop LIMIT 1")
@@ -30,22 +30,12 @@ interface NCDao {
     @Query("SELECT * FROM nc_route")
     suspend fun getRouteList(): List<NCRouteEntity>
 
-//    @Transaction
-//    @Query("SELECT * FROM nc_route " +
-//            "JOIN nc_route_stop ON " +
-//            "nc_route.route = nc_route_stop.route " +
-//            "AND nc_route.service_type = nc_route_stop.service_type " +
-//            "AND nc_route.bound = nc_route_stop.bound " +
-//            "JOIN nc_stop ON " +
-//            "nc_route_stop.stop = nc_stop.stop")
-//    suspend fun getRouteWithStopList(): List<NCRouteAndStops>
-
     @Query("SELECT * FROM nc_route LIMIT 1")
     suspend fun getSingleRoute(): NCRouteEntity?
 
-    @Query("SELECT * FROM nc_route WHERE route = (:route) AND bound = (:bound)")
+    @Query("SELECT * FROM nc_route WHERE nc_route_id = (:routeId) AND nc_route_bound = (:bound)")
     suspend fun getRoute(
-        route: String,
+        routeId: String,
         bound: String,
     ): NCRouteEntity?
 
@@ -81,9 +71,9 @@ interface NCDao {
     @Query("SELECT * FROM nc_route_stop LIMIT 1")
     suspend fun getSingleRouteStop(): NCRouteStopEntity?
 
-    @Query("SELECT * FROM nc_route_stop WHERE route = (:route) AND bound = (:bound)")
+    @Query("SELECT * FROM nc_route_stop WHERE nc_route_stop_route_id = (:routeId) AND nc_route_stop_bound = (:bound)")
     suspend fun getRouteStop(
-        route: String,
+        routeId: String,
         bound: String
     ): List<NCRouteStopEntity>
 

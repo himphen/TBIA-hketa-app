@@ -7,25 +7,28 @@ import androidx.room.Index
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.NCRouteStop
-import hibernate.v2.sunshine.model.transport.RouteHashable
+import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Entity(
     tableName = "nc_route_stop",
     indices = [
-        Index("stop"),
-        Index("route", "bound", "company")
+        Index("nc_route_stop_stop_id"),
+        Index("nc_route_stop_route_id", "nc_route_stop_bound", "nc_route_stop_company")
     ],
-    primaryKeys = ["route", "bound", "company", "seq"]
+    primaryKeys = ["nc_route_stop_route_id", "nc_route_stop_bound", "nc_route_stop_company", "nc_route_stop_seq"]
 )
 data class NCRouteStopEntity(
-    @ColumnInfo(name = "route")
+    @ColumnInfo(name = "nc_route_stop_route_id")
     val routeId: String,
+    @ColumnInfo(name = "nc_route_stop_company")
     var company: Company,
+    @ColumnInfo(name = "nc_route_stop_bound")
     val bound: Bound,
+    @ColumnInfo(name = "nc_route_stop_seq")
     val seq: Int,
-    @ColumnInfo(name = "stop")
+    @ColumnInfo(name = "nc_route_stop_stop_id")
     val stopId: String,
-) : RouteHashable {
+) : TransportHashable {
     @Ignore
     val serviceType = "1"
 
@@ -39,5 +42,5 @@ data class NCRouteStopEntity(
         )
     }
 
-    override fun routeHashId() = company.value + routeId + bound.value + serviceType
+    fun routeHashId() = routeHashId(company, routeId, bound, serviceType)
 }

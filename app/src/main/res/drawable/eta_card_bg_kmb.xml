@@ -3,7 +3,7 @@
     <item android:gravity="start">
         <shape>
             <size android:width="4dp" />
-            <solid android:color="#17a2e3" />
+            <solid android:color="@color/brand_color_kmb" />
         </shape>
     </item>
 </layer-list>

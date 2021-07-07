@@ -12,6 +12,10 @@
     <color name="bg_mapview_title">#D82196F3</color>
     <color name="white">#ffffff</color>
 
+    <color name="brand_color_kmb">#DE0A20</color>
+    <color name="brand_color_ctb">#FFB300</color>
+    <color name="eta_card_bg_selected">#11FFFFFF</color>
+
     <color name="settings_card_background">#0277BD</color>
     <color name="settings_card_background_focussed">#01579B</color>
 </resources>

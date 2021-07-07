@@ -8,19 +8,10 @@ import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 data class EtaKmbDetails(
     @Embedded
     val savedEta: SavedEtaEntity,
-    @Relation(
-        parentColumn = "route",
-        entityColumn = "route"
-    )
+    @Embedded
     val route: KmbRouteEntity,
-    @Relation(
-        parentColumn = "stop",
-        entityColumn = "stop"
-    )
+    @Embedded
     val stop: KmbStopEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id"
-    )
+    @Embedded
     val order: EtaOrderEntity,
 )

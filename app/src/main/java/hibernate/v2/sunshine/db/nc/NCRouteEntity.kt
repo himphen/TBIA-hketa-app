@@ -2,22 +2,24 @@ package hibernate.v2.sunshine.db.nc
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.Index
-import hibernate.v2.api.model.transport.NCRoute
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.sunshine.model.transport.RouteHashable
+import hibernate.v2.api.model.transport.NCRoute
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
 @Entity(
     tableName = "nc_route",
-    primaryKeys = ["route", "bound"],
-    indices = [Index("route", "bound")]
+    primaryKeys = ["nc_route_id", "nc_route_bound"],
+    indices = [Index("nc_route_id", "nc_route_bound")]
 )
 data class NCRouteEntity(
-    @ColumnInfo(name = "route")
+    @ColumnInfo(name = "nc_route_id")
     val routeId: String,
+    @ColumnInfo(name = "nc_route_bound")
     val bound: Bound,
+    @ColumnInfo(name = "nc_route_company")
     val company: Company,
     @ColumnInfo(name = "orig_en")
     val origEn: String,
@@ -31,7 +33,10 @@ data class NCRouteEntity(
     val destTc: String,
     @ColumnInfo(name = "dest_sc")
     val destSc: String,
-) : RouteHashable {
+) {
+    @Ignore
+    val serviceType = "1"
+
     companion object {
         fun fromApiModel(route: NCRoute): NCRouteEntity {
             return NCRouteEntity(
@@ -61,6 +66,4 @@ data class NCRouteEntity(
             company = company
         )
     }
-
-    override fun routeHashId() = company.value + routeId + bound.value
 }

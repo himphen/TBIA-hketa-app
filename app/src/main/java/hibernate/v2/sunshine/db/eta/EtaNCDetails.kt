@@ -8,19 +8,10 @@ import hibernate.v2.sunshine.db.nc.NCStopEntity
 data class EtaNCDetails(
     @Embedded
     val savedEta: SavedEtaEntity,
-    @Relation(
-        parentColumn = "route",
-        entityColumn = "route"
-    )
+    @Embedded
     val route: NCRouteEntity,
-    @Relation(
-        parentColumn = "stop",
-        entityColumn = "stop"
-    )
+    @Embedded
     val stop: NCStopEntity,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "id"
-    )
+    @Embedded
     val order: EtaOrderEntity,
 )
