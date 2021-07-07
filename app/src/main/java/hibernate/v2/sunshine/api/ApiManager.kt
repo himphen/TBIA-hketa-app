@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiConverterFactory
+import hibernate.v2.api.service.GmbService
 import hibernate.v2.api.service.KmbService
 import hibernate.v2.api.service.HkoWeatherService
 import hibernate.v2.api.service.NCService
@@ -22,6 +23,7 @@ open class ApiManager(val context: Context) {
     private val writeTimeout: Long = 15
     private lateinit var client: OkHttpClient
     lateinit var kmbService: KmbService
+    lateinit var gmbService: GmbService
     lateinit var ncService: NCService
     lateinit var hkoWeatherService: HkoWeatherService
     lateinit var openWeatherService: OpenWeatherService
@@ -68,6 +70,13 @@ open class ApiManager(val context: Context) {
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ApiConverterFactory(Gson()))
             .build().create(OpenWeatherService::class.java)
+
+        gmbService = Retrofit.Builder()
+            .baseUrl("https://https://data.etagmb.gov.hk/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(ApiConverterFactory(Gson()))
+            .build().create(GmbService::class.java)
     }
 
     init {

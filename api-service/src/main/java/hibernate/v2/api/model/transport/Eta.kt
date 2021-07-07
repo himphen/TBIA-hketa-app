@@ -64,3 +64,22 @@ enum class Company(val value: String) {
         fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
     }
 }
+
+enum class GmbRegion(val value: String) {
+    @Keep
+    HKI("HKI"),
+
+    @Keep
+    KLN("KLN"),
+
+    @Keep
+    NT("NT"),
+
+    @Keep
+    UNKNOWN("unknown");
+
+    companion object {
+        fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
+    }
+
+}
