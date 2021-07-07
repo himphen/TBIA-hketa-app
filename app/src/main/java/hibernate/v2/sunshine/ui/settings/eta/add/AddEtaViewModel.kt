@@ -144,6 +144,7 @@ class AddEtaViewModel(
 
                 val transportRouteStopHashMap = allRouteList.associate { entity ->
                     val route = entity.toTransportModel()
+                    Logger.d("route.routeHashId() " + route.routeHashId())
                     route.routeHashId() to TransportRouteStopList(
                         route = route,
                         stopList = mutableListOf()
@@ -152,6 +153,7 @@ class AddEtaViewModel(
 
                 allRouteStopList.forEach {
                     val routeHashId = it.routeStopEntity.routeHashId()
+                    Logger.d("it.routeStopEntity.routeHashId() " + routeHashId)
                     transportRouteStopHashMap[routeHashId]?.stopList?.add(
                         it.stopEntity.toTransportModelWithSeq(
                             it.routeStopEntity.seq

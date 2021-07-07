@@ -61,11 +61,19 @@ class EtaRepository(
         etaOrderDb.add(entityList)
     }
 
-    suspend fun getStopEtaApi(stopId: String, route: String): EtaResponse {
+    suspend fun getKmbStopEtaApi(stopId: String, route: String): EtaResponse {
         return apiManager.kmbService.getStopEta(
             stopId = stopId,
             route = route,
             serviceType = 1
+        )
+    }
+
+    suspend fun getNCStopEtaApi(company: Company, stopId: String, route: String): EtaResponse {
+        return apiManager.ncService.getStopEta(
+            company = company.value,
+            stopId = stopId,
+            route = route
         )
     }
 

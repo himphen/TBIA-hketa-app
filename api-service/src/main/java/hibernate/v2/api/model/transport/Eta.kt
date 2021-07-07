@@ -15,7 +15,7 @@ data class Eta(
     @SerializedName("dest_tc")
     val destTc: String? = null,
     @SerializedName("dir")
-    val dir: Bound? = null,
+    val bound: Bound? = null,
     @SerializedName("eta")
     val eta: String? = null,
     @SerializedName("rmk_en")
@@ -37,10 +37,13 @@ enum class Bound(val value: String) {
     I("inbound"),
 
     @Keep
-    O("outbound");
+    O("outbound"),
+
+    @Keep
+    UNKNOWN("unknown");
 
     companion object {
-        fun from(type: String?) = values().find { it.value == type } ?: I
+        fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
     }
 }
 

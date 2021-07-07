@@ -61,18 +61,42 @@ class EtaViewModel(
 
             etaCardList.mapIndexed { index, etaCard ->
                 async {
-                    val apiEtaResponse = etaRepository.getStopEtaApi(
-                        stopId = etaCard.stop.stopId,
-                        route = etaCard.route.routeId
-                    )
-                    apiEtaResponse.data?.let { etaList ->
-                        etaCard.etaList = etaList.filter { eta ->
-                            // e.g. Filter not same bound in bus terminal stops
-                            eta.dir == etaCard.route.bound && eta.seq == etaCard.stop.seq
+                    when (etaCard.route.company) {
+                        Company.KMB -> {
+                            val apiEtaResponse = etaRepository.getKmbStopEtaApi(
+                                stopId = etaCard.stop.stopId,
+                                route = etaCard.route.routeId
+                            )
+                            apiEtaResponse.data?.let { etaList ->
+                                etaCard.etaList = etaList.filter { eta ->
+                                    // e.g. Filter not same bound in bus terminal stops
+                                    Logger.d("etaList.filter " + eta)
+                                    Logger.d("etaList.filter " + etaCard)
+                                    Logger.d("etaList.filter===")
+                                    eta.bound == etaCard.route.bound
+                                            && eta.seq == etaCard.stop.seq
+                                }
+                            }
+
+                            result[index] = etaCard
+                        }
+                        Company.NWFB -> {
+                            val apiEtaResponse = etaRepository.getNCStopEtaApi(
+                                company = etaCard.route.company,
+                                stopId = etaCard.stop.stopId,
+                                route = etaCard.route.routeId
+                            )
+                            apiEtaResponse.data?.let { etaList ->
+                                etaCard.etaList = etaList.filter { eta ->
+                                    // e.g. Filter not same bound in bus terminal stops
+                                    eta.bound == etaCard.route.bound
+                                            && eta.seq == etaCard.stop.seq
+                                }
+                            }
+
+                            result[index] = etaCard
                         }
                     }
-
-                    result[index] = etaCard
                 }
             }.awaitAll()
 

@@ -9,7 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface NCService {
-    @GET("v1/transport/citybus-nwfb/eta/{company_id}/{stop_id}/{route}")
+    @GET("v1/transport/citybus-nwfb/eta/{company}/{stop_id}/{route}")
     suspend fun getStopEta(
         @Path("company") company: String,
         @Path("stop_id") stopId: String,

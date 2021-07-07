@@ -4,6 +4,8 @@ import com.google.firebase.database.PropertyName
 
 data class NCStop(
     var lat: String = "",
+    @get:PropertyName("long")
+    @set:PropertyName("long")
     var lng: String = "",
     @get:PropertyName("name_en")
     @set:PropertyName("name_en")
