@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.os.Bundle
 import hibernate.v2.sunshine.receiver.WakeUpReceiver
 import java.util.Calendar
 import kotlin.math.roundToInt
@@ -63,3 +64,9 @@ fun Context.cancelAlarm() {
 fun dpToPx(dp: Int): Int {
     return (dp * Resources.getSystem().displayMetrics.density).roundToInt()
 }
+
+inline fun <reified T : Enum<T>> Bundle.getEnum(key: String, default: T) =
+    getInt(key).let { if (it >= 0) enumValues<T>()[it] else default }
+
+fun <T : Enum<T>> Bundle.putEnum(key: String, value: T?) =
+    putInt(key, value?.ordinal ?: -1)

@@ -12,17 +12,21 @@ import androidx.leanback.widget.ListRowPresenter
 import androidx.lifecycle.lifecycleScope
 import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
+import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaActivity.Companion.ARG_ETA_TYPE
+import hibernate.v2.sunshine.util.getEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResultProvider {
 
     private lateinit var mRowsAdapter: ArrayObjectAdapter
-    private val viewModel by inject<AddEtaViewModel>()
+    private val viewModel by stateViewModel<AddEtaViewModel>()
+
+    private var etaType: AddEtaActivity.EtaType? = null
 
     private var mQuery: String = ""
 
@@ -72,7 +76,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
     }
 
     companion object {
-        fun getInstance() = AddEtaFragment()
+        fun getInstance(bundle: Bundle?) = AddEtaFragment().apply { arguments = bundle }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,23 +84,27 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
         title = getString(R.string.title_activity_add_eta)
         mRowsAdapter = ArrayObjectAdapter(ListRowPresenter())
         setSearchResultProvider(this)
+
+        etaType = arguments?.getEnum(ARG_ETA_TYPE, AddEtaActivity.EtaType.KMB)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initEvent()
 
-        loadRows()
+        viewModel.getTransportRouteList(etaType)
     }
 
     private fun initEvent() {
-
+        viewModel.allTransportRouteList.observe(viewLifecycleOwner) {
+            loadRows()
+        }
     }
 
     private fun loadRows() {
         lifecycleScope.launch(Dispatchers.Main) {
             mRowsAdapter.clear()
-            viewModel.allTransportRouteList?.forEachIndexed { index, listForRowAdapter ->
+            viewModel.allTransportRouteList.value?.forEachIndexed { index, listForRowAdapter ->
                 if (mQuery.isNotEmpty()
                     && !listForRowAdapter.route.routeId.startsWith(mQuery, true)
                 ) return@forEachIndexed

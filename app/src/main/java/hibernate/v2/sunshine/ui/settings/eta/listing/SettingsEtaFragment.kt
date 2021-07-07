@@ -24,8 +24,6 @@ import hibernate.v2.sunshine.ui.settings.eta.edit.EditEtaDialogFragment.Companio
 import hibernate.v2.sunshine.ui.settings.eta.edit.EditEtaDialogFragment.Companion.ACTION_ID_REMOVE
 import hibernate.v2.sunshine.util.swap
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -137,10 +135,6 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
             )
             updateRows()
         }
-
-        viewModel.addEtaListReady.onEach {
-            addEtaLauncher.launch(Intent(context, AddEtaActivity::class.java))
-        }.launchIn((viewLifecycleOwner.lifecycleScope))
     }
 
     private fun initData() {
@@ -156,7 +150,7 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
                 override fun onItemClick(card: Card.SettingsEtaCard) {
                     when (card.type) {
                         Card.SettingsEtaCard.Type.INSERT_ROW -> {
-                            viewModel.getTransportRouteList()
+                            addEtaLauncher.launch(Intent(context, AddEtaActivity::class.java))
                         }
                         Card.SettingsEtaCard.Type.DATA -> {
                             viewModel.editCard.postValue(card)

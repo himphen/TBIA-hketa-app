@@ -24,8 +24,6 @@ class OnboardingViewModel(
 
     fun checkDbTransportData() {
         viewModelScope.launch(Dispatchers.IO) {
-            ncRepository.initDatabase()
-
             val deferredList = listOf(
                 async { kmbRepository.isDataExisted() },
                 async { ncRepository.isDataExisted() },
