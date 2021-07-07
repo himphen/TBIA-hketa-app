@@ -1,4 +1,4 @@
-package hibernate.v2.api.model.nc
+package hibernate.v2.api.model.transport
 
 import com.google.firebase.database.PropertyName
 

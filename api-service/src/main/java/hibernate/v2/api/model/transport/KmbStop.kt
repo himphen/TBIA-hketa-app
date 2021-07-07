@@ -1,4 +1,4 @@
-package hibernate.v2.api.model.kmb
+package hibernate.v2.api.model.transport
 
 import com.google.gson.annotations.SerializedName
 

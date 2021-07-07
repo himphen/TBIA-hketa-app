@@ -3,8 +3,8 @@ package hibernate.v2.sunshine.ui.settings.eta.add
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
-import hibernate.v2.api.model.kmb.Bound
-import hibernate.v2.sunshine.db.eta.Brand
+import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
@@ -12,6 +12,7 @@ import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.model.transport.TransportRouteStopList
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.KmbRepository
+import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,8 +20,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AddEtaViewModel(
-    private val kmbRepository: KmbRepository,
     private val etaRepository: EtaRepository,
+    private val kmbRepository: KmbRepository,
+    private val ncRepository: NCRepository,
 ) : BaseViewModel() {
 
     val allTransportRouteList = MutableLiveData<MutableList<RouteForRowAdapter>>()
@@ -31,7 +33,7 @@ class AddEtaViewModel(
         bound: Bound,
         serviceType: String,
         seq: Int,
-        brand: Brand
+        company: Company
     ) = withContext(Dispatchers.IO) {
         etaRepository.hasEtaInDb(
             stopId,
@@ -39,7 +41,7 @@ class AddEtaViewModel(
             bound,
             serviceType,
             seq,
-            brand
+            company
         )
     }
 
@@ -57,11 +59,14 @@ class AddEtaViewModel(
                 AddEtaActivity.EtaType.KMB -> {
                     getKmbRouteList()
                 }
+                AddEtaActivity.EtaType.NWFB_CTB -> {
+                    getNCRouteList()
+                }
             }
         }
     }
 
-    fun getKmbRouteList() {
+    private fun getKmbRouteList() {
         viewModelScope.launch(Dispatchers.IO) {
             if (RouteAndStopListDataHolder.hasData(AddEtaActivity.EtaType.KMB)) {
                 allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(AddEtaActivity.EtaType.KMB))
@@ -81,10 +86,10 @@ class AddEtaViewModel(
                 }
 
                 allRouteStopList.forEach {
-                    val routeHashId = it.kmbRouteStopEntity.routeHashId()
+                    val routeHashId = it.routeStopEntity.routeHashId()
                     transportRouteStopHashMap[routeHashId]?.stopList?.add(
-                        it.kmbStopEntity.toTransportModelWithSeq(
-                            it.kmbRouteStopEntity.seq
+                        it.stopEntity.toTransportModelWithSeq(
+                            it.routeStopEntity.seq
                         )
                     )
                 }
@@ -119,6 +124,74 @@ class AddEtaViewModel(
 
                 Logger.d("lifecycle getTransportRouteList done")
                 allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(AddEtaActivity.EtaType.KMB))
+            } catch (e: Exception) {
+                Logger.e(e, "lifecycle getTransportRouteList error")
+                allTransportRouteList.postValue(mutableListOf())
+            }
+        }
+    }
+
+    private fun getNCRouteList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (RouteAndStopListDataHolder.hasData(AddEtaActivity.EtaType.NWFB_CTB)) {
+                allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(AddEtaActivity.EtaType.NWFB_CTB))
+                return@launch
+            }
+
+            try {
+                val allRouteList = ncRepository.getRouteListDb()
+                val allRouteStopList = ncRepository.getRouteStopDetailsListDb()
+
+                val transportRouteStopHashMap = allRouteList.associate { entity ->
+                    val route = entity.toTransportModel()
+                    route.routeHashId() to TransportRouteStopList(
+                        route = route,
+                        stopList = mutableListOf()
+                    )
+                }
+
+                allRouteStopList.forEach {
+                    val routeHashId = it.routeStopEntity.routeHashId()
+                    transportRouteStopHashMap[routeHashId]?.stopList?.add(
+                        it.stopEntity.toTransportModelWithSeq(
+                            it.routeStopEntity.seq
+                        )
+                    )
+                }
+
+                val transportRouteStopList = transportRouteStopHashMap.values.toMutableList()
+                transportRouteStopList.sortWith { o1, o2 ->
+                    o1.compareTo(o2)
+                }
+
+                val transportRouteList =
+                    transportRouteStopList.map { routeAndStopList ->
+                        val route = routeAndStopList.route
+                        val headerTitle = if (route.isSpecialRoute()) {
+                            "${route.routeId} 特別線 (${route.serviceType}) - ${route.origTc} 往 ${route.destTc}"
+                        } else {
+                            "${route.routeId} - ${route.origTc} 往 ${route.destTc}"
+                        }
+
+                        RouteForRowAdapter(
+                            headerTitle = headerTitle,
+                            route = route,
+                            filteredList = routeAndStopList.stopList.map { stop ->
+                                Card.RouteStopAddCard(
+                                    route = route,
+                                    stop = stop
+                                )
+                            }
+                        )
+                    }.toMutableList()
+
+                RouteAndStopListDataHolder.setData(
+                    AddEtaActivity.EtaType.NWFB_CTB,
+                    transportRouteList
+                )
+
+                Logger.d("lifecycle getTransportRouteList done")
+                allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(AddEtaActivity.EtaType.NWFB_CTB))
             } catch (e: Exception) {
                 Logger.e(e, "lifecycle getTransportRouteList error")
                 allTransportRouteList.postValue(mutableListOf())

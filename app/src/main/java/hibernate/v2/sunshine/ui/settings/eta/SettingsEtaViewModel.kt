@@ -6,10 +6,8 @@ import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.repository.EtaRepository
-import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 class SettingsEtaViewModel(
@@ -21,15 +19,29 @@ class SettingsEtaViewModel(
 
     fun getSavedEtaCardList() {
         viewModelScope.launch(Dispatchers.IO) {
-            val savedEtaList = etaRepository.getSavedKmbEtaList()
-            val convertedEtaCardList = savedEtaList.map { etaKmbDetailsEntity ->
+            val convertedEtaCardList = mutableListOf<Card.SettingsEtaCard>()
+            val savedKmbEtaList = etaRepository.getSavedKmbEtaList()
+            convertedEtaCardList.addAll(savedKmbEtaList.map { detailsEntity ->
                 Card.SettingsEtaCard(
-                    entity = etaKmbDetailsEntity.savedEta,
-                    route = etaKmbDetailsEntity.route.toTransportModel(),
-                    stop = etaKmbDetailsEntity.stop.toTransportModel(),
+                    entity = detailsEntity.savedEta,
+                    route = detailsEntity.route.toTransportModel(),
+                    stop = detailsEntity.stop.toTransportModel(),
+                    position = detailsEntity.order.position,
                     type = Card.SettingsEtaCard.Type.DATA
                 )
-            }.toMutableList()
+            })
+            val savedNCEtaList = etaRepository.getSavedNCEtaList()
+            convertedEtaCardList.addAll(savedNCEtaList.map { detailsEntity ->
+                Card.SettingsEtaCard(
+                    entity = detailsEntity.savedEta,
+                    route = detailsEntity.route.toTransportModel(),
+                    stop = detailsEntity.stop.toTransportModel(),
+                    position = detailsEntity.order.position,
+                    type = Card.SettingsEtaCard.Type.DATA
+                )
+            })
+
+            convertedEtaCardList.sort()
 
             savedEtaCardList.postValue(convertedEtaCardList)
         }

@@ -1,11 +1,11 @@
 package hibernate.v2.sunshine.db.eta
 
 import android.os.Parcelable
-import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import hibernate.v2.api.model.kmb.Bound
+import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.model.transport.RouteHashable
 import hibernate.v2.sunshine.model.transport.StopHashable
 import kotlinx.parcelize.Parcelize
@@ -15,7 +15,7 @@ import kotlinx.parcelize.Parcelize
 data class SavedEtaEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long? = null,
-    val brand: Brand,
+    val company: Company,
     @ColumnInfo(name = "stop")
     val stopId: String,
     @ColumnInfo(name = "route")
@@ -26,25 +26,7 @@ data class SavedEtaEntity(
     val seq: Int,
 ) : Parcelable, RouteHashable, StopHashable {
 
-    override fun routeHashId() = routeId + bound.value + serviceType
+    override fun routeHashId() = company.value + routeId + bound.value + serviceType
 
     override fun stopHashId() = routeId + bound.value + serviceType + stopId + seq
-}
-
-enum class Brand(val value: String) {
-    @Keep
-    KMB("kmb"),
-
-    @Keep
-    NWFB("nwfb"),
-
-    @Keep
-    CTB("ctb"),
-
-    @Keep
-    UNKNOWN("unknown");
-
-    companion object {
-        fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
-    }
 }

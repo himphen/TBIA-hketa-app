@@ -3,8 +3,9 @@ package hibernate.v2.sunshine.db.kmb
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
-import hibernate.v2.api.model.kmb.Bound
-import hibernate.v2.api.model.kmb.KmbRouteStop
+import hibernate.v2.api.model.transport.KmbRouteStop
+import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.model.transport.RouteHashable
 
 @Entity(
@@ -38,5 +39,5 @@ data class KmbRouteStopEntity(
         }
     }
 
-    override fun routeHashId() = routeId + bound.value + serviceType
+    override fun routeHashId() = Company.KMB.value + routeId + bound.value + serviceType
 }

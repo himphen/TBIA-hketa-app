@@ -61,7 +61,7 @@ class App : Application() {
         viewModel { EtaViewModel(get()) }
         viewModel { OnboardingViewModel(get(), get()) }
         viewModel { SettingsEtaViewModel(get()) }
-        viewModel { AddEtaViewModel(get(), get()) }
+        viewModel { AddEtaViewModel(get(), get(), get()) }
         viewModel { WeatherViewModel(get()) }
         viewModel { TrafficViewModel(get()) }
     }

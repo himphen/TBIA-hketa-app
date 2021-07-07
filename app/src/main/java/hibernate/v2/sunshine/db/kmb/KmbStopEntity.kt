@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.db.kmb
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import hibernate.v2.api.model.kmb.KmbStop
+import hibernate.v2.api.model.transport.KmbStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
 @Entity(

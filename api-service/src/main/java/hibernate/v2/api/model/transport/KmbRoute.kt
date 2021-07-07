@@ -1,7 +1,7 @@
-package hibernate.v2.api.model.kmb
+package hibernate.v2.api.model.transport
 
-import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
+import hibernate.v2.api.model.transport.Bound
 
 data class KmbRoute(
     @SerializedName("bound")
@@ -23,15 +23,3 @@ data class KmbRoute(
     @SerializedName("service_type")
     val serviceType: String,
 )
-
-enum class Bound(val value: String) {
-    @Keep
-    I("inbound"),
-
-    @Keep
-    O("outbound");
-
-    companion object {
-        fun from(type: String?) = values().find { it.value == type } ?: I
-    }
-}

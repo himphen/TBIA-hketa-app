@@ -1,8 +1,8 @@
 package hibernate.v2.sunshine.db
 
 import androidx.room.TypeConverter
-import hibernate.v2.api.model.kmb.Bound
-import hibernate.v2.sunshine.db.eta.Brand
+import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.api.model.transport.Company
 import java.util.UUID
 
 class DataTypeConverter {
@@ -28,12 +28,12 @@ class DataTypeConverter {
     }
 
     @TypeConverter
-    fun fromBrand(value: Brand): String {
+    fun fromCompany(value: Company): String {
         return value.value
     }
 
     @TypeConverter
-    fun toBrand(value: String): Brand {
-        return Brand.from(value)
+    fun toCompany(value: String): Company {
+        return Company.from(value)
     }
 }

@@ -39,7 +39,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
                     bound = card.route.bound,
                     serviceType = card.route.serviceType,
                     seq = card.stop.seq!!,
-                    brand = card.route.brand
+                    company = card.route.company
                 )
 
                 if (isExisting) {
@@ -57,7 +57,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
                     bound = card.route.bound,
                     serviceType = card.route.serviceType,
                     seq = card.stop.seq!!,
-                    brand = card.route.brand
+                    company = card.route.company
                 )
                 viewModel.addEta(newEta)
 

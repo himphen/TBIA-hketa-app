@@ -3,8 +3,8 @@ package hibernate.v2.sunshine.ui.eta
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
-import hibernate.v2.api.model.kmb.Bound
-import hibernate.v2.sunshine.db.eta.Brand
+import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.repository.EtaRepository
@@ -23,13 +23,25 @@ class EtaViewModel(
 
     fun getEtaListFromDb() {
         viewModelScope.launch(Dispatchers.IO) {
-            val savedEtaList = etaRepository.getSavedKmbEtaList()
-            val convertedEtaCardList = savedEtaList.map { etaKmbDetails ->
+            val convertedEtaCardList = mutableListOf<Card.EtaCard>()
+            val savedKmbEtaList = etaRepository.getSavedKmbEtaList()
+            convertedEtaCardList.addAll(savedKmbEtaList.map { detailsEntity ->
                 Card.EtaCard(
-                    route = etaKmbDetails.route.toTransportModel(),
-                    stop = etaKmbDetails.stop.toTransportModelWithSeq(etaKmbDetails.savedEta.seq)
+                    route = detailsEntity.route.toTransportModel(),
+                    stop = detailsEntity.stop.toTransportModelWithSeq(detailsEntity.savedEta.seq),
+                    position = detailsEntity.order.position
                 )
-            }
+            })
+            val savedNCEtaList = etaRepository.getSavedNCEtaList()
+            convertedEtaCardList.addAll(savedNCEtaList.map { detailsEntity ->
+                Card.EtaCard(
+                    route = detailsEntity.route.toTransportModel(),
+                    stop = detailsEntity.stop.toTransportModelWithSeq(detailsEntity.savedEta.seq),
+                    position = detailsEntity.order.position
+                )
+            })
+
+            convertedEtaCardList.sort()
 
             if (convertedEtaCardList.isEmpty()) {
 //                savedEtaCardList.postValue(getDefaultEtaEntityList())
@@ -78,7 +90,7 @@ class EtaViewModel(
                 bound = Bound.O,
                 serviceType = "1",
                 seq = 2,
-                brand = Brand.KMB
+                company = Company.KMB
             )
         )
         defaultEtaEntityList.add(
@@ -88,7 +100,7 @@ class EtaViewModel(
                 bound = Bound.O,
                 serviceType = "1",
                 seq = 12,
-                brand = Brand.KMB
+                company = Company.KMB
             )
         )
         defaultEtaEntityList.add(
@@ -98,7 +110,7 @@ class EtaViewModel(
                 bound = Bound.O,
                 serviceType = "1",
                 seq = 1,
-                brand = Brand.KMB
+                company = Company.KMB
             )
         )
         defaultEtaEntityList.add(
@@ -108,7 +120,7 @@ class EtaViewModel(
                 bound = Bound.O,
                 serviceType = "1",
                 seq = 1,
-                brand = Brand.KMB
+                company = Company.KMB
             )
         )
         defaultEtaEntityList.add(
@@ -118,7 +130,7 @@ class EtaViewModel(
                 bound = Bound.O,
                 serviceType = "1",
                 seq = 1,
-                brand = Brand.KMB
+                company = Company.KMB
             )
         )
         return defaultEtaEntityList

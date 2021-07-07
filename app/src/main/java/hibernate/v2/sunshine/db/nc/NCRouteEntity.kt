@@ -3,10 +3,9 @@ package hibernate.v2.sunshine.db.nc
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
-import hibernate.v2.api.model.kmb.Bound
-import hibernate.v2.api.model.nc.Company
-import hibernate.v2.api.model.nc.NCRoute
-import hibernate.v2.sunshine.db.eta.Brand
+import hibernate.v2.api.model.transport.NCRoute
+import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.model.transport.RouteHashable
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
@@ -59,12 +58,9 @@ data class NCRouteEntity(
             destEn = destEn,
             destTc = destTc,
             destSc = destSc,
-            brand = when (company) {
-                Company.CTB -> Brand.CTB
-                else -> Brand.NWFB
-            }
+            company = company
         )
     }
 
-    override fun routeHashId() = routeId + bound.value
+    override fun routeHashId() = company.value + routeId + bound.value
 }

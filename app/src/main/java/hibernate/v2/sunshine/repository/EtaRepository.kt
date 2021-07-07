@@ -1,15 +1,15 @@
 package hibernate.v2.sunshine.repository
 
-import hibernate.v2.api.model.kmb.Bound
+import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.response.eta.EtaResponse
 import hibernate.v2.api.response.kmb.KmbRouteResponse
 import hibernate.v2.api.response.kmb.KmbStopResponse
 import hibernate.v2.sunshine.api.ApiManager
-import hibernate.v2.sunshine.db.eta.Brand
 import hibernate.v2.sunshine.db.eta.EtaDao
-import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.db.eta.EtaOrderDao
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
+import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 
 class EtaRepository(
     private val apiManager: ApiManager,
@@ -18,6 +18,7 @@ class EtaRepository(
 ) {
 
     suspend fun getSavedKmbEtaList() = etaDao.getAllKmbEtaWithOrdering()
+    suspend fun getSavedNCEtaList() = etaDao.getAllNCEtaWithOrdering()
 
     suspend fun hasEtaInDb(
         stopId: String,
@@ -25,14 +26,14 @@ class EtaRepository(
         bound: Bound,
         serviceType: String,
         seq: Int,
-        brand: Brand
+        company: Company
     ): Boolean = etaDao.getSingleEta(
         stopId,
         routeId,
         bound,
         serviceType,
         seq,
-        brand
+        company
     ) != null
 
     suspend fun addEta(entity: SavedEtaEntity) {

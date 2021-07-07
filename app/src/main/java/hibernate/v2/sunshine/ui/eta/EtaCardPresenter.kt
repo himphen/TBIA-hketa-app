@@ -6,7 +6,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.leanback.widget.BaseCardView
-import hibernate.v2.api.model.eta.Eta
+import hibernate.v2.api.model.transport.Eta
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseCardPresenter

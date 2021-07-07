@@ -5,22 +5,27 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import hibernate.v2.api.model.kmb.Bound
+import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.api.model.transport.Company
 
 @Dao
 interface EtaDao {
     @Transaction
-    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta.id = saved_eta_order.id JOIN kmb_route ON saved_eta.bound = kmb_route.bound AND saved_eta.service_type = kmb_route.service_type AND saved_eta.route = kmb_route.route JOIN kmb_stop ON saved_eta.stop = kmb_stop.stop ORDER BY saved_eta_order.position ASC")
+    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta.id = saved_eta_order.id JOIN kmb_route ON saved_eta.bound = kmb_route.bound AND saved_eta.service_type = kmb_route.service_type AND saved_eta.route = kmb_route.route JOIN kmb_stop ON saved_eta.stop = kmb_stop.stop")
     suspend fun getAllKmbEtaWithOrdering(): List<EtaKmbDetails>
 
-    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta.id = saved_eta_order.id WHERE stop=(:stopId) AND route=(:routeId) AND bound=(:bound) AND service_type=(:serviceType) AND seq=(:seq) AND brand=(:brand) LIMIT 1")
+    @Transaction
+    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta.id = saved_eta_order.id JOIN nc_route ON saved_eta.bound = nc_route.bound AND saved_eta.route = nc_route.route JOIN nc_stop ON saved_eta.stop = nc_stop.stop")
+    suspend fun getAllNCEtaWithOrdering(): List<EtaNCDetails>
+
+    @Query("SELECT * FROM saved_eta WHERE stop=(:stopId) AND route=(:routeId) AND bound=(:bound) AND service_type=(:serviceType) AND seq=(:seq) AND company=(:company) LIMIT 1")
     suspend fun getSingleEta(
         stopId: String,
         routeId: String,
         bound: Bound,
         serviceType: String,
         seq: Int,
-        brand: Brand
+        company: Company
     ): SavedEtaEntity?
 
     @Update

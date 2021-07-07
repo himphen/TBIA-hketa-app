@@ -4,11 +4,11 @@ import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import hibernate.v2.api.model.kmb.Bound
-import hibernate.v2.api.model.nc.Company
-import hibernate.v2.api.model.nc.NCRoute
-import hibernate.v2.api.model.nc.NCRouteStop
-import hibernate.v2.api.model.nc.NCStop
+import hibernate.v2.api.model.transport.NCRoute
+import hibernate.v2.api.model.transport.NCRouteStop
+import hibernate.v2.api.model.transport.NCStop
+import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.nc.NCDao
 import hibernate.v2.sunshine.db.nc.NCRouteEntity

@@ -5,11 +5,11 @@ import androidx.room.Relation
 
 data class KmbRouteStopDetails(
     @Embedded
-    val kmbRouteStopEntity: KmbRouteStopEntity,
+    val routeStopEntity: KmbRouteStopEntity,
 
     @Relation(
         parentColumn = "stop",
         entityColumn = "stop"
     )
-    val kmbStopEntity: KmbStopEntity
+    val stopEntity: KmbStopEntity
 )

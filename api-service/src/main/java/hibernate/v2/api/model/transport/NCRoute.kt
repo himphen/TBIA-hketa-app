@@ -1,8 +1,8 @@
-package hibernate.v2.api.model.nc
+package hibernate.v2.api.model.transport
 
-import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
-import hibernate.v2.api.model.kmb.Bound
+import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.api.model.transport.Company
 
 data class NCRoute(
     @get:PropertyName("co")
@@ -31,15 +31,3 @@ data class NCRoute(
     @set:PropertyName("route")
     var routeId: String = "",
 )
-
-enum class Company(val value: String) {
-    @Keep
-    CTB("CTB"),
-
-    @Keep
-    NWFB("NWFB");
-
-    companion object {
-        fun from(type: String?) = values().find { it.value == type } ?: throw Exception("No enum found")
-    }
-}
