@@ -6,7 +6,7 @@ import androidx.room.Ignore
 import androidx.room.Index
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.NCRoute
+import hibernate.v2.api.model.transport.nc.NCRoute
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
 @Entity(
@@ -56,6 +56,7 @@ data class NCRouteEntity(
     fun toTransportModel(): TransportRoute {
         return TransportRoute(
             routeId = routeId,
+            routeNo = routeId,
             bound = bound,
             origEn = origEn,
             origTc = origTc,
@@ -63,7 +64,8 @@ data class NCRouteEntity(
             destEn = destEn,
             destTc = destTc,
             destSc = destSc,
-            company = company
+            company = company,
+            serviceType = "1"
         )
     }
 }

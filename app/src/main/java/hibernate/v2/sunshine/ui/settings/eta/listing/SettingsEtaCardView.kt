@@ -18,7 +18,7 @@ class SettingsEtaCardView(context: Context) : BaseCardView(
         card.stop!!
         card.route!!
         viewBinding.stopNameTv.text = card.stop.nameTc
-        viewBinding.routeIdTv.text = card.route.routeId
+        viewBinding.routeNumberTv.text = card.route.routeNo
 
         if (card.route.serviceType != "1") {
             viewBinding.routeDirectionTv.text = context.getString(
@@ -35,7 +35,7 @@ class SettingsEtaCardView(context: Context) : BaseCardView(
 
     fun updateInsertUi() {
         viewBinding.stopNameTv.text = "按此加入"
-        viewBinding.routeIdTv.text = "+"
+        viewBinding.routeNumberTv.text = "+"
         viewBinding.routeDirectionTv.visibility = GONE
     }
 

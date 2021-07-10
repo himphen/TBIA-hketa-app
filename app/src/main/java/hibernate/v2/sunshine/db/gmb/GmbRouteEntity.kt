@@ -1,24 +1,24 @@
-package hibernate.v2.sunshine.db.kmb
+package hibernate.v2.sunshine.db.gmb
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.kmb.KmbRoute
-import hibernate.v2.sunshine.model.transport.TransportHashable
+import hibernate.v2.api.model.transport.GmbRegion
+import hibernate.v2.api.model.transport.gmb.GmbRoute
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
 @Entity(
-    tableName = "kmb_route",
-    primaryKeys = ["kmb_route_id", "kmb_route_bound", "kmb_route_service_type"],
+    tableName = "gmb_route",
+    primaryKeys = ["gmb_route_id", "gmb_route_bound", "service_type"]
 )
-data class KmbRouteEntity(
-    @ColumnInfo(name = "kmb_route_id")
+data class GmbRouteEntity(
+    @ColumnInfo(name = "gmb_route_id")
     val routeId: String,
-    @ColumnInfo(name = "kmb_route_bound")
+    @ColumnInfo(name = "gmb_route_no")
+    val routeNo: String,
+    @ColumnInfo(name = "gmb_route_bound")
     val bound: Bound,
-    @ColumnInfo(name = "kmb_route_service_type")
-    val serviceType: String,
     @ColumnInfo(name = "orig_en")
     val origEn: String,
     @ColumnInfo(name = "orig_tc")
@@ -31,19 +31,26 @@ data class KmbRouteEntity(
     val destTc: String,
     @ColumnInfo(name = "dest_sc")
     val destSc: String,
-) : TransportHashable {
+    @ColumnInfo(name = "service_type")
+    val serviceType: String,
+    @ColumnInfo(name = "region")
+    val region: GmbRegion,
+) {
+
     companion object {
-        fun fromApiModel(route: KmbRoute): KmbRouteEntity {
-            return KmbRouteEntity(
-                routeId = route.routeId,
+        fun fromApiModel(route: GmbRoute): GmbRouteEntity {
+            return GmbRouteEntity(
+                routeId = route.routeId.toString(),
+                routeNo = route.routeNo,
                 bound = route.bound,
-                serviceType = route.serviceType,
+                region = route.region,
                 origEn = route.origEn,
                 origTc = route.origTc,
                 origSc = route.origSc,
                 destEn = route.destEn,
                 destTc = route.destTc,
-                destSc = route.destSc
+                destSc = route.destSc,
+                serviceType = route.serviceType.toString()
             )
         }
     }
@@ -51,18 +58,16 @@ data class KmbRouteEntity(
     fun toTransportModel(): TransportRoute {
         return TransportRoute(
             routeId = routeId,
-            routeNo = routeId,
+            routeNo = routeNo,
             bound = bound,
-            serviceType = serviceType,
             origEn = origEn,
             origTc = origTc,
             origSc = origSc,
             destEn = destEn,
             destTc = destTc,
             destSc = destSc,
-            company = Company.KMB
+            company = Company.GMB,
+            serviceType = serviceType
         )
     }
-
-    fun routeHashId() = routeHashId(Company.KMB, routeId, bound, serviceType)
 }

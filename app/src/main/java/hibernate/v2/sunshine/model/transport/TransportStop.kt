@@ -5,8 +5,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TransportStop(
-    val lat: String,
-    val lng: String,
+    val lat: Double,
+    val lng: Double,
     val nameEn: String,
     val nameSc: String,
     val nameTc: String,

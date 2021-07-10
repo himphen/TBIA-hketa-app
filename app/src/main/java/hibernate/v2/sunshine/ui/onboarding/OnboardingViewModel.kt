@@ -3,6 +3,7 @@ package hibernate.v2.sunshine.ui.onboarding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
+import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 class OnboardingViewModel(
     private val kmbRepository: KmbRepository,
     private val ncRepository: NCRepository,
+    private val gmbRepository: GmbRepository
 ) : BaseViewModel() {
 
     val fetchTransportDataRequired = MutableLiveData<Boolean>()
@@ -27,6 +29,7 @@ class OnboardingViewModel(
             val deferredList = listOf(
                 async { kmbRepository.isDataExisted() },
                 async { ncRepository.isDataExisted() },
+                async { gmbRepository.isDataExisted() },
             )
             val result = deferredList.awaitAll().toMutableList()
 
@@ -59,6 +62,15 @@ class OnboardingViewModel(
                 return@launch
             }
 
+            try {
+                downloadGmbTransportData()
+                fetchTransportDataCompleted.postValue(FetchTransportDataType.GMB)
+            } catch (e: Exception) {
+                Logger.e(e, "=== lifecycle downloadGmbTransportData error ===")
+                fetchTransportDataFailed.postValue(FetchTransportDataType.GMB)
+                return@launch
+            }
+
             fetchTransportDataCompleted.postValue(FetchTransportDataType.ALL)
         }
     }
@@ -71,15 +83,15 @@ class OnboardingViewModel(
             listOf(
                 launch {
                     kmbRepository.saveStopListApi()
-                    Logger.d("lifecycle downloadKmbTransportData kmbRepository.saveStopListApi done")
+                    Logger.d("lifecycle downloadKmbTransportData saveStopListApi done")
                 },
                 launch {
                     kmbRepository.saveRouteListApi()
-                    Logger.d("lifecycle downloadKmbTransportData kmbRepository.saveRouteListApi done")
+                    Logger.d("lifecycle downloadKmbTransportData saveRouteListApi done")
                 },
                 launch {
                     kmbRepository.saveRouteStopListApi()
-                    Logger.d("lifecycle downloadKmbTransportData kmbRepository.saveRouteStopListApi done")
+                    Logger.d("lifecycle downloadKmbTransportData saveRouteStopListApi done")
                 }
             ).joinAll()
         }
@@ -93,22 +105,43 @@ class OnboardingViewModel(
             listOf(
                 launch {
                     ncRepository.saveRouteListFromFirebase()
-                    Logger.d("lifecycle downloadNCTransportData ncRepository.saveRouteListFromFirebase done")
+                    Logger.d("lifecycle downloadNCTransportData saveRouteListFromFirebase done")
                 },
                 launch {
                     ncRepository.saveRouteStopListFromFirebase()
-                    Logger.d("lifecycle downloadNCTransportData ncRepository.saveRouteStopListFromFirebase done")
+                    Logger.d("lifecycle downloadNCTransportData saveRouteStopListFromFirebase done")
                 },
                 launch {
                     ncRepository.saveStopListFromFirebase()
-                    Logger.d("lifecycle downloadNCTransportData ncRepository.saveStopListFromFirebase done")
+                    Logger.d("lifecycle downloadNCTransportData saveStopListFromFirebase done")
                 }
             ).joinAll()
+        }
+    }
 
+    private suspend fun downloadGmbTransportData() {
+        Logger.d("=== lifecycle downloadGmbTransportData start ===")
+        gmbRepository.initDatabase()
+
+        coroutineScope {
+            listOf(
+                launch {
+                    gmbRepository.saveRouteListFromFirebase()
+                    Logger.d("lifecycle downloadGmbTransportData saveRouteListFromFirebase done")
+                },
+                launch {
+                    gmbRepository.saveRouteStopListFromFirebase()
+                    Logger.d("lifecycle downloadGmbTransportData saveRouteStopListFromFirebase done")
+                },
+                launch {
+                    gmbRepository.saveStopListFromFirebase()
+                    Logger.d("lifecycle downloadGmbTransportData saveStopListFromFirebase done")
+                }
+            ).joinAll()
         }
     }
 }
 
 enum class FetchTransportDataType {
-    KMB, NC, ALL
+    KMB, NC, GMB, ALL
 }

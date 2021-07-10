@@ -8,6 +8,7 @@ import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.api.WeatherRepository
 import hibernate.v2.sunshine.db.LocalDatabase
 import hibernate.v2.sunshine.repository.EtaRepository
+import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
@@ -53,13 +54,15 @@ class App : Application() {
         single { get<LocalDatabase>().etaOrderDao() }
         single { get<LocalDatabase>().kmbDao() }
         single { get<LocalDatabase>().ncDao() }
+        single { get<LocalDatabase>().gmbDao() }
         single { EtaRepository(get(), get(), get()) }
         single { KmbRepository(get(), get()) }
-        single { NCRepository(get(), get()) }
+        single { NCRepository(get()) }
+        single { GmbRepository(get()) }
 
         // ViewModels
         viewModel { EtaViewModel(get()) }
-        viewModel { OnboardingViewModel(get(), get()) }
+        viewModel { OnboardingViewModel(get(), get(), get()) }
         viewModel { SettingsEtaViewModel(get()) }
         viewModel { AddEtaViewModel(get(), get(), get()) }
         viewModel { WeatherViewModel(get()) }

@@ -1,12 +1,12 @@
-package hibernate.v2.api.model.transport
+package hibernate.v2.api.model.transport.gmb
 
 import com.google.firebase.database.PropertyName
 
-data class NCStop(
-    var lat: String = "",
+data class GmbStop(
+    var lat: Double = 0.0,
     @get:PropertyName("long")
     @set:PropertyName("long")
-    var lng: String = "",
+    var lng: Double = 0.0,
     @get:PropertyName("name_en")
     @set:PropertyName("name_en")
     var nameEn: String = "",
@@ -18,5 +18,5 @@ data class NCStop(
     var nameTc: String = "",
     @get:PropertyName("stop")
     @set:PropertyName("stop")
-    var stopId: String = ""
+    var stopId: Long = 0
 )

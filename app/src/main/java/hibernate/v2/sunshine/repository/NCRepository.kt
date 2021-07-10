@@ -4,12 +4,9 @@ import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import hibernate.v2.api.model.transport.NCRoute
-import hibernate.v2.api.model.transport.NCRouteStop
-import hibernate.v2.api.model.transport.NCStop
-import hibernate.v2.api.model.transport.Bound
-import hibernate.v2.api.model.transport.Company
-import hibernate.v2.sunshine.api.ApiManager
+import hibernate.v2.api.model.transport.nc.NCRoute
+import hibernate.v2.api.model.transport.nc.NCRouteStop
+import hibernate.v2.api.model.transport.nc.NCStop
 import hibernate.v2.sunshine.db.nc.NCDao
 import hibernate.v2.sunshine.db.nc.NCRouteEntity
 import hibernate.v2.sunshine.db.nc.NCRouteStopEntity
@@ -17,7 +14,6 @@ import hibernate.v2.sunshine.db.nc.NCStopEntity
 import hibernate.v2.sunshine.util.getSnapshotValue
 
 class NCRepository(
-    private val apiManager: ApiManager,
     private val ncDao: NCDao,
 ) {
     val database =
@@ -56,7 +52,6 @@ class NCRepository(
         }
     }
 
-    suspend fun getStopListDb() = ncDao.getStopList()
     suspend fun getRouteListDb() = ncDao.getRouteList()
     suspend fun getRouteStopDetailsListDb() = ncDao.getRouteStopDetailsList()
 
@@ -65,32 +60,6 @@ class NCRepository(
     suspend fun hasRouteStopListDb() = ncDao.getSingleRouteStop() != null
 
     suspend fun isDataExisted() = hasStopListDb() && hasRouteListDb() && hasRouteStopListDb()
-
-    suspend fun getRouteListApi(company: Company) =
-        apiManager.ncService.getRouteList(company.value)
-
-    suspend fun getNWFBRouteListApi() = getRouteListApi(Company.NWFB)
-
-    suspend fun getCTBRouteListApi() = getRouteListApi(Company.CTB)
-
-    suspend fun getStopApi(stop: String) =
-        apiManager.ncService.getStop(stop)
-
-    suspend fun getRouteStopListApi(
-        company: Company,
-        route: String,
-        bound: Bound
-    ) = apiManager.ncService.getRouteStop(company.value, route, bound.value)
-
-    suspend fun getNWFBRouteStopListApi(
-        route: String,
-        bound: Bound
-    ) = getRouteStopListApi(Company.NWFB, route, bound)
-
-    suspend fun getCTBRouteStopListApi(
-        route: String,
-        bound: Bound
-    ) = getRouteStopListApi(Company.CTB, route, bound)
 
     suspend fun initDatabase() {
         ncDao.clearRouteList()

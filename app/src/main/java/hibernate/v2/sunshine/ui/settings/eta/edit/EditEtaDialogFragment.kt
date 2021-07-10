@@ -26,7 +26,7 @@ class EditEtaDialogFragment : GuidedStepSupportFragment() {
         return Guidance(
             getString(
                 R.string.dialog_edit_eta_title,
-                currentEditEta.route.routeId,
+                currentEditEta.route.routeNo,
                 currentEditEta.stop.nameTc
             ),
             getString(R.string.dialog_edit_eta_description),

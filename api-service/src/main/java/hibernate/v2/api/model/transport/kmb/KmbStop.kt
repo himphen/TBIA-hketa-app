@@ -1,12 +1,12 @@
-package hibernate.v2.api.model.transport
+package hibernate.v2.api.model.transport.kmb
 
 import com.google.gson.annotations.SerializedName
 
 data class KmbStop(
     @SerializedName("lat")
-    val lat: String,
+    val lat: Double,
     @SerializedName("long")
-    val lng: String,
+    val lng: Double,
     @SerializedName("name_en")
     val nameEn: String,
     @SerializedName("name_sc")

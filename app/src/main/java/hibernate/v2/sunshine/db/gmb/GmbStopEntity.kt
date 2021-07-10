@@ -1,17 +1,17 @@
-package hibernate.v2.sunshine.db.nc
+package hibernate.v2.sunshine.db.gmb
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import hibernate.v2.api.model.transport.nc.NCStop
+import hibernate.v2.api.model.transport.gmb.GmbStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
 @Entity(
-    tableName = "nc_stop"
+    tableName = "gmb_stop"
 )
-data class NCStopEntity(
+data class GmbStopEntity(
     @PrimaryKey
-    @ColumnInfo(name = "nc_stop_id")
+    @ColumnInfo(name = "gmb_stop_id")
     val stopId: String,
     @ColumnInfo(name = "name_en")
     val nameEn: String,
@@ -23,14 +23,16 @@ data class NCStopEntity(
     val lng: Double,
 ) {
     companion object {
-        fun fromApiModel(stop: NCStop) = NCStopEntity(
-            stopId = stop.stopId,
-            nameEn = stop.nameEn,
-            nameTc = stop.nameTc,
-            nameSc = stop.nameSc,
-            lat = stop.lat.toDoubleOrNull() ?: 0.0,
-            lng = stop.lng.toDoubleOrNull() ?: 0.0
-        )
+        fun fromApiModel(stop: GmbStop): GmbStopEntity {
+            return GmbStopEntity(
+                stopId = stop.stopId.toString(),
+                nameEn = stop.nameEn,
+                nameTc = stop.nameTc,
+                nameSc = stop.nameSc,
+                lat = stop.lat,
+                lng = stop.lng
+            )
+        }
     }
 
     fun toTransportModel(): TransportStop {

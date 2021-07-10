@@ -6,7 +6,7 @@ import androidx.room.Ignore
 import androidx.room.Index
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.NCRouteStop
+import hibernate.v2.api.model.transport.nc.NCRouteStop
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Entity(

@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.db.kmb
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import hibernate.v2.api.model.transport.KmbStop
+import hibernate.v2.api.model.transport.kmb.KmbStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
 @Entity(
@@ -19,8 +19,8 @@ data class KmbStopEntity(
     val nameTc: String,
     @ColumnInfo(name = "name_sc")
     val nameSc: String,
-    val lat: String,
-    val lng: String,
+    val lat: Double,
+    val lng: Double,
 ) {
     companion object {
         fun fromApiModel(stop: KmbStop): KmbStopEntity {

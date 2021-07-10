@@ -104,9 +104,9 @@ class AddEtaViewModel(
                     transportRouteStopList.map { routeAndStopList ->
                         val route = routeAndStopList.route
                         val headerTitle = if (route.isSpecialRoute()) {
-                            "${route.routeId} 特別線 (${route.serviceType}) - ${route.origTc} 往 ${route.destTc}"
+                            "${route.routeNo} 特別線 (${route.serviceType}) - ${route.origTc} 往 ${route.destTc}"
                         } else {
-                            "${route.routeId} - ${route.origTc} 往 ${route.destTc}"
+                            "${route.routeNo} - ${route.origTc} 往 ${route.destTc}"
                         }
 
                         RouteForRowAdapter(
@@ -168,9 +168,9 @@ class AddEtaViewModel(
                     transportRouteStopList.map { routeAndStopList ->
                         val route = routeAndStopList.route
                         val headerTitle = if (route.isSpecialRoute()) {
-                            "${route.routeId} 特別線 (${route.serviceType}) - ${route.origTc} 往 ${route.destTc}"
+                            "${route.routeNo} 特別線 (${route.serviceType}) - ${route.origTc} 往 ${route.destTc}"
                         } else {
-                            "${route.routeId} - ${route.origTc} 往 ${route.destTc}"
+                            "${route.routeNo} - ${route.origTc} 往 ${route.destTc}"
                         }
 
                         RouteForRowAdapter(

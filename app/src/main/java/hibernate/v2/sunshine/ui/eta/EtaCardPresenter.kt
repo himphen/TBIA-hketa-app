@@ -40,7 +40,7 @@ class EtaCardPresenter(
         cardView.tag = card
         val viewBinding = cardView.viewBinding
 
-        viewBinding.routeIdTv.text = card.route.routeId
+        viewBinding.routeNumberTv.text = card.route.routeNo
         viewBinding.stopNameTv.text = card.stop.nameTc
         viewBinding.routeDirectionTv.text =
             context.getString(R.string.text_eta_destination, card.route.destTc)

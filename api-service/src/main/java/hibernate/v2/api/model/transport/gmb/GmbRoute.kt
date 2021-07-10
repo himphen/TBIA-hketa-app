@@ -1,14 +1,11 @@
-package hibernate.v2.api.model.transport
+package hibernate.v2.api.model.transport.gmb
 
 import com.google.firebase.database.PropertyName
 import hibernate.v2.api.model.transport.Bound
-import hibernate.v2.api.model.transport.Company
+import hibernate.v2.api.model.transport.GmbRegion
 
-data class NCRoute(
-    @get:PropertyName("co")
-    @set:PropertyName("co")
-    var company: Company = Company.NWFB,
-    var bound: Bound = Bound.O,
+data class GmbRoute(
+    val bound: Bound = Bound.O,
     @get:PropertyName("dest_en")
     @set:PropertyName("dest_en")
     var destEn: String = "",
@@ -27,7 +24,16 @@ data class NCRoute(
     @get:PropertyName("orig_tc")
     @set:PropertyName("orig_tc")
     var origTc: String = "",
-    @get:PropertyName("route")
-    @set:PropertyName("route")
-    var routeId: String = "",
+    @get:PropertyName("route_id")
+    @set:PropertyName("route_id")
+    var routeId: Long = 0,
+    @get:PropertyName("route_no")
+    @set:PropertyName("route_no")
+    var routeNo: String = "",
+    @get:PropertyName("service_type")
+    @set:PropertyName("service_type")
+    var serviceType: Long = 0,
+    @get:PropertyName("region")
+    @set:PropertyName("region")
+    var region: GmbRegion = GmbRegion.UNKNOWN,
 )
