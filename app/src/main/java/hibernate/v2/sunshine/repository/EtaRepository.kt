@@ -3,6 +3,7 @@ package hibernate.v2.sunshine.repository
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.response.eta.EtaResponse
+import hibernate.v2.api.response.eta.GmbEtaResponse
 import hibernate.v2.api.response.kmb.KmbRouteResponse
 import hibernate.v2.api.response.kmb.KmbStopResponse
 import hibernate.v2.sunshine.api.ApiManager
@@ -19,6 +20,7 @@ class EtaRepository(
 
     suspend fun getSavedKmbEtaList() = etaDao.getAllKmbEtaWithOrdering()
     suspend fun getSavedNCEtaList() = etaDao.getAllNCEtaWithOrdering()
+    suspend fun getSavedGmbEtaList() = etaDao.getAllGmbEtaWithOrdering()
 
     suspend fun hasEtaInDb(
         stopId: String,
@@ -74,6 +76,18 @@ class EtaRepository(
             company = company.value,
             stopId = stopId,
             route = route
+        )
+    }
+
+    suspend fun getGmbStopEtaApi(
+        stopSeq: Int,
+        serviceType: String,
+        route: String
+    ): GmbEtaResponse {
+        return apiManager.gmbService.getStopEta(
+            stopSeq = stopSeq,
+            route = route,
+            serviceType = serviceType
         )
     }
 

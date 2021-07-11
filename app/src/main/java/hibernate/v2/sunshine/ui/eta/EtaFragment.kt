@@ -10,11 +10,10 @@ import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.lifecycle.lifecycleScope
-import hibernate.v2.api.model.transport.Eta
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.FullWidthGridPresenter
-import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import kotlinx.coroutines.CoroutineScope
@@ -22,6 +21,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import java.util.Date
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -112,18 +112,9 @@ class EtaFragment : VerticalGridSupportFragment() {
 
     private fun processEtaList() {
         etaCardList?.forEachIndexed { index, etaCard ->
-            etaCard.etaList = etaCard.etaList.filter { eta: Eta ->
-                eta.eta?.let { etaString ->
-                    val etaDate = DateUtil.getDate(
-                        etaString,
-                        DateFormat.ISO_WITHOUT_MS.value
-                    ) ?: return@let false
-
-                    val currentDate = DateUtil.getDate(
-                        eta.dataTimestamp,
-                        DateFormat.ISO_WITHOUT_MS.value
-                    ) ?: return@let false
-
+            etaCard.etaList = etaCard.etaList.filter { eta: TransportEta ->
+                eta.eta?.let { etaDate ->
+                    val currentDate = Date()
                     DateUtil.getTimeDiffInMin(
                         etaDate,
                         currentDate

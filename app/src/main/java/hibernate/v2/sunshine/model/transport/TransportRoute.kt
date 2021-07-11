@@ -6,21 +6,21 @@ import hibernate.v2.api.model.transport.Company
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class TransportRoute(
-    val routeId: String,
-    val routeNo: String,
-    val bound: Bound,
-    val serviceType: String,
-    val origEn: String,
-    val origTc: String,
-    val origSc: String,
-    val destEn: String,
-    val destTc: String,
-    val destSc: String,
-    val company: Company,
+open class TransportRoute(
+    open val routeId: String,
+    open val routeNo: String,
+    open val bound: Bound,
+    open val serviceType: String,
+    open val origEn: String,
+    open val origTc: String,
+    open val origSc: String,
+    open val destEn: String,
+    open val destTc: String,
+    open val destSc: String,
+    open val company: Company,
 
     var routeComponent: RouteComponent? = null,
-) : Parcelable, TransportHashable, Comparable<TransportRoute> {
+) : TransportHashable, Comparable<TransportRoute>, Parcelable {
 
     fun routeHashId() = routeHashId(company, routeId, bound, serviceType)
 
@@ -56,7 +56,7 @@ data class TransportRoute(
         }
     }
 
-    fun isSpecialRoute(): Boolean = serviceType != "1"
+    open fun isSpecialRoute(): Boolean = serviceType != "1"
 }
 
 @Parcelize
@@ -64,7 +64,7 @@ class RouteComponent(
     var routePrefix: String,
     var routeNumber: Int,
     var routeSuffix: String,
-) : Parcelable, Comparable<RouteComponent> {
+) : Comparable<RouteComponent>, Parcelable {
     override fun compareTo(other: RouteComponent): Int {
         val routePrefixCompare = routePrefix.compareTo(other.routePrefix)
         if (routePrefixCompare != 0) return routePrefixCompare

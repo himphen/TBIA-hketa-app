@@ -4,8 +4,6 @@ import com.google.firebase.database.PropertyName
 
 data class GmbStop(
     var lat: Double = 0.0,
-    @get:PropertyName("long")
-    @set:PropertyName("long")
     var lng: Double = 0.0,
     @get:PropertyName("name_en")
     @set:PropertyName("name_en")

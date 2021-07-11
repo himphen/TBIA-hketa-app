@@ -25,6 +25,7 @@ class AddEtaActivity : BaseFragmentActivity<ActivityBaseContainerBinding>() {
 
     enum class EtaType {
         KMB,
-        NWFB_CTB
+        NWFB_CTB,
+        GMB
     }
 }

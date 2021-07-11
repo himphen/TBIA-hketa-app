@@ -20,26 +20,18 @@ class SettingsEtaViewModel(
     fun getSavedEtaCardList() {
         viewModelScope.launch(Dispatchers.IO) {
             val convertedEtaCardList = mutableListOf<Card.SettingsEtaCard>()
-            val savedKmbEtaList = etaRepository.getSavedKmbEtaList()
-            convertedEtaCardList.addAll(savedKmbEtaList.map { detailsEntity ->
-                Card.SettingsEtaCard(
-                    entity = detailsEntity.savedEta,
-                    route = detailsEntity.route.toTransportModel(),
-                    stop = detailsEntity.stop.toTransportModel(),
-                    position = detailsEntity.order.position,
-                    type = Card.SettingsEtaCard.Type.DATA
-                )
-            })
-            val savedNCEtaList = etaRepository.getSavedNCEtaList()
-            convertedEtaCardList.addAll(savedNCEtaList.map { detailsEntity ->
-                Card.SettingsEtaCard(
-                    entity = detailsEntity.savedEta,
-                    route = detailsEntity.route.toTransportModel(),
-                    stop = detailsEntity.stop.toTransportModel(),
-                    position = detailsEntity.order.position,
-                    type = Card.SettingsEtaCard.Type.DATA
-                )
-            })
+            convertedEtaCardList.addAll(
+                etaRepository.getSavedKmbEtaList()
+                    .map { it.toSettingsEtaCard() }
+            )
+            convertedEtaCardList.addAll(
+                etaRepository.getSavedNCEtaList()
+                    .map { it.toSettingsEtaCard() }
+            )
+            convertedEtaCardList.addAll(
+                etaRepository.getSavedGmbEtaList()
+                    .map { it.toSettingsEtaCard() }
+            )
 
             convertedEtaCardList.sort()
 

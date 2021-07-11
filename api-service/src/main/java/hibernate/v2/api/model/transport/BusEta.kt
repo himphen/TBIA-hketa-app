@@ -1,9 +1,8 @@
 package hibernate.v2.api.model.transport
 
-import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
-data class Eta(
+data class BusEta(
     @SerializedName("co")
     val company: String? = null,
     @SerializedName("data_timestamp")
@@ -31,58 +30,3 @@ data class Eta(
     @SerializedName("service_type")
     val serviceType: Int? = null
 )
-
-enum class Bound(val value: String) {
-    @Keep
-    I("inbound"),
-
-    @Keep
-    O("outbound"),
-
-    @Keep
-    UNKNOWN("unknown");
-
-    companion object {
-        fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
-    }
-}
-
-enum class Company(val value: String) {
-    @Keep
-    KMB("kmb"),
-
-    @Keep
-    NWFB("nwfb"),
-
-    @Keep
-    CTB("ctb"),
-
-    @Keep
-    GMB("GMB"),
-
-    @Keep
-    UNKNOWN("unknown");
-
-    companion object {
-        fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
-    }
-}
-
-enum class GmbRegion(val value: String) {
-    @Keep
-    HKI("HKI"),
-
-    @Keep
-    KLN("KLN"),
-
-    @Keep
-    NT("NT"),
-
-    @Keep
-    UNKNOWN("unknown");
-
-    companion object {
-        fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
-    }
-
-}

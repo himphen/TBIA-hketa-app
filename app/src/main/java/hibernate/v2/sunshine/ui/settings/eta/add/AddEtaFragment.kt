@@ -92,7 +92,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
         super.onViewCreated(view, savedInstanceState)
         initEvent()
 
-        viewModel.getTransportRouteList(etaType)
+        viewModel.getTransportRouteList(requireContext(), etaType)
     }
 
     private fun initEvent() {
@@ -106,7 +106,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
             mRowsAdapter.clear()
             viewModel.allTransportRouteList.value?.forEachIndexed { index, listForRowAdapter ->
                 if (mQuery.isNotEmpty()
-                    && !listForRowAdapter.route.routeId.startsWith(mQuery, true)
+                    && !listForRowAdapter.route.routeNo.startsWith(mQuery, true)
                 ) return@forEachIndexed
 
                 // Init Row

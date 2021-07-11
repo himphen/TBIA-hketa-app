@@ -1,17 +1,17 @@
 package hibernate.v2.sunshine.db.eta
 
 import androidx.room.Embedded
-import hibernate.v2.sunshine.db.nc.NCRouteEntity
-import hibernate.v2.sunshine.db.nc.NCStopEntity
+import hibernate.v2.sunshine.db.gmb.GmbRouteEntity
+import hibernate.v2.sunshine.db.gmb.GmbStopEntity
 import hibernate.v2.sunshine.model.Card
 
-data class EtaNCDetails(
+data class EtaGmbDetails(
     @Embedded
     val savedEta: SavedEtaEntity,
     @Embedded
-    val route: NCRouteEntity,
+    val route: GmbRouteEntity,
     @Embedded
-    val stop: NCStopEntity,
+    val stop: GmbStopEntity,
     @Embedded
     val order: EtaOrderEntity,
 ) {

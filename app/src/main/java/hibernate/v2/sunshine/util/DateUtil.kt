@@ -70,7 +70,7 @@ enum class DateFormat(val value: String) {
     HH_MM("HH:mm"),
     DD_MM_YY_HH_MM("dd-MM-yy HH:mm"),
     YYYY_MM_DD("yyyy-MM-dd"),
-    ISO("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"),
+    ISO("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
     ISO_WITHOUT_MS("yyyy-MM-dd'T'HH:mm:ssZ"),
     YYYY_MM_DD_HH_MM("yyyy-MM-dd HH:mm"),
     YYYY_MM_DD_HH_MM_SS("yyyy-MM-dd HH:mm:ss"),

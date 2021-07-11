@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.model
 
-import hibernate.v2.api.model.transport.Eta
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
+import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.model.transport.TransportStop
 
@@ -42,7 +42,7 @@ sealed class Card {
         val route: TransportRoute,
         val stop: TransportStop,
         val position: Int,
-        var etaList: List<Eta> = listOf(),
+        var etaList: List<TransportEta> = listOf(),
     ) : Card(), Comparable<EtaCard> {
         override fun compareTo(other: EtaCard): Int {
             return position.compareTo(other.position)

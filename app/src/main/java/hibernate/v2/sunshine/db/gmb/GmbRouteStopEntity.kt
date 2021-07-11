@@ -41,5 +41,5 @@ data class GmbRouteStopEntity(
         }
     }
 
-    fun routeHashId() = routeHashId(Company.KMB, routeId, bound, serviceType)
+    fun routeHashId() = routeHashId(Company.GMB, routeId, bound, serviceType)
 }

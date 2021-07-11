@@ -7,6 +7,7 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -24,22 +25,15 @@ class EtaViewModel(
     fun getEtaListFromDb() {
         viewModelScope.launch(Dispatchers.IO) {
             val convertedEtaCardList = mutableListOf<Card.EtaCard>()
-            val savedKmbEtaList = etaRepository.getSavedKmbEtaList()
-            convertedEtaCardList.addAll(savedKmbEtaList.map { detailsEntity ->
-                Card.EtaCard(
-                    route = detailsEntity.route.toTransportModel(),
-                    stop = detailsEntity.stop.toTransportModelWithSeq(detailsEntity.savedEta.seq),
-                    position = detailsEntity.order.position
-                )
-            })
-            val savedNCEtaList = etaRepository.getSavedNCEtaList()
-            convertedEtaCardList.addAll(savedNCEtaList.map { detailsEntity ->
-                Card.EtaCard(
-                    route = detailsEntity.route.toTransportModel(),
-                    stop = detailsEntity.stop.toTransportModelWithSeq(detailsEntity.savedEta.seq),
-                    position = detailsEntity.order.position
-                )
-            })
+            convertedEtaCardList.addAll(
+                etaRepository.getSavedKmbEtaList().map { it.toEtaCard() }
+            )
+            convertedEtaCardList.addAll(
+                etaRepository.getSavedNCEtaList().map { it.toEtaCard() }
+            )
+            convertedEtaCardList.addAll(
+                etaRepository.getSavedGmbEtaList().map { it.toEtaCard() }
+            )
 
             convertedEtaCardList.sort()
 
@@ -68,33 +62,55 @@ class EtaViewModel(
                                 route = etaCard.route.routeId
                             )
                             apiEtaResponse.data?.let { etaList ->
-                                etaCard.etaList = etaList.filter { eta ->
-                                    // e.g. Filter not same bound in bus terminal stops
-                                    Logger.d("etaList.filter " + eta)
-                                    Logger.d("etaList.filter " + etaCard)
-                                    Logger.d("etaList.filter===")
-                                    eta.bound == etaCard.route.bound
-                                            && eta.seq == etaCard.stop.seq
-                                }
+                                etaCard.etaList = etaList
+                                    .map { TransportEta.fromApiModel(it) }
+                                    .filter { eta ->
+                                        // e.g. Filter not same bound in bus terminal stops
+                                        eta.bound == etaCard.route.bound
+                                                && eta.seq == etaCard.stop.seq
+                                    }
                             }
 
                             result[index] = etaCard
                         }
-                        Company.NWFB -> {
+                        Company.NWFB,
+                        Company.CTB -> {
                             val apiEtaResponse = etaRepository.getNCStopEtaApi(
                                 company = etaCard.route.company,
                                 stopId = etaCard.stop.stopId,
                                 route = etaCard.route.routeId
                             )
                             apiEtaResponse.data?.let { etaList ->
-                                etaCard.etaList = etaList.filter { eta ->
-                                    // e.g. Filter not same bound in bus terminal stops
-                                    eta.bound == etaCard.route.bound
-                                            && eta.seq == etaCard.stop.seq
-                                }
+                                etaCard.etaList = etaList
+                                    .map { TransportEta.fromApiModel(it) }
+                                    .filter { eta ->
+                                        // e.g. Filter not same bound in bus terminal stops
+                                        eta.bound == etaCard.route.bound
+                                                && eta.seq == etaCard.stop.seq
+                                    }
                             }
 
                             result[index] = etaCard
+                        }
+                        Company.GMB -> {
+                            val apiEtaResponse = etaRepository.getGmbStopEtaApi(
+                                stopSeq = etaCard.stop.seq!!,
+                                route = etaCard.route.routeId,
+                                serviceType = etaCard.route.serviceType
+                            )
+                            apiEtaResponse.data?.let { etaRouteStop ->
+                                etaCard.etaList = etaRouteStop.etaList
+                                    ?.map { TransportEta.fromApiModel(it) }
+                                    ?.filter { eta ->
+                                        // e.g. Filter not same bound in bus terminal stops
+                                        eta.bound == etaCard.route.bound
+                                                && eta.seq == etaCard.stop.seq
+                                    } ?: emptyList()
+                            }
+
+                            result[index] = etaCard
+                        }
+                        Company.UNKNOWN -> {
                         }
                     }
                 }

@@ -31,12 +31,18 @@ class AddEtaBrandSelectionFragment : GuidedStepSupportFragment() {
             .id(ACTION_ID_NWFB_CTB)
             .title(getString(R.string.dialog_add_eta_brand_selection_ctb_btn)).build()
         actions.add(action)
+
+        action = GuidedAction.Builder(context)
+            .id(ACTION_ID_GMB_CTB)
+            .title(getString(R.string.dialog_add_eta_brand_selection_gmb_btn)).build()
+        actions.add(action)
     }
 
     override fun onGuidedActionClicked(action: GuidedAction) {
         val etaType = when (action.id) {
             ACTION_ID_KMB -> AddEtaActivity.EtaType.KMB
             ACTION_ID_NWFB_CTB -> AddEtaActivity.EtaType.NWFB_CTB
+            ACTION_ID_GMB_CTB -> AddEtaActivity.EtaType.GMB
             else -> return
         }
 
@@ -56,5 +62,6 @@ class AddEtaBrandSelectionFragment : GuidedStepSupportFragment() {
 
         const val ACTION_ID_KMB = 1L
         const val ACTION_ID_NWFB_CTB = 2L
+        const val ACTION_ID_GMB_CTB = 3L
     }
 }

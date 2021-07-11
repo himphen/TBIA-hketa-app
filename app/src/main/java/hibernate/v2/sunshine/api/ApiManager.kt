@@ -72,7 +72,7 @@ open class ApiManager(val context: Context) {
             .build().create(OpenWeatherService::class.java)
 
         gmbService = Retrofit.Builder()
-            .baseUrl("https://https://data.etagmb.gov.hk/")
+            .baseUrl("https://data.etagmb.gov.hk/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ApiConverterFactory(Gson()))

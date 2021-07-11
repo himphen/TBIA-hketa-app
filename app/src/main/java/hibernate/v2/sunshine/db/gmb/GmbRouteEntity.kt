@@ -6,6 +6,7 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.api.model.transport.gmb.GmbRoute
+import hibernate.v2.sunshine.model.transport.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
 @Entity(
@@ -55,8 +56,8 @@ data class GmbRouteEntity(
         }
     }
 
-    fun toTransportModel(): TransportRoute {
-        return TransportRoute(
+    fun toTransportModel(): GmbTransportRoute {
+        return GmbTransportRoute(
             routeId = routeId,
             routeNo = routeNo,
             bound = bound,
@@ -67,7 +68,8 @@ data class GmbRouteEntity(
             destTc = destTc,
             destSc = destSc,
             company = Company.GMB,
-            serviceType = serviceType
+            serviceType = serviceType,
+            region = region
         )
     }
 }

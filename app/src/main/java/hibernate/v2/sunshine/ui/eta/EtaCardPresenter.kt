@@ -6,9 +6,9 @@ import android.widget.FrameLayout
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.leanback.widget.BaseCardView
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.Eta
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseCardPresenter
 import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil
@@ -72,10 +72,10 @@ class EtaCardPresenter(
         }
     }
 
-    private fun getEtaMinuteText(eta: Eta?): String {
-        eta?.eta?.let { etaString ->
+    private fun getEtaMinuteText(eta: TransportEta?): String {
+        eta?.eta?.let { etaDate ->
             val minutes = DateUtil.getTimeDiffInMin(
-                DateUtil.getDate(etaString, DateFormat.ISO_WITHOUT_MS.value)!!,
+                etaDate,
                 Date()
             )
             return (minutes + 1).toString() + " 分鐘"
@@ -88,12 +88,11 @@ class EtaCardPresenter(
         }
     }
 
-    private fun getEtaTimeText(etaList: List<Eta>): String {
+    private fun getEtaTimeText(etaList: List<TransportEta>): String {
         var string = ""
 
         etaList.forEach {
-            string += DateUtil.getDate(it.eta, DateFormat.ISO_WITHOUT_MS.value)
-                .formatString(DateFormat.HH_MM.value) + "    "
+            string += it.eta.formatString(DateFormat.HH_MM.value) + "    "
         }
 
         return string.trim()
