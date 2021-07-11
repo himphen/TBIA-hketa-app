@@ -53,6 +53,7 @@ class EtaCardPresenter(
                 when (card.route.company) {
                     Company.KMB -> cardView.setBackgroundResource(R.drawable.eta_card_bg_kmb_selected)
                     Company.NWFB, Company.CTB -> cardView.setBackgroundResource(R.drawable.eta_card_bg_ctb_selected)
+                    Company.GMB -> cardView.setBackgroundResource(R.drawable.eta_card_bg_gmb_selected)
                     else -> {
                     }
                 }
@@ -67,6 +68,7 @@ class EtaCardPresenter(
         when (card.route.company) {
             Company.KMB -> cardView.setBackgroundResource(R.drawable.eta_card_bg_kmb)
             Company.NWFB, Company.CTB -> cardView.setBackgroundResource(R.drawable.eta_card_bg_ctb)
+            Company.GMB -> cardView.setBackgroundResource(R.drawable.eta_card_bg_gmb)
             else -> {
             }
         }
