@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
@@ -57,11 +58,11 @@ class AddEtaViewModel(
     suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
         withContext(Dispatchers.IO) { etaRepository.updateEtaOrderList(entityList) }
 
-    fun getTransportRouteList(context:Context, etaType: AddEtaActivity.EtaType?) {
+    fun getTransportRouteList(context: Context, etaType: AddEtaActivity.EtaType?) {
         viewModelScope.launch(Dispatchers.IO) {
             when (etaType) {
                 AddEtaActivity.EtaType.KMB -> {
-                    getKmbRouteList()
+                    getKmbRouteList(context)
                 }
                 AddEtaActivity.EtaType.NWFB_CTB -> {
                     getNCRouteList(context)
@@ -73,7 +74,7 @@ class AddEtaViewModel(
         }
     }
 
-    private fun getKmbRouteList() {
+    private fun getKmbRouteList(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             val etaType = AddEtaActivity.EtaType.KMB
             if (RouteAndStopListDataHolder.hasData(etaType)) {
@@ -112,9 +113,21 @@ class AddEtaViewModel(
                     transportRouteStopList.map { routeAndStopList ->
                         val route = routeAndStopList.route
                         val headerTitle = if (route.isSpecialRoute()) {
-                            "${route.routeNo} 特別線 (${route.serviceType}) - ${route.origTc} 往 ${route.destTc}"
+                            context.getString(
+                                R.string.text_add_eta_destination_with_sp,
+                                route.routeNo,
+                                route.serviceType,
+                                route.origTc,
+                                route.destTc
+                            )
+
                         } else {
-                            "${route.routeNo} - ${route.origTc} 往 ${route.destTc}"
+                            context.getString(
+                                R.string.text_add_eta_destination,
+                                route.routeNo,
+                                route.origTc,
+                                route.destTc
+                            )
                         }
 
                         RouteForRowAdapter(
@@ -140,7 +153,7 @@ class AddEtaViewModel(
         }
     }
 
-    private fun getNCRouteList(context:Context) {
+    private fun getNCRouteList(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             val etaType = AddEtaActivity.EtaType.NWFB_CTB
             if (RouteAndStopListDataHolder.hasData(etaType)) {
@@ -177,9 +190,21 @@ class AddEtaViewModel(
                     transportRouteStopList.map { routeAndStopList ->
                         val route = routeAndStopList.route
                         val headerTitle = if (route.isSpecialRoute()) {
-                            "${route.routeNo} 特別線 (${route.serviceType}) - ${route.origTc} 往 ${route.destTc}"
+                            context.getString(
+                                R.string.text_add_eta_destination_with_sp,
+                                route.routeNo,
+                                route.serviceType,
+                                route.origTc,
+                                route.destTc
+                            )
+
                         } else {
-                            "${route.routeNo} - ${route.origTc} 往 ${route.destTc}"
+                            context.getString(
+                                R.string.text_add_eta_destination,
+                                route.routeNo,
+                                route.origTc,
+                                route.destTc
+                            )
                         }
 
                         RouteForRowAdapter(
@@ -208,7 +233,7 @@ class AddEtaViewModel(
         }
     }
 
-    private fun getGmbRouteList(context:Context) {
+    private fun getGmbRouteList(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             val etaType = AddEtaActivity.EtaType.GMB
             if (RouteAndStopListDataHolder.hasData(etaType)) {
@@ -245,7 +270,12 @@ class AddEtaViewModel(
                     transportRouteStopList.map { routeAndStopList ->
                         val route = routeAndStopList.route
                         route as GmbTransportRoute
-                        val headerTitle = route.getRegionName(context) + " ${route.routeNo} - ${route.origTc} 往 ${route.destTc}"
+                        val headerTitle = context.getString(
+                            R.string.text_add_eta_destination,
+                            "${route.getRegionName(context)} ${route.routeNo}",
+                            route.origTc,
+                            route.destTc
+                        )
 
                         RouteForRowAdapter(
                             headerTitle = headerTitle,

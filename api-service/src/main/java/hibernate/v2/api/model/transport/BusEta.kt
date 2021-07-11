@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class BusEta(
     @SerializedName("co")
     val company: String? = null,
-    @SerializedName("data_timestamp")
-    val dataTimestamp: String? = null,
     @SerializedName("dest_en")
     val destEn: String? = null,
     @SerializedName("dest_sc")

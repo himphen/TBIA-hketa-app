@@ -20,7 +20,7 @@ class TransportEta(
         fun fromApiModel(eta: BusEta): TransportEta {
             return TransportEta(
                 eta = DateUtil.getDate(
-                    eta.dataTimestamp,
+                    eta.eta,
                     DateFormat.ISO_WITHOUT_MS.value
                 ),
                 rmkEn = eta.rmkEn,
@@ -33,7 +33,10 @@ class TransportEta(
 
         fun fromApiModel(eta: GmbEta): TransportEta {
             return TransportEta(
-                eta = DateUtil.getDate(eta.timestamp, DateFormat.ISO.value),
+                eta = DateUtil.getDate(
+                    eta.timestamp,
+                    DateFormat.ISO.value
+                ),
                 rmkEn = eta.rmkEn,
                 rmkSc = eta.rmkSc,
                 rmkTc = eta.rmkTc,

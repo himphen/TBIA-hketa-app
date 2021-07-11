@@ -7,11 +7,10 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.api.model.transport.gmb.GmbRoute
 import hibernate.v2.sunshine.model.transport.GmbTransportRoute
-import hibernate.v2.sunshine.model.transport.TransportRoute
 
 @Entity(
     tableName = "gmb_route",
-    primaryKeys = ["gmb_route_id", "gmb_route_bound", "service_type"]
+    primaryKeys = ["gmb_route_id", "gmb_route_bound", "gmb_route_service_type"]
 )
 data class GmbRouteEntity(
     @ColumnInfo(name = "gmb_route_id")
@@ -32,7 +31,7 @@ data class GmbRouteEntity(
     val destTc: String,
     @ColumnInfo(name = "dest_sc")
     val destSc: String,
-    @ColumnInfo(name = "service_type")
+    @ColumnInfo(name = "gmb_route_service_type")
     val serviceType: String,
     @ColumnInfo(name = "region")
     val region: GmbRegion,

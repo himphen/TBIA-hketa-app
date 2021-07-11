@@ -35,7 +35,7 @@ private const val DATABASE_NAME = "saved_data"
         NCRouteEntity::class, NCStopEntity::class, NCRouteStopEntity::class,
         GmbRouteEntity::class, GmbStopEntity::class, GmbRouteStopEntity::class
     ],
-    version = 12,
+    version = 13,
     exportSchema = false
 )
 @TypeConverters(DataTypeConverter::class)
