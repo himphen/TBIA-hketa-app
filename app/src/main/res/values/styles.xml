@@ -33,6 +33,40 @@
     <style name="VerticalGridView.FullWidth" parent="@style/Widget.Leanback.GridItems.VerticalGridView">
         <item name="android:paddingStart">0dp</item>
         <item name="android:paddingEnd">0dp</item>
-        <item name="android:verticalSpacing">1dp</item>
+        <item name="android:verticalSpacing">2dp</item>
+    </style>
+
+    <style name="Eta.Card.RouteNumber" parent="">
+        <item name="android:paddingStart">6dp</item>
+        <item name="android:paddingEnd">6dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/eta_card_route_number_bg</item>
+        <item name="android:minWidth">60dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Eta.Card.RouteNumber.Compact" parent="Eta.Card.RouteNumber">
+        <item name="android:layout_marginEnd">10dp</item>
+    </style>
+
+    <style name="Eta.Card.Minute.Container" parent="">
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+    </style>
+
+    <style name="Eta.Card.Minute.Text" parent="">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Eta.Card.Unit.Text" parent="">
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>

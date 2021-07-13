@@ -13,7 +13,7 @@ sealed class Card {
         var icon: Int,
     ) : Card() {
         enum class Type {
-            ETA, TRAFFIC, NONE, VERSION
+            ETA, ETA_LAYOUT, TRAFFIC, NONE, VERSION
         }
     }
 

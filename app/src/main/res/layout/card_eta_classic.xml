@@ -24,9 +24,14 @@
             tools:text="290X" />
     </LinearLayout>
 
+    <Space
+        android:layout_width="12dp"
+        android:layout_height="match_parent" />
+
     <LinearLayout
-        android:layout_width="500dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="3"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
@@ -34,10 +39,10 @@
             android:id="@+id/stopNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autoSizeTextType="uniform"
             android:ellipsize="marquee"
             android:maxLines="1"
             android:textSize="20sp"
+            android:autoSizeTextType="uniform"
             tools:text="唐明街公園" />
 
         <TextView
@@ -46,14 +51,38 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:maxLines="1"
-            android:text="@string/text_eta_destination"
             android:textSize="12sp"
-            tools:text="荃灣西站" />
+            android:text="@string/text_eta_destination"
+            tools:text="往 荃灣西站" />
     </LinearLayout>
 
     <Space
         android:layout_width="12dp"
         android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center_vertical|end"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/etaMinuteTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            tools:text="3 分鐘" />
+
+        <TextView
+            android:id="@+id/etaTimeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|end"
+            android:textSize="12sp"
+            android:maxLines="2"
+            tools:text="07:30    07:50    08:10" />
+    </LinearLayout>
 
 </LinearLayout>
 

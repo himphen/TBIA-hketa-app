@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">巴士到站時間</string>
     <string name="title_activity_settings_eta">更改到站提示</string>
+    <string name="title_activity_eta_layout">更改到站卡片樣式</string>
     <string name="title_settings_version">版本 %1$s</string>
 
     <string name="title_fragment_home">主頁</string>
     <string name="title_fragment_settings">設定</string>
     <string name="title_activity_add_eta">路線編號</string>
+
+    <string name="text_eta_destination_to">往</string>
 
     <string name="text_eta_destination">往 %1$s</string>
 
@@ -31,6 +34,13 @@
     <string name="dialog_edit_eta_remove_btn">移除</string>
     <string name="dialog_edit_eta_cancel_btn">取消</string>
     <string name="toast_eta_already_added">無法重覆選擇已加入的站位。</string>
+    <string name="eta_card_minute_unit">分鐘</string>
+
+    <string name="dialog_eta_layout_title">選擇到站時間卡片樣式</string>
+    <string name="dialog_eta_layout_standard_btn">標準</string>
+    <string name="dialog_eta_layout_compact_btn">緊湊</string>
+    <string name="dialog_eta_layout_classic_btn">經典</string>
+    <string name="dialog_eta_layout_cancel_btn">取消</string>
 
     <string-array name="leftMenu">
         <item>@string/title_fragment_home</item>

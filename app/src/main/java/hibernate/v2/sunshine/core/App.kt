@@ -47,7 +47,9 @@ class App : Application() {
     private val appModule = module {
         // singleton service
         single { ApiManager(androidContext()) }
+        single { SharedPreferencesManager(androidContext()) }
         single { WeatherRepository(get()) }
+
         // database
         single { LocalDatabase.getInstance(androidContext()) }
         single { get<LocalDatabase>().etaDao() }

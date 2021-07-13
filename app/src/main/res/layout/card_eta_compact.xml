@@ -11,17 +11,30 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:elevation="1dp"
-        android:gravity="end"
         app:layout_constraintBottom_toBottomOf="@id/lineBgView"
         app:layout_constraintEnd_toStartOf="@id/lineArrowBgView"
         app:layout_constraintStart_toStartOf="@id/lineBgView"
         app:layout_constraintTop_toTopOf="@id/lineBgView">
 
         <TextView
+            android:id="@+id/stopNameTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:letterSpacing="0.1"
+            android:maxLines="1"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="伊利沙伯中學" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical|end"
-            android:paddingStart="6dp"
+            android:paddingStart="0dp"
             android:paddingEnd="0dp"
             android:text="@string/text_eta_destination_to"
             android:textSize="18sp" />
@@ -51,33 +64,31 @@
         app:layout_constraintStart_toEndOf="@id/lineBgView"
         app:layout_constraintTop_toTopOf="@id/lineBgView" />
 
-
     <View
         android:id="@+id/lineBgView"
         android:layout_width="0dp"
         android:layout_height="28dp"
         android:background="@drawable/eta_card_line_bg"
-        app:layout_constraintBottom_toTopOf="@id/stationEtaCl"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/lineArrowBgView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/stationInfoCl" />
+        app:layout_constraintTop_toBottomOf="@id/stationEtaCl" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/stationEtaCl"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/lineArrowBgView"
+        app:layout_constraintBottom_toTopOf="@id/lineBgView"
+        app:layout_constraintEnd_toEndOf="@id/lineBgView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lineBgView">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/eta2Ll"
             style="@style/Eta.Card.Minute.Container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
+            android:gravity="end|center_horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/eta3Ll"
             app:layout_constraintHorizontal_weight="1"
@@ -106,12 +117,12 @@
             style="@style/Eta.Card.Minute.Container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="start|center_horizontal"
+            android:gravity="end|center_horizontal"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/eta2Ll"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stationInfoCl"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -178,46 +189,27 @@
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/stationInfoCl"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/stationLineLl"
-        app:layout_constraintEnd_toEndOf="@id/stationLineLl"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/routeNumberTv"
-            style="@style/Eta.Card.RouteNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/stopNameTv"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="1" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/stopNameTv"
+        <LinearLayout
+            android:id="@+id/stationInfoCl"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="start|center_vertical"
-            android:letterSpacing="0.1"
-            android:maxLines="1"
-            android:padding="8dp"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            app:autoSizeMaxTextSize="32sp"
-            app:autoSizeTextType="uniform"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/routeNumberTv"
+            app:layout_constraintEnd_toStartOf="@id/eta1Ll"
+            app:layout_constraintHorizontal_weight="1.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="伊利沙伯中學" />
+            app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:id="@+id/routeNumberTv"
+                style="@style/Eta.Card.RouteNumber.Compact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minWidth="60dp"
+                tools:text="1" />
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

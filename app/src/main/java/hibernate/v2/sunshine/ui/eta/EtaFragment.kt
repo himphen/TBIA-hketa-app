@@ -11,9 +11,11 @@ import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.FullWidthGridPresenter
+import hibernate.v2.sunshine.ui.eta.view.EtaCardPresenter
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import kotlinx.coroutines.CoroutineScope
@@ -37,6 +39,8 @@ class EtaFragment : VerticalGridSupportFragment() {
         private const val REFRESH_TIME = 60 * 1000L
         fun getInstance() = EtaFragment()
     }
+
+    private val sharedPreferencesManager: SharedPreferencesManager by inject()
 
     private var mAdapter: ArrayObjectAdapter? = null
 
@@ -94,7 +98,11 @@ class EtaFragment : VerticalGridSupportFragment() {
         initEvent()
 
         lifecycleScope.launch {
-            val cardPresenter = EtaCardPresenter(requireContext(), getFragmentWidth(view))
+            val cardPresenter = EtaCardPresenter(
+                requireContext(),
+                getFragmentWidth(view),
+                sharedPreferencesManager.etaCardType
+            )
             mAdapter = ArrayObjectAdapter(cardPresenter)
             adapter = mAdapter
 
