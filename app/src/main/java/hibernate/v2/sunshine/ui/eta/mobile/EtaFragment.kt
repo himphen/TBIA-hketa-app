@@ -1,21 +1,18 @@
-package hibernate.v2.sunshine.ui.eta
+package hibernate.v2.sunshine.ui.eta.mobile
 
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import androidx.leanback.app.VerticalGridSupportFragment
-import androidx.leanback.widget.ArrayObjectAdapter
-import androidx.leanback.widget.FocusHighlight
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
+import hibernate.v2.sunshine.databinding.FragmentEtaBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
-import hibernate.v2.sunshine.ui.base.FullWidthGridPresenter
-import hibernate.v2.sunshine.ui.eta.view.EtaCardPresenter
+import hibernate.v2.sunshine.ui.base.BaseFragment
+import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import kotlinx.coroutines.CoroutineScope
@@ -24,25 +21,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.util.Date
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
-/**
- * TODO: auto scroll feature using setSelectedPosition
- */
-class EtaFragment : VerticalGridSupportFragment() {
+class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
     companion object {
-        private const val COLUMNS = 1
-        private const val ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_NONE
-
         private const val REFRESH_TIME = 60 * 1000L
         fun getInstance() = EtaFragment()
     }
 
     private val sharedPreferencesManager: SharedPreferencesManager by inject()
 
-    private var mAdapter: ArrayObjectAdapter? = null
+    private val adapter = EtaCardAdapter(sharedPreferencesManager.etaCardType)
 
     private val viewModel by inject<EtaViewModel>()
     private var etaCardList: MutableList<Card.EtaCard>? = null
@@ -53,16 +42,6 @@ class EtaFragment : VerticalGridSupportFragment() {
         updateRouteEtaStopList()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val gridPresenter = FullWidthGridPresenter(ZOOM_FACTOR, false)
-        gridPresenter.keepChildForeground = false
-        gridPresenter.numberOfColumns = COLUMNS
-        gridPresenter.shadowEnabled = false
-        setGridPresenter(gridPresenter)
-    }
-
     private fun initEvent() {
         viewModel.savedEtaCardList.observe(viewLifecycleOwner) {
             etaCardList?.let { etaCardList ->
@@ -71,7 +50,7 @@ class EtaFragment : VerticalGridSupportFragment() {
                 processEtaList()
             } ?: run {
                 etaCardList = it.toMutableList()
-                mAdapter?.addAll(0, etaCardList)
+                adapter.setData(etaCardList)
                 processEtaList()
 
                 viewModel.updateEtaList(etaCardList)
@@ -97,15 +76,9 @@ class EtaFragment : VerticalGridSupportFragment() {
         super.onViewCreated(view, savedInstanceState)
         initEvent()
 
-        lifecycleScope.launch {
-            val cardPresenter = EtaCardPresenter(
-                requireContext(),
-                getFragmentWidth(view),
-                sharedPreferencesManager.etaCardType
-            )
-            mAdapter = ArrayObjectAdapter(cardPresenter)
-            adapter = mAdapter
+        viewBinding!!.recyclerView.adapter = adapter
 
+        lifecycleScope.launch {
             viewModel.getEtaListFromDb()
         }
     }
@@ -132,7 +105,7 @@ class EtaFragment : VerticalGridSupportFragment() {
                 }
             }
 
-            mAdapter?.replace(index, etaCard)
+            adapter.replace(index, etaCard)
         }
     }
 
@@ -141,15 +114,9 @@ class EtaFragment : VerticalGridSupportFragment() {
         refreshEtaJob?.cancel()
     }
 
-    private suspend fun getFragmentWidth(view: View): Int {
-        return suspendCoroutine { continuation ->
-            view.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    val width = view.width
-                    view.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-                    continuation.resume(width)
-                }
-            })
-        }
-    }
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = FragmentEtaBinding.inflate(inflater, container, false)
 }

@@ -8,14 +8,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import hibernate.v2.api.model.openweather.OneCall
-import hibernate.v2.sunshine.databinding.FragmentWeatherBinding
+import hibernate.v2.sunshine.databinding.LbFragmentWeatherBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.traffic.TrafficFragment
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import kotlin.math.roundToInt
 
-class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
+class WeatherFragment : BaseFragment<LbFragmentWeatherBinding>() {
 
     companion object {
         fun getInstance() = WeatherFragment()
@@ -25,7 +24,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = FragmentWeatherBinding.inflate(inflater, container, false)
+    ) = LbFragmentWeatherBinding.inflate(inflater, container, false)
 
     private val viewModel by inject<WeatherViewModel>()
 
@@ -84,7 +83,7 @@ class WeatherFragment : BaseFragment<FragmentWeatherBinding>() {
         viewModel.getWeatherInfo()
 
         viewBinding?.backdropIv?.load(
-           "https://source.unsplash.com/1920x1080/?nature,water"
+            "https://source.unsplash.com/1920x1080/?nature,water"
         )
     }
 }

@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.eta.view
+package hibernate.v2.sunshine.ui.eta.leanback.view
 
 import android.content.Context
 import android.util.AttributeSet

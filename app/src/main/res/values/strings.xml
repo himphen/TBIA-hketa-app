@@ -60,5 +60,12 @@
         <item>@string/title_activity_settings_eta</item>
     </string-array>
 
+    <string name="main_tab_title_1">預計到達時間</string>
+    <string name="main_tab_title_2">設定</string>
+    <string-array name="main_tab_title" translatable="false">
+        <item>@string/main_tab_title_1</item>
+        <item>@string/main_tab_title_2</item>
+    </string-array>
+
 
 </resources>

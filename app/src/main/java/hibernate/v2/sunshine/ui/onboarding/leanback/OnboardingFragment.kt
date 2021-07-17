@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.onboarding
+package hibernate.v2.sunshine.ui.onboarding.leanback
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import hibernate.v2.sunshine.databinding.FragmentOnboardingBinding
+import hibernate.v2.sunshine.databinding.LbFragmentOnboardingBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.main.MainActivity
+import hibernate.v2.sunshine.ui.main.leanback.MainActivity
+import hibernate.v2.sunshine.ui.onboarding.FetchTransportDataType
+import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import org.koin.android.ext.android.inject
 
-class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
+class OnboardingFragment : BaseFragment<LbFragmentOnboardingBinding>() {
 
     private val viewModel by inject<OnboardingViewModel>()
 
@@ -23,7 +25,7 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = FragmentOnboardingBinding.inflate(inflater, container, false)
+    ) = LbFragmentOnboardingBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

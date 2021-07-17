@@ -1,16 +1,14 @@
-package hibernate.v2.sunshine.ui.main
+package hibernate.v2.sunshine.ui.main.leanback
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import hibernate.v2.sunshine.databinding.FragmentMainBinding
+import hibernate.v2.sunshine.databinding.LbFragmentMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.EtaFragment
-import hibernate.v2.sunshine.ui.traffic.TrafficFragment
-import hibernate.v2.sunshine.ui.weather.WeatherFragment
+import hibernate.v2.sunshine.ui.eta.leanback.EtaFragment
 
-class MainFragment : BaseFragment<FragmentMainBinding>() {
+class MainFragment : BaseFragment<LbFragmentMainBinding>() {
 
     companion object {
         fun getInstance() = MainFragment()
@@ -20,7 +18,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = FragmentMainBinding.inflate(inflater, container, false)
+    ) = LbFragmentMainBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

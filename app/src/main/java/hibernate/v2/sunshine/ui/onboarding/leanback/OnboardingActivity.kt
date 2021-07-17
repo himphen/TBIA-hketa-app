@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.onboarding
+package hibernate.v2.sunshine.ui.onboarding.leanback
 
 import android.os.Bundle
 import hibernate.v2.sunshine.R

@@ -12,10 +12,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.ktx.awaitMap
-import hibernate.v2.sunshine.databinding.FragmentTrafficBinding
+import hibernate.v2.sunshine.databinding.LbFragmentTrafficBinding
 import hibernate.v2.sunshine.model.TrafficLocation
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.EtaFragment
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -23,13 +22,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
-class TrafficFragment : BaseFragment<FragmentTrafficBinding>() {
+class TrafficFragment : BaseFragment<LbFragmentTrafficBinding>() {
 
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = FragmentTrafficBinding.inflate(inflater, container, false)
+    ) = LbFragmentTrafficBinding.inflate(inflater, container, false)
 
     private var refreshMapJob: Deferred<Unit>? = null
     private var googleMap: GoogleMap? = null

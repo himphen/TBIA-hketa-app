@@ -1,9 +1,7 @@
-package hibernate.v2.sunshine.ui.eta.view
+package hibernate.v2.sunshine.ui.eta.mobile
 
-import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RotateDrawable
-import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
 import hibernate.v2.api.model.transport.Company
@@ -14,9 +12,8 @@ import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
-class EtaCardViewStandard(context: Context) : BaseEtaCardView<CardEtaStandardBinding>(context) {
-    override var viewBinding =
-        CardEtaStandardBinding.inflate(LayoutInflater.from(context), this, true)
+class EtaCardViewHolderStandard(override val viewBinding: CardEtaStandardBinding) :
+    BaseEtaCardViewHolder<CardEtaStandardBinding>(viewBinding) {
 
     override fun onBind(card: Card.EtaCard) {
         val color = when (card.route.company) {
@@ -64,15 +61,6 @@ class EtaCardViewStandard(context: Context) : BaseEtaCardView<CardEtaStandardBin
             viewBinding.eta3MinuteTv.text = "-"
             viewBinding.eta3UnitTv.visibility = View.GONE
         }
-
-        onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                setBackgroundResource(R.drawable.eta_card_bg_none_selected)
-            } else {
-                setBackgroundResource(R.drawable.eta_card_bg_none)
-            }
-        }
-        setBackgroundResource(R.drawable.eta_card_bg_none)
     }
 
     fun getEtaMinuteText(eta: TransportEta?): String? {

@@ -1,8 +1,5 @@
-package hibernate.v2.sunshine.ui.eta.view
+package hibernate.v2.sunshine.ui.eta.mobile
 
-import android.content.Context
-import android.view.LayoutInflater
-import android.view.View.OnFocusChangeListener
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.CardEtaClassicBinding
@@ -11,9 +8,8 @@ import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
-class EtaCardViewClassic(context: Context) : BaseEtaCardView<CardEtaClassicBinding>(context) {
-    override var viewBinding =
-        CardEtaClassicBinding.inflate(LayoutInflater.from(context), this, true)
+class EtaCardViewHolderClassic(override val viewBinding: CardEtaClassicBinding) :
+    BaseEtaCardViewHolder<CardEtaClassicBinding>(viewBinding) {
 
     override fun onBind(card: Card.EtaCard) {
         val color = when (card.route.company) {
@@ -32,15 +28,6 @@ class EtaCardViewClassic(context: Context) : BaseEtaCardView<CardEtaClassicBindi
         viewBinding.etaMinuteTv.text =
             getEtaMinuteText(card.etaList.getOrNull(0))
         viewBinding.etaTimeTv.text = getEtaTimeText(card.etaList)
-
-        onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                setBackgroundResource(R.drawable.eta_card_bg_none_selected)
-            } else {
-                setBackgroundResource(R.drawable.eta_card_bg_none)
-            }
-        }
-        setBackgroundResource(R.drawable.eta_card_bg_none)
     }
 
     private fun getEtaMinuteText(eta: TransportEta?): String {

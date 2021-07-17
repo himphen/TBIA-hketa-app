@@ -1,0 +1,23 @@
+<resources>
+    <color name="background_gradient_start">#000000</color>
+    <color name="background_gradient_end">#DDDDDD</color>
+    <color name="fastlane_background">#0096a6</color>
+    <color name="search_opaque">#ffaa3f</color>
+    <color name="eta_card_default_background">#00000000</color>
+
+    <color name="black_trans_88">#88000000</color>
+    <color name="dark_green">#FF3F51B5</color>
+    <color name="fluorescent_orange">#2196F3</color>
+    <color name="fluorescent_orange_trans">#332196F3</color>
+    <color name="bg_mapview_title">#D82196F3</color>
+    <color name="white">#ffffff</color>
+
+    <color name="brand_color_kmb">#D32F2F</color>
+    <color name="brand_color_ctb">#FBC02D</color>
+    <color name="brand_color_nwfb">#7E57C2</color>
+    <color name="brand_color_gmb">#2E7D32</color>
+    <color name="eta_card_bg_selected">#11FFFFFF</color>
+
+    <color name="settings_card_background">#0277BD</color>
+    <color name="settings_card_background_focussed">#01579B</color>
+</resources>

@@ -68,4 +68,28 @@
     <style name="Widget.Leanback.GuidanceIconStyle.IconWithPadding" parent="Widget.Leanback.GuidanceIconStyle">
         <item name="android:padding">24dp</item>
     </style>
+
+    <style name="MainButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="colorAccent">@color/mainButton</item>
+        <item name="colorButtonNormal">@color/mainButton</item>
+        <item name="colorControlHighlight">@color/secondaryText</item>
+    </style>
+
+    <style name="GreenButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="colorAccent">@color/greenButton</item>
+        <item name="colorButtonNormal">@color/greenButton</item>
+        <item name="colorControlHighlight">@color/secondaryText</item>
+    </style>
+
+    <style name="BorderlessButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="colorAccent">@color/transparent</item>
+        <item name="colorButtonNormal">@color/transparent</item>
+        <item name="colorControlHighlight">@color/secondaryText</item>
+    </style>
 </resources>

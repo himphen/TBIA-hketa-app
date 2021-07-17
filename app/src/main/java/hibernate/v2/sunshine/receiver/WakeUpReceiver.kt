@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import hibernate.v2.sunshine.ui.main.MainActivity
+import hibernate.v2.sunshine.ui.main.leanback.MainActivity
 import java.util.Calendar
 
 class WakeUpReceiver : BroadcastReceiver() {

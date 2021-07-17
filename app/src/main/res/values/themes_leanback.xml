@@ -1,14 +1,14 @@
 <resources>
 
-    <style name="Theme.MyApplication" parent="Theme.Leanback" />
+    <style name="AppTheme.Leanback" parent="Theme.Leanback" />
 
-    <style name="Theme.Fragment.SettingsEta" parent="Theme.MyApplication">
+    <style name="Theme.Fragment.SettingsEta" parent="AppTheme.Leanback">
         <item name="imageCardViewTitleStyle">@style/IconCardTitleStyle</item>
         <item name="imageCardViewImageStyle">@style/IconCardImageStyle</item>
         <item name="imageCardViewInfoAreaStyle">@style/IconCardInfoAreaStyle</item>
     </style>
 
-    <style name="Theme.Fragment.Eta" parent="Theme.MyApplication">
+    <style name="Theme.Fragment.Eta" parent="AppTheme.Leanback">
         <item name="baseCardViewStyle">@style/FullCardStyle</item>
         <item name="browseTitleViewLayout">@layout/view_no_fragment_title</item>
         <item name="browseRowsMarginTop">0dp</item>

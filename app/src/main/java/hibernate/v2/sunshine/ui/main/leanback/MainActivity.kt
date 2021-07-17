@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.main
+package hibernate.v2.sunshine.ui.main.leanback
 
 import android.animation.ValueAnimator
 import android.os.Bundle
@@ -8,15 +8,15 @@ import android.view.KeyEvent
 import android.view.View
 import androidx.fragment.app.Fragment
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.ActivityMainBinding
+import hibernate.v2.sunshine.databinding.LbActivityMainBinding
 import hibernate.v2.sunshine.ui.base.BaseActivity
 import hibernate.v2.sunshine.ui.settings.SettingsFragment
 import hibernate.v2.sunshine.ui.widget.SideMenuView
 import hibernate.v2.sunshine.util.dpToPx
 
-class MainActivity : BaseActivity<ActivityMainBinding>(), SideMenuView.MenuItemClickListener {
+class MainActivity : BaseActivity<LbActivityMainBinding>(), SideMenuView.MenuItemClickListener {
 
-    override fun getActivityViewBinding() = ActivityMainBinding.inflate(layoutInflater)
+    override fun getActivityViewBinding() = LbActivityMainBinding.inflate(layoutInflater)
 
     private var isMenuShown: Boolean = false
     private val maxExpandWidth = dpToPx(188)
