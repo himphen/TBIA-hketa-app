@@ -29,7 +29,7 @@ enum class Company(val value: String) {
     CTB("ctb"),
 
     @Keep
-    GMB("GMB"),
+    GMB("gmb"),
 
     @Keep
     UNKNOWN("unknown");

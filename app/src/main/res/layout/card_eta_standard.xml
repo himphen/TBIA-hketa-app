@@ -55,7 +55,7 @@
         android:id="@+id/lineBgView"
         android:layout_width="0dp"
         android:layout_height="28dp"
-        android:background="@drawable/eta_card_line_bg"
+        android:background="@color/brand_color_kmb"
         app:layout_constraintBottom_toTopOf="@id/stationEtaCl"
         app:layout_constraintEnd_toStartOf="@id/lineArrowBgView"
         app:layout_constraintStart_toStartOf="parent"

@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RotateDrawable
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.content.ContextCompat
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.CardEtaStandardBinding
@@ -26,11 +27,15 @@ class EtaCardViewStandard(context: Context) : BaseEtaCardView<CardEtaStandardBin
             else -> R.color.brand_color_kmb
         }
 
-        val lineDrawable = viewBinding.lineBgView.background as GradientDrawable
-        lineDrawable.setColor(context.getColor(color))
-
-        val arrowDrawable = viewBinding.lineArrowBgView.background as RotateDrawable
-        (arrowDrawable.drawable as GradientDrawable).setColor(context.getColor(color))
+        (ContextCompat.getDrawable(
+            context,
+            R.drawable.eta_card_line_arrow
+        ) as? RotateDrawable?).let { arrowDrawable ->
+            arrowDrawable?.mutate()
+            (arrowDrawable?.drawable as? GradientDrawable)?.setColor(context.getColor(color))
+            viewBinding.lineArrowBgView.background = arrowDrawable
+            viewBinding.lineBgView.setBackgroundResource(color)
+        }
 
         viewBinding.routeNumberTv.text = card.route.routeNo
         viewBinding.stopNameTv.text = card.stop.nameTc
