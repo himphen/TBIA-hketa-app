@@ -10,30 +10,30 @@
 
         <FrameLayout
             android:id="@+id/containerTopLeft"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/containerTopRight"
-            android:layout_width="0dp"
-            android:layout_height="0dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/containerTopRight"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/containerBottom"
-            app:layout_constraintStart_toEndOf="@id/containerTopLeft"
             android:layout_width="0dp"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/containerBottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/containerTopLeft"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/containerBottom"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/containerTopLeft"
-            app:layout_constraintTop_toBottomOf="@id/containerTopRight"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
-            android:layout_height="0dp" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/containerTopLeft"
+            app:layout_constraintTop_toBottomOf="@id/containerTopRight" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.leanback.widget.BrowseFrameLayout>

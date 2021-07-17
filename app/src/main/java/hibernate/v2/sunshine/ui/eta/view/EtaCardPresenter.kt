@@ -19,7 +19,7 @@ class EtaCardPresenter(
 
     override fun onCreateView(): BaseEtaCardView<out ViewBinding> {
         val cardView = when (type) {
-            CardViewType.Standard -> EtaCardView(
+            CardViewType.Standard -> EtaCardViewStandard(
                 ContextThemeWrapper(
                     context,
                     R.style.FullCardStyle

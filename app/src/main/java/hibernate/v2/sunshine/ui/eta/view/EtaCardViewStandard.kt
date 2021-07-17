@@ -7,22 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.CardEtaBinding
+import hibernate.v2.sunshine.databinding.CardEtaStandardBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
-class EtaCardView(context: Context) : BaseEtaCardView<CardEtaBinding>(
-    context,
-    null,
-    R.style.FullCardStyle
-) {
-    override var viewBinding = CardEtaBinding.inflate(LayoutInflater.from(context), this, true)
-
-    init {
-        isFocusable = true
-    }
+class EtaCardViewStandard(context: Context) : BaseEtaCardView<CardEtaStandardBinding>(context) {
+    override var viewBinding =
+        CardEtaStandardBinding.inflate(LayoutInflater.from(context), this, true)
 
     override fun onBind(card: Card.EtaCard) {
         val color = when (card.route.company) {
@@ -67,7 +60,7 @@ class EtaCardView(context: Context) : BaseEtaCardView<CardEtaBinding>(
             viewBinding.eta3UnitTv.visibility = View.GONE
         }
 
-        onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 setBackgroundResource(R.drawable.eta_card_bg_none_selected)
             } else {

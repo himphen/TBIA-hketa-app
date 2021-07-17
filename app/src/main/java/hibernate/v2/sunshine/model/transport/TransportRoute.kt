@@ -5,6 +5,7 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import kotlinx.parcelize.Parcelize
 
+// TODO change to data class
 @Parcelize
 open class TransportRoute(
     open val routeId: String,

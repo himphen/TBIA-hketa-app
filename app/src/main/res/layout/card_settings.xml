@@ -20,11 +20,11 @@
 
     <TextView
         android:id="@+id/settingsTitle"
+        style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        tools:text="@string/title_activity_settings_eta"
-        style="@style/TextAppearance.AppCompat.Body1" />
+        tools:text="@string/title_activity_settings_eta" />
 
 </LinearLayout>
 

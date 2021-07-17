@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RotateDrawable
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.CardEtaCompactBinding
@@ -13,17 +14,9 @@ import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
-class EtaCardViewCompact(context: Context) : BaseEtaCardView<CardEtaCompactBinding>(
-    context,
-    null,
-    R.style.FullCardStyle
-) {
+class EtaCardViewCompact(context: Context) : BaseEtaCardView<CardEtaCompactBinding>(context) {
     override var viewBinding =
         CardEtaCompactBinding.inflate(LayoutInflater.from(context), this, true)
-
-    init {
-        isFocusable = true
-    }
 
     override fun onBind(card: Card.EtaCard) {
         val color = when (card.route.company) {
@@ -34,11 +27,11 @@ class EtaCardViewCompact(context: Context) : BaseEtaCardView<CardEtaCompactBindi
             else -> R.color.brand_color_kmb
         }
 
-        val lineDrawable = viewBinding.lineBgView.background as GradientDrawable
-        lineDrawable.setColor(context.getColor(color))
+        val lineDrawable = viewBinding.lineBgView.background as? GradientDrawable
+        lineDrawable?.setColor(context.getColor(color))
 
-        val arrowDrawable = viewBinding.lineArrowBgView.background as RotateDrawable
-        (arrowDrawable.drawable as GradientDrawable).setColor(context.getColor(color))
+        val arrowDrawable = viewBinding.lineArrowBgView.background as? RotateDrawable
+        (arrowDrawable?.drawable as? GradientDrawable)?.setColor(context.getColor(color))
 
 //        val routeNumberDrawable = viewBinding.routeNumberTv.background as GradientDrawable
 //        routeNumberDrawable.setColor(context.getColor(color))

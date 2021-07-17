@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -34,9 +33,9 @@
             android:maxLines="1"
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
+            android:text="@string/demo_card_route_desc"
             android:textSize="18sp"
-            android:textStyle="bold"
-            tools:text="天恆邨" />
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -90,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                tools:text="1" />
+                android:text="@string/demo_card_eta_minute_compact_2" />
 
             <TextView
                 android:id="@+id/eta2UnitTv"
@@ -119,11 +118,11 @@
                 style="@style/Eta.Card.Minute.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/demo_card_eta_minute_compact_1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/eta1UnitTv"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="1" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/eta1UnitTv"
@@ -158,11 +157,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
+                android:text="@string/demo_card_eta_minute_compact_3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/eta3UnitTv"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="1" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/eta3UnitTv"
@@ -185,7 +184,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/stationLineLl"
-        app:layout_constraintEnd_toEndOf="@id/stationLineLl"
+        app:layout_constraintEnd_toEndOf="@id/lineArrowBgView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -194,11 +193,11 @@
             style="@style/Eta.Card.RouteNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/demo_card_route_number"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/stopNameTv"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="1" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/stopNameTv"
@@ -208,6 +207,7 @@
             android:letterSpacing="0.1"
             android:maxLines="1"
             android:padding="8dp"
+            android:text="@string/demo_card_stop_name"
             android:textSize="32sp"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="32sp"
@@ -215,8 +215,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/routeNumberTv"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="伊利沙伯中學" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
