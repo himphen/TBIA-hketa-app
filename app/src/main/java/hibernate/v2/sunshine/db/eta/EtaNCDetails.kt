@@ -15,13 +15,12 @@ data class EtaNCDetails(
     @Embedded
     val order: EtaOrderEntity,
 ) {
-    fun toSettingsEtaCard(): Card.SettingsEtaCard {
-        return Card.SettingsEtaCard(
+    fun toSettingsEtaCard(): Card.SettingsEtaItemCard {
+        return Card.SettingsEtaItemCard(
             entity = savedEta,
             route = route.toTransportModel(),
             stop = stop.toTransportModel(),
-            position = order.position,
-            type = Card.SettingsEtaCard.Type.DATA
+            position = order.position
         )
     }
 

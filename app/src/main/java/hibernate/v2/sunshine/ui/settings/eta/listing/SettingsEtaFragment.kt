@@ -75,7 +75,8 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
                     }
                     ACTION_ID_REMOVE -> {
                         viewModel.editCard.value?.let { card ->
-                            viewModel.clearData(card.entity!!)
+                            card as Card.SettingsEtaItemCard
+                            viewModel.clearData(card.entity)
 
                             val currentEtaOrderList = viewModel.getEtaOrderList()
                             val updatedEtaOrderList = currentEtaOrderList.filterNot {
@@ -126,12 +127,7 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
             savedEtaCardList = it
             savedEtaCardList.add(
                 0,
-                Card.SettingsEtaCard(
-                    entity = null,
-                    route = null,
-                    stop = null,
-                    type = Card.SettingsEtaCard.Type.INSERT_ROW
-                )
+                Card.SettingsEtaAddCard()
             )
             updateRows()
         }
@@ -148,11 +144,11 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
         val cardPresenter = SettingsEtaCardPresenter(requireContext(),
             object : SettingsEtaCardPresenter.ClickListener {
                 override fun onItemClick(card: Card.SettingsEtaCard) {
-                    when (card.type) {
-                        Card.SettingsEtaCard.Type.INSERT_ROW -> {
+                    when (card) {
+                        is Card.SettingsEtaAddCard -> {
                             addEtaLauncher.launch(Intent(context, AddEtaActivity::class.java))
                         }
-                        Card.SettingsEtaCard.Type.DATA -> {
+                        is Card.SettingsEtaItemCard -> {
                             viewModel.editCard.postValue(card)
 
                             editEtaLauncher.launch(
@@ -166,9 +162,9 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
                                             putParcelable(
                                                 EditEtaDialogActivity.ARG_SELECTED_ETA,
                                                 EditEta(
-                                                    entity = card.entity!!,
-                                                    route = card.route!!,
-                                                    stop = card.stop!!
+                                                    entity = card.entity,
+                                                    route = card.route,
+                                                    stop = card.stop
                                                 )
                                             )
 
@@ -176,14 +172,16 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
                                             if (currentPosition > 1) {
                                                 putString(
                                                     EditEtaDialogActivity.ARG_BEFORE_ETA_ID,
-                                                    savedEtaCardList.getOrNull(currentPosition - 1)?.entity?.id?.toString()
+                                                    (savedEtaCardList.getOrNull(currentPosition - 1)
+                                                            as? Card.SettingsEtaItemCard)?.entity?.id?.toString()
                                                 )
                                             }
 
                                             if (currentPosition < savedEtaCardList.lastIndex) {
                                                 putString(
                                                     EditEtaDialogActivity.ARG_AFTER_ETA_ID,
-                                                    savedEtaCardList.getOrNull(currentPosition + 1)?.entity?.id?.toString()
+                                                    (savedEtaCardList.getOrNull(currentPosition + 1)
+                                                            as? Card.SettingsEtaItemCard)?.entity?.id?.toString()
                                                 )
                                             }
                                         }

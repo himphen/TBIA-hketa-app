@@ -33,8 +33,8 @@ class SettingsEtaCardPresenter(
         cardView.tag = card
         cardView.setOnClickListener { listener.onItemClick(it.tag as Card.SettingsEtaCard) }
 
-        when (card.type) {
-            Card.SettingsEtaCard.Type.DATA -> cardView.updateDataUi(card)
+        when (card) {
+            is Card.SettingsEtaItemCard -> cardView.updateDataUi(card)
             else -> cardView.updateInsertUi()
         }
     }

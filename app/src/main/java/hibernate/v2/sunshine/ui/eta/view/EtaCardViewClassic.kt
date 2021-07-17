@@ -1,10 +1,8 @@
 package hibernate.v2.sunshine.ui.eta.view
 
 import android.content.Context
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
-import androidx.core.content.ContextCompat
+import android.view.View.OnFocusChangeListener
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.CardEtaClassicBinding

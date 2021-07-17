@@ -17,20 +17,23 @@ sealed class Card {
         }
     }
 
-    data class SettingsEtaCard(
-        val entity: SavedEtaEntity? = null,
-        val route: TransportRoute? = null,
-        val stop: TransportStop? = null,
-        val position: Int = 0,
-        val type: Type,
+    abstract class SettingsEtaCard(
+        open val position: Int = 0
     ) : Card(), Comparable<SettingsEtaCard> {
-        enum class Type {
-            DATA, INSERT_ROW
-        }
-
         override fun compareTo(other: SettingsEtaCard): Int {
             return position.compareTo(other.position)
         }
+    }
+
+    data class SettingsEtaItemCard(
+        val entity: SavedEtaEntity,
+        val route: TransportRoute,
+        val stop: TransportStop,
+        override val position: Int
+    ) : SettingsEtaCard()
+
+    class SettingsEtaAddCard : SettingsEtaCard() {
+        override val position: Int = 0
     }
 
     data class RouteStopAddCard(
