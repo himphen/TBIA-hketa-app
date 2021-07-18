@@ -10,7 +10,7 @@ import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.settings.eta.layout.EtaLayoutDialogActivity
-import hibernate.v2.sunshine.ui.settings.eta.listing.leanback.SettingsEtaActivity
+import hibernate.v2.sunshine.ui.settings.eta.listing.leanback.SettingsEtaListingActivity
 
 class SettingsFragment : VerticalGridSupportFragment() {
 
@@ -39,7 +39,7 @@ class SettingsFragment : VerticalGridSupportFragment() {
                     when (card.type) {
                         Card.SettingsCard.Type.ETA -> {
                             startActivity(
-                                Intent(context, SettingsEtaActivity::class.java)
+                                Intent(context, SettingsEtaListingActivity::class.java)
                             )
                         }
                         Card.SettingsCard.Type.TRAFFIC -> {
@@ -69,14 +69,14 @@ class SettingsFragment : VerticalGridSupportFragment() {
             Card.SettingsCard(
                 title = getString(R.string.title_activity_settings_eta),
                 type = Card.SettingsCard.Type.ETA,
-                icon = R.drawable.ic_settings_bus_eta_24
+                icon = R.drawable.ic_settings_eta_listing_24
             )
         )
         list.add(
             Card.SettingsCard(
                 title = getString(R.string.title_activity_eta_layout),
                 type = Card.SettingsCard.Type.ETA_LAYOUT,
-                icon = R.drawable.ic_settings_bus_eta_24
+                icon = R.drawable.ic_settings_eta_layout_24
             )
         )
         list.add(

@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <Preference
-        android:icon="@drawable/ic_settings_bus_eta_24"
+        android:icon="@drawable/ic_settings_eta_listing_24"
         android:key="pref_settings_bus_eta"
         android:title="@string/title_activity_settings_eta"
         tools:summary="Dark Mode" />
 
     <Preference
-        android:icon="@drawable/ic_settings_bus_eta_24"
+        android:icon="@drawable/ic_settings_eta_layout_24"
         android:key="pref_settings_eta_layout"
         android:title="@string/title_activity_eta_layout"
         tools:summary="Dark Mode" />

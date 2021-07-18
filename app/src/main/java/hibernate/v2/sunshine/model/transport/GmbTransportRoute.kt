@@ -57,4 +57,14 @@ data class GmbTransportRoute(
             GmbRegion.UNKNOWN -> ""
         }
     }
+
+    override fun getDirectionWithRouteText(context: Context): String {
+        return context.getString(
+            R.string.text_add_eta_destination,
+            "${getRegionName(context)} $routeNo",
+            origTc,
+            destTc
+        )
+    }
+
 }

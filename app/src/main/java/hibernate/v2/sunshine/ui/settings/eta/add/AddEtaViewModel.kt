@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
@@ -57,7 +56,8 @@ class AddEtaViewModel(
     private suspend fun addEta(item: SavedEtaEntity) =
         withContext(Dispatchers.IO) { etaRepository.addEta(item) }
 
-    private suspend fun getEtaOrderList() = withContext(Dispatchers.IO) { etaRepository.getEtaOrderList() }
+    private suspend fun getEtaOrderList() =
+        withContext(Dispatchers.IO) { etaRepository.getEtaOrderList() }
 
     private suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
         withContext(Dispatchers.IO) { etaRepository.updateEtaOrderList(entityList) }
@@ -116,23 +116,7 @@ class AddEtaViewModel(
                 val transportRouteList =
                     transportRouteStopList.map { routeAndStopList ->
                         val route = routeAndStopList.route
-                        val headerTitle = if (route.isSpecialRoute()) {
-                            context.getString(
-                                R.string.text_add_eta_destination_with_sp,
-                                route.routeNo,
-                                route.serviceType,
-                                route.origTc,
-                                route.destTc
-                            )
-
-                        } else {
-                            context.getString(
-                                R.string.text_add_eta_destination,
-                                route.routeNo,
-                                route.origTc,
-                                route.destTc
-                            )
-                        }
+                        val headerTitle = route.getDirectionWithRouteText(context)
 
                         RouteForRowAdapter(
                             headerTitle = headerTitle,
@@ -193,23 +177,7 @@ class AddEtaViewModel(
                 val transportRouteList =
                     transportRouteStopList.map { routeAndStopList ->
                         val route = routeAndStopList.route
-                        val headerTitle = if (route.isSpecialRoute()) {
-                            context.getString(
-                                R.string.text_add_eta_destination_with_sp,
-                                route.routeNo,
-                                route.serviceType,
-                                route.origTc,
-                                route.destTc
-                            )
-
-                        } else {
-                            context.getString(
-                                R.string.text_add_eta_destination,
-                                route.routeNo,
-                                route.origTc,
-                                route.destTc
-                            )
-                        }
+                        val headerTitle = route.getDirectionWithRouteText(context)
 
                         RouteForRowAdapter(
                             headerTitle = headerTitle,
@@ -274,12 +242,7 @@ class AddEtaViewModel(
                     transportRouteStopList.map { routeAndStopList ->
                         val route = routeAndStopList.route
                         route as GmbTransportRoute
-                        val headerTitle = context.getString(
-                            R.string.text_add_eta_destination,
-                            "${route.getRegionName(context)} ${route.routeNo}",
-                            route.origTc,
-                            route.destTc
-                        )
+                        val headerTitle = route.getDirectionWithRouteText(context)
 
                         RouteForRowAdapter(
                             headerTitle = headerTitle,

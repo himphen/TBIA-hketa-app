@@ -65,7 +65,11 @@ class AddEtaAdapter(
         when (holder) {
             is AddEtaViewHolderCompany -> holder.onBind(list[position])
             is AddEtaViewHolderRoute -> holder.onBind(list2[position])
-            is AddEtaViewHolderStop -> holder.onBind(list3[position])
+            is AddEtaViewHolderStop -> {
+                val isFirst = position == 0
+                val isLast = position == list3.lastIndex
+                holder.onBind(list3[position], isFirst, isLast)
+            }
         }
     }
 

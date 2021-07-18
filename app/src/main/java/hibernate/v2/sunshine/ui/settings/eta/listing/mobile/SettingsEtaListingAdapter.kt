@@ -4,12 +4,11 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import hibernate.v2.sunshine.databinding.CardSettingsEtaBinding
+import hibernate.v2.sunshine.databinding.ItemSettingsEtaListingBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.ItemTouchHelperAdapter
-import java.util.Collections
 
-class SettingsEtaCardAdapter(
+class SettingsEtaListingAdapter(
     private val listener: ItemListener
 ) : RecyclerView.Adapter<SettingsEtaViewHolder>(), ItemTouchHelperAdapter {
 
@@ -24,7 +23,7 @@ class SettingsEtaCardAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             SettingsEtaViewHolder {
         return SettingsEtaViewHolder(
-            CardSettingsEtaBinding.inflate(
+            ItemSettingsEtaListingBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

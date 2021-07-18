@@ -16,7 +16,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:scaleType="fitCenter"
-        tools:src="@drawable/ic_settings_bus_eta_24" />
+        tools:src="@drawable/ic_settings_eta_listing_24" />
 
     <TextView
         android:id="@+id/settingsTitle"

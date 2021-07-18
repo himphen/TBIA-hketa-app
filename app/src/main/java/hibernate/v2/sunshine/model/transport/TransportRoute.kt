@@ -1,8 +1,10 @@
 package hibernate.v2.sunshine.model.transport
 
+import android.content.Context
 import android.os.Parcelable
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.sunshine.R
 import kotlinx.parcelize.Parcelize
 
 // TODO change to data class
@@ -58,6 +60,41 @@ open class TransportRoute(
     }
 
     open fun isSpecialRoute(): Boolean = serviceType != "1"
+
+    fun getDestDirectionText(context: Context): String {
+        return if (isSpecialRoute()) {
+            context.getString(
+                R.string.text_settings_eta_destination_with_sp,
+                destTc,
+                serviceType
+            )
+        } else {
+            context.getString(
+                R.string.text_settings_eta_destination,
+                destTc
+            )
+        }
+    }
+
+    open fun getDirectionWithRouteText(context: Context): String {
+        return if (isSpecialRoute()) {
+            context.getString(
+                R.string.text_add_eta_destination_with_sp,
+                routeNo,
+                serviceType,
+                origTc,
+                destTc
+            )
+
+        } else {
+            context.getString(
+                R.string.text_add_eta_destination,
+                routeNo,
+                origTc,
+                destTc
+            )
+        }
+    }
 }
 
 @Parcelize

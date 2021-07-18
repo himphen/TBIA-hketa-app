@@ -5,12 +5,12 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.CardSettingsEtaBinding
+import hibernate.v2.sunshine.databinding.ItemSettingsEtaListingBinding
 import hibernate.v2.sunshine.model.Card
 
 class SettingsEtaViewHolder(
-    val viewBinding: CardSettingsEtaBinding,
-    private val listener: SettingsEtaCardAdapter.ItemListener
+    val viewBinding: ItemSettingsEtaListingBinding,
+    private val listener: SettingsEtaListingAdapter.ItemListener
 ) : RecyclerView.ViewHolder(viewBinding.root) {
 
     val context: Context
@@ -30,8 +30,7 @@ class SettingsEtaViewHolder(
         viewBinding.routeCompanyColor.setBackgroundResource(color)
         viewBinding.routeNumberTv.text = card.route.routeNo
         viewBinding.stopNameTv.text = card.stop.nameTc
-        viewBinding.routeDirectionTv.text =
-            context.getString(R.string.text_eta_destination, card.route.destTc)
+        viewBinding.routeDirectionTv.text = card.route.getDestDirectionText(context)
         viewBinding.routeDirectionTv.visibility = View.VISIBLE
 
         viewBinding.root.tag = card

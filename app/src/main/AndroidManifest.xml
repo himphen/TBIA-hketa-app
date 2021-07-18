@@ -23,7 +23,7 @@
             android:name=".ui.main.mobile.MainActivity"
             android:theme="@style/AppTheme.Mobile" />
         <activity
-            android:name=".ui.settings.eta.listing.mobile.SettingsEtaActivity"
+            android:name=".ui.settings.eta.listing.mobile.SettingsEtaListingActivity"
             android:theme="@style/AppTheme.Mobile" />
         <activity
             android:name=".ui.settings.eta.add.mobile.AddEtaActivity"
@@ -50,7 +50,7 @@
             android:name=".ui.main.leanback.MainActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
-            android:name=".ui.settings.eta.listing.leanback.SettingsEtaActivity"
+            android:name=".ui.settings.eta.listing.leanback.SettingsEtaListingActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
             android:name=".ui.settings.eta.add.leanback.AddEtaActivity"

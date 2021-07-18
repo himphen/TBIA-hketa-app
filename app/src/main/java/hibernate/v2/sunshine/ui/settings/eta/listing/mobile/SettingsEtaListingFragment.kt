@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.afollestad.materialdialogs.MaterialDialog
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.FragmentEtaBinding
+import hibernate.v2.sunshine.databinding.FragmentSettingsEtaListingBinding
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
@@ -27,7 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
-class SettingsEtaFragment : BaseFragment<FragmentEtaBinding>() {
+class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBinding>() {
 
     private var addEtaLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -36,11 +36,11 @@ class SettingsEtaFragment : BaseFragment<FragmentEtaBinding>() {
     }
 
     companion object {
-        fun getInstance() = SettingsEtaFragment()
+        fun getInstance() = SettingsEtaListingFragment()
     }
 
-    private val adapter: SettingsEtaCardAdapter by lazy {
-        SettingsEtaCardAdapter(object : SettingsEtaCardAdapter.ItemListener {
+    private val adapter: SettingsEtaListingAdapter by lazy {
+        SettingsEtaListingAdapter(object : SettingsEtaListingAdapter.ItemListener {
             override fun onItemClick(card: Card.SettingsEtaItemCard) {
                 showRemoveEtaConfirmDialog(card)
             }
@@ -158,5 +158,5 @@ class SettingsEtaFragment : BaseFragment<FragmentEtaBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = FragmentEtaBinding.inflate(inflater, container, false)
+    ) = FragmentSettingsEtaListingBinding.inflate(inflater, container, false)
 }

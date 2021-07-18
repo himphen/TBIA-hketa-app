@@ -18,6 +18,9 @@
     <string name="text_add_eta_destination">%1$s - %2$s 往 %3$s</string>
     <string name="text_add_eta_destination_with_sp">%1$s (特別線 %2$s) - %3$s 往 %4$s</string>
 
+    <string name="text_add_eta_destination_mobile">%1$s 往 %2$s</string>
+    <string name="text_add_eta_destination_sp_mobile">特別線 %1$s</string>
+
     <string name="dialog_add_eta_brand_selection_title">選擇公共運輸機構</string>
     <string name="dialog_add_eta_brand_selection_kmb_btn">九巴</string>
     <string name="dialog_add_eta_brand_selection_ctb_btn">新巴／城巴</string>

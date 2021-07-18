@@ -30,24 +30,6 @@ class SettingsEtaCardView(context: Context) : BaseCardView(
         viewBinding.routeDirectionTv.text =
             context.getString(R.string.text_eta_destination, card.route.destTc)
         viewBinding.routeDirectionTv.visibility = VISIBLE
-
-//        card.stop!!
-//        card.route!!
-//        viewBinding.stopNameTv.text = card.stop.nameTc
-//        viewBinding.routeNumberTv.text = card.route.routeNo
-//
-//        if (card.route.isSpecialRoute()) {
-//            viewBinding.routeDirectionTv.text = context.getString(
-//                R.string.text_settings_eta_destination_with_sp,
-//                card.route.destTc,
-//                card.route.serviceType
-//            )
-//        } else {
-//            viewBinding.routeDirectionTv.text = context.getString(
-//                R.string.text_settings_eta_destination,
-//                card.route.destTc
-//            )
-//        }
     }
 
     fun onBindAddView() {

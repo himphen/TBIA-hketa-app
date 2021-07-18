@@ -40,7 +40,7 @@ class EtaCardViewCompact(context: Context) : BaseEtaCardView<CardEtaCompactBindi
 
         viewBinding.routeNumberTv.text = card.route.routeNo
         viewBinding.stopNameTv.text = card.stop.nameTc
-        viewBinding.routeDirectionTv.text = card.route.destTc
+        viewBinding.routeDirectionTv.text = card.route.getDestDirectionText(context)
 
         getEtaMinuteText(card.etaList.getOrNull(0))?.let {
             viewBinding.eta1MinuteTv.text = it

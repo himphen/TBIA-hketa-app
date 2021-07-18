@@ -27,7 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
-class SettingsEtaFragment : VerticalGridSupportFragment() {
+class SettingsEtaListingFragment : VerticalGridSupportFragment() {
 
     var addEtaLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -100,7 +100,7 @@ class SettingsEtaFragment : VerticalGridSupportFragment() {
         private const val ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_LARGE
         private const val OFFSET = 1
 
-        fun getInstance() = SettingsEtaFragment()
+        fun getInstance() = SettingsEtaListingFragment()
     }
 
     private var mAdapter: ArrayObjectAdapter? = null

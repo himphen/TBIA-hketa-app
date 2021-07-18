@@ -152,13 +152,12 @@ class AddEtaFragment : BaseFragment<FragmentAddEtaBinding>() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-
         when (currentSelectionType) {
-            SelectionType.Route -> viewModel.selectedEtaType.value
+            SelectionType.Route -> viewModel.selectedEtaType.value == null
             SelectionType.Stop -> viewModel.selectedRouteStopList.value == null
             SelectionType.EtaType -> {
             }
         }
+        super.onDestroyView()
     }
 }
