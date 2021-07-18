@@ -3,9 +3,9 @@ package hibernate.v2.sunshine.ui.onboarding.leanback
 import android.os.Bundle
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityOnboardingBinding
-import hibernate.v2.sunshine.ui.base.BaseActivity
+import hibernate.v2.sunshine.ui.base.BaseLeanbackActivity
 
-class OnboardingActivity : BaseActivity<ActivityOnboardingBinding>() {
+class OnboardingActivity : BaseLeanbackActivity<ActivityOnboardingBinding>() {
 
     override fun getActivityViewBinding() = ActivityOnboardingBinding.inflate(layoutInflater)
 

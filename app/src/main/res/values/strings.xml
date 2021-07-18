@@ -23,6 +23,13 @@
     <string name="dialog_add_eta_brand_selection_ctb_btn">新巴／城巴</string>
     <string name="dialog_add_eta_brand_selection_gmb_btn">專線小巴</string>
 
+
+    <string name="menu_settings_eta_action_add">加入到站</string>
+    <string name="dialog_settings_eta_remove_title">注意</string>
+    <string name="dialog_settings_eta_remove_message">選擇移除 %1$s 號線 %2$s 到站選項後將不能復原，你需要重新加入選項。</string>
+    <string name="dialog_settings_eta_remove_pos_btn">移除</string>
+    <string name="dialog_cancel_btn">取消</string>
+
     <string name="text_gmb_region_hki">港島區</string>
     <string name="text_gmb_region_kln">九龍區</string>
     <string name="text_gmb_region_nt">新界區</string>

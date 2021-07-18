@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.core
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import hibernate.v2.sunshine.ui.eta.leanback.view.EtaCardPresenter
+import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
 import hibernate.v2.sunshine.util.PreferenceUtils
 
 class SharedPreferencesManager(val context: Context) {

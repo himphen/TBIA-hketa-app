@@ -10,7 +10,6 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.model.transport.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportRouteStopList
 import hibernate.v2.sunshine.repository.EtaRepository
@@ -19,7 +18,9 @@ import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
+import hibernate.v2.sunshine.ui.settings.eta.add.leanback.RouteForRowAdapter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -31,8 +32,11 @@ class AddEtaViewModel(
 ) : BaseViewModel() {
 
     val allTransportRouteList = MutableLiveData<MutableList<RouteForRowAdapter>>()
+    var selectedEtaType = MutableLiveData<EtaType?>()
+    var selectedRouteStopList = MutableLiveData<MutableList<Card.RouteStopAddCard>>()
+    var isAddEtaSuccessful = MutableSharedFlow<Boolean>()
 
-    suspend fun hasEtaInDb(
+    private suspend fun hasEtaInDb(
         stopId: String,
         routeId: String,
         bound: Bound,
@@ -50,24 +54,24 @@ class AddEtaViewModel(
         )
     }
 
-    suspend fun addEta(item: SavedEtaEntity) =
+    private suspend fun addEta(item: SavedEtaEntity) =
         withContext(Dispatchers.IO) { etaRepository.addEta(item) }
 
-    suspend fun getEtaOrderList() = withContext(Dispatchers.IO) { etaRepository.getEtaOrderList() }
+    private suspend fun getEtaOrderList() = withContext(Dispatchers.IO) { etaRepository.getEtaOrderList() }
 
-    suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
+    private suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
         withContext(Dispatchers.IO) { etaRepository.updateEtaOrderList(entityList) }
 
-    fun getTransportRouteList(context: Context, etaType: AddEtaActivity.EtaType?) {
+    fun getTransportRouteList(context: Context, etaType: EtaType?) {
         viewModelScope.launch(Dispatchers.IO) {
             when (etaType) {
-                AddEtaActivity.EtaType.KMB -> {
+                EtaType.KMB -> {
                     getKmbRouteList(context)
                 }
-                AddEtaActivity.EtaType.NWFB_CTB -> {
+                EtaType.NWFB_CTB -> {
                     getNCRouteList(context)
                 }
-                AddEtaActivity.EtaType.GMB -> {
+                EtaType.GMB -> {
                     getGmbRouteList(context)
                 }
             }
@@ -76,7 +80,7 @@ class AddEtaViewModel(
 
     private fun getKmbRouteList(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            val etaType = AddEtaActivity.EtaType.KMB
+            val etaType = EtaType.KMB
             if (RouteAndStopListDataHolder.hasData(etaType)) {
                 allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(etaType))
                 return@launch
@@ -155,7 +159,7 @@ class AddEtaViewModel(
 
     private fun getNCRouteList(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            val etaType = AddEtaActivity.EtaType.NWFB_CTB
+            val etaType = EtaType.NWFB_CTB
             if (RouteAndStopListDataHolder.hasData(etaType)) {
                 allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(etaType))
                 return@launch
@@ -235,7 +239,7 @@ class AddEtaViewModel(
 
     private fun getGmbRouteList(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            val etaType = AddEtaActivity.EtaType.GMB
+            val etaType = EtaType.GMB
             if (RouteAndStopListDataHolder.hasData(etaType)) {
                 allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(etaType))
                 return@launch
@@ -303,51 +307,47 @@ class AddEtaViewModel(
         }
     }
 
-//    fun getTransportRouteListOld() {
-//        if (RouteAndStopListDataHolder.hasData()) {
-//            allTransportRouteList.postValue(RouteAndStopListDataHolder.data)
-//            return
-//        }
-//
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                val allRouteList = kmbRepository.getRouteListDb()
-//                val transportRouteList = allRouteList.map { routeEntity ->
-//                    val route = routeEntity.toTransportModel()
-//                    val stopList =
-//                        kmbRepository.getRouteStopDetailsList(
-//                            routeId = route.routeId,
-//                            bound = route.bound,
-//                            serviceType = route.serviceType
-//                        ).map {
-//                            TransportStop(
-//                                lat = it.kmbStopEntity.lat,
-//                                lng = it.kmbStopEntity.lng,
-//                                nameEn = it.kmbStopEntity.nameEn,
-//                                nameSc = it.kmbStopEntity.nameSc,
-//                                nameTc = it.kmbStopEntity.nameTc,
-//                                stopId = it.kmbStopEntity.stopId,
-//                                seq = it.kmbRouteStopEntity.seq
-//                            )
-//                        }.toMutableList()
-//                    return@map TransportRouteStopList(
-//                        route = route,
-//                        stopList = stopList
-//                    )
-//                }.toMutableList()
-//
-//                transportRouteList.sortWith { o1, o2 ->
-//                    o1.compareTo(o2)
-//                }
-//
-//                RouteAndStopListDataHolder.data = transportRouteList
-//
-//                Logger.d("lifecycle getTransportRouteList done")
-//                allTransportRouteList.postValue(transportRouteList)
-//            } catch (e: Exception) {
-//                Logger.e(e, "lifecycle getTransportRouteList error")
-//                allTransportRouteList.postValue(mutableListOf())
-//            }
-//        }
-//    }
+    fun saveStop(card: Card.RouteStopAddCard) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val isExisting = hasEtaInDb(
+                stopId = card.stop.stopId,
+                routeId = card.route.routeId,
+                bound = card.route.bound,
+                serviceType = card.route.serviceType,
+                seq = card.stop.seq!!,
+                company = card.route.company
+            )
+
+            if (isExisting) {
+                isAddEtaSuccessful.emit(false)
+                return@launch
+            }
+
+            val newEta = SavedEtaEntity(
+                stopId = card.stop.stopId,
+                routeId = card.route.routeId,
+                bound = card.route.bound,
+                serviceType = card.route.serviceType,
+                seq = card.stop.seq!!,
+                company = card.route.company
+            )
+            addEta(newEta)
+
+            val currentEtaOrderList = getEtaOrderList()
+            val updatedEtaOrderList = mutableListOf<EtaOrderEntity>()
+            updatedEtaOrderList.add(EtaOrderEntity(id = newEta.id, position = 0))
+            updatedEtaOrderList.addAll(currentEtaOrderList.map {
+                EtaOrderEntity(id = it.id, position = it.position + 1)
+            })
+            updateEtaOrderList(updatedEtaOrderList)
+
+            isAddEtaSuccessful.emit(true)
+        }
+    }
+
+    enum class EtaType {
+        KMB,
+        NWFB_CTB,
+        GMB
+    }
 }

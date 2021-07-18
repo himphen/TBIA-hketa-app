@@ -9,32 +9,36 @@ import hibernate.v2.sunshine.databinding.CardEtaClassicBinding
 import hibernate.v2.sunshine.databinding.CardEtaCompactBinding
 import hibernate.v2.sunshine.databinding.CardEtaStandardBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.ui.eta.leanback.view.EtaCardPresenter
+import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
+import hibernate.v2.sunshine.ui.eta.mobile.view.BaseEtaViewHolder
+import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderClassic
+import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderCompact
+import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderStandard
 
 class EtaCardAdapter(
     private val type: EtaCardPresenter.CardViewType
-) : RecyclerView.Adapter<BaseEtaCardViewHolder<out ViewBinding>>() {
+) : RecyclerView.Adapter<BaseEtaViewHolder<out ViewBinding>>() {
 
     private var list = mutableListOf<Card.EtaCard>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
-            BaseEtaCardViewHolder<out ViewBinding> {
+            BaseEtaViewHolder<out ViewBinding> {
         return when (type) {
-            EtaCardPresenter.CardViewType.Classic -> EtaCardViewHolderClassic(
+            EtaCardPresenter.CardViewType.Classic -> EtaViewHolderClassic(
                 CardEtaClassicBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
-            EtaCardPresenter.CardViewType.Compact -> EtaCardViewHolderCompact(
+            EtaCardPresenter.CardViewType.Compact -> EtaViewHolderCompact(
                 CardEtaCompactBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
-            EtaCardPresenter.CardViewType.Standard -> EtaCardViewHolderStandard(
+            EtaCardPresenter.CardViewType.Standard -> EtaViewHolderStandard(
                 CardEtaStandardBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -44,7 +48,7 @@ class EtaCardAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: BaseEtaCardViewHolder<out ViewBinding>, position: Int) {
+    override fun onBindViewHolder(holder: BaseEtaViewHolder<out ViewBinding>, position: Int) {
         holder.onBind(list[position])
     }
 

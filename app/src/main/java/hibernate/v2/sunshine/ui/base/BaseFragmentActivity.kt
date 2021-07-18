@@ -14,6 +14,6 @@ abstract class BaseFragmentActivity<T : ViewBinding> : BaseActivity<T>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initFragment(fragment)
+        initFragment(fragment, titleString = titleString, titleId = titleId)
     }
 }

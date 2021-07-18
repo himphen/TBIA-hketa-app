@@ -10,7 +10,7 @@ import hibernate.v2.api.service.HkoWeatherService
 import hibernate.v2.api.service.NCService
 import hibernate.v2.api.service.OpenWeatherService
 import hibernate.v2.sunshine.BuildConfig
-import hibernate.v2.sunshine.util.JsonUtil
+import hibernate.v2.sunshine.util.JsonUtils
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -105,7 +105,7 @@ class HttpLogger : HttpLoggingInterceptor.Logger {
         if (message.startsWith("{") && message.endsWith("}") ||
             message.startsWith("[") && message.endsWith("]")
         ) {
-            tempMessage = JsonUtil.formatJson(message)
+            tempMessage = JsonUtils.formatJson(message)
         }
         mMessage.append(tempMessage + "\n")
 

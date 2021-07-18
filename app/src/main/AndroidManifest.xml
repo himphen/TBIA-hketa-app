@@ -4,7 +4,7 @@
 
     <application
         android:name=".core.App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true">
@@ -22,6 +22,14 @@
         <activity
             android:name=".ui.main.mobile.MainActivity"
             android:theme="@style/AppTheme.Mobile" />
+        <activity
+            android:name=".ui.settings.eta.listing.mobile.SettingsEtaActivity"
+            android:theme="@style/AppTheme.Mobile" />
+        <activity
+            android:name=".ui.settings.eta.add.mobile.AddEtaActivity"
+            android:theme="@style/AppTheme.Mobile" />
+
+        <!-- Leanback -->
 
         <activity
             android:name=".ui.onboarding.leanback.OnboardingActivity"
@@ -42,10 +50,10 @@
             android:name=".ui.main.leanback.MainActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
-            android:name=".ui.settings.eta.listing.SettingsEtaActivity"
+            android:name=".ui.settings.eta.listing.leanback.SettingsEtaActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
-            android:name=".ui.settings.eta.add.AddEtaActivity"
+            android:name=".ui.settings.eta.add.leanback.AddEtaActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
             android:name=".ui.settings.eta.edit.EditEtaDialogActivity"
@@ -64,7 +72,8 @@
         <receiver android:name=".receiver.WakeUpReceiver" />
         <receiver
             android:name=".receiver.BootReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

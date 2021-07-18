@@ -9,12 +9,12 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.LbActivityMainBinding
-import hibernate.v2.sunshine.ui.base.BaseActivity
-import hibernate.v2.sunshine.ui.settings.SettingsFragment
+import hibernate.v2.sunshine.ui.base.BaseLeanbackActivity
+import hibernate.v2.sunshine.ui.settings.leanback.SettingsFragment
 import hibernate.v2.sunshine.ui.widget.SideMenuView
 import hibernate.v2.sunshine.util.dpToPx
 
-class MainActivity : BaseActivity<LbActivityMainBinding>(), SideMenuView.MenuItemClickListener {
+class MainActivity : BaseLeanbackActivity<LbActivityMainBinding>(), SideMenuView.MenuItemClickListener {
 
     override fun getActivityViewBinding() = LbActivityMainBinding.inflate(layoutInflater)
 

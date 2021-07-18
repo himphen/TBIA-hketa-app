@@ -11,7 +11,7 @@ import androidx.leanback.widget.GuidanceStylist.Guidance
 import androidx.leanback.widget.GuidedAction
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
-import hibernate.v2.sunshine.ui.eta.leanback.view.EtaCardPresenter
+import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
 import org.koin.android.ext.android.inject
 
 class EtaLayoutDialogFragment : GuidedStepSupportFragment() {

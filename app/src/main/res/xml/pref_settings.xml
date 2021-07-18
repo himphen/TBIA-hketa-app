@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="設定">
-        <Preference
-            android:key="route"
-            android:title="路線" />
-    </PreferenceCategory>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <Preference
+        android:icon="@drawable/ic_settings_bus_eta_24"
+        android:key="pref_settings_bus_eta"
+        android:title="@string/title_activity_settings_eta"
+        tools:summary="Dark Mode" />
+
+    <Preference
+        android:icon="@drawable/ic_settings_bus_eta_24"
+        android:key="pref_settings_eta_layout"
+        android:title="@string/title_activity_eta_layout"
+        tools:summary="Dark Mode" />
+
+    <Preference
+        android:icon="@drawable/ic_settings_version_24"
+        android:key="pref_settings_version"
+        android:title="@string/title_settings_version"
+        tools:summary="Dark Mode" />
 </PreferenceScreen>

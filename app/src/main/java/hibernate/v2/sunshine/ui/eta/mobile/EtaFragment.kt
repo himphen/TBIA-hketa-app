@@ -1,12 +1,10 @@
 package hibernate.v2.sunshine.ui.eta.mobile
 
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentEtaBinding
 import hibernate.v2.sunshine.model.Card
@@ -56,20 +54,6 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 viewModel.updateEtaList(etaCardList)
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val customInflater = inflater.cloneInContext(
-            ContextThemeWrapper(
-                context,
-                R.style.Theme_Fragment_Eta
-            )
-        )
-        return super.onCreateView(customInflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
