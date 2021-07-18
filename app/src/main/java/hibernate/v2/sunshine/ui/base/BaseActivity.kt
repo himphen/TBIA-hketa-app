@@ -70,4 +70,13 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
                 .commit()
         }
     }
+
+    fun popBackStack(): Boolean {
+        return if (supportFragmentManager.backStackEntryCount == 0) {
+            false
+        } else {
+            supportFragmentManager.popBackStack()
+            true
+        }
+    }
 }

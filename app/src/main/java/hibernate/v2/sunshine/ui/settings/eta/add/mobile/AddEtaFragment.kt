@@ -26,8 +26,8 @@ class AddEtaFragment : BaseFragment<FragmentAddEtaBinding>() {
     private val viewModel: AddEtaViewModel by sharedViewModel()
     private val currentSelectionType by lazy {
         when {
-            viewModel.selectedEtaType.value == null -> SelectionType.Route
             viewModel.selectedRouteStopList.value?.isNotEmpty() == true -> SelectionType.Stop
+            viewModel.selectedEtaType.value != null -> SelectionType.Route
             else -> SelectionType.EtaType
         }
     }
@@ -35,24 +35,30 @@ class AddEtaFragment : BaseFragment<FragmentAddEtaBinding>() {
         AddEtaAdapter(currentSelectionType, object : AddEtaAdapter.ItemListener {
             override fun onEtaTypeSelected(etaType: AddEtaViewModel.EtaType) {
                 viewModel.selectedEtaType.value = etaType
-                val fragmentTransaction =
-                    activity?.supportFragmentManager?.beginTransaction()
-                fragmentTransaction?.add(
-                    R.id.container,
-                    getInstance()
-                )
-                fragmentTransaction?.commit()
+
+                activity?.supportFragmentManager?.beginTransaction()?.apply {
+                    setCustomAnimations(
+                        R.anim.fragment_fade_enter,
+                        R.anim.fragment_fade_exit
+                    )
+                    add(R.id.container, getInstance())
+                    addToBackStack(null)
+                    commit()
+                }
             }
 
             override fun onRouteSelected(route: RouteForRowAdapter) {
                 viewModel.selectedRouteStopList.value = route.filteredList.toMutableList()
-                val fragmentTransaction =
-                    activity?.supportFragmentManager?.beginTransaction()
-                fragmentTransaction?.add(
-                    R.id.container,
-                    getInstance()
-                )
-                fragmentTransaction?.commit()
+
+                activity?.supportFragmentManager?.beginTransaction()?.apply {
+                    setCustomAnimations(
+                        R.anim.fragment_fade_enter,
+                        R.anim.fragment_fade_exit
+                    )
+                    add(R.id.container, getInstance())
+                    addToBackStack(null)
+                    commit()
+                }
             }
 
             override fun onStopSelected(card: Card.RouteStopAddCard) {
@@ -71,7 +77,15 @@ class AddEtaFragment : BaseFragment<FragmentAddEtaBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         initEvent()
+        initUi()
+        initData()
+    }
 
+    private fun initUi() {
+        viewBinding!!.recyclerView.adapter = adapter
+    }
+
+    private fun initData() {
         when (currentSelectionType) {
             SelectionType.EtaType -> loadRows()
             SelectionType.Route -> viewModel.getTransportRouteList(
