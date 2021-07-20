@@ -2,14 +2,14 @@ package hibernate.v2.sunshine.ui.eta.mobile.view
 
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.CardEtaClassicBinding
+import hibernate.v2.sunshine.databinding.ContentEtaClassicBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
-class EtaViewHolderClassic(override val viewBinding: CardEtaClassicBinding) :
-    BaseEtaViewHolder<CardEtaClassicBinding>(viewBinding) {
+class EtaViewHolderClassic(override val viewBinding: ContentEtaClassicBinding) :
+    BaseEtaViewHolder<ContentEtaClassicBinding>(viewBinding) {
 
     override fun onBind(card: Card.EtaCard) {
         val color = when (card.route.company) {

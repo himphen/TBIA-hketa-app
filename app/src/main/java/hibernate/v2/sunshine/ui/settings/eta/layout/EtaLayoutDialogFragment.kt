@@ -24,7 +24,7 @@ class EtaLayoutDialogFragment : GuidedStepSupportFragment() {
     override fun onCreateGuidanceStylist(): GuidanceStylist {
         return object : GuidanceStylist() {
             override fun onProvideLayoutId(): Int {
-                return R.layout.lb_eta_layout_guidance
+                return R.layout.lb_guidance_eta_layout
             }
 
             override fun onCreateView(

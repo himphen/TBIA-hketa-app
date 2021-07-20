@@ -11,7 +11,7 @@ import org.koin.androidx.viewmodel.ext.android.stateViewModel
 class AddEtaActivity : BaseFragmentActivity<ActivityContainerBinding>() {
     override fun getActivityViewBinding() = ActivityContainerBinding.inflate(layoutInflater)
     override var fragment: Fragment? = AddEtaFragment.getInstance()
-    override var titleId: Int? = R.string.title_activity_settings_eta
+    override var titleId: Int? = R.string.title_activity_add_eta
 
     val viewModel by stateViewModel<AddEtaViewModel>()
 

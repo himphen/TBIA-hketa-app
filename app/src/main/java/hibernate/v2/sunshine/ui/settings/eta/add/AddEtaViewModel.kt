@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
@@ -19,6 +20,7 @@ import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.leanback.RouteForRowAdapter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,10 +32,16 @@ class AddEtaViewModel(
     private val gmbRepository: GmbRepository,
 ) : BaseViewModel() {
 
-    val allTransportRouteList = MutableLiveData<MutableList<RouteForRowAdapter>>()
+    private var allTransportRouteList: MutableList<RouteForRowAdapter> = mutableListOf()
+
+    val filteredTransportRouteList = MutableSharedFlow<List<RouteForRowAdapter>>()
     var selectedEtaType = MutableLiveData<EtaType?>()
-    var selectedRouteStopList = MutableLiveData<MutableList<Card.RouteStopAddCard>>()
+    var selectedRoute = MutableLiveData<RouteForRowAdapter?>()
     var isAddEtaSuccessful = MutableSharedFlow<Boolean>()
+
+    val searchRouteKeyword = MutableLiveData<String>()
+
+    private var executingSearchJob: Job? = null
 
     private suspend fun hasEtaInDb(
         stopId: String,
@@ -75,198 +83,194 @@ class AddEtaViewModel(
                     getGmbRouteList(context)
                 }
             }
+
+            searchRoute()
         }
     }
 
-    private fun getKmbRouteList(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val etaType = EtaType.KMB
-            if (RouteAndStopListDataHolder.hasData(etaType)) {
-                allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(etaType))
-                return@launch
-            }
-
-            try {
-                val allRouteList = kmbRepository.getRouteListDb()
-                val allRouteStopList = kmbRepository.getRouteStopDetailsListDb()
-
-                val transportRouteStopHashMap = allRouteList.associate { entity ->
-                    val route = entity.toTransportModel()
-                    route.routeHashId() to TransportRouteStopList(
-                        route = route,
-                        stopList = mutableListOf()
-                    )
-                }
-
-                allRouteStopList.forEach {
-                    val routeHashId = it.routeStopEntity.routeHashId()
-                    val stop = it.stopEntity?.toTransportModelWithSeq(
-                        it.routeStopEntity.seq
-                    )
-                    stop?.let {
-                        transportRouteStopHashMap[routeHashId]?.stopList?.add(stop)
-                    }
-                }
-
-                val transportRouteStopList = transportRouteStopHashMap.values.toMutableList()
-                transportRouteStopList.sortWith { o1, o2 ->
-                    o1.compareTo(o2)
-                }
-
-                val transportRouteList =
-                    transportRouteStopList.map { routeAndStopList ->
-                        val route = routeAndStopList.route
-                        val headerTitle = route.getDirectionWithRouteText(context)
-
-                        RouteForRowAdapter(
-                            headerTitle = headerTitle,
-                            route = route,
-                            filteredList = routeAndStopList.stopList.map { stop ->
-                                Card.RouteStopAddCard(
-                                    route = route,
-                                    stop = stop
-                                )
-                            }
-                        )
-                    }.toMutableList()
-
-                RouteAndStopListDataHolder.setData(etaType, transportRouteList)
-
-                Logger.d("lifecycle getTransportRouteList done")
-                allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(etaType))
-            } catch (e: Exception) {
-                Logger.e(e, "lifecycle getTransportRouteList error")
-                allTransportRouteList.postValue(mutableListOf())
-            }
+    private suspend fun getKmbRouteList(context: Context) {
+        val etaType = EtaType.KMB
+        if (RouteAndStopListDataHolder.hasData(etaType)) {
+            allTransportRouteList = RouteAndStopListDataHolder.getData(etaType) ?: mutableListOf()
+            return
         }
-    }
 
-    private fun getNCRouteList(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val etaType = EtaType.NWFB_CTB
-            if (RouteAndStopListDataHolder.hasData(etaType)) {
-                allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(etaType))
-                return@launch
-            }
+        try {
+            val allRouteList = kmbRepository.getRouteListDb()
+            val allRouteStopList = kmbRepository.getRouteStopDetailsListDb()
 
-            try {
-                val allRouteList = ncRepository.getRouteListDb()
-                val allRouteStopList = ncRepository.getRouteStopDetailsListDb()
-
-                val transportRouteStopHashMap = allRouteList.associate { entity ->
-                    val route = entity.toTransportModel()
-                    route.routeHashId() to TransportRouteStopList(
-                        route = route,
-                        stopList = mutableListOf()
-                    )
-                }
-
-                allRouteStopList.forEach {
-                    val routeHashId = it.routeStopEntity.routeHashId()
-                    val stop = it.stopEntity?.toTransportModelWithSeq(
-                        it.routeStopEntity.seq
-                    )
-                    stop?.let {
-                        transportRouteStopHashMap[routeHashId]?.stopList?.add(stop)
-                    }
-                }
-
-                val transportRouteStopList = transportRouteStopHashMap.values.toMutableList()
-                transportRouteStopList.sort()
-
-                val transportRouteList =
-                    transportRouteStopList.map { routeAndStopList ->
-                        val route = routeAndStopList.route
-                        val headerTitle = route.getDirectionWithRouteText(context)
-
-                        RouteForRowAdapter(
-                            headerTitle = headerTitle,
-                            route = route,
-                            filteredList = routeAndStopList.stopList.map { stop ->
-                                Card.RouteStopAddCard(
-                                    route = route,
-                                    stop = stop
-                                )
-                            }
-                        )
-                    }.toMutableList()
-
-                RouteAndStopListDataHolder.setData(
-                    etaType,
-                    transportRouteList
+            val transportRouteStopHashMap = allRouteList.associate { entity ->
+                val route = entity.toTransportModel()
+                route.routeHashId() to TransportRouteStopList(
+                    route = route,
+                    stopList = mutableListOf()
                 )
-
-                Logger.d("lifecycle getTransportRouteList done")
-                allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(etaType))
-            } catch (e: Exception) {
-                Logger.e(e, "lifecycle getTransportRouteList error")
-                allTransportRouteList.postValue(mutableListOf())
             }
+
+            allRouteStopList.forEach {
+                val routeHashId = it.routeStopEntity.routeHashId()
+                val stop = it.stopEntity?.toTransportModelWithSeq(
+                    it.routeStopEntity.seq
+                )
+                stop?.let {
+                    transportRouteStopHashMap[routeHashId]?.stopList?.add(stop)
+                }
+            }
+
+            val transportRouteStopList = transportRouteStopHashMap.values.toMutableList()
+            transportRouteStopList.sortWith { o1, o2 ->
+                o1.compareTo(o2)
+            }
+
+            val transportRouteList =
+                transportRouteStopList.map { routeAndStopList ->
+                    val route = routeAndStopList.route
+                    val headerTitle = route.getDirectionWithRouteText(context)
+
+                    RouteForRowAdapter(
+                        headerTitle = headerTitle,
+                        route = route,
+                        filteredList = routeAndStopList.stopList.map { stop ->
+                            Card.RouteStopAddCard(
+                                route = route,
+                                stop = stop
+                            )
+                        }
+                    )
+                }.toMutableList()
+
+            RouteAndStopListDataHolder.setData(etaType, transportRouteList)
+
+            Logger.d("lifecycle getTransportRouteList done")
+            allTransportRouteList = transportRouteList
+        } catch (e: Exception) {
+            Logger.e(e, "lifecycle getTransportRouteList error")
+            allTransportRouteList = mutableListOf()
         }
     }
 
-    private fun getGmbRouteList(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val etaType = EtaType.GMB
-            if (RouteAndStopListDataHolder.hasData(etaType)) {
-                allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(etaType))
-                return@launch
-            }
+    private suspend fun getNCRouteList(context: Context) {
+        val etaType = EtaType.NWFB_CTB
+        if (RouteAndStopListDataHolder.hasData(etaType)) {
+            allTransportRouteList = RouteAndStopListDataHolder.getData(etaType) ?: mutableListOf()
+            return
+        }
 
-            try {
-                val allRouteList = gmbRepository.getRouteListDb()
-                val allRouteStopList = gmbRepository.getRouteStopDetailsListDb()
+        try {
+            val allRouteList = ncRepository.getRouteListDb()
+            val allRouteStopList = ncRepository.getRouteStopDetailsListDb()
 
-                val transportRouteStopHashMap = allRouteList.associate { entity ->
-                    val route = entity.toTransportModel()
-                    route.routeHashId() to TransportRouteStopList(
-                        route = route,
-                        stopList = mutableListOf()
-                    )
-                }
-
-                allRouteStopList.forEach {
-                    val routeHashId = it.routeStopEntity.routeHashId()
-                    val stop = it.stopEntity?.toTransportModelWithSeq(
-                        it.routeStopEntity.seq
-                    )
-                    stop?.let {
-                        transportRouteStopHashMap[routeHashId]?.stopList?.add(stop)
-                    }
-                }
-
-                val transportRouteStopList = transportRouteStopHashMap.values.toMutableList()
-                transportRouteStopList.sort()
-
-                val transportRouteList =
-                    transportRouteStopList.map { routeAndStopList ->
-                        val route = routeAndStopList.route
-                        route as GmbTransportRoute
-                        val headerTitle = route.getDirectionWithRouteText(context)
-
-                        RouteForRowAdapter(
-                            headerTitle = headerTitle,
-                            route = route,
-                            filteredList = routeAndStopList.stopList.map { stop ->
-                                Card.RouteStopAddCard(
-                                    route = route,
-                                    stop = stop
-                                )
-                            }
-                        )
-                    }.toMutableList()
-
-                RouteAndStopListDataHolder.setData(
-                    etaType,
-                    transportRouteList
+            val transportRouteStopHashMap = allRouteList.associate { entity ->
+                val route = entity.toTransportModel()
+                route.routeHashId() to TransportRouteStopList(
+                    route = route,
+                    stopList = mutableListOf()
                 )
-
-                Logger.d("lifecycle getTransportRouteList done")
-                allTransportRouteList.postValue(RouteAndStopListDataHolder.getData(etaType))
-            } catch (e: Exception) {
-                Logger.e(e, "lifecycle getTransportRouteList error")
-                allTransportRouteList.postValue(mutableListOf())
             }
+
+            allRouteStopList.forEach {
+                val routeHashId = it.routeStopEntity.routeHashId()
+                val stop = it.stopEntity?.toTransportModelWithSeq(
+                    it.routeStopEntity.seq
+                )
+                stop?.let {
+                    transportRouteStopHashMap[routeHashId]?.stopList?.add(stop)
+                }
+            }
+
+            val transportRouteStopList = transportRouteStopHashMap.values.toMutableList()
+            transportRouteStopList.sort()
+
+            val transportRouteList =
+                transportRouteStopList.map { routeAndStopList ->
+                    val route = routeAndStopList.route
+                    val headerTitle = route.getDirectionWithRouteText(context)
+
+                    RouteForRowAdapter(
+                        headerTitle = headerTitle,
+                        route = route,
+                        filteredList = routeAndStopList.stopList.map { stop ->
+                            Card.RouteStopAddCard(
+                                route = route,
+                                stop = stop
+                            )
+                        }
+                    )
+                }.toMutableList()
+
+            RouteAndStopListDataHolder.setData(
+                etaType,
+                transportRouteList
+            )
+
+            Logger.d("lifecycle getTransportRouteList done")
+            allTransportRouteList = transportRouteList
+        } catch (e: Exception) {
+            Logger.e(e, "lifecycle getTransportRouteList error")
+            allTransportRouteList = (mutableListOf())
+        }
+    }
+
+    private suspend fun getGmbRouteList(context: Context) {
+        val etaType = EtaType.GMB
+        if (RouteAndStopListDataHolder.hasData(etaType)) {
+            allTransportRouteList = RouteAndStopListDataHolder.getData(etaType) ?: mutableListOf()
+            return
+        }
+
+        try {
+            val allRouteList = gmbRepository.getRouteListDb()
+            val allRouteStopList = gmbRepository.getRouteStopDetailsListDb()
+
+            val transportRouteStopHashMap = allRouteList.associate { entity ->
+                val route = entity.toTransportModel()
+                route.routeHashId() to TransportRouteStopList(
+                    route = route,
+                    stopList = mutableListOf()
+                )
+            }
+
+            allRouteStopList.forEach {
+                val routeHashId = it.routeStopEntity.routeHashId()
+                val stop = it.stopEntity?.toTransportModelWithSeq(
+                    it.routeStopEntity.seq
+                )
+                stop?.let {
+                    transportRouteStopHashMap[routeHashId]?.stopList?.add(stop)
+                }
+            }
+
+            val transportRouteStopList = transportRouteStopHashMap.values.toMutableList()
+            transportRouteStopList.sort()
+
+            val transportRouteList =
+                transportRouteStopList.map { routeAndStopList ->
+                    val route = routeAndStopList.route
+                    route as GmbTransportRoute
+                    val headerTitle = route.getDirectionWithRouteText(context)
+
+                    RouteForRowAdapter(
+                        headerTitle = headerTitle,
+                        route = route,
+                        filteredList = routeAndStopList.stopList.map { stop ->
+                            Card.RouteStopAddCard(
+                                route = route,
+                                stop = stop
+                            )
+                        }
+                    )
+                }.toMutableList()
+
+            RouteAndStopListDataHolder.setData(
+                etaType,
+                transportRouteList
+            )
+
+            Logger.d("lifecycle getTransportRouteList done")
+            allTransportRouteList = transportRouteList
+        } catch (e: Exception) {
+            Logger.e(e, "lifecycle getTransportRouteList error")
+            allTransportRouteList = (mutableListOf())
         }
     }
 
@@ -308,9 +312,46 @@ class AddEtaViewModel(
         }
     }
 
+    fun searchRoute() {
+        val keyword = searchRouteKeyword.value
+        Logger.d(String.format("Search text changed: %s", keyword))
+
+        executingSearchJob?.cancel()
+
+        if (keyword.isNullOrBlank()) {
+            executingSearchJob = viewModelScope.launch {
+                filteredTransportRouteList.emit(allTransportRouteList)
+            }
+            return
+        }
+
+        executingSearchJob = viewModelScope.launch {
+            val result = allTransportRouteList.filter { routeForRowAdapter ->
+                routeForRowAdapter.route.routeNo.startsWith(keyword, true)
+            }
+
+            filteredTransportRouteList.emit(result)
+        }
+    }
+
     enum class EtaType {
         KMB,
         NWFB_CTB,
-        GMB
+        GMB;
+
+        fun etaTypeName(context: Context) = when (this) {
+            KMB -> context.getString(R.string.dialog_add_eta_brand_selection_kmb_btn)
+            NWFB_CTB -> context.getString(R.string.dialog_add_eta_brand_selection_ctb_btn)
+            GMB -> context.getString(R.string.dialog_add_eta_brand_selection_gmb_btn)
+        }
+
+        fun etaTypeColors(context: Context): IntArray = when (this) {
+            KMB -> intArrayOf(context.getColor(R.color.brand_color_kmb))
+            NWFB_CTB -> intArrayOf(
+                context.getColor(R.color.brand_color_nwfb),
+                context.getColor(R.color.brand_color_ctb)
+            )
+            GMB -> intArrayOf(context.getColor(R.color.brand_color_gmb))
+        }
     }
 }

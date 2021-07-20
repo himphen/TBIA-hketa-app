@@ -1,6 +1,5 @@
 package hibernate.v2.sunshine.ui.settings.eta.add.mobile.view
 
-import android.graphics.drawable.GradientDrawable
 import android.view.View
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemAddEtaCompanyBinding

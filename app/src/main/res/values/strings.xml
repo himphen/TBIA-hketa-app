@@ -3,10 +3,10 @@
     <string name="title_activity_settings_eta">更改到站提示</string>
     <string name="title_activity_eta_layout">更改到站卡片樣式</string>
     <string name="title_settings_version">版本 %1$s</string>
+    <string name="title_activity_add_eta">加入車站</string>
 
     <string name="title_fragment_home">主頁</string>
     <string name="title_fragment_settings">設定</string>
-    <string name="title_activity_add_eta">路線編號</string>
 
     <string name="text_eta_destination_to">往</string>
 
@@ -26,10 +26,12 @@
     <string name="dialog_add_eta_brand_selection_ctb_btn">新巴／城巴</string>
     <string name="dialog_add_eta_brand_selection_gmb_btn">專線小巴</string>
 
+    <string name="text_add_eta_hint_route">你正瀏覧 %1$s 路線</string>
+    <string name="text_add_eta_hint_stop">你正瀏覧 %1$s 車站</string>
 
     <string name="menu_settings_eta_action_add">加入到站</string>
     <string name="dialog_settings_eta_remove_title">注意</string>
-    <string name="dialog_settings_eta_remove_message">選擇移除 %1$s 號線 %2$s 到站選項後將不能復原，你需要重新加入選項。</string>
+    <string name="dialog_settings_eta_remove_message">選擇移除 %1$s 號線 %2$s 車站後將不能復原，你需要重新加入車站。</string>
     <string name="dialog_settings_eta_remove_pos_btn">移除</string>
     <string name="dialog_cancel_btn">取消</string>
 
@@ -37,8 +39,8 @@
     <string name="text_gmb_region_kln">九龍區</string>
     <string name="text_gmb_region_nt">新界區</string>
 
-    <string name="dialog_edit_eta_title">編輯 %1$s 號線 %2$s 到站選項</string>
-    <string name="dialog_edit_eta_description">選擇移除後將不能復原，你需要重新加入選項。</string>
+    <string name="dialog_edit_eta_title">編輯 %1$s 號線 %2$s 車站選項</string>
+    <string name="dialog_edit_eta_description">選擇移除後將不能復原，你需要重新加入車站。</string>
     <string name="dialog_edit_eta_move_up_btn">上移</string>
     <string name="dialog_edit_eta_move_down_btn">下移</string>
     <string name="dialog_edit_eta_remove_btn">移除</string>
@@ -77,5 +79,7 @@
         <item>@string/main_tab_title_2</item>
     </string-array>
 
+    <string name="placeholder_search_route">搜尋路線</string>
+    <string name="placeholder_search_stop">搜尋車站</string>
 
 </resources>

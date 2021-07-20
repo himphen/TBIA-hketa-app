@@ -11,4 +11,4 @@
     android:paddingBottom="12dp"
     android:scrollbars="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:listitem="@layout/card_eta_compact" />
+    tools:listitem="@layout/content_eta_compact" />

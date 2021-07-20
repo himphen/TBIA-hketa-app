@@ -9,15 +9,15 @@ import android.view.View.OnFocusChangeListener
 import androidx.core.content.ContextCompat
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.CardEtaCompactBinding
+import hibernate.v2.sunshine.databinding.ContentEtaCompactBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
-class EtaCardViewCompact(context: Context) : BaseEtaCardView<CardEtaCompactBinding>(context) {
+class EtaCardViewCompact(context: Context) : BaseEtaCardView<ContentEtaCompactBinding>(context) {
     override var viewBinding =
-        CardEtaCompactBinding.inflate(LayoutInflater.from(context), this, true)
+        ContentEtaCompactBinding.inflate(LayoutInflater.from(context), this, true)
 
     override fun onBind(card: Card.EtaCard) {
         val color = when (card.route.company) {

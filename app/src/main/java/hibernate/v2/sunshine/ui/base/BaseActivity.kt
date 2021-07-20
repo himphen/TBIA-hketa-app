@@ -1,7 +1,9 @@
 package hibernate.v2.sunshine.ui.base
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -78,5 +80,12 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
             supportFragmentManager.popBackStack()
             true
         }
+    }
+
+    fun hideSoftKeyboard() {
+        (getSystemService(Activity.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(
+            currentFocus?.windowToken,
+            0
+        )
     }
 }

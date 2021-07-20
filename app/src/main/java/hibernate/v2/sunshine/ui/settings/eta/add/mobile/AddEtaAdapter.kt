@@ -80,7 +80,7 @@ class AddEtaAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setTypeData(mutableList: MutableList<AddEtaViewModel.EtaType>?) {
+    fun setTypeData(mutableList: List<AddEtaViewModel.EtaType>?) {
         if (mutableList == null) return
 
         list.clear()
@@ -89,7 +89,7 @@ class AddEtaAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setRouteData(mutableList: MutableList<RouteForRowAdapter>?) {
+    fun setRouteData(mutableList: List<RouteForRowAdapter>?) {
         if (mutableList == null) return
 
         list2.clear()
@@ -98,7 +98,7 @@ class AddEtaAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setStopData(mutableList: MutableList<Card.RouteStopAddCard>?) {
+    fun setStopData(mutableList: List<Card.RouteStopAddCard>?) {
         if (mutableList == null) return
 
         list3.clear()

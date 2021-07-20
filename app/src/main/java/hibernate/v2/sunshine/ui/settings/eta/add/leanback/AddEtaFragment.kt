@@ -10,13 +10,13 @@ import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.lifecycle.lifecycleScope
-import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.leanback.AddEtaActivity.Companion.ARG_ETA_TYPE
 import hibernate.v2.sunshine.util.getEnum
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -29,15 +29,16 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
 
     private var etaType: AddEtaViewModel.EtaType? = null
 
-    private var mQuery: String = ""
-
     private val clickListener = object : AddEtaCardPresenter.ClickListener {
         override fun onItemClick(card: Card.RouteStopAddCard) {
             viewModel.saveStop(card)
         }
     }
 
+    private var searchJob: Job? = null
+
     companion object {
+        const val searchDelay = 500L
         fun getInstance(bundle: Bundle?) = AddEtaFragment().apply { arguments = bundle }
     }
 
@@ -58,8 +59,8 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
     }
 
     private fun initEvent() {
-        viewModel.allTransportRouteList.observe(viewLifecycleOwner) {
-            loadRows()
+        viewModel.filteredTransportRouteList.onEach { routeList ->
+            loadRows(routeList)
         }
 
         viewModel.isAddEtaSuccessful.onEach {
@@ -76,48 +77,34 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun loadRows() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            mRowsAdapter.clear()
-            viewModel.allTransportRouteList.value?.forEachIndexed { index, listForRowAdapter ->
-                if (mQuery.isNotEmpty()
-                    && !listForRowAdapter.route.routeNo.startsWith(mQuery, true)
-                ) return@forEachIndexed
+    private fun loadRows(routeList: List<RouteForRowAdapter>) {
+        mRowsAdapter.clear()
+        routeList.forEachIndexed { index, listForRowAdapter ->
+            // Init Row
+            val listRowAdapter =
+                ArrayObjectAdapter(AddEtaCardPresenter(requireContext(), clickListener))
 
-                // Init Row
-                val listRowAdapter =
-                    ArrayObjectAdapter(AddEtaCardPresenter(requireContext(), clickListener))
-
-                listRowAdapter.addAll(0, listForRowAdapter.filteredList)
-                val header = HeaderItem(index.toLong(), listForRowAdapter.headerTitle)
-                val listRow = ListRow(header, listRowAdapter)
-                mRowsAdapter.add(listRow)
-            }
+            listRowAdapter.addAll(0, listForRowAdapter.filteredList)
+            val header = HeaderItem(index.toLong(), listForRowAdapter.headerTitle)
+            val listRow = ListRow(header, listRowAdapter)
+            mRowsAdapter.add(listRow)
         }
     }
 
     override fun getResultsAdapter() = mRowsAdapter
 
     override fun onQueryTextChange(newQuery: String): Boolean {
-        Logger.d(String.format("Search text changed: %s", newQuery))
-        if (newQuery.isEmpty()) {
-            loadQuery("")
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            delay(searchDelay)
+            viewModel.searchRouteKeyword.value = newQuery
+            viewModel.searchRoute()
         }
+
         return true
     }
 
     override fun onQueryTextSubmit(query: String): Boolean {
-        Logger.d(String.format("Search text submitted: %s", query))
-        loadQuery(query)
         return true
-    }
-
-    private fun loadQuery(query: String) {
-        query.trim().let {
-            if (it != mQuery) {
-                mQuery = it
-                loadRows()
-            }
-        }
     }
 }

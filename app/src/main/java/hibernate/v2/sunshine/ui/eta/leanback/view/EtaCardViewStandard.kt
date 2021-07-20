@@ -8,15 +8,15 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.CardEtaStandardBinding
+import hibernate.v2.sunshine.databinding.ContentEtaStandardBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
-class EtaCardViewStandard(context: Context) : BaseEtaCardView<CardEtaStandardBinding>(context) {
+class EtaCardViewStandard(context: Context) : BaseEtaCardView<ContentEtaStandardBinding>(context) {
     override var viewBinding =
-        CardEtaStandardBinding.inflate(LayoutInflater.from(context), this, true)
+        ContentEtaStandardBinding.inflate(LayoutInflater.from(context), this, true)
 
     override fun onBind(card: Card.EtaCard) {
         val color = when (card.route.company) {

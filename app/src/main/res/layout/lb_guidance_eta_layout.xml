@@ -54,21 +54,21 @@
 
             <include
                 android:id="@+id/eta_demo_classic"
-                layout="@layout/card_eta_classic"
+                layout="@layout/content_eta_classic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
 
             <include
                 android:id="@+id/eta_demo_compact"
-                layout="@layout/card_eta_compact"
+                layout="@layout/content_eta_compact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
 
             <include
                 android:id="@+id/eta_demo_standard"
-                layout="@layout/card_eta_standard"
+                layout="@layout/content_eta_standard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"

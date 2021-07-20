@@ -1,11 +1,12 @@
 package hibernate.v2.sunshine.core
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.himphen.logger.AndroidLogAdapter
 import com.himphen.logger.Logger
 import com.himphen.logger.PrettyFormatStrategy
 import hibernate.v2.sunshine.api.ApiManager
-import hibernate.v2.sunshine.api.WeatherRepository
+import hibernate.v2.sunshine.repository.WeatherRepository
 import hibernate.v2.sunshine.db.LocalDatabase
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.GmbRepository
@@ -28,6 +29,8 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         // init logger
         val formatStrategy = PrettyFormatStrategy.newBuilder()

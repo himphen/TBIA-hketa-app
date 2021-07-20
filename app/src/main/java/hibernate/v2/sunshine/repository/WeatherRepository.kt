@@ -1,9 +1,10 @@
-package hibernate.v2.sunshine.api
+package hibernate.v2.sunshine.repository
 
 import hibernate.v2.api.model.hko.TodayForecast
 import hibernate.v2.api.model.hko.TodayWeather
 import hibernate.v2.api.model.openweather.OneCall
 import hibernate.v2.sunshine.BuildConfig
+import hibernate.v2.sunshine.api.ApiManager
 
 class WeatherRepository(private val apiManager: ApiManager) : BaseRepository() {
     suspend fun todayWeather(): TodayWeather {

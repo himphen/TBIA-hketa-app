@@ -1,4 +1,13 @@
 <resources>
+
+    <color name="white">@color/md_white_1000</color>
+    <color name="brand_color_kmb">#D32F2F</color>
+    <color name="brand_color_ctb">#FBC02D</color>
+    <color name="brand_color_nwfb">#7E57C2</color>
+    <color name="brand_color_gmb">#2E7D32</color>
+    <color name="eta_card_bg_selected">#11FFFFFF</color>
+
+
     <color name="transparent">#00000000</color>
     <!--reds-->
     <color name="md_red_50">#FFEBEE</color>

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.hko.TodayForecast
 import hibernate.v2.api.model.hko.TodayWeather
-import hibernate.v2.sunshine.api.WeatherRepository
+import hibernate.v2.sunshine.repository.WeatherRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

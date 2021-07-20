@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import androidx.leanback.widget.BaseCardView
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.CardAddEtaBinding
+import hibernate.v2.sunshine.databinding.LbCardAddEtaStopBinding
 import hibernate.v2.sunshine.model.Card
 
 class AddEtaCardView(context: Context) : BaseCardView(
@@ -12,7 +12,7 @@ class AddEtaCardView(context: Context) : BaseCardView(
     null,
     R.style.FullCardStyle
 ) {
-    var viewBinding = CardAddEtaBinding.inflate(LayoutInflater.from(context), this, true)
+    var viewBinding = LbCardAddEtaStopBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun updateDataUi(card: Card.RouteStopAddCard) {
         card.stop

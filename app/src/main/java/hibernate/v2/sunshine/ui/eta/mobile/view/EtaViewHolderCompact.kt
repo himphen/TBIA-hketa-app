@@ -6,14 +6,14 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.CardEtaCompactBinding
+import hibernate.v2.sunshine.databinding.ContentEtaCompactBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
-class EtaViewHolderCompact(override val viewBinding: CardEtaCompactBinding) :
-    BaseEtaViewHolder<CardEtaCompactBinding>(viewBinding) {
+class EtaViewHolderCompact(override val viewBinding: ContentEtaCompactBinding) :
+    BaseEtaViewHolder<ContentEtaCompactBinding>(viewBinding) {
 
     override fun onBind(card: Card.EtaCard) {
         val color = when (card.route.company) {
