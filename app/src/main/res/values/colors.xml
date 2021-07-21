@@ -10,6 +10,9 @@
     <color name="secondaryText">@color/md_grey_800</color>
     <color name="hintText">@color/md_grey_700</color>
 
+    <color name="eta_card_line_text_mobile">@color/white</color>
+    <color name="eta_card_background">@color/white</color>
+
     <!-- action bar-->
     <color name="actionbar_color">@color/primary</color>
     <color name="actionbar_title_text">@color/white</color>
@@ -28,6 +31,8 @@
 
     <color name="settings_card_background">#0277BD</color>
     <color name="settings_card_background_focussed">#01579B</color>
+
+    <color name="eta_card_line_text_leanback">@color/black_trans_88</color>
 
     <!-- common -->
     <color name="white">@color/md_white_1000</color>

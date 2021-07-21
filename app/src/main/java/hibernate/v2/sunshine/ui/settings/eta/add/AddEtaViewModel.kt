@@ -32,9 +32,7 @@ class AddEtaViewModel(
     private val gmbRepository: GmbRepository,
 ) : BaseViewModel() {
 
-    private var allTransportRouteList: MutableList<RouteForRowAdapter> = mutableListOf()
-
-    val filteredTransportRouteList = MutableSharedFlow<List<RouteForRowAdapter>>()
+    val filteredTransportRouteList = MutableSharedFlow<Pair<EtaType, List<RouteForRowAdapter>>>()
     var selectedEtaType = MutableLiveData<EtaType?>()
     var selectedRoute = MutableLiveData<RouteForRowAdapter?>()
     var isAddEtaSuccessful = MutableSharedFlow<Boolean>()
@@ -70,7 +68,7 @@ class AddEtaViewModel(
     private suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
         withContext(Dispatchers.IO) { etaRepository.updateEtaOrderList(entityList) }
 
-    fun getTransportRouteList(context: Context, etaType: EtaType?) {
+    fun getTransportRouteList(context: Context, etaType: EtaType) {
         viewModelScope.launch(Dispatchers.IO) {
             when (etaType) {
                 EtaType.KMB -> {
@@ -84,14 +82,13 @@ class AddEtaViewModel(
                 }
             }
 
-            searchRoute()
+            searchRoute(etaType)
         }
     }
 
     private suspend fun getKmbRouteList(context: Context) {
         val etaType = EtaType.KMB
         if (RouteAndStopListDataHolder.hasData(etaType)) {
-            allTransportRouteList = RouteAndStopListDataHolder.getData(etaType) ?: mutableListOf()
             return
         }
 
@@ -142,17 +139,16 @@ class AddEtaViewModel(
             RouteAndStopListDataHolder.setData(etaType, transportRouteList)
 
             Logger.d("lifecycle getTransportRouteList done")
-            allTransportRouteList = transportRouteList
         } catch (e: Exception) {
+            RouteAndStopListDataHolder.setData(etaType, mutableListOf())
+
             Logger.e(e, "lifecycle getTransportRouteList error")
-            allTransportRouteList = mutableListOf()
         }
     }
 
     private suspend fun getNCRouteList(context: Context) {
         val etaType = EtaType.NWFB_CTB
         if (RouteAndStopListDataHolder.hasData(etaType)) {
-            allTransportRouteList = RouteAndStopListDataHolder.getData(etaType) ?: mutableListOf()
             return
         }
 
@@ -204,17 +200,16 @@ class AddEtaViewModel(
             )
 
             Logger.d("lifecycle getTransportRouteList done")
-            allTransportRouteList = transportRouteList
         } catch (e: Exception) {
+            RouteAndStopListDataHolder.setData(etaType, mutableListOf())
+
             Logger.e(e, "lifecycle getTransportRouteList error")
-            allTransportRouteList = (mutableListOf())
         }
     }
 
     private suspend fun getGmbRouteList(context: Context) {
         val etaType = EtaType.GMB
         if (RouteAndStopListDataHolder.hasData(etaType)) {
-            allTransportRouteList = RouteAndStopListDataHolder.getData(etaType) ?: mutableListOf()
             return
         }
 
@@ -267,10 +262,10 @@ class AddEtaViewModel(
             )
 
             Logger.d("lifecycle getTransportRouteList done")
-            allTransportRouteList = transportRouteList
         } catch (e: Exception) {
+            RouteAndStopListDataHolder.setData(etaType, mutableListOf())
+
             Logger.e(e, "lifecycle getTransportRouteList error")
-            allTransportRouteList = (mutableListOf())
         }
     }
 
@@ -312,15 +307,23 @@ class AddEtaViewModel(
         }
     }
 
-    fun searchRoute() {
+    fun searchRoute(etaType: EtaType) {
+        executingSearchJob?.cancel()
+        if (!RouteAndStopListDataHolder.hasData(etaType)) {
+            executingSearchJob = viewModelScope.launch {
+                filteredTransportRouteList.emit(Pair(etaType, emptyList()))
+            }
+            return
+        }
+
         val keyword = searchRouteKeyword.value
         Logger.d(String.format("Search text changed: %s", keyword))
 
-        executingSearchJob?.cancel()
+        val allTransportRouteList = RouteAndStopListDataHolder.getData(etaType)!!
 
         if (keyword.isNullOrBlank()) {
             executingSearchJob = viewModelScope.launch {
-                filteredTransportRouteList.emit(allTransportRouteList)
+                filteredTransportRouteList.emit(Pair(etaType, allTransportRouteList))
             }
             return
         }
@@ -330,7 +333,7 @@ class AddEtaViewModel(
                 routeForRowAdapter.route.routeNo.startsWith(keyword, true)
             }
 
-            filteredTransportRouteList.emit(result)
+            filteredTransportRouteList.emit(Pair(etaType, result))
         }
     }
 
@@ -349,7 +352,7 @@ class AddEtaViewModel(
             KMB -> intArrayOf(context.getColor(R.color.brand_color_kmb))
             NWFB_CTB -> intArrayOf(
                 context.getColor(R.color.brand_color_nwfb),
-                context.getColor(R.color.brand_color_ctb)
+//                context.getColor(R.color.brand_color_ctb)
             )
             GMB -> intArrayOf(context.getColor(R.color.brand_color_gmb))
         }

@@ -14,7 +14,7 @@
     <string name="text_eta_destination">往 %1$s</string>
 
     <string name="text_settings_eta_destination">往 %1$s</string>
-    <string name="text_settings_eta_destination_with_sp">往 %1$s (特別線 %2$s)</string>
+    <string name="text_settings_eta_destination_with_sp">往 %1$s (%2$s)</string>
 
     <string name="text_add_eta_destination">%1$s - %2$s 往 %3$s</string>
     <string name="text_add_eta_destination_with_sp">%1$s (特別線 %2$s) - %3$s 往 %4$s</string>
@@ -32,7 +32,7 @@
 
     <string name="menu_settings_eta_action_add">加入到站</string>
     <string name="dialog_settings_eta_remove_title">注意</string>
-    <string name="dialog_settings_eta_remove_message">選擇移除 %1$s 號線 %2$s 車站後將不能復原，你需要重新加入車站。</string>
+    <string name="dialog_settings_eta_remove_message">確定移除 %1$s 號線 %2$s 車站嗎？</string>
     <string name="dialog_settings_eta_remove_pos_btn">移除</string>
     <string name="dialog_cancel_btn">取消</string>
 
@@ -41,13 +41,13 @@
     <string name="text_gmb_region_nt">新界區</string>
 
     <string name="dialog_edit_eta_title">編輯 %1$s 號線 %2$s 車站選項</string>
-    <string name="dialog_edit_eta_description">選擇移除後將不能復原，你需要重新加入車站。</string>
+    <string name="dialog_edit_eta_description"></string>
     <string name="dialog_edit_eta_move_up_btn">上移</string>
     <string name="dialog_edit_eta_move_down_btn">下移</string>
     <string name="dialog_edit_eta_remove_btn">移除</string>
     <string name="dialog_edit_eta_cancel_btn">取消</string>
     <string name="toast_eta_already_added">無法重覆選擇已加入的站位。</string>
-    <string name="eta_card_minute_unit">分鐘</string>
+    <string name="eta_card_minute_unit">分</string>
 
     <string name="dialog_eta_layout_title">選擇到站時間卡片樣式</string>
     <string name="dialog_eta_layout_standard_btn">標準</string>

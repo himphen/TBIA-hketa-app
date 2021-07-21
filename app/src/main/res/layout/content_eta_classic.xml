@@ -33,7 +33,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/routeNumberTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,9 +41,9 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:text="@string/demo_card_route_number"
-                android:textSize="36sp"
+                android:textSize="32sp"
                 android:textStyle="bold"
-                app:autoSizeMaxTextSize="36sp"
+                app:autoSizeMaxTextSize="32sp"
                 app:autoSizeTextType="uniform" />
         </LinearLayout>
 
@@ -61,7 +61,7 @@
             app:layout_constraintStart_toEndOf="@id/routeNumberLl"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/routeDirectionTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/stopNameTv" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/stopNameTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

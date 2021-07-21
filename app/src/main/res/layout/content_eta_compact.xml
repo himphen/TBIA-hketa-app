@@ -10,6 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:elevation="1dp"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@id/lineBgView"
         app:layout_constraintEnd_toStartOf="@id/lineArrowBgView"
         app:layout_constraintStart_toStartOf="@id/lineBgView"
@@ -26,7 +27,8 @@
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
             android:text="@string/demo_card_stop_name"
-            android:textSize="18sp"
+            android:textColor="@color/eta_card_line_text_mobile"
+            android:textSize="@dimen/eta_compact_stop_name"
             android:textStyle="bold" />
 
         <TextView
@@ -38,7 +40,8 @@
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
             android:text="@string/demo_card_route_desc"
-            android:textSize="18sp"
+            android:textColor="@color/eta_card_line_text_mobile"
+            android:textSize="@dimen/eta_compact_stop_name"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -98,7 +101,6 @@
                 style="@style/Eta.Card.Unit.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:text="@string/eta_card_minute_unit" />
         </LinearLayout>
 
@@ -131,7 +133,6 @@
                 style="@style/Eta.Card.Unit.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:text="@string/eta_card_minute_unit"
                 app:layout_constraintBaseline_toBaselineOf="@id/eta1MinuteTv"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -170,7 +171,6 @@
                 style="@style/Eta.Card.Unit.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:text="@string/eta_card_minute_unit"
                 app:layout_constraintBaseline_toBaselineOf="@id/eta3MinuteTv"
                 app:layout_constraintEnd_toEndOf="parent"

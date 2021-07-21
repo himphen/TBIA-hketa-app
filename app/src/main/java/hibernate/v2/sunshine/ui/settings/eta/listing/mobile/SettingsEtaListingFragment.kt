@@ -34,6 +34,8 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
     private var addEtaLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             viewModel.getSavedEtaCardList()
+
+            activity?.setResult(Activity.RESULT_OK)
         }
     }
 
@@ -90,6 +92,8 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
 
                         savedEtaCardList.remove(card)
                         adapter.remove(position)
+
+                        activity?.setResult(Activity.RESULT_OK)
                     }
                 }
                 .negativeButton(R.string.dialog_cancel_btn)

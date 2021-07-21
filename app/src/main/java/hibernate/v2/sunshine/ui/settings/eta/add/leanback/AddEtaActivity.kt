@@ -2,9 +2,9 @@ package hibernate.v2.sunshine.ui.settings.eta.add.leanback
 
 import androidx.fragment.app.Fragment
 import hibernate.v2.sunshine.databinding.LbActivityContainerBinding
-import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
+import hibernate.v2.sunshine.ui.base.BaseLeanbackActivity
 
-class AddEtaActivity : BaseFragmentActivity<LbActivityContainerBinding>() {
+class AddEtaActivity : BaseLeanbackActivity<LbActivityContainerBinding>() {
     override var fragment: Fragment? = AddEtaBrandSelectionFragment.getInstance()
 
     override fun getActivityViewBinding() =

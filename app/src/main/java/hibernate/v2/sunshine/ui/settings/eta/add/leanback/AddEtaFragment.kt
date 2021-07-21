@@ -27,7 +27,9 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
     private lateinit var mRowsAdapter: ArrayObjectAdapter
     private val viewModel by stateViewModel<AddEtaViewModel>()
 
-    private var etaType: AddEtaViewModel.EtaType? = null
+    private val etaType: AddEtaViewModel.EtaType by lazy {
+        arguments?.getEnum(ARG_ETA_TYPE, AddEtaViewModel.EtaType.KMB) ?: AddEtaViewModel.EtaType.KMB
+    }
 
     private val clickListener = object : AddEtaCardPresenter.ClickListener {
         override fun onItemClick(card: Card.RouteStopAddCard) {
@@ -47,8 +49,6 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
         title = getString(R.string.title_activity_add_eta)
         mRowsAdapter = ArrayObjectAdapter(ListRowPresenter())
         setSearchResultProvider(this)
-
-        etaType = arguments?.getEnum(ARG_ETA_TYPE, AddEtaViewModel.EtaType.KMB)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,9 +59,9 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
     }
 
     private fun initEvent() {
-        viewModel.filteredTransportRouteList.onEach { routeList ->
-            loadRows(routeList)
-        }
+        viewModel.filteredTransportRouteList.onEach {
+            loadRows(it.second)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.isAddEtaSuccessful.onEach {
             if (it) {
@@ -98,7 +98,7 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
         searchJob = lifecycleScope.launch {
             delay(searchDelay)
             viewModel.searchRouteKeyword.value = newQuery
-            viewModel.searchRoute()
+            viewModel.searchRoute(etaType)
         }
 
         return true

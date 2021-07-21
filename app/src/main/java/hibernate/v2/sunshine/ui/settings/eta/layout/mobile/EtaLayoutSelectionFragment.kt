@@ -15,9 +15,9 @@ import org.koin.android.ext.android.inject
 
 class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBinding>() {
 
-    private lateinit var etaDemoClassic: CardView
+    private lateinit var etaDemoClassic: FrameLayout
     private lateinit var etaDemoCompact: CardView
-    private lateinit var etaDemoStandard: FrameLayout
+    private lateinit var etaDemoStandard: CardView
 
     private val sharedPreferencesManager: SharedPreferencesManager by inject()
 
