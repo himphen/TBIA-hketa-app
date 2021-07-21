@@ -12,7 +12,7 @@
             android:name=".ui.onboarding.mobile.OnboardingActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.Launcher">
+            android:theme="@style/AppTheme.Mobile.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +28,9 @@
         <activity
             android:name=".ui.settings.eta.add.mobile.AddEtaActivity"
             android:theme="@style/AppTheme.Mobile" />
-
+        <activity
+            android:name=".ui.settings.eta.layout.mobile.EtaLayoutSelectionActivity"
+            android:theme="@style/AppTheme.Mobile" />
         <!-- Leanback -->
 
         <activity
@@ -59,7 +61,7 @@
             android:name=".ui.settings.eta.edit.EditEtaDialogActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
-            android:name=".ui.settings.eta.layout.EtaLayoutDialogActivity"
+            android:name=".ui.settings.eta.layout.leanback.EtaLayoutSelectionActivity"
             android:theme="@style/AppTheme.Leanback" />
 
         <meta-data

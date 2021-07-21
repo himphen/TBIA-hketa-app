@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.settings.eta.layout
+package hibernate.v2.sunshine.ui.settings.eta.layout.leanback
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +14,7 @@ import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
 import org.koin.android.ext.android.inject
 
-class EtaLayoutDialogFragment : GuidedStepSupportFragment() {
+class EtaLayoutSelectionFragment : GuidedStepSupportFragment() {
 
     private lateinit var etaDemoClassic: ConstraintLayout
     private lateinit var etaDemoCompact: ConstraintLayout
@@ -113,7 +113,7 @@ class EtaLayoutDialogFragment : GuidedStepSupportFragment() {
     }
 
     companion object {
-        fun getInstance(bundle: Bundle?) = EtaLayoutDialogFragment().apply { arguments = bundle }
+        fun getInstance(bundle: Bundle?) = EtaLayoutSelectionFragment().apply { arguments = bundle }
 
         val ACTION_ID_STANDARD = EtaCardPresenter.CardViewType.Standard.value.toLong()
         val ACTION_ID_COMPACT = EtaCardPresenter.CardViewType.Compact.value.toLong()

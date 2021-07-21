@@ -18,7 +18,7 @@ class EtaCardPresenter(
     private val fragmentWidth: Int,
     private val type: CardViewType
 ) : BaseCardPresenter<BaseEtaCardView<out ViewBinding>, Card.EtaCard>(
-    ContextThemeWrapper(context, R.style.Theme_Fragment_Eta)
+    ContextThemeWrapper(context, R.style.AppTheme_Leanback_Eta)
 ) {
 
     override fun onCreateView(): BaseEtaCardView<out ViewBinding> {
@@ -61,8 +61,16 @@ class EtaCardPresenter(
     enum class CardViewType(val value: Int) {
         Standard(0), Classic(1), Compact(2);
 
+        fun getTitle(context: Context): String {
+            return when (this) {
+                Standard -> context.getString(R.string.dialog_eta_layout_standard_btn)
+                Classic -> context.getString(R.string.dialog_eta_layout_classic_btn)
+                Compact -> context.getString(R.string.dialog_eta_layout_compact_btn)
+            }
+        }
+
         companion object {
-            fun from(type: Int?) = values().find { it.value == type } ?: Standard
+            fun from(value: Int?) = values().find { it.value == value } ?: Standard
         }
     }
 }

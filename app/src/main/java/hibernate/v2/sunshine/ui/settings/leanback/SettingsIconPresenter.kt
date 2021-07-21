@@ -13,7 +13,7 @@ class SettingsIconPresenter(
     context: Context,
     private val listener: ClickListener
 ) : BaseCardPresenter<SettingsCardView, Card.SettingsCard>(
-    ContextThemeWrapper(context, R.style.Theme_Fragment_SettingsEta)
+    ContextThemeWrapper(context, R.style.AppTheme_Leanback_SettingsEta)
 ) {
     interface ClickListener {
         fun onItemClick(card: Card.SettingsCard)

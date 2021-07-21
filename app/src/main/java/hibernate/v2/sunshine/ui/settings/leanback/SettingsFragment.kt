@@ -9,7 +9,7 @@ import androidx.leanback.widget.VerticalGridPresenter
 import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.ui.settings.eta.layout.EtaLayoutDialogActivity
+import hibernate.v2.sunshine.ui.settings.eta.layout.leanback.EtaLayoutSelectionActivity
 import hibernate.v2.sunshine.ui.settings.eta.listing.leanback.SettingsEtaListingActivity
 
 class SettingsFragment : VerticalGridSupportFragment() {
@@ -50,7 +50,7 @@ class SettingsFragment : VerticalGridSupportFragment() {
                         }
                         Card.SettingsCard.Type.ETA_LAYOUT -> {
                             startActivity(
-                                Intent(context, EtaLayoutDialogActivity::class.java)
+                                Intent(context, EtaLayoutSelectionActivity::class.java)
                             )
                         }
                     }

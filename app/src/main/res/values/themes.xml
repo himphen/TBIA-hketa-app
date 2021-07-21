@@ -1,4 +1,5 @@
 <resources>
+
     <style name="AppTheme.Mobile" parent="Theme.AppCompat.DayNight">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -18,8 +19,22 @@
         <item name="color">@color/white</item>
     </style>
 
-    <style name="AppTheme.Launcher" parent="AppTheme.Mobile">
+    <style name="AppTheme.Mobile.Launcher" parent="AppTheme.Mobile">
         <!--        <item name="android:windowBackground">@drawable/layer_list_launch_screen</item>-->
         <!--        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>-->
+    </style>
+
+    <style name="AppTheme.Leanback" parent="Theme.Leanback" />
+
+    <style name="AppTheme.Leanback.SettingsEta" parent="AppTheme.Leanback">
+        <item name="imageCardViewTitleStyle">@style/IconCardTitleStyle</item>
+        <item name="imageCardViewImageStyle">@style/IconCardImageStyle</item>
+        <item name="imageCardViewInfoAreaStyle">@style/IconCardInfoAreaStyle</item>
+    </style>
+
+    <style name="AppTheme.Leanback.Eta" parent="AppTheme.Leanback">
+        <item name="baseCardViewStyle">@style/FullCardStyle</item>
+        <item name="browseTitleViewLayout">@layout/view_no_fragment_title</item>
+        <item name="browseRowsMarginTop">0dp</item>
     </style>
 </resources>

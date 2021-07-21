@@ -1,37 +1,43 @@
 package hibernate.v2.sunshine.ui.settings.mobile
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.core.SharedPreferencesManager
+import hibernate.v2.sunshine.ui.eta.mobile.EtaFragment
+import hibernate.v2.sunshine.ui.settings.eta.layout.mobile.EtaLayoutSelectionActivity
 import hibernate.v2.sunshine.ui.settings.eta.listing.mobile.SettingsEtaListingActivity
 import hibernate.v2.sunshine.util.GeneralUtils
-import org.koin.android.ext.android.inject
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
-    private val sharedPreferencesManager: SharedPreferencesManager by inject()
+    private var etaLayoutLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                getEtaFragment()?.updateAdapterViewType()
+            }
+        }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var etaEditLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                getEtaFragment()?.updateAdapterData()
+            }
+        }
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.pref_settings)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         findPreference<Preference>("pref_settings_bus_eta")?.setOnPreferenceClickListener {
-            startActivity(Intent(context, SettingsEtaListingActivity::class.java))
-
+            etaEditLauncher.launch(Intent(context, SettingsEtaListingActivity::class.java))
             true
         }
 
         findPreference<Preference>("pref_settings_eta_layout")?.setOnPreferenceClickListener {
-            startActivity(Intent(context, SettingsEtaListingActivity::class.java))
-
+            etaLayoutLauncher.launch(Intent(context, EtaLayoutSelectionActivity::class.java))
             true
         }
         findPreference<Preference>("pref_settings_version")?.apply {
@@ -39,6 +45,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    private fun getEtaFragment(): EtaFragment? {
+        return parentFragmentManager.findFragmentByTag("f0") as? EtaFragment
     }
 }

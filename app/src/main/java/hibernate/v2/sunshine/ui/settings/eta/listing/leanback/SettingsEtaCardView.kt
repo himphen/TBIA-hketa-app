@@ -27,8 +27,7 @@ class SettingsEtaCardView(context: Context) : BaseCardView(
         viewBinding.routeCompanyColor.setBackgroundResource(color)
         viewBinding.routeNumberTv.text = card.route.routeNo
         viewBinding.stopNameTv.text = card.stop.nameTc
-        viewBinding.routeDirectionTv.text =
-            context.getString(R.string.text_eta_destination, card.route.destTc)
+        viewBinding.routeDirectionTv.text = card.route.getDestDirectionText(context)
         viewBinding.routeDirectionTv.visibility = VISIBLE
     }
 

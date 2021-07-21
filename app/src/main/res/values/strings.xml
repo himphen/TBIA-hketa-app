@@ -53,9 +53,10 @@
     <string name="dialog_eta_layout_compact_btn">緊湊</string>
     <string name="dialog_eta_layout_classic_btn">經典</string>
     <string name="dialog_eta_layout_cancel_btn">取消</string>
+
     <string name="demo_card_route_number">296A</string>
     <string name="demo_card_stop_name">觀塘市中心 (T4)</string>
-    <string name="demo_card_route_desc">尚德</string>
+    <string name="demo_card_route_desc">往 尚德</string>
     <string name="demo_card_route_desc_classic">往 尚德</string>
     <string name="demo_card_eta_minute_compact_1">3</string>
     <string name="demo_card_eta_minute_compact_2">13</string>

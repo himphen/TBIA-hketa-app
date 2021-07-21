@@ -59,12 +59,18 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initEvent()
+        initUi()
+        initData()
+    }
 
-        viewBinding!!.recyclerView.adapter = adapter
-
+    private fun initData() {
         lifecycleScope.launch {
             viewModel.getEtaListFromDb()
         }
+    }
+
+    private fun initUi() {
+        viewBinding!!.recyclerView.adapter = adapter
     }
 
     private fun updateRouteEtaStopList() {
@@ -91,6 +97,15 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
             adapter.replace(index, etaCard)
         }
+    }
+
+    fun updateAdapterViewType() {
+        adapter.type = sharedPreferencesManager.etaCardType
+        updateAdapterData()
+    }
+
+    fun updateAdapterData() {
+        initData()
     }
 
     override fun onPause() {

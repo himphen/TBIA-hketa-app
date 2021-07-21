@@ -87,7 +87,7 @@ class EtaFragment : VerticalGridSupportFragment() {
         val customInflater = inflater.cloneInContext(
             ContextThemeWrapper(
                 context,
-                R.style.Theme_Fragment_Eta
+                R.style.AppTheme_Leanback_Eta
             )
         )
         return super.onCreateView(customInflater, container, savedInstanceState)
