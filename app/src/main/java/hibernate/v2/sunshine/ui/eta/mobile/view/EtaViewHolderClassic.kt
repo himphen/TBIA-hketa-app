@@ -2,14 +2,14 @@ package hibernate.v2.sunshine.ui.eta.mobile.view
 
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.ContentEtaClassicBinding
+import hibernate.v2.sunshine.databinding.ItemEtaClassicBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
-class EtaViewHolderClassic(override val viewBinding: ContentEtaClassicBinding) :
-    BaseEtaViewHolder<ContentEtaClassicBinding>(viewBinding) {
+class EtaViewHolderClassic(override val viewBinding: ItemEtaClassicBinding) :
+    BaseEtaViewHolder<ItemEtaClassicBinding>(viewBinding) {
 
     override fun onBind(card: Card.EtaCard) {
         val color = when (card.route.company) {
@@ -20,13 +20,13 @@ class EtaViewHolderClassic(override val viewBinding: ContentEtaClassicBinding) :
             Company.UNKNOWN -> R.color.eta_card_bg_selected
         }
 
-        viewBinding.routeCompanyColor.setBackgroundResource(color)
-        viewBinding.routeNumberTv.text = card.route.routeNo
-        viewBinding.stopNameTv.text = card.stop.nameTc
-        viewBinding.routeDirectionTv.text = card.route.getDestDirectionText(context)
-        viewBinding.etaMinuteTv.text =
+        viewBinding.content.routeCompanyColor.setBackgroundResource(color)
+        viewBinding.content.routeNumberTv.text = card.route.routeNo
+        viewBinding.content.stopNameTv.text = card.stop.nameTc
+        viewBinding.content.routeDirectionTv.text = card.route.getDestDirectionText(context)
+        viewBinding.content.etaMinuteTv.text =
             getEtaMinuteText(card.etaList.getOrNull(0))
-        viewBinding.etaTimeTv.text = getEtaTimeText(card.etaList)
+        viewBinding.content.etaTimeTv.text = getEtaTimeText(card.etaList)
     }
 
     private fun getEtaMinuteText(eta: TransportEta?): String {

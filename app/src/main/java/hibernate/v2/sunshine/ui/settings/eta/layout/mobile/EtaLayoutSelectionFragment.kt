@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.FrameLayout
+import androidx.cardview.widget.CardView
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentEtaLayoutSelectionBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
@@ -14,9 +15,9 @@ import org.koin.android.ext.android.inject
 
 class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBinding>() {
 
-    private lateinit var etaDemoClassic: ConstraintLayout
-    private lateinit var etaDemoCompact: ConstraintLayout
-    private lateinit var etaDemoStandard: ConstraintLayout
+    private lateinit var etaDemoClassic: CardView
+    private lateinit var etaDemoCompact: CardView
+    private lateinit var etaDemoStandard: FrameLayout
 
     private val sharedPreferencesManager: SharedPreferencesManager by inject()
 
@@ -39,9 +40,9 @@ class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBindin
     private fun initUi() {
         val viewBinding = viewBinding!!
 
-        etaDemoClassic = viewBinding.etaDemoClassic.root
-        etaDemoCompact = viewBinding.etaDemoCompact.root
-        etaDemoStandard = viewBinding.etaDemoStandard.root
+        etaDemoClassic = viewBinding.etaDemoClassic
+        etaDemoCompact = viewBinding.etaDemoCompact
+        etaDemoStandard = viewBinding.etaDemoStandard
 
         viewBinding.recyclerView.adapter = adapter
         updateDemoLayout(sharedPreferencesManager.etaCardType)

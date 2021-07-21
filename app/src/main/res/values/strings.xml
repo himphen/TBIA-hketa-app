@@ -2,7 +2,8 @@
     <string name="app_name">巴士到站時間</string>
     <string name="title_activity_settings_eta">更改到站提示</string>
     <string name="title_activity_eta_layout">更改到站卡片樣式</string>
-    <string name="title_settings_version">版本 %1$s</string>
+    <string name="title_settings_version_leanback">版本 %1$s</string>
+    <string name="title_settings_version">版本</string>
     <string name="title_activity_add_eta">加入車站</string>
 
     <string name="title_fragment_home">主頁</string>

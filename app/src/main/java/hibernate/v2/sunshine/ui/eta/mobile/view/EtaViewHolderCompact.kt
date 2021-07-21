@@ -6,14 +6,14 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.ContentEtaCompactBinding
+import hibernate.v2.sunshine.databinding.ItemEtaCompactBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
-class EtaViewHolderCompact(override val viewBinding: ContentEtaCompactBinding) :
-    BaseEtaViewHolder<ContentEtaCompactBinding>(viewBinding) {
+class EtaViewHolderCompact(override val viewBinding: ItemEtaCompactBinding) :
+    BaseEtaViewHolder<ItemEtaCompactBinding>(viewBinding) {
 
     override fun onBind(card: Card.EtaCard) {
         val color = when (card.route.company) {
@@ -30,36 +30,36 @@ class EtaViewHolderCompact(override val viewBinding: ContentEtaCompactBinding) :
         ) as? RotateDrawable?).let { arrowDrawable ->
             arrowDrawable?.mutate()
             (arrowDrawable?.drawable as? GradientDrawable)?.setColor(context.getColor(color))
-            viewBinding.lineArrowBgView.background = arrowDrawable
-            viewBinding.lineBgView.setBackgroundResource(color)
+            viewBinding.content.lineArrowBgView.background = arrowDrawable
+            viewBinding.content.lineBgView.setBackgroundResource(color)
         }
 
-        viewBinding.routeNumberTv.text = card.route.routeNo
-        viewBinding.stopNameTv.text = card.stop.nameTc
-        viewBinding.routeDirectionTv.text = card.route.getDestDirectionText(context)
+        viewBinding.content.routeNumberTv.text = card.route.routeNo
+        viewBinding.content.stopNameTv.text = card.stop.nameTc
+        viewBinding.content.routeDirectionTv.text = card.route.getDestDirectionText(context)
 
         getEtaMinuteText(card.etaList.getOrNull(0))?.let {
-            viewBinding.eta1MinuteTv.text = it
-            viewBinding.eta1UnitTv.visibility = View.VISIBLE
+            viewBinding.content.eta1MinuteTv.text = it
+            viewBinding.content.eta1UnitTv.visibility = View.VISIBLE
         } ?: run {
-            viewBinding.eta1MinuteTv.text = "-"
-            viewBinding.eta1UnitTv.visibility = View.GONE
+            viewBinding.content.eta1MinuteTv.text = "-"
+            viewBinding.content.eta1UnitTv.visibility = View.GONE
         }
 
         getEtaMinuteText(card.etaList.getOrNull(1))?.let {
-            viewBinding.eta2MinuteTv.text = it
-            viewBinding.eta2UnitTv.visibility = View.VISIBLE
+            viewBinding.content.eta2MinuteTv.text = it
+            viewBinding.content.eta2UnitTv.visibility = View.VISIBLE
         } ?: run {
-            viewBinding.eta2MinuteTv.text = "-"
-            viewBinding.eta2UnitTv.visibility = View.GONE
+            viewBinding.content.eta2MinuteTv.text = "-"
+            viewBinding.content.eta2UnitTv.visibility = View.GONE
         }
 
         getEtaMinuteText(card.etaList.getOrNull(2))?.let {
-            viewBinding.eta3MinuteTv.text = it
-            viewBinding.eta3UnitTv.visibility = View.VISIBLE
+            viewBinding.content.eta3MinuteTv.text = it
+            viewBinding.content.eta3UnitTv.visibility = View.VISIBLE
         } ?: run {
-            viewBinding.eta3MinuteTv.text = "-"
-            viewBinding.eta3UnitTv.visibility = View.GONE
+            viewBinding.content.eta3MinuteTv.text = "-"
+            viewBinding.content.eta3UnitTv.visibility = View.GONE
         }
     }
 

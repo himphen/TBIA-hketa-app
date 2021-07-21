@@ -81,7 +81,7 @@ class SettingsFragment : VerticalGridSupportFragment() {
         )
         list.add(
             Card.SettingsCard(
-                title = getString(R.string.title_settings_version, BuildConfig.VERSION_NAME),
+                title = getString(R.string.title_settings_version_leanback, BuildConfig.VERSION_NAME),
                 type = Card.SettingsCard.Type.VERSION,
                 icon = R.drawable.ic_settings_version_24
             )

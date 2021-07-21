@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import hibernate.v2.sunshine.databinding.ContentEtaClassicBinding
-import hibernate.v2.sunshine.databinding.ContentEtaCompactBinding
-import hibernate.v2.sunshine.databinding.ContentEtaStandardBinding
+import hibernate.v2.sunshine.databinding.ItemEtaClassicBinding
+import hibernate.v2.sunshine.databinding.ItemEtaCompactBinding
+import hibernate.v2.sunshine.databinding.ItemEtaStandardBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
 import hibernate.v2.sunshine.ui.eta.mobile.view.BaseEtaViewHolder
@@ -25,21 +25,21 @@ class EtaCardAdapter(
             BaseEtaViewHolder<out ViewBinding> {
         return when (type) {
             EtaCardPresenter.CardViewType.Classic -> EtaViewHolderClassic(
-                ContentEtaClassicBinding.inflate(
+                ItemEtaClassicBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
             EtaCardPresenter.CardViewType.Compact -> EtaViewHolderCompact(
-                ContentEtaCompactBinding.inflate(
+                ItemEtaCompactBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
             EtaCardPresenter.CardViewType.Standard -> EtaViewHolderStandard(
-                ContentEtaStandardBinding.inflate(
+                ItemEtaStandardBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false

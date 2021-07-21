@@ -11,7 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentSettingsEtaListingBinding
@@ -123,17 +125,16 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
     }
 
     private fun initUi() {
-        initAdapter()
+        val viewBinding = viewBinding!!
+        viewBinding.recyclerView.adapter = adapter
+        val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+        viewBinding.recyclerView.addItemDecoration(dividerItemDecoration)
+        val touchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
+        touchHelper.attachToRecyclerView(viewBinding.recyclerView)
     }
 
     private fun initData() {
         viewModel.getSavedEtaCardList()
-    }
-
-    private fun initAdapter() {
-        viewBinding!!.recyclerView.adapter = adapter
-        val touchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
-        touchHelper.attachToRecyclerView(viewBinding!!.recyclerView)
     }
 
     private fun updateRows() {

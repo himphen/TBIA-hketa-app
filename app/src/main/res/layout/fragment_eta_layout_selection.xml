@@ -11,38 +11,47 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.cardview.widget.CardView
+        <FrameLayout
+            android:id="@+id/eta_demo_standard"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp">
+            android:layout_height="wrap_content">
 
             <include
-                android:id="@+id/eta_demo_classic"
-                layout="@layout/content_eta_classic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-            <include
-                android:id="@+id/eta_demo_compact"
-                layout="@layout/content_eta_compact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="visible" />
-
-            <include
-                android:id="@+id/eta_demo_standard"
                 layout="@layout/content_eta_standard"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
+                android:layout_height="wrap_content" />
+        </FrameLayout>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/eta_demo_compact"
+            style="@style/Eta.Card.Mobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <include
+                layout="@layout/content_eta_compact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/eta_demo_classic"
+            style="@style/Eta.Card.Mobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <include
+                layout="@layout/content_eta_classic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 

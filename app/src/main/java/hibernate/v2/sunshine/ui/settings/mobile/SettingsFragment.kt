@@ -17,7 +17,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private var etaLayoutLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                getEtaFragment()?.updateAdapterViewType()
+                getEtaFragment()?.initAdapter()
+                getEtaFragment()?.updateAdapterData()
             }
         }
 

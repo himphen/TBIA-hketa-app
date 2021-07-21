@@ -5,13 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.himphen.logger.Logger
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentEtaBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
+import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
 import hibernate.v2.sunshine.util.DateUtil
+import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -70,7 +75,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     }
 
     private fun initUi() {
-        viewBinding!!.recyclerView.adapter = adapter
+        initAdapter()
     }
 
     private fun updateRouteEtaStopList() {
@@ -99,12 +104,41 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         }
     }
 
-    fun updateAdapterViewType() {
+    fun initAdapter() {
+        Logger.d("updateAdapterViewType")
+        val viewBinding = viewBinding!!
+        viewBinding.recyclerView.adapter = null
+        viewBinding.recyclerView.adapter = adapter
         adapter.type = sharedPreferencesManager.etaCardType
-        updateAdapterData()
+
+        when (adapter.type) {
+            EtaCardPresenter.CardViewType.Classic -> {
+                context?.let { context ->
+                    val dividerItemDecoration =
+                        DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                    viewBinding.recyclerView.addItemDecoration(dividerItemDecoration)
+                }
+
+                viewBinding.recyclerView.apply {
+                    setPadding(dpToPx(0), dpToPx(0), dpToPx(0), dpToPx(0))
+                }
+            }
+            EtaCardPresenter.CardViewType.Standard,
+            EtaCardPresenter.CardViewType.Compact -> {
+                viewBinding.recyclerView.apply {
+                    while (itemDecorationCount > 0) {
+                        removeItemDecorationAt(0)
+                    }
+
+                    setPadding(dpToPx(0), dpToPx(4), dpToPx(0), dpToPx(4))
+                }
+            }
+        }
     }
 
     fun updateAdapterData() {
+        Logger.d("updateAdapterData")
+        etaCardList = null
         initData()
     }
 
