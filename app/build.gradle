@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "hibernate.v2.sunshine"
-        minSdkVersion 28
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -109,8 +109,7 @@ dependencies {
 
     implementation 'com.github.himphen:logger:3.0.1'
 
-    // https://github.com/afollestad/material-dialogs
-    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    implementation 'com.github.st235:expandablebottombar:1.4.0'
 
     // https://github.com/coil-kt/coil
     implementation 'io.coil-kt:coil:1.3.0'

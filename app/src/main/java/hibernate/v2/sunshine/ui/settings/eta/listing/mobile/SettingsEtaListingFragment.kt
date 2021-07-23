@@ -66,6 +66,8 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
         })
     }
 
+    private var firstLoading = true
+
     private fun showRemoveEtaConfirmDialog(card: Card.SettingsEtaItemCard) {
         context?.let { context ->
             MaterialDialog(context)
@@ -142,6 +144,17 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
     }
 
     private fun updateRows() {
+        if (savedEtaCardList.isEmpty()) {
+            viewBinding?.emptyViewCl?.root?.visibility = View.VISIBLE
+            viewBinding?.emptyViewCl?.emptyDescTv?.text = getString(R.string.empty_eta_list)
+
+            if (firstLoading) {
+                launchAddEtaActivity()
+                firstLoading = false
+            }
+        } else {
+            viewBinding?.emptyViewCl?.root?.visibility = View.GONE
+        }
         adapter.setData(savedEtaCardList)
     }
 
@@ -153,10 +166,15 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.settings_eta_action_add -> {
-                addEtaLauncher.launch(Intent(context, AddEtaActivity::class.java))
+                launchAddEtaActivity()
+                return true
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun launchAddEtaActivity() {
+        addEtaLauncher.launch(Intent(context, AddEtaActivity::class.java))
     }
 
     override fun getViewBinding(

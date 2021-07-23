@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.himphen.logger.Logger
+import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentEtaBinding
 import hibernate.v2.sunshine.model.Card
@@ -87,20 +88,27 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     }
 
     private fun processEtaList() {
-        etaCardList?.forEachIndexed { index, etaCard ->
-            etaCard.etaList = etaCard.etaList.filter { eta: TransportEta ->
-                eta.eta?.let { etaDate ->
-                    val currentDate = Date()
-                    DateUtil.getTimeDiffInMin(
-                        etaDate,
-                        currentDate
-                    ) > 0
-                } ?: run {
-                    false
+        val etaCardList = etaCardList
+        if (etaCardList.isNullOrEmpty()) {
+            viewBinding?.emptyViewCl?.root?.visibility = View.VISIBLE
+            viewBinding?.emptyViewCl?.emptyDescTv?.text = getString(R.string.empty_eta_list)
+        } else {
+            viewBinding?.emptyViewCl?.root?.visibility = View.GONE
+            etaCardList.forEachIndexed { index, etaCard ->
+                etaCard.etaList = etaCard.etaList.filter { eta: TransportEta ->
+                    eta.eta?.let { etaDate ->
+                        val currentDate = Date()
+                        DateUtil.getTimeDiffInMin(
+                            etaDate,
+                            currentDate
+                        ) > 0
+                    } ?: run {
+                        false
+                    }
                 }
-            }
 
-            adapter.replace(index, etaCard)
+                adapter.replace(index, etaCard)
+            }
         }
     }
 

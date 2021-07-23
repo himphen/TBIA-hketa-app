@@ -60,17 +60,20 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     }
 
     fun initFragment(fragment: Fragment?, titleString: String?, titleId: Int?) {
-        fragment?.let {
-            setContentView(viewBinding.root)
+        if (fragment == null) return
+
+        val viewBinding = viewBinding
+        setContentView(viewBinding.root)
+        if (viewBinding is ActivityContainerBinding) {
             initActionBar(
-                (viewBinding as? ActivityContainerBinding)?.toolbar?.root,
+                viewBinding.toolbar.root,
                 titleString = titleString, titleId = titleId
             )
-
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit()
         }
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, fragment)
+            .commit()
     }
 
     fun popBackStack(): Boolean {

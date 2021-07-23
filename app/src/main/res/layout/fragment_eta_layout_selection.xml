@@ -19,7 +19,8 @@
         <FrameLayout
             android:id="@+id/eta_demo_classic"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/eta_card_background">
 
             <include
                 layout="@layout/content_eta_classic"
@@ -32,6 +33,7 @@
             style="@style/Eta.Card.Mobile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/eta_card_background"
             android:visibility="gone"
             tools:visibility="visible">
 
@@ -46,6 +48,7 @@
             style="@style/Eta.Card.Mobile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/eta_card_background"
             android:visibility="gone">
 
             <include

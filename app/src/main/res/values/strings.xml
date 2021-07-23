@@ -83,5 +83,6 @@
 
     <string name="placeholder_search_route">搜尋路線</string>
     <string name="placeholder_search_stop">搜尋車站</string>
+    <string name="empty_eta_list">沒有加入車站</string>
 
 </resources>
