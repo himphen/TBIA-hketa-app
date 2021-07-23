@@ -6,6 +6,7 @@ import com.himphen.logger.Logger
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.NCRepository
+import hibernate.v2.sunshine.repository.TrafficRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 class OnboardingViewModel(
     private val kmbRepository: KmbRepository,
     private val ncRepository: NCRepository,
-    private val gmbRepository: GmbRepository
+    private val gmbRepository: GmbRepository,
+    private val trafficRepository: TrafficRepository
 ) : BaseViewModel() {
 
     val fetchTransportDataRequired = MutableLiveData<Boolean>()
@@ -30,6 +32,7 @@ class OnboardingViewModel(
                 async { kmbRepository.isDataExisted() },
                 async { ncRepository.isDataExisted() },
                 async { gmbRepository.isDataExisted() },
+                async { trafficRepository.hasSnapshotCameraListDb() },
             )
             val result = deferredList.awaitAll().toMutableList()
 
@@ -64,6 +67,15 @@ class OnboardingViewModel(
 
             try {
                 downloadGmbTransportData()
+                fetchTransportDataCompleted.postValue(FetchTransportDataType.GMB)
+            } catch (e: Exception) {
+                Logger.e(e, "=== lifecycle downloadGmbTransportData error ===")
+                fetchTransportDataFailed.postValue(FetchTransportDataType.GMB)
+                return@launch
+            }
+
+            try {
+                downloadSnapshotCameraData()
                 fetchTransportDataCompleted.postValue(FetchTransportDataType.GMB)
             } catch (e: Exception) {
                 Logger.e(e, "=== lifecycle downloadGmbTransportData error ===")
@@ -140,8 +152,14 @@ class OnboardingViewModel(
             ).joinAll()
         }
     }
+
+    private suspend fun downloadSnapshotCameraData() {
+        Logger.d("=== lifecycle downloadSnapshotCameraData start ===")
+        trafficRepository.clearCameraList()
+        trafficRepository.saveCameraListApi()
+    }
 }
 
 enum class FetchTransportDataType {
-    KMB, NC, GMB, ALL
+    KMB, NC, GMB, SNAPSHOT, ALL
 }

@@ -2,13 +2,15 @@ package hibernate.v2.sunshine.api
 
 import android.content.Context
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiConverterFactory
 import hibernate.v2.api.service.GmbService
-import hibernate.v2.api.service.KmbService
 import hibernate.v2.api.service.HkoWeatherService
+import hibernate.v2.api.service.KmbService
 import hibernate.v2.api.service.NCService
 import hibernate.v2.api.service.OpenWeatherService
+import hibernate.v2.api.service.TrafficService
 import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.sunshine.util.JsonUtils
 import okhttp3.OkHttpClient
@@ -22,6 +24,7 @@ open class ApiManager(val context: Context) {
     private val readTimeout: Long = 15
     private val writeTimeout: Long = 15
     private lateinit var client: OkHttpClient
+    lateinit var trafficService: TrafficService
     lateinit var kmbService: KmbService
     lateinit var gmbService: GmbService
     lateinit var ncService: NCService
@@ -77,6 +80,13 @@ open class ApiManager(val context: Context) {
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ApiConverterFactory(Gson()))
             .build().create(GmbService::class.java)
+
+        trafficService = Retrofit.Builder()
+            .baseUrl("https://static.data.gov.hk/td/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(ApiConverterFactory(Gson()))
+            .build().create(TrafficService::class.java)
     }
 
     init {
@@ -88,7 +98,6 @@ open class ApiManager(val context: Context) {
         initClient()
     }
 }
-
 
 class HttpLogger : HttpLoggingInterceptor.Logger {
     private var mMessage: StringBuffer = StringBuffer("")

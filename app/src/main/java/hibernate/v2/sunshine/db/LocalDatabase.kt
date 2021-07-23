@@ -24,6 +24,8 @@ import hibernate.v2.sunshine.db.nc.NCDao
 import hibernate.v2.sunshine.db.nc.NCRouteEntity
 import hibernate.v2.sunshine.db.nc.NCRouteStopEntity
 import hibernate.v2.sunshine.db.nc.NCStopEntity
+import hibernate.v2.sunshine.db.traffic.snapshot.CameraEntity
+import hibernate.v2.sunshine.db.traffic.snapshot.SnapshotDao
 import java.util.concurrent.Executors
 
 private const val DATABASE_NAME = "saved_data"
@@ -33,9 +35,10 @@ private const val DATABASE_NAME = "saved_data"
         SavedEtaEntity::class, EtaOrderEntity::class,
         KmbRouteEntity::class, KmbStopEntity::class, KmbRouteStopEntity::class,
         NCRouteEntity::class, NCStopEntity::class, NCRouteStopEntity::class,
-        GmbRouteEntity::class, GmbStopEntity::class, GmbRouteStopEntity::class
+        GmbRouteEntity::class, GmbStopEntity::class, GmbRouteStopEntity::class,
+        CameraEntity::class
     ],
-    version = 13,
+    version = 14,
     exportSchema = false
 )
 @TypeConverters(DataTypeConverter::class)
@@ -45,6 +48,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun kmbDao(): KmbDao
     abstract fun ncDao(): NCDao
     abstract fun gmbDao(): GmbDao
+    abstract fun snapshotDao(): SnapshotDao
 
     companion object {
         private val MIGRATION_1_2 = object : Migration(1, 2) {

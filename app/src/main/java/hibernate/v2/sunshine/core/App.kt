@@ -6,17 +6,19 @@ import com.himphen.logger.AndroidLogAdapter
 import com.himphen.logger.Logger
 import com.himphen.logger.PrettyFormatStrategy
 import hibernate.v2.sunshine.api.ApiManager
-import hibernate.v2.sunshine.repository.WeatherRepository
 import hibernate.v2.sunshine.db.LocalDatabase
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.NCRepository
+import hibernate.v2.sunshine.repository.TrafficRepository
+import hibernate.v2.sunshine.repository.WeatherRepository
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.ui.settings.eta.SettingsEtaViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.traffic.TrafficViewModel
+import hibernate.v2.sunshine.ui.traffic.snapshot.SnapshotViewModel
 import hibernate.v2.sunshine.ui.weather.WeatherViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -60,18 +62,21 @@ class App : Application() {
         single { get<LocalDatabase>().kmbDao() }
         single { get<LocalDatabase>().ncDao() }
         single { get<LocalDatabase>().gmbDao() }
+        single { get<LocalDatabase>().snapshotDao() }
         single { EtaRepository(get(), get(), get()) }
         single { KmbRepository(get(), get()) }
         single { NCRepository(get()) }
         single { GmbRepository(get()) }
+        single { TrafficRepository(get(), get()) }
 
         // ViewModels
         viewModel { EtaViewModel(get()) }
-        viewModel { OnboardingViewModel(get(), get(), get()) }
+        viewModel { OnboardingViewModel(get(), get(), get(), get()) }
         viewModel { SettingsEtaViewModel(get()) }
         viewModel { AddEtaViewModel(get(), get(), get(), get()) }
         viewModel { WeatherViewModel(get()) }
         viewModel { TrafficViewModel(get()) }
+        viewModel { SnapshotViewModel(get()) }
     }
 
     private fun initKoin() {

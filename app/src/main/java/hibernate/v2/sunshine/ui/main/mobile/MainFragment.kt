@@ -18,10 +18,19 @@ class MainFragment : BaseFragment<FragmentViewPagerContainerBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initUi()
+    }
+
+    private fun initUi() {
+        val viewBinding = viewBinding!!
         val adapter = MainViewPagerAdapter(this)
-        viewBinding!!.viewPager.adapter = adapter
-        viewBinding!!.viewPager.offscreenPageLimit = 5
-        TabLayoutMediator(viewBinding!!.tabLayout, viewBinding!!.viewPager) { tab, position ->
+        viewBinding.viewPager.apply {
+            this.adapter = adapter
+            offscreenPageLimit = 5
+            isUserInputEnabled = false
+        }
+        TabLayoutMediator(viewBinding.tabLayout, viewBinding.viewPager) { tab, position ->
             tab.customView = adapter.getTabView(position)
         }.attach()
     }

@@ -7,6 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.ui.eta.mobile.EtaFragment
 import hibernate.v2.sunshine.ui.settings.mobile.SettingsFragment
+import hibernate.v2.sunshine.ui.traffic.snapshot.SnapshotFragment
 
 class MainViewPagerAdapter(
     private val fragment: Fragment
@@ -17,7 +18,7 @@ class MainViewPagerAdapter(
     /**
      * Returns the number of pages
      */
-    override fun getItemCount(): Int = 2
+    override fun getItemCount(): Int = 3
 
     /**
      * This method will be invoked when a page is requested to create
@@ -25,7 +26,9 @@ class MainViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> EtaFragment()
-            else -> SettingsFragment()
+            1 -> SettingsFragment()
+            2 -> SnapshotFragment()
+            else -> EtaFragment()
         }
     }
 
