@@ -7,7 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemStopMapRouteBinding
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
-class StopMapAdapter : RecyclerView.Adapter<StopMapAdapter.ItemStopMapVH>() {
+class RouteListAdapter(val listener: ItemListener) :
+    RecyclerView.Adapter<RouteListAdapter.ItemStopMapVH>() {
+
+    interface ItemListener {
+        fun onRouteSelected(route: TransportRoute)
+    }
 
     private var list = mutableListOf<TransportRoute>()
 
@@ -24,8 +29,12 @@ class StopMapAdapter : RecyclerView.Adapter<StopMapAdapter.ItemStopMapVH>() {
         val viewBinding = holder.viewBinding
         val route = list[position]
         val context = viewBinding.root.context
-        viewBinding.routeNumberTv.text = route.routeNo
-        viewBinding.routeDirectionTv.text = route.getDestDirectionText(context)
+        viewBinding.apply {
+            routeNumberTv.text = route.routeNo
+            routeDirectionTv.text = route.getDestDirectionText(context)
+            root.tag = route
+            root.setOnClickListener { listener.onRouteSelected(it.tag as TransportRoute) }
+        }
     }
 
     override fun getItemCount(): Int = list.size

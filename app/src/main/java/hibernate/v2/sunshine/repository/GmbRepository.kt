@@ -11,6 +11,7 @@ import hibernate.v2.sunshine.db.gmb.GmbDao
 import hibernate.v2.sunshine.db.gmb.GmbRouteEntity
 import hibernate.v2.sunshine.db.gmb.GmbRouteStopEntity
 import hibernate.v2.sunshine.db.gmb.GmbStopEntity
+import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.util.getSnapshotValue
 
 class GmbRepository(
@@ -80,4 +81,13 @@ class GmbRepository(
     }
 
     suspend fun getStopListDb() = gmbDao.getStopList()
+
+    suspend fun getRouteListFromStopId(stopId: String): List<TransportRoute> {
+        val routeStopList = gmbDao.getRouteStopListFromStopId(stopId)
+        val routeList = gmbDao.getRouteListFromRouteId(routeStopList)
+
+        return routeList.map {
+            it.toTransportModel()
+        }
+    }
 }

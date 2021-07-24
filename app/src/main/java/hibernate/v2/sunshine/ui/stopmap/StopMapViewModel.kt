@@ -2,6 +2,7 @@ package hibernate.v2.sunshine.ui.stopmap
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.StopMap
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.repository.GmbRepository
@@ -22,9 +23,13 @@ class StopMapViewModel(
     var stopList = MutableLiveData<List<StopMap>?>()
     var routeListForBottomSheet = MutableLiveData<List<TransportRoute>?>()
 
-    fun getRouteListFromStop(stopId: String) {
+    fun getRouteListFromStop(etaType: EtaType, stopId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = kmbRepository.getRouteListFromStopId(stopId)
+            val result = when(etaType) {
+                EtaType.KMB -> kmbRepository.getRouteListFromStopId(stopId)
+                EtaType.NWFB_CTB -> ncRepository.getRouteListFromStopId(stopId)
+                EtaType.GMB -> gmbRepository.getRouteListFromStopId(stopId)
+            }
             routeListForBottomSheet.postValue(result)
         }
     }
@@ -35,38 +40,17 @@ class StopMapViewModel(
                 val deferredList = listOf(
                     async {
                         kmbRepository.getStopListDb().map {
-                            StopMap(
-                                lat = it.lat,
-                                lng = it.lng,
-                                nameEn = it.nameEn,
-                                nameSc = it.nameEn,
-                                nameTc = it.nameTc,
-                                stopId = it.stopId
-                            )
+                            StopMap.fromStopEntity(it)
                         }
                     },
                     async {
                         ncRepository.getStopListDb().map {
-                            StopMap(
-                                lat = it.lat,
-                                lng = it.lng,
-                                nameEn = it.nameEn,
-                                nameSc = it.nameEn,
-                                nameTc = it.nameTc,
-                                stopId = it.stopId
-                            )
+                            StopMap.fromStopEntity(it)
                         }
                     },
                     async {
                         gmbRepository.getStopListDb().map {
-                            StopMap(
-                                lat = it.lat,
-                                lng = it.lng,
-                                nameEn = it.nameEn,
-                                nameSc = it.nameEn,
-                                nameTc = it.nameTc,
-                                stopId = it.stopId
-                            )
+                            StopMap.fromStopEntity(it)
                         }
                     },
                 )

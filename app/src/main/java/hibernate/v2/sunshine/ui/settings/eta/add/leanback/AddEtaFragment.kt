@@ -12,6 +12,7 @@ import androidx.leanback.widget.ListRowPresenter
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.leanback.AddEtaActivity.Companion.ARG_ETA_TYPE
 import hibernate.v2.sunshine.util.getEnum
@@ -27,8 +28,8 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
     private lateinit var mRowsAdapter: ArrayObjectAdapter
     private val viewModel by stateViewModel<AddEtaViewModel>()
 
-    private val etaType: AddEtaViewModel.EtaType by lazy {
-        arguments?.getEnum(ARG_ETA_TYPE, AddEtaViewModel.EtaType.KMB) ?: AddEtaViewModel.EtaType.KMB
+    private val etaType: EtaType by lazy {
+        arguments?.getEnum(ARG_ETA_TYPE, EtaType.KMB) ?: EtaType.KMB
     }
 
     private val clickListener = object : AddEtaCardPresenter.ClickListener {

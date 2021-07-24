@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 
 class AddEtaViewPagerAdapter(
@@ -12,9 +13,9 @@ class AddEtaViewPagerAdapter(
 ) : FragmentStateAdapter(fragment) {
 
     val list = listOf(
-        AddEtaViewModel.EtaType.KMB,
-        AddEtaViewModel.EtaType.NWFB_CTB,
-        AddEtaViewModel.EtaType.GMB
+        EtaType.KMB,
+        EtaType.NWFB_CTB,
+        EtaType.GMB
     )
 
     /**

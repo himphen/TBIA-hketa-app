@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentAddEtaViewPagerBinding
+import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseActivity
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
@@ -42,7 +43,7 @@ class AddEtaViewPagerFragment : BaseFragment<FragmentAddEtaViewPagerBinding>() {
         }
 
     private val viewModel: AddEtaViewModel by sharedViewModel()
-    private var etaType: AddEtaViewModel.EtaType = AddEtaViewModel.EtaType.KMB
+    private var etaType: EtaType = EtaType.KMB
 
     override fun getViewBinding(
         inflater: LayoutInflater,

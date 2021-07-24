@@ -11,6 +11,7 @@ import hibernate.v2.sunshine.db.nc.NCDao
 import hibernate.v2.sunshine.db.nc.NCRouteEntity
 import hibernate.v2.sunshine.db.nc.NCRouteStopEntity
 import hibernate.v2.sunshine.db.nc.NCStopEntity
+import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.util.getSnapshotValue
 
 class NCRepository(
@@ -80,4 +81,13 @@ class NCRepository(
     }
 
     suspend fun getStopListDb() = ncDao.getStopList()
+
+    suspend fun getRouteListFromStopId(stopId: String): List<TransportRoute> {
+        val routeStopList = ncDao.getRouteStopListFromStopId(stopId)
+        val routeList = ncDao.getRouteListFromRouteId(routeStopList)
+
+        return routeList.map {
+            it.toTransportModel()
+        }
+    }
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentAddEtaBinding
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.leanback.RouteForRowAdapter
@@ -24,7 +25,7 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaBinding>() {
     companion object {
         private const val ARG_ETA_TYPE = "ARG_ETA_TYPE"
         const val kDrawableRight = 2
-        fun getInstance(etaType: AddEtaViewModel.EtaType) =
+        fun getInstance(etaType: EtaType) =
             AddEtaRouteFragment().apply {
                 arguments = Bundle().apply {
                     putEnum(ARG_ETA_TYPE, etaType)
@@ -33,7 +34,7 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaBinding>() {
     }
 
     private val etaType by lazy {
-        arguments?.getEnum(ARG_ETA_TYPE, AddEtaViewModel.EtaType.KMB) ?: AddEtaViewModel.EtaType.KMB
+        arguments?.getEnum(ARG_ETA_TYPE, EtaType.KMB) ?: EtaType.KMB
     }
     private val viewModel: AddEtaViewModel by sharedViewModel()
     private val adapter: AddEtaAdapter by lazy {

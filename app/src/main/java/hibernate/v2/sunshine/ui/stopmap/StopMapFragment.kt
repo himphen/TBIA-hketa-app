@@ -9,14 +9,17 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
+import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentStopMapBinding
 import hibernate.v2.sunshine.model.transport.StopMap
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.ui.base.BaseFragment
+import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
@@ -28,12 +31,24 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
         savedInstanceState: Bundle?
     ) = FragmentStopMapBinding.inflate(inflater, container, false)
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
+    private lateinit var stopListBottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
+    private lateinit var routeListBottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
 
     private var clusterManager: ClusterManager<StopMap>? = null
     private val viewModel: StopMapViewModel by inject()
+    private val etaViewModel: AddEtaViewModel by inject()
 
-    private val stopMapAdapter = StopMapAdapter()
+    private val routeListAdapter = RouteListAdapter(object : RouteListAdapter.ItemListener {
+        override fun onRouteSelected(route: TransportRoute) {
+            // TODO save eta stop
+        }
+    })
+
+    private val stopListAdapter = StopListAdapter(object : StopListAdapter.ItemListener {
+        override fun onStopSelected(stop: StopMap) {
+            // TODO save eta stop
+        }
+    })
 
     private var googleMap: GoogleMap? = null
 
@@ -57,82 +72,131 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
         }
 
         viewModel.routeListForBottomSheet.observe(viewLifecycleOwner) {
-            showRouteListInBottomSheet(it)
+            showRouteList(it)
         }
     }
 
     private suspend fun initUI() {
         val viewBinding = viewBinding!!
-        viewBinding.recyclerView.adapter = stopMapAdapter
+        viewBinding.layoutStopList.recyclerView.adapter = stopListAdapter
+        viewBinding.layoutRouteList.recyclerView.adapter = routeListAdapter
 
-        initBottomSheet()
+        initStopListBottomSheet(viewBinding)
+        initRouteListBottomSheet(viewBinding)
         initMap(viewBinding)
     }
 
-    private fun initBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(viewBinding!!.nestedScrollView)
-        bottomSheetBehavior.isFitToContents = false
-        bottomSheetBehavior.halfExpandedRatio = 0.4f
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED,
-                    BottomSheetBehavior.STATE_HIDDEN -> {
+    private fun initStopListBottomSheet(viewBinding: FragmentStopMapBinding) {
+        stopListBottomSheetBehavior =
+            BottomSheetBehavior.from(viewBinding.layoutStopList.nestedScrollView).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+                addBottomSheetCallback(object : BottomSheetCallback() {
+                    override fun onStateChanged(bottomSheet: View, newState: Int) {
+                        when (newState) {
+                            BottomSheetBehavior.STATE_COLLAPSED,
+                            BottomSheetBehavior.STATE_HIDDEN -> {
+                            }
+                            BottomSheetBehavior.STATE_HALF_EXPANDED,
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+
+                            }
+                        }
                     }
-                    BottomSheetBehavior.STATE_HALF_EXPANDED,
-                    BottomSheetBehavior.STATE_EXPANDED -> {
 
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) {
                     }
-                }
+                })
             }
+    }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+    private fun initRouteListBottomSheet(viewBinding: FragmentStopMapBinding) {
+        routeListBottomSheetBehavior =
+            BottomSheetBehavior.from(viewBinding.layoutRouteList.nestedScrollView).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+                addBottomSheetCallback(object : BottomSheetCallback() {
+                    override fun onStateChanged(bottomSheet: View, newState: Int) {
+                        when (newState) {
+                            BottomSheetBehavior.STATE_COLLAPSED,
+                            BottomSheetBehavior.STATE_HIDDEN -> {
+                            }
+                            BottomSheetBehavior.STATE_HALF_EXPANDED,
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+
+                            }
+                        }
+                    }
+
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                    }
+                })
             }
-        })
-        bottomSheetBehavior.peekHeight = 100
-
     }
 
     private suspend fun initMap(viewBinding: FragmentStopMapBinding) {
         val mapFragment =
             childFragmentManager.findFragmentById(viewBinding.map.id) as SupportMapFragment
-        googleMap = mapFragment.awaitMap()
-
-        googleMap?.isTrafficEnabled = true
-        setUpClusterer()
+        googleMap = mapFragment.awaitMap().apply {
+            setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.style_stop_map)
+            )
+            isTrafficEnabled = true
+            // set default zoom
+            setUpClusterer(this)
+        }
     }
 
     private fun initData() {
         viewModel.getStopList()
     }
 
-    private fun setUpClusterer() {
+    private fun setUpClusterer(googleMap: GoogleMap) {
         context?.let { context ->
             clusterManager = ClusterManager(context, googleMap)
             clusterManager?.apply {
+                renderer = CustomClusterRenderer(context, googleMap, this)
                 setOnClusterItemClickListener {
-                    showStopInBottomSheet(it)
-                    true
+                    // single click
+                    showRouteBottomSheet(it)
+                    false
                 }
-            }
+                setOnClusterClickListener {
+                    // group click
+                    showStopBottomSheet(it.items.toMutableList())
+                    false
+                }
 
-            // Point the map's listeners at the listeners implemented by the cluster
-            // manager.
-            googleMap?.setOnCameraIdleListener(clusterManager)
-            googleMap?.setOnMarkerClickListener(clusterManager)
+                googleMap.setOnCameraIdleListener(clusterManager)
+                googleMap.setOnMarkerClickListener(clusterManager)
+            }
         }
     }
 
-    private fun showStopInBottomSheet(stopMap: StopMap) {
-        bottomSheetBehavior.isHideable = false
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-        // TODO bottomSheetDialog.showLoading()
-        viewModel.getRouteListFromStop(stopMap.stopId)
+    private fun showRouteBottomSheet(stopMap: StopMap) {
+        stopListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        viewBinding?.let {
+            it.layoutRouteList.stopNameTv.text = stopMap.nameTc
+        }
+        routeListAdapter.setData(mutableListOf())
+        routeListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        viewModel.getRouteListFromStop(stopMap.etaType, stopMap.stopId)
     }
 
-    private fun showRouteListInBottomSheet(list: List<TransportRoute>?) {
-        stopMapAdapter.setData(list?.toMutableList())
-        // TODO bottomSheetDialog.hideLoading()
+    private fun showStopBottomSheet(list: List<StopMap>?) {
+        if (list == null) return
+        routeListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        viewBinding?.let {
+            it.layoutStopList.countTv.text =
+                getString(R.string.stop_list_bottom_sheet_title, list.size)
+        }
+
+        stopListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        stopListAdapter.setData(list.toMutableList())
+    }
+
+    private fun showRouteList(list: List<TransportRoute>?) {
+        routeListAdapter.setData(list?.toMutableList())
     }
 
     private fun showStopListOnMap(list: List<StopMap>?) {
@@ -143,9 +207,12 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
         }
     }
 
-    fun isBottomSheetShown() = bottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN
+    fun isBottomSheetShown() =
+        routeListBottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN
+                || stopListBottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN
+
     fun closeBottomSheet() {
-        bottomSheetBehavior.isHideable = true
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        routeListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        stopListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 }

@@ -3,7 +3,10 @@ package hibernate.v2.sunshine.db.nc
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
+import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
 interface NCDao {
@@ -82,4 +85,38 @@ interface NCDao {
 
     @Query("DELETE FROM nc_route_stop")
     suspend fun clearRouteStopList()
+
+    @Query("SELECT * FROM nc_route_stop WHERE nc_route_stop_stop_id = (:stopId)")
+    suspend fun getRouteStopListFromStopId(stopId: String): List<NCRouteStopEntity>
+
+    @RawQuery
+    suspend fun getRouteListFromRouteId(query: SupportSQLiteQuery): List<NCRouteEntity>
+
+    suspend fun getRouteListFromRouteId(routeStopList: List<NCRouteStopEntity>): List<NCRouteEntity> {
+        if (routeStopList.isEmpty()) return emptyList()
+
+        var mainQuery = "SELECT * FROM nc_route WHERE "
+        val bindArgs = arrayListOf<String>()
+
+        routeStopList.forEachIndexed { index, it ->
+            bindArgs.add(it.routeId)
+            bindArgs.add(it.bound.value)
+            bindArgs.add(it.serviceType)
+
+            var where = "(nc_route_id = ? AND nc_route_bound = ? AND nc_route_service_type = ?)"
+
+            if (routeStopList.lastIndex != index) {
+                where += " OR "
+            }
+
+            mainQuery += where
+        }
+
+        return getRouteListFromRouteId(
+            SimpleSQLiteQuery(
+                mainQuery,
+                bindArgs.toTypedArray()
+            )
+        )
+    }
 }

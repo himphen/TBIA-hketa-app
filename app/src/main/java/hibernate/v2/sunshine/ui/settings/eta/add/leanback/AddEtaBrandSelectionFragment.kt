@@ -5,6 +5,7 @@ import androidx.leanback.app.GuidedStepSupportFragment
 import androidx.leanback.widget.GuidanceStylist.Guidance
 import androidx.leanback.widget.GuidedAction
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.leanback.AddEtaActivity.Companion.ARG_ETA_TYPE
 import hibernate.v2.sunshine.util.putEnum
@@ -41,9 +42,9 @@ class AddEtaBrandSelectionFragment : GuidedStepSupportFragment() {
 
     override fun onGuidedActionClicked(action: GuidedAction) {
         val etaType = when (action.id) {
-            ACTION_ID_KMB -> AddEtaViewModel.EtaType.KMB
-            ACTION_ID_NWFB_CTB -> AddEtaViewModel.EtaType.NWFB_CTB
-            ACTION_ID_GMB_CTB -> AddEtaViewModel.EtaType.GMB
+            ACTION_ID_KMB -> EtaType.KMB
+            ACTION_ID_NWFB_CTB -> EtaType.NWFB_CTB
+            ACTION_ID_GMB_CTB -> EtaType.GMB
             else -> return
         }
 

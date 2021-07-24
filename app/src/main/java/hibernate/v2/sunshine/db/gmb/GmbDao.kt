@@ -3,7 +3,10 @@ package hibernate.v2.sunshine.db.gmb
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
+import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
 interface GmbDao {
@@ -82,4 +85,38 @@ interface GmbDao {
 
     @Query("DELETE FROM gmb_route_stop")
     suspend fun clearRouteStopList()
+
+    @Query("SELECT * FROM gmb_route_stop WHERE gmb_route_stop_stop_id = (:stopId)")
+    suspend fun getRouteStopListFromStopId(stopId: String): List<GmbRouteStopEntity>
+
+    @RawQuery
+    suspend fun getRouteListFromRouteId(query: SupportSQLiteQuery): List<GmbRouteEntity>
+
+    suspend fun getRouteListFromRouteId(routeStopList: List<GmbRouteStopEntity>): List<GmbRouteEntity> {
+        if (routeStopList.isEmpty()) return emptyList()
+
+        var mainQuery = "SELECT * FROM gmb_route WHERE "
+        val bindArgs = arrayListOf<String>()
+
+        routeStopList.forEachIndexed { index, it ->
+            bindArgs.add(it.routeId)
+            bindArgs.add(it.bound.value)
+            bindArgs.add(it.serviceType)
+
+            var where = "(gmb_route_id = ? AND gmb_route_bound = ? AND gmb_route_service_type = ?)"
+
+            if (routeStopList.lastIndex != index) {
+                where += " OR "
+            }
+
+            mainQuery += where
+        }
+
+        return getRouteListFromRouteId(
+            SimpleSQLiteQuery(
+                mainQuery,
+                bindArgs.toTypedArray()
+            )
+        )
+    }
 }
