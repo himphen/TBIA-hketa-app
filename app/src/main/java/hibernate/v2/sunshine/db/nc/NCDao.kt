@@ -101,9 +101,8 @@ interface NCDao {
         routeStopList.forEachIndexed { index, it ->
             bindArgs.add(it.routeId)
             bindArgs.add(it.bound.value)
-            bindArgs.add(it.serviceType)
 
-            var where = "(nc_route_id = ? AND nc_route_bound = ? AND nc_route_service_type = ?)"
+            var where = "(nc_route_id = ? AND nc_route_bound = ?)"
 
             if (routeStopList.lastIndex != index) {
                 where += " OR "
