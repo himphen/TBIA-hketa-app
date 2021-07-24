@@ -78,4 +78,6 @@ class GmbRepository(
     suspend fun saveStopList(entityList: List<GmbStopEntity>) {
         gmbDao.addStopList(entityList)
     }
+
+    suspend fun getStopListDb() = gmbDao.getStopList()
 }

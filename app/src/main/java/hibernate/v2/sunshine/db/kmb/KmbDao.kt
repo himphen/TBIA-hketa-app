@@ -3,7 +3,10 @@ package hibernate.v2.sunshine.db.kmb
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
+import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
 interface KmbDao {
@@ -48,8 +51,39 @@ interface KmbDao {
 
     //////
 
-    @Query("SELECT * FROM kmb_route_stop")
-    suspend fun getRouteStopList(): List<KmbRouteStopEntity>
+    @Query("SELECT * FROM kmb_route_stop WHERE kmb_route_stop_stop_id = (:stopId)")
+    suspend fun getRouteStopListFromStopId(stopId: String): List<KmbRouteStopEntity>
+
+    @RawQuery
+    suspend fun getRouteListFromRouteId(query: SupportSQLiteQuery): List<KmbRouteEntity>
+
+    suspend fun getRouteListFromRouteId(routeStopList: List<KmbRouteStopEntity>): List<KmbRouteEntity> {
+        if (routeStopList.isEmpty()) return emptyList()
+
+        var mainQuery = "SELECT * FROM kmb_route WHERE "
+        val bindArgs = arrayListOf<String>()
+
+        routeStopList.forEachIndexed { index, it ->
+            bindArgs.add(it.routeId)
+            bindArgs.add(it.bound.value)
+            bindArgs.add(it.serviceType)
+
+            var where = "(kmb_route_id = ? AND kmb_route_bound = ? AND kmb_route_service_type = ?)"
+
+            if (routeStopList.lastIndex != index) {
+                where += " OR "
+            }
+
+            mainQuery += where
+        }
+
+        return getRouteListFromRouteId(
+            SimpleSQLiteQuery(
+                mainQuery,
+                bindArgs.toTypedArray()
+            )
+        )
+    }
 
     @Transaction
     @Query("SELECT * FROM kmb_route_stop")

@@ -78,4 +78,6 @@ class NCRepository(
     suspend fun saveStopList(entityList: List<NCStopEntity>) {
         ncDao.addStopList(entityList)
     }
+
+    suspend fun getStopListDb() = ncDao.getStopList()
 }

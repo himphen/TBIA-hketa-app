@@ -30,7 +30,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         val adapter = MainViewPagerAdapter(this)
         viewBinding.viewPager.apply {
             this.adapter = adapter
-            offscreenPageLimit = 5
+            isUserInputEnabled = false
+            offscreenPageLimit = 1
 
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
@@ -50,6 +51,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                     R.id.settings -> {
                         if (byUser)
                             viewBinding.viewPager.setCurrentItem(1, true)
+                    }
+                    R.id.stopMap -> {
+                        if (byUser)
+                            viewBinding.viewPager.setCurrentItem(2, true)
                     }
                 }
             }

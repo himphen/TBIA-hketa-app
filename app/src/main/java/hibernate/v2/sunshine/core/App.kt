@@ -6,16 +6,17 @@ import com.himphen.logger.AndroidLogAdapter
 import com.himphen.logger.Logger
 import com.himphen.logger.PrettyFormatStrategy
 import hibernate.v2.sunshine.api.ApiManager
-import hibernate.v2.sunshine.repository.WeatherRepository
 import hibernate.v2.sunshine.db.LocalDatabase
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.NCRepository
+import hibernate.v2.sunshine.repository.WeatherRepository
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.ui.settings.eta.SettingsEtaViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
+import hibernate.v2.sunshine.ui.stopmap.StopMapViewModel
 import hibernate.v2.sunshine.ui.traffic.TrafficViewModel
 import hibernate.v2.sunshine.ui.weather.WeatherViewModel
 import org.koin.android.ext.koin.androidContext
@@ -72,6 +73,7 @@ class App : Application() {
         viewModel { AddEtaViewModel(get(), get(), get(), get()) }
         viewModel { WeatherViewModel(get()) }
         viewModel { TrafficViewModel(get()) }
+        viewModel { StopMapViewModel(get(), get(), get()) }
     }
 
     private fun initKoin() {

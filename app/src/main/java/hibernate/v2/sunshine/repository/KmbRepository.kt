@@ -8,6 +8,7 @@ import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
+import hibernate.v2.sunshine.model.transport.TransportRoute
 
 class KmbRepository(
     private val apiManager: ApiManager,
@@ -18,7 +19,14 @@ class KmbRepository(
     suspend fun getRouteListDb() = kmbDao.getRouteList()
     suspend fun getRouteStopDetailsListDb() = kmbDao.getRouteStopDetailsList()
 
-    suspend fun getRouteStopListDb() = kmbDao.getRouteStopList()
+    suspend fun getRouteListFromStopId(stopId: String): List<TransportRoute> {
+        val routeStopList = kmbDao.getRouteStopListFromStopId(stopId)
+        val routeList = kmbDao.getRouteListFromRouteId(routeStopList)
+
+        return routeList.map {
+            it.toTransportModel()
+        }
+    }
 //    suspend fun getRouteStopDetailsList(
 //        routeId: String,
 //        bound: Bound,

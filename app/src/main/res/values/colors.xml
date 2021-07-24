@@ -9,6 +9,7 @@
     <color name="primaryText">@color/md_grey_900</color>
     <color name="secondaryText">@color/md_grey_800</color>
     <color name="hintText">@color/md_grey_700</color>
+    <color name="bottomSheetToggleView">@color/md_grey_300</color>
 
     <color name="eta_card_line_text_mobile">@color/white</color>
     <color name="eta_card_background">@color/white</color>
