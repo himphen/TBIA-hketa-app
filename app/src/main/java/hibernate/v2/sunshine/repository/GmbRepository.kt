@@ -11,6 +11,7 @@ import hibernate.v2.sunshine.db.gmb.GmbDao
 import hibernate.v2.sunshine.db.gmb.GmbRouteEntity
 import hibernate.v2.sunshine.db.gmb.GmbRouteStopEntity
 import hibernate.v2.sunshine.db.gmb.GmbStopEntity
+import hibernate.v2.sunshine.model.transport.StopMap
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.util.getSnapshotValue
 
@@ -54,7 +55,7 @@ class GmbRepository(
     }
 
     suspend fun getRouteListDb() = gmbDao.getRouteList()
-    suspend fun getRouteStopDetailsListDb() = gmbDao.getRouteStopDetailsList()
+    suspend fun getRouteStopComponentListDb() = gmbDao.getRouteStopComponentList()
 
     suspend fun hasStopListDb() = gmbDao.getSingleStop() != null
     suspend fun hasRouteListDb() = gmbDao.getSingleRoute() != null
@@ -88,6 +89,15 @@ class GmbRepository(
 
         return routeList.map {
             it.toTransportModel()
+        }
+    }
+
+    suspend fun getRouteListFromStopList(stopList: List<StopMap>): List<StopMap> {
+        return stopList.map {
+            if (it.routeNumberList.isEmpty()) {
+                it.routeNumberList = getRouteListFromStopId(it.stopId).map { it.routeNo }
+            }
+            it
         }
     }
 }

@@ -58,18 +58,18 @@ interface GmbDao {
 //            "WHERE gmb_route_stop.route = (:routeId) " +
 //            "AND gmb_route_stop.bound = (:bound) " +
 //            "AND gmb_route_stop.service_type = (:serviceType)")
-//    suspend fun getRouteStopDetailsList(
+//    suspend fun getRouteStopComponentList(
 //        routeId: String,
 //        bound: Bound,
 //        serviceType: String,
-//    ): List<GmbRouteStopDetailsEntity>
+//    ): List<GmbRouteStopComponentEntity>
 
     @Query("SELECT * FROM gmb_route_stop")
     suspend fun getRouteStopList(): List<GmbRouteStopEntity>
 
     @Transaction
     @Query("SELECT * FROM gmb_route_stop")
-    suspend fun getRouteStopDetailsList(): List<GmbRouteStopDetails>
+    suspend fun getRouteStopComponentList(): List<GmbRouteStopComponent>
 
     @Query("SELECT * FROM gmb_route_stop LIMIT 1")
     suspend fun getSingleRouteStop(): GmbRouteStopEntity?

@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.db.nc
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class NCRouteStopDetails(
+data class NCRouteStopComponent(
     @Embedded
     val routeStopEntity: NCRouteStopEntity,
 

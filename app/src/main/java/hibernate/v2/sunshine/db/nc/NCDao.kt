@@ -58,18 +58,18 @@ interface NCDao {
 //            "WHERE nc_route_stop.route = (:routeId) " +
 //            "AND nc_route_stop.bound = (:bound) " +
 //            "AND nc_route_stop.service_type = (:serviceType)")
-//    suspend fun getRouteStopDetailsList(
+//    suspend fun getRouteStopComponentList(
 //        routeId: String,
 //        bound: Bound,
 //        serviceType: String,
-//    ): List<NCRouteStopDetailsEntity>
+//    ): List<NCRouteStopComponentEntity>
 
     @Query("SELECT * FROM nc_route_stop")
     suspend fun getRouteStopList(): List<NCRouteStopEntity>
 
     @Transaction
     @Query("SELECT * FROM nc_route_stop")
-    suspend fun getRouteStopDetailsList(): List<NCRouteStopDetails>
+    suspend fun getRouteStopComponentList(): List<NCRouteStopComponent>
 
     @Query("SELECT * FROM nc_route_stop LIMIT 1")
     suspend fun getSingleRouteStop(): NCRouteStopEntity?

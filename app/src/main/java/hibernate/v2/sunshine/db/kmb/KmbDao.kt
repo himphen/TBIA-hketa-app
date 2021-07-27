@@ -87,7 +87,7 @@ interface KmbDao {
 
     @Transaction
     @Query("SELECT * FROM kmb_route_stop")
-    suspend fun getRouteStopDetailsList(): List<KmbRouteStopDetails>
+    suspend fun getRouteStopComponentList(): List<KmbRouteStopComponent>
 
     @Query("SELECT * FROM kmb_route_stop LIMIT 1")
     suspend fun getSingleRouteStop(): KmbRouteStopEntity?

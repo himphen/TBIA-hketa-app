@@ -16,6 +16,7 @@ import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
+import hibernate.v2.sunshine.ui.main.mobile.MainFragment
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.launchPeriodicAsync
@@ -128,7 +129,12 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 }
 
                 viewBinding.recyclerView.apply {
-                    setPadding(dpToPx(0), dpToPx(0), dpToPx(0), dpToPx(0))
+                    setPadding(
+                        dpToPx(0),
+                        dpToPx(0),
+                        dpToPx(0),
+                        dpToPx(MainFragment.bottomBarHeight)
+                    )
                 }
             }
             EtaCardPresenter.CardViewType.Standard,
@@ -138,7 +144,12 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                         removeItemDecorationAt(0)
                     }
 
-                    setPadding(dpToPx(0), dpToPx(4), dpToPx(0), dpToPx(4))
+                    setPadding(
+                        dpToPx(0),
+                        dpToPx(4),
+                        dpToPx(0),
+                        dpToPx(MainFragment.bottomBarHeight)
+                    )
                 }
             }
         }

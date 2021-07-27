@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import hibernate.v2.sunshine.databinding.ItemStopMapRouteBinding
+import hibernate.v2.sunshine.databinding.ItemBottomSheetRouteBinding
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
 class RouteListAdapter(val listener: ItemListener) :
@@ -18,7 +18,7 @@ class RouteListAdapter(val listener: ItemListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ItemStopMapVH(
-            ItemStopMapRouteBinding.inflate(
+            ItemBottomSheetRouteBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -32,6 +32,7 @@ class RouteListAdapter(val listener: ItemListener) :
         viewBinding.apply {
             routeNumberTv.text = route.routeNo
             routeDirectionTv.text = route.getDestDirectionText(context)
+            routeCompanyColor.setBackgroundResource(route.getColor(true))
             root.tag = route
             root.setOnClickListener { listener.onRouteSelected(it.tag as TransportRoute) }
         }
@@ -52,6 +53,6 @@ class RouteListAdapter(val listener: ItemListener) :
         notifyItemChanged(position)
     }
 
-    inner class ItemStopMapVH(val viewBinding: ItemStopMapRouteBinding) :
+    inner class ItemStopMapVH(val viewBinding: ItemBottomSheetRouteBinding) :
         RecyclerView.ViewHolder(viewBinding.root)
 }

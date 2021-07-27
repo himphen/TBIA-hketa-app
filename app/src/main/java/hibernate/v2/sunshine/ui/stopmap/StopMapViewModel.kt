@@ -22,15 +22,30 @@ class StopMapViewModel(
 
     var stopList = MutableLiveData<List<StopMap>?>()
     var routeListForBottomSheet = MutableLiveData<List<TransportRoute>?>()
+    var stopListForBottomSheet = MutableLiveData<List<StopMap>?>()
 
     fun getRouteListFromStop(etaType: EtaType, stopId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = when(etaType) {
+            val result = when (etaType) {
                 EtaType.KMB -> kmbRepository.getRouteListFromStopId(stopId)
                 EtaType.NWFB_CTB -> ncRepository.getRouteListFromStopId(stopId)
                 EtaType.GMB -> gmbRepository.getRouteListFromStopId(stopId)
             }
             routeListForBottomSheet.postValue(result)
+        }
+    }
+
+    fun getRouteListFromStopList(stopMapList: List<StopMap>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = stopMapList.groupBy({ it.etaType }, { it }).map { (etaType, stopMapList) ->
+                when (etaType) {
+                    EtaType.KMB -> kmbRepository.getRouteListFromStopList(stopMapList)
+                    EtaType.NWFB_CTB -> ncRepository.getRouteListFromStopList(stopMapList)
+                    EtaType.GMB -> gmbRepository.getRouteListFromStopList(stopMapList)
+                }
+            }
+
+            stopListForBottomSheet.postValue(list.flatten())
         }
     }
 
@@ -60,5 +75,4 @@ class StopMapViewModel(
             }
         }
     }
-
 }

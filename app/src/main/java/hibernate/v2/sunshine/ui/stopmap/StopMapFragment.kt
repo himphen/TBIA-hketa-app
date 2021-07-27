@@ -1,18 +1,21 @@
 package hibernate.v2.sunshine.ui.stopmap
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
-import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.ktx.awaitMap
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentStopMapBinding
@@ -31,10 +34,10 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
         savedInstanceState: Bundle?
     ) = FragmentStopMapBinding.inflate(inflater, container, false)
 
-    private lateinit var stopListBottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
-    private lateinit var routeListBottomSheetBehavior: BottomSheetBehavior<NestedScrollView>
+    private lateinit var stopListBottomSheetBehavior: BottomSheetBehavior<*>
+    private lateinit var routeListBottomSheetBehavior: BottomSheetBehavior<*>
 
-    private var clusterManager: ClusterManager<StopMap>? = null
+    private var clusterManager: CustomClusterManager? = null
     private val viewModel: StopMapViewModel by inject()
     private val etaViewModel: AddEtaViewModel by inject()
 
@@ -46,7 +49,8 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
 
     private val stopListAdapter = StopListAdapter(object : StopListAdapter.ItemListener {
         override fun onStopSelected(stop: StopMap) {
-            // TODO save eta stop
+            googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(stop.position, 19f))
+            showRouteBottomSheet(stopMap = stop)
         }
     })
 
@@ -74,12 +78,27 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
         viewModel.routeListForBottomSheet.observe(viewLifecycleOwner) {
             showRouteList(it)
         }
+
+        viewModel.stopListForBottomSheet.observe(viewLifecycleOwner) {
+            showStopListOnBottomSheet(it)
+        }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private suspend fun initUI() {
         val viewBinding = viewBinding!!
-        viewBinding.layoutStopList.recyclerView.adapter = stopListAdapter
-        viewBinding.layoutRouteList.recyclerView.adapter = routeListAdapter
+        val dividerItemDecoration =
+            DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+
+        viewBinding.layoutStopList.recyclerView.apply {
+            adapter = stopListAdapter
+            addItemDecoration(dividerItemDecoration)
+        }
+
+        viewBinding.layoutRouteList.recyclerView.apply {
+            adapter = routeListAdapter
+            addItemDecoration(dividerItemDecoration)
+        }
 
         initStopListBottomSheet(viewBinding)
         initRouteListBottomSheet(viewBinding)
@@ -88,7 +107,7 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
 
     private fun initStopListBottomSheet(viewBinding: FragmentStopMapBinding) {
         stopListBottomSheetBehavior =
-            BottomSheetBehavior.from(viewBinding.layoutStopList.nestedScrollView).apply {
+            BottomSheetBehavior.from(viewBinding.layoutStopList.root).apply {
                 state = BottomSheetBehavior.STATE_HIDDEN
                 addBottomSheetCallback(object : BottomSheetCallback() {
                     override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -111,7 +130,7 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
 
     private fun initRouteListBottomSheet(viewBinding: FragmentStopMapBinding) {
         routeListBottomSheetBehavior =
-            BottomSheetBehavior.from(viewBinding.layoutRouteList.nestedScrollView).apply {
+            BottomSheetBehavior.from(viewBinding.layoutRouteList.root).apply {
                 state = BottomSheetBehavior.STATE_HIDDEN
                 addBottomSheetCallback(object : BottomSheetCallback() {
                     override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -139,7 +158,16 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
             setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.style_stop_map)
             )
-            isTrafficEnabled = true
+//            isTrafficEnabled = true
+            setMinZoomPreference(10f)
+            setLatLngBoundsForCameraTarget(
+                LatLngBounds(
+                    LatLng(22.169436, 113.747226),
+                    LatLng(22.555006, 114.418655)
+                )
+            )
+
+            moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(22.3111191, 114.1688018), 15f))
             // set default zoom
             setUpClusterer(this)
         }
@@ -151,9 +179,15 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
 
     private fun setUpClusterer(googleMap: GoogleMap) {
         context?.let { context ->
-            clusterManager = ClusterManager(context, googleMap)
+            clusterManager = CustomClusterManager(
+                context,
+                googleMap,
+                lifecycleScope
+            )
+
             clusterManager?.apply {
-                renderer = CustomClusterRenderer(context, googleMap, this)
+                val renderer = CustomClusterRenderer(context, googleMap, this)
+                this.renderer = renderer
                 setOnClusterItemClickListener {
                     // single click
                     showRouteBottomSheet(it)
@@ -161,11 +195,31 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
                 }
                 setOnClusterClickListener {
                     // group click
-                    showStopBottomSheet(it.items.toMutableList())
-                    false
+
+                    if (it.items.size > 30
+                        && googleMap.cameraPosition.zoom < googleMap.maxZoomLevel - 1f
+                    ) {
+                        googleMap.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                it.position,
+                                googleMap.cameraPosition.zoom + 1f
+                            ),
+                            500,
+                            null
+                        )
+                    } else {
+                        googleMap.animateCamera(
+                            CameraUpdateFactory.newLatLng(
+                                it.position
+                            )
+                        )
+                        showStopBottomSheet(it.items.toMutableList())
+                    }
+                    true
                 }
 
                 googleMap.setOnCameraIdleListener(clusterManager)
+                googleMap.setOnCameraMoveListener(renderer)
                 googleMap.setOnMarkerClickListener(clusterManager)
             }
         }
@@ -192,7 +246,11 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
         }
 
         stopListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-        stopListAdapter.setData(list.toMutableList())
+        viewModel.getRouteListFromStopList(list)
+    }
+
+    private fun showStopListOnBottomSheet(list: List<StopMap>?) {
+        stopListAdapter.setData(list?.toMutableList())
     }
 
     private fun showRouteList(list: List<TransportRoute>?) {
@@ -201,10 +259,6 @@ class StopMapFragment : BaseFragment<FragmentStopMapBinding>() {
 
     private fun showStopListOnMap(list: List<StopMap>?) {
         clusterManager?.addItems(list)
-
-        list?.first()?.let {
-            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(it.position, 13f))
-        }
     }
 
     fun isBottomSheetShown() =

@@ -11,6 +11,10 @@ import hibernate.v2.sunshine.ui.base.BaseFragment
 
 class MainFragment : BaseFragment<FragmentMainBinding>() {
 
+    companion object {
+        const val bottomBarHeight = 120
+    }
+
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,

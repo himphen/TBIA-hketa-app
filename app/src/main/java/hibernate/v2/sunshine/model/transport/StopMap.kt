@@ -13,7 +13,8 @@ class StopMap(
     val nameSc: String,
     val nameTc: String,
     val stopId: String,
-    val etaType: EtaType
+    val etaType: EtaType,
+    var routeNumberList: List<String> = emptyList()
 ) : ClusterItem {
     companion object {
         fun fromStopEntity(it: KmbStopEntity): StopMap {
@@ -21,7 +22,7 @@ class StopMap(
                 lat = it.lat,
                 lng = it.lng,
                 nameEn = it.nameEn,
-                nameSc = it.nameEn,
+                nameSc = it.nameSc,
                 nameTc = it.nameTc,
                 stopId = it.stopId,
                 etaType = EtaType.KMB
@@ -33,7 +34,7 @@ class StopMap(
                 lat = it.lat,
                 lng = it.lng,
                 nameEn = it.nameEn,
-                nameSc = it.nameEn,
+                nameSc = it.nameSc,
                 nameTc = it.nameTc,
                 stopId = it.stopId,
                 etaType = EtaType.NWFB_CTB
@@ -45,7 +46,7 @@ class StopMap(
                 lat = it.lat,
                 lng = it.lng,
                 nameEn = it.nameEn,
-                nameSc = it.nameEn,
+                nameSc = it.nameSc,
                 nameTc = it.nameTc,
                 stopId = it.stopId,
                 etaType = EtaType.GMB
@@ -58,10 +59,10 @@ class StopMap(
     }
 
     override fun getTitle(): String? {
-        return nameTc
+        return null
     }
 
     override fun getSnippet(): String? {
-        return nameTc
+        return null
     }
 }

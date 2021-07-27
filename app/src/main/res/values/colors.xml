@@ -11,6 +11,9 @@
     <color name="hintText">@color/md_grey_700</color>
     <color name="bottomSheetToggleView">@color/md_grey_300</color>
 
+    <color name="badge_route_bg">@color/md_grey_700</color>
+    <color name="badge_route_text">@color/white</color>
+
     <color name="eta_card_line_text_mobile">@color/white</color>
     <color name="eta_card_background">@color/white</color>
 

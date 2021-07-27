@@ -95,7 +95,7 @@ class AddEtaViewModel(
 
         try {
             val allRouteList = kmbRepository.getRouteListDb()
-            val allRouteStopList = kmbRepository.getRouteStopDetailsListDb()
+            val allRouteStopList = kmbRepository.getRouteStopComponentListDb()
 
             val transportRouteStopHashMap = allRouteList.associate { entity ->
                 val route = entity.toTransportModel()
@@ -155,7 +155,7 @@ class AddEtaViewModel(
 
         try {
             val allRouteList = ncRepository.getRouteListDb()
-            val allRouteStopList = ncRepository.getRouteStopDetailsListDb()
+            val allRouteStopList = ncRepository.getRouteStopComponentListDb()
 
             val transportRouteStopHashMap = allRouteList.associate { entity ->
                 val route = entity.toTransportModel()
@@ -216,7 +216,7 @@ class AddEtaViewModel(
 
         try {
             val allRouteList = gmbRepository.getRouteListDb()
-            val allRouteStopList = gmbRepository.getRouteStopDetailsListDb()
+            val allRouteStopList = gmbRepository.getRouteStopComponentListDb()
 
             val transportRouteStopHashMap = allRouteList.associate { entity ->
                 val route = entity.toTransportModel()

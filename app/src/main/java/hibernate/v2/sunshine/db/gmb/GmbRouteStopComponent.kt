@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.db.gmb
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class GmbRouteStopDetails(
+data class GmbRouteStopComponent(
     @Embedded
     val routeStopEntity: GmbRouteStopEntity,
 

@@ -2,6 +2,8 @@ package hibernate.v2.sunshine.model.transport
 
 import android.content.Context
 import android.os.Parcelable
+import androidx.annotation.ColorRes
+import androidx.annotation.IdRes
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
@@ -94,6 +96,20 @@ open class TransportRoute(
                 destTc
             )
         }
+    }
+
+    @ColorRes
+    fun getColor(combineNC: Boolean = false): Int = when (company) {
+        Company.KMB -> R.color.brand_color_kmb
+        Company.NWFB -> R.color.brand_color_nwfb
+        Company.CTB ->
+            if (combineNC) {
+                R.color.brand_color_nwfb
+            } else {
+                R.color.brand_color_ctb
+            }
+        Company.GMB -> R.color.brand_color_gmb
+        else -> R.color.brand_color_kmb
     }
 }
 

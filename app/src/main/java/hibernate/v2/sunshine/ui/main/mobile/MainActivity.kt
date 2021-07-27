@@ -17,7 +17,6 @@ class MainActivity : BaseFragmentActivity<ActivityMainBinding>() {
     }
 
     override fun onBackPressed() {
-       val m = fragment?.childFragmentManager?.fragments
         (fragment?.childFragmentManager?.findFragmentByTag("f2") as? StopMapFragment)?.let {
             if (it.isBottomSheetShown()) {
                 it.closeBottomSheet()
