@@ -1,10 +1,8 @@
-package hibernate.v2.sunshine.ui.stopmap
+package hibernate.v2.sunshine.ui.searchmap
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,7 +12,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemBottomSheetStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteBadgeBinding
 import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.model.transport.StopMap
+import hibernate.v2.sunshine.model.searchmap.Stop
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.util.updateBackgroundColor
 
@@ -22,10 +20,10 @@ class StopListAdapter(val listener: ItemListener) :
     RecyclerView.Adapter<StopListAdapter.ItemStopMapVH>() {
 
     interface ItemListener {
-        fun onStopSelected(stop: StopMap)
+        fun onStopSelected(stop: Stop)
     }
 
-    private var list = mutableListOf<StopMap>()
+    private var list = mutableListOf<Stop>()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemStopMapVH {
@@ -61,22 +59,22 @@ class StopListAdapter(val listener: ItemListener) :
             }
 
             root.tag = stopMap
-            root.setOnClickListener { listener.onStopSelected(it.tag as StopMap) }
+            root.setOnClickListener { listener.onStopSelected(it.tag as Stop) }
         }
     }
 
     override fun getItemCount(): Int = list.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(stopMapList: MutableList<StopMap>?) {
-        if (stopMapList == null) return
+    fun setData(stopList: MutableList<Stop>?) {
+        if (stopList == null) return
 
-        this.list = stopMapList
+        this.list = stopList
         notifyDataSetChanged()
     }
 
-    fun replace(position: Int, stopMap: StopMap) {
-        list[position] = stopMap
+    fun replace(position: Int, stop: Stop) {
+        list[position] = stop
         notifyItemChanged(position)
     }
 

@@ -8,12 +8,15 @@ import androidx.viewpager2.widget.ViewPager2
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     companion object {
         const val bottomBarHeight = 120
     }
+
+    private val mainViewModel: MainViewModel by sharedViewModel()
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -41,6 +44,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                 override fun onPageSelected(position: Int) {
                     val selectedItem = bottomBar.menu.items[position]
                     bottomBar.menu.select(selectedItem.id)
+
+                    mainViewModel.selectedTab.value = adapter.getTabType(position)
                 }
             })
         }

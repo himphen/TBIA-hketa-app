@@ -7,6 +7,7 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.api.model.transport.gmb.GmbRoute
 import hibernate.v2.sunshine.model.transport.GmbTransportRoute
+import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Entity(
     tableName = "gmb_route",
@@ -35,7 +36,7 @@ data class GmbRouteEntity(
     val serviceType: String,
     @ColumnInfo(name = "region")
     val region: GmbRegion,
-) {
+)  : TransportHashable {
 
     companion object {
         fun fromApiModel(route: GmbRoute): GmbRouteEntity {
@@ -71,4 +72,6 @@ data class GmbRouteEntity(
             region = region
         )
     }
+
+    fun routeHashId() = routeHashId(Company.GMB, routeId, bound, serviceType)
 }

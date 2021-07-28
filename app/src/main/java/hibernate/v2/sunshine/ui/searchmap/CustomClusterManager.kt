@@ -1,10 +1,10 @@
-package hibernate.v2.sunshine.ui.stopmap
+package hibernate.v2.sunshine.ui.searchmap
 
 import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.google.android.gms.maps.GoogleMap
 import com.google.maps.android.clustering.ClusterManager
-import hibernate.v2.sunshine.model.transport.StopMap
+import hibernate.v2.sunshine.model.searchmap.Stop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -12,17 +12,17 @@ class CustomClusterManager(
     context: Context,
     googleMap: GoogleMap,
     val lifecycleScope: LifecycleCoroutineScope
-) : ClusterManager<StopMap>(context, googleMap) {
+) : ClusterManager<Stop>(context, googleMap) {
 
     var isMarkerCollectionHidden = true
 
-    override fun addItems(items: Collection<StopMap>?): Boolean {
+    override fun addItems(items: Collection<Stop>?): Boolean {
         val result = super.addItems(items)
         setMarkerVisibility()
         return result
     }
 
-    override fun addItem(myItem: StopMap?): Boolean {
+    override fun addItem(myItem: Stop?): Boolean {
         val result = super.addItem(myItem)
         setMarkerVisibility()
         return result

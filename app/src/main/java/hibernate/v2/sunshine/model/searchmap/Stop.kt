@@ -1,12 +1,13 @@
-package hibernate.v2.sunshine.model.transport
+package hibernate.v2.sunshine.model.searchmap
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 import hibernate.v2.sunshine.db.gmb.GmbStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 import hibernate.v2.sunshine.db.nc.NCStopEntity
+import hibernate.v2.sunshine.model.transport.EtaType
 
-class StopMap(
+data class Stop(
     val lat: Double,
     val lng: Double,
     val nameEn: String,
@@ -14,11 +15,12 @@ class StopMap(
     val nameTc: String,
     val stopId: String,
     val etaType: EtaType,
-    var routeNumberList: List<String> = emptyList()
+    var routeNumberList: List<String> = emptyList(),
+    var mapRouteList: List<Route> = emptyList()
 ) : ClusterItem {
     companion object {
-        fun fromStopEntity(it: KmbStopEntity): StopMap {
-            return StopMap(
+        fun fromStopEntity(it: KmbStopEntity): Stop {
+            return Stop(
                 lat = it.lat,
                 lng = it.lng,
                 nameEn = it.nameEn,
@@ -29,8 +31,8 @@ class StopMap(
             )
         }
 
-        fun fromStopEntity(it: NCStopEntity): StopMap {
-            return StopMap(
+        fun fromStopEntity(it: NCStopEntity): Stop {
+            return Stop(
                 lat = it.lat,
                 lng = it.lng,
                 nameEn = it.nameEn,
@@ -41,8 +43,8 @@ class StopMap(
             )
         }
 
-        fun fromStopEntity(it: GmbStopEntity): StopMap {
-            return StopMap(
+        fun fromStopEntity(it: GmbStopEntity): Stop {
+            return Stop(
                 lat = it.lat,
                 lng = it.lng,
                 nameEn = it.nameEn,

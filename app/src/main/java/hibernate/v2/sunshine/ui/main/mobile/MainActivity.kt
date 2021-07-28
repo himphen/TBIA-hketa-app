@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import hibernate.v2.sunshine.databinding.ActivityMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
-import hibernate.v2.sunshine.ui.stopmap.StopMapFragment
+import hibernate.v2.sunshine.ui.searchmap.SearchMapFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseFragmentActivity<ActivityMainBinding>() {
     override fun getActivityViewBinding() = ActivityMainBinding.inflate(layoutInflater)
     override var fragment: Fragment? = MainFragment()
+
+    private val mainViewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,10 +20,13 @@ class MainActivity : BaseFragmentActivity<ActivityMainBinding>() {
     }
 
     override fun onBackPressed() {
-        (fragment?.childFragmentManager?.findFragmentByTag("f2") as? StopMapFragment)?.let {
-            if (it.isBottomSheetShown()) {
-                it.closeBottomSheet()
-                return
+        mainViewModel.selectedTab.value?.let {
+            (fragment?.childFragmentManager?.findFragmentByTag("f${it.position}") as? SearchMapFragment)?.let { fragment ->
+                // TODO should use view model MutableLiveData
+                if (fragment.isBottomSheetShown()) {
+                    fragment.closeBottomSheet()
+                    return
+                }
             }
         }
 

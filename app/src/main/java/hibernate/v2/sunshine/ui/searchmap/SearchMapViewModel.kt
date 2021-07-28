@@ -1,10 +1,10 @@
-package hibernate.v2.sunshine.ui.stopmap
+package hibernate.v2.sunshine.ui.searchmap
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.model.transport.StopMap
-import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.searchmap.Route
+import hibernate.v2.sunshine.model.searchmap.Stop
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.NCRepository
@@ -14,34 +14,35 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
-class StopMapViewModel(
+class SearchMapViewModel(
     private val kmbRepository: KmbRepository,
     private val ncRepository: NCRepository,
     private val gmbRepository: GmbRepository,
 ) : BaseViewModel() {
 
-    var stopList = MutableLiveData<List<StopMap>?>()
-    var routeListForBottomSheet = MutableLiveData<List<TransportRoute>?>()
-    var stopListForBottomSheet = MutableLiveData<List<StopMap>?>()
+    val selectedStop =  MutableLiveData<Stop>()
+    val stopList = MutableLiveData<List<Stop>?>()
+    val routeListForBottomSheet = MutableLiveData<List<Route>?>()
+    val stopListForBottomSheet = MutableLiveData<List<Stop>?>()
 
     fun getRouteListFromStop(etaType: EtaType, stopId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = when (etaType) {
-                EtaType.KMB -> kmbRepository.getRouteListFromStopId(stopId)
-                EtaType.NWFB_CTB -> ncRepository.getRouteListFromStopId(stopId)
-                EtaType.GMB -> gmbRepository.getRouteListFromStopId(stopId)
+                EtaType.KMB -> kmbRepository.getMapRouteListFromStopId(stopId)
+                EtaType.NWFB_CTB -> ncRepository.getMapRouteList(stopId)
+                EtaType.GMB -> gmbRepository.getMapRouteListFromStopId(stopId)
             }
             routeListForBottomSheet.postValue(result)
         }
     }
 
-    fun getRouteListFromStopList(stopMapList: List<StopMap>) {
+    fun getRouteListFromStopList(stopList: List<Stop>) {
         viewModelScope.launch(Dispatchers.IO) {
-            val list = stopMapList.groupBy({ it.etaType }, { it }).map { (etaType, stopMapList) ->
+            val list = stopList.groupBy({ it.etaType }, { it }).map { (etaType, stopMapList) ->
                 when (etaType) {
-                    EtaType.KMB -> kmbRepository.getRouteListFromStopList(stopMapList)
-                    EtaType.NWFB_CTB -> ncRepository.getRouteListFromStopList(stopMapList)
-                    EtaType.GMB -> gmbRepository.getRouteListFromStopList(stopMapList)
+                    EtaType.KMB -> kmbRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.NWFB_CTB -> ncRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.GMB -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
                 }
             }
 
@@ -55,17 +56,17 @@ class StopMapViewModel(
                 val deferredList = listOf(
                     async {
                         kmbRepository.getStopListDb().map {
-                            StopMap.fromStopEntity(it)
+                            Stop.fromStopEntity(it)
                         }
                     },
                     async {
                         ncRepository.getStopListDb().map {
-                            StopMap.fromStopEntity(it)
+                            Stop.fromStopEntity(it)
                         }
                     },
                     async {
                         gmbRepository.getStopListDb().map {
-                            StopMap.fromStopEntity(it)
+                            Stop.fromStopEntity(it)
                         }
                     },
                 )

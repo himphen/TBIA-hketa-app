@@ -6,12 +6,16 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.ui.eta.mobile.EtaFragment
+import hibernate.v2.sunshine.ui.searchmap.SearchMapFragment
 import hibernate.v2.sunshine.ui.settings.mobile.SettingsFragment
-import hibernate.v2.sunshine.ui.stopmap.StopMapFragment
 
 class MainViewPagerAdapter(
     private val fragment: Fragment
 ) : FragmentStateAdapter(fragment) {
+
+    enum class TabType(val position: Int) {
+        Eta(0), Settings(1), SearchMap(2)
+    }
 
     private val tabTitles: Array<String> = fragment.resources.getStringArray(R.array.main_tab_title)
 
@@ -27,7 +31,7 @@ class MainViewPagerAdapter(
         return when (position) {
             0 -> EtaFragment()
             1 -> SettingsFragment()
-            else -> StopMapFragment()
+            else -> SearchMapFragment()
         }
     }
 
@@ -35,6 +39,12 @@ class MainViewPagerAdapter(
         val v = View.inflate(fragment.context, R.layout.custom_tab, null)
         v.findViewById<TextView>(R.id.tabTitleTv).text = tabTitles[position]
         return v
+    }
+
+    fun getTabType(position: Int) = when (position) {
+        0 -> TabType.Eta
+        1 -> TabType.Settings
+        else -> TabType.SearchMap
     }
 
 }

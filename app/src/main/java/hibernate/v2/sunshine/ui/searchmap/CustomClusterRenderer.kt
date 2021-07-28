@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.stopmap
+package hibernate.v2.sunshine.ui.searchmap
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -12,13 +12,13 @@ import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.model.transport.StopMap
+import hibernate.v2.sunshine.model.searchmap.Stop
 
 class CustomClusterRenderer(
     val context: Context,
     val map: GoogleMap,
     clusterManager: CustomClusterManager
-) : DefaultClusterRenderer<StopMap>(context, map, clusterManager),
+) : DefaultClusterRenderer<Stop>(context, map, clusterManager),
     GoogleMap.OnCameraMoveListener {
 
     init {
@@ -31,11 +31,11 @@ class CustomClusterRenderer(
         currentZoomLevel = map.cameraPosition.zoom
     }
 
-    override fun shouldRenderAsCluster(cluster: Cluster<StopMap>): Boolean {
+    override fun shouldRenderAsCluster(cluster: Cluster<Stop>): Boolean {
         return super.shouldRenderAsCluster(cluster)
     }
 
-    override fun onBeforeClusterItemRendered(item: StopMap, markerOptions: MarkerOptions) {
+    override fun onBeforeClusterItemRendered(item: Stop, markerOptions: MarkerOptions) {
         drawMarker(
             when (item.etaType) {
                 EtaType.KMB -> R.drawable.map_marker_bus_stop_kmb

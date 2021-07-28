@@ -7,6 +7,7 @@ import androidx.room.Index
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.nc.NCRoute
+import hibernate.v2.sunshine.model.transport.TransportHashable
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
 @Entity(
@@ -33,7 +34,7 @@ data class NCRouteEntity(
     val destTc: String,
     @ColumnInfo(name = "dest_sc")
     val destSc: String,
-) {
+) : TransportHashable {
     @Ignore
     val serviceType = "1"
 
@@ -68,4 +69,6 @@ data class NCRouteEntity(
             serviceType = "1"
         )
     }
+
+    fun routeHashId() = routeHashId(company, routeId, bound, serviceType)
 }

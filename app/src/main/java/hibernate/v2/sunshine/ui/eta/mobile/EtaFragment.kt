@@ -17,14 +17,18 @@ import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
 import hibernate.v2.sunshine.ui.main.mobile.MainFragment
+import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.Date
 
 class EtaFragment : BaseFragment<FragmentEtaBinding>() {
@@ -36,9 +40,11 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
     private val sharedPreferencesManager: SharedPreferencesManager by inject()
 
+    private val viewModel by inject<EtaViewModel>()
+    private val mainViewModel: MainViewModel by sharedViewModel()
+
     private val adapter = EtaCardAdapter(sharedPreferencesManager.etaCardType)
 
-    private val viewModel by inject<EtaViewModel>()
     private var etaCardList: MutableList<Card.EtaCard>? = null
     private var refreshEtaJob: Deferred<Unit>? = null
 
@@ -61,6 +67,15 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 viewModel.updateEtaList(etaCardList)
             }
         }
+
+        mainViewModel.onUpdatedEtaList.onEach {
+            updateAdapterData()
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        mainViewModel.onUpdatedEtaList.onEach {
+            initAdapter()
+            updateAdapterData()
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -113,7 +128,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         }
     }
 
-    fun initAdapter() {
+    private fun initAdapter() {
         Logger.d("updateAdapterViewType")
         val viewBinding = viewBinding!!
         viewBinding.recyclerView.adapter = null
@@ -155,7 +170,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         }
     }
 
-    fun updateAdapterData() {
+    private fun updateAdapterData() {
         Logger.d("updateAdapterData")
         etaCardList = null
         initData()

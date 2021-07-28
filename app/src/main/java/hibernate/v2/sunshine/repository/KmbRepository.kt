@@ -8,7 +8,8 @@ import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
-import hibernate.v2.sunshine.model.transport.StopMap
+import hibernate.v2.sunshine.model.searchmap.Route
+import hibernate.v2.sunshine.model.searchmap.Stop
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
 class KmbRepository(
@@ -29,12 +30,29 @@ class KmbRepository(
         }
     }
 
-    suspend fun getRouteListFromStopList(stopList: List<StopMap>): List<StopMap> {
+    suspend fun setMapRouteListIntoMapStop(stopList: List<Stop>): List<Stop> {
         return stopList.map {
-            if (it.routeNumberList.isEmpty()) {
-                it.routeNumberList = getRouteListFromStopId(it.stopId).map { it.routeNo }
+            if (it.mapRouteList.isEmpty()) {
+                it.mapRouteList = getMapRouteListFromStopId(it.stopId)
             }
             it
+        }
+    }
+
+    suspend fun getMapRouteListFromStopId(stopId: String): List<Route> {
+        val routeStopList = kmbDao.getRouteStopListFromStopId(stopId)
+        val routeList = kmbDao.getRouteListFromRouteId(routeStopList)
+        val routeHashMap = routeList.map {
+            it.routeHashId() to it
+        }.toMap()
+
+        return routeStopList.mapNotNull {
+            val route = routeHashMap[it.routeHashId()] ?: return@mapNotNull null
+
+            Route(
+                route.toTransportModel(),
+                it.seq
+            )
         }
     }
 
