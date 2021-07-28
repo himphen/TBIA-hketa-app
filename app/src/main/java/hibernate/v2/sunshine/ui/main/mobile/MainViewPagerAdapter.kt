@@ -13,8 +13,15 @@ class MainViewPagerAdapter(
     private val fragment: Fragment
 ) : FragmentStateAdapter(fragment) {
 
-    enum class TabType(val position: Int) {
-        Eta(0), Settings(1), SearchMap(2)
+    enum class TabType(val position: Int, val menuItemId: Int) {
+        Eta(0, R.id.home),
+        SearchMap(1, R.id.searchMap),
+        Settings(2, R.id.settings);
+
+        companion object {
+            fun fromMenuItemId(menuItemId: Int?) = values().find { it.menuItemId == menuItemId }
+            fun fromPosition(position: Int?) = values().find { it.position == position }
+        }
     }
 
     private val tabTitles: Array<String> = fragment.resources.getStringArray(R.array.main_tab_title)
@@ -30,8 +37,8 @@ class MainViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> EtaFragment()
-            1 -> SettingsFragment()
-            else -> SearchMapFragment()
+            1 -> SearchMapFragment()
+            else -> SettingsFragment()
         }
     }
 
@@ -39,12 +46,6 @@ class MainViewPagerAdapter(
         val v = View.inflate(fragment.context, R.layout.custom_tab, null)
         v.findViewById<TextView>(R.id.tabTitleTv).text = tabTitles[position]
         return v
-    }
-
-    fun getTabType(position: Int) = when (position) {
-        0 -> TabType.Eta
-        1 -> TabType.Settings
-        else -> TabType.SearchMap
     }
 
 }

@@ -11,7 +11,7 @@ import androidx.leanback.widget.GuidanceStylist.Guidance
 import androidx.leanback.widget.GuidedAction
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
-import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
+import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import org.koin.android.ext.android.inject
 
 class EtaLayoutSelectionFragment : GuidedStepSupportFragment() {
@@ -81,7 +81,7 @@ class EtaLayoutSelectionFragment : GuidedStepSupportFragment() {
             ACTION_ID_COMPACT,
             ACTION_ID_CLASSIC -> {
                 sharedPreferencesManager.etaCardType =
-                    EtaCardPresenter.CardViewType.from(action.id.toInt())
+                    EtaCardViewType.from(action.id.toInt())
             }
         }
         activity?.finish()
@@ -115,9 +115,9 @@ class EtaLayoutSelectionFragment : GuidedStepSupportFragment() {
     companion object {
         fun getInstance(bundle: Bundle?) = EtaLayoutSelectionFragment().apply { arguments = bundle }
 
-        val ACTION_ID_STANDARD = EtaCardPresenter.CardViewType.Standard.value.toLong()
-        val ACTION_ID_COMPACT = EtaCardPresenter.CardViewType.Compact.value.toLong()
-        val ACTION_ID_CLASSIC = EtaCardPresenter.CardViewType.Classic.value.toLong()
+        val ACTION_ID_STANDARD = EtaCardViewType.Standard.value.toLong()
+        val ACTION_ID_COMPACT = EtaCardViewType.Compact.value.toLong()
+        val ACTION_ID_CLASSIC = EtaCardViewType.Classic.value.toLong()
         const val ACTION_ID_CANCEL = -1L
     }
 }

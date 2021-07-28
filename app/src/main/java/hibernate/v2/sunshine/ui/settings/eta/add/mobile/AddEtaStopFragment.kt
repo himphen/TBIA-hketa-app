@@ -1,7 +1,6 @@
 package hibernate.v2.sunshine.ui.settings.eta.add.mobile
 
 import android.app.Activity
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,7 @@ import hibernate.v2.sunshine.databinding.FragmentAddEtaBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
-import hibernate.v2.sunshine.ui.settings.eta.add.leanback.RouteForRowAdapter
+import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.ui.view.ColorBarDrawable
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

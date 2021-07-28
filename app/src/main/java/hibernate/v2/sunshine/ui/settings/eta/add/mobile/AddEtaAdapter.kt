@@ -11,7 +11,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemAddEtaRouteBinding
 import hibernate.v2.sunshine.databinding.ItemAddEtaStopBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.ui.settings.eta.add.leanback.RouteForRowAdapter
+import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.ui.settings.eta.add.mobile.view.AddEtaViewHolderRoute
 import hibernate.v2.sunshine.ui.settings.eta.add.mobile.view.BaseAddEtaViewHolder
 

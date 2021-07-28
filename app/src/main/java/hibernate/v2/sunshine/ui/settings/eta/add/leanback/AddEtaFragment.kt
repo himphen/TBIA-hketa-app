@@ -12,6 +12,7 @@ import androidx.leanback.widget.ListRowPresenter
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.leanback.AddEtaActivity.Companion.ARG_ETA_TYPE

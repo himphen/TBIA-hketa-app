@@ -1,6 +1,5 @@
-package hibernate.v2.sunshine.ui.settings.eta.add.leanback
+package hibernate.v2.sunshine.model
 
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
 class RouteForRowAdapter(

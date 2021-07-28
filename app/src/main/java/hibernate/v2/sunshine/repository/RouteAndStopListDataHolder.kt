@@ -1,8 +1,7 @@
 package hibernate.v2.sunshine.repository
 
 import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
-import hibernate.v2.sunshine.ui.settings.eta.add.leanback.RouteForRowAdapter
+import hibernate.v2.sunshine.model.RouteForRowAdapter
 import java.util.EnumMap
 
 enum class RouteAndStopListDataHolder {

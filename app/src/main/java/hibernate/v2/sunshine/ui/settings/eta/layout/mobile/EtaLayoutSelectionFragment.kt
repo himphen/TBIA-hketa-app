@@ -10,7 +10,7 @@ import androidx.cardview.widget.CardView
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentEtaLayoutSelectionBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
+import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import org.koin.android.ext.android.inject
 
 class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBinding>() {
@@ -23,7 +23,7 @@ class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBindin
 
     private val adapter = EtaLayoutAdapter(sharedPreferencesManager.etaCardType,
         object : EtaLayoutAdapter.ItemListener {
-            override fun onItemSelected(item: EtaCardPresenter.CardViewType) {
+            override fun onItemSelected(item: EtaCardViewType) {
                 sharedPreferencesManager.etaCardType = item
                 updateDemoLayout(item)
                 activity?.setResult(Activity.RESULT_OK)
@@ -48,19 +48,19 @@ class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBindin
         updateDemoLayout(sharedPreferencesManager.etaCardType)
     }
 
-    fun updateDemoLayout(type: EtaCardPresenter.CardViewType) {
+    fun updateDemoLayout(type: EtaCardViewType) {
         when (type) {
-            EtaCardPresenter.CardViewType.Standard -> {
+            EtaCardViewType.Standard -> {
                 etaDemoClassic.visibility = View.GONE
                 etaDemoCompact.visibility = View.GONE
                 etaDemoStandard.visibility = View.VISIBLE
             }
-            EtaCardPresenter.CardViewType.Compact -> {
+            EtaCardViewType.Compact -> {
                 etaDemoClassic.visibility = View.GONE
                 etaDemoCompact.visibility = View.VISIBLE
                 etaDemoStandard.visibility = View.GONE
             }
-            EtaCardPresenter.CardViewType.Classic -> {
+            EtaCardViewType.Classic -> {
                 etaDemoClassic.visibility = View.VISIBLE
                 etaDemoCompact.visibility = View.GONE
                 etaDemoStandard.visibility = View.GONE

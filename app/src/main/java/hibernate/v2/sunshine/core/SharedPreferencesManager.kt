@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.core
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
+import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import hibernate.v2.sunshine.util.PreferenceUtils
 
 class SharedPreferencesManager(val context: Context) {
@@ -14,8 +14,8 @@ class SharedPreferencesManager(val context: Context) {
 
     private val preferences: SharedPreferences = PreferenceUtils.sharedPrefs(context)
 
-    var etaCardType: EtaCardPresenter.CardViewType
-        get() = EtaCardPresenter.CardViewType.from(preferences.getInt(PREF_ETA_CARD_TYPE, 0))
+    var etaCardType: EtaCardViewType
+        get() = EtaCardViewType.from(preferences.getInt(PREF_ETA_CARD_TYPE, 0))
         set(value) {
             preferences.edit {
                 putInt(PREF_ETA_CARD_TYPE, value.value)

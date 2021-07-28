@@ -9,14 +9,14 @@ import hibernate.v2.sunshine.databinding.ItemEtaClassicBinding
 import hibernate.v2.sunshine.databinding.ItemEtaCompactBinding
 import hibernate.v2.sunshine.databinding.ItemEtaStandardBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
+import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import hibernate.v2.sunshine.ui.eta.mobile.view.BaseEtaViewHolder
 import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderClassic
 import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderCompact
 import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderStandard
 
 class EtaCardAdapter(
-    var type: EtaCardPresenter.CardViewType
+    var type: EtaCardViewType
 ) : RecyclerView.Adapter<BaseEtaViewHolder<out ViewBinding>>() {
 
     private var list = mutableListOf<Card.EtaCard>()
@@ -24,21 +24,21 @@ class EtaCardAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             BaseEtaViewHolder<out ViewBinding> {
         return when (type) {
-            EtaCardPresenter.CardViewType.Classic -> EtaViewHolderClassic(
+            EtaCardViewType.Classic -> EtaViewHolderClassic(
                 ItemEtaClassicBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
-            EtaCardPresenter.CardViewType.Compact -> EtaViewHolderCompact(
+            EtaCardViewType.Compact -> EtaViewHolderCompact(
                 ItemEtaCompactBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
-            EtaCardPresenter.CardViewType.Standard -> EtaViewHolderStandard(
+            EtaCardViewType.Standard -> EtaViewHolderStandard(
                 ItemEtaStandardBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,

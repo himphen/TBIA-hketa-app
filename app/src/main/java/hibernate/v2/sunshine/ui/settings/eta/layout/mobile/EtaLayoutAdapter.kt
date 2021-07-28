@@ -4,27 +4,27 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemEtaLayoutSelectionBinding
-import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
+import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 
 class EtaLayoutAdapter(
-    defaultType: EtaCardPresenter.CardViewType,
+    defaultType: EtaCardViewType,
     private val listener: ItemListener,
 ) : RecyclerView.Adapter<EtaLayoutAdapter.ItemViewHolder>() {
 
     private var lastCheckedPosition: Int = when (defaultType) {
-        EtaCardPresenter.CardViewType.Standard -> 0
-        EtaCardPresenter.CardViewType.Compact -> 1
-        EtaCardPresenter.CardViewType.Classic -> 2
+        EtaCardViewType.Standard -> 0
+        EtaCardViewType.Compact -> 1
+        EtaCardViewType.Classic -> 2
     }
 
     interface ItemListener {
-        fun onItemSelected(item: EtaCardPresenter.CardViewType)
+        fun onItemSelected(item: EtaCardViewType)
     }
 
-    private val list: MutableList<EtaCardPresenter.CardViewType> = mutableListOf(
-        EtaCardPresenter.CardViewType.Standard,
-        EtaCardPresenter.CardViewType.Compact,
-        EtaCardPresenter.CardViewType.Classic
+    private val list: MutableList<EtaCardViewType> = mutableListOf(
+        EtaCardViewType.Standard,
+        EtaCardViewType.Compact,
+        EtaCardViewType.Classic
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -45,7 +45,7 @@ class EtaLayoutAdapter(
         viewBinding.title.text = item.getTitle(context)
         viewBinding.root.tag = item
         viewBinding.root.setOnClickListener {
-            listener.onItemSelected(it.tag as EtaCardPresenter.CardViewType)
+            listener.onItemSelected(it.tag as EtaCardViewType)
 
             val copyOfLastCheckedPosition = lastCheckedPosition
             lastCheckedPosition = position

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
-import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -47,27 +46,19 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                     val selectedItem = bottomBar.menu.items[position]
                     bottomBar.menu.select(selectedItem.id)
 
-                    mainViewModel.selectedTab.value = adapter.getTabType(position)
+                    mainViewModel.selectedTab.value =
+                        MainViewPagerAdapter.TabType.fromPosition(position)
                 }
             })
         }
 
         bottomBar.apply {
-            onItemSelectedListener = { view, menuItem, byUser ->
-                when (menuItem.id) {
-                    R.id.home -> {
+            onItemSelectedListener = { _, menuItem, byUser ->
+                MainViewPagerAdapter.TabType
+                    .fromMenuItemId(menuItem.id)?.let { tabType ->
                         if (byUser)
-                            viewBinding.viewPager.setCurrentItem(0, true)
+                            viewBinding.viewPager.setCurrentItem(tabType.position, false)
                     }
-                    R.id.settings -> {
-                        if (byUser)
-                            viewBinding.viewPager.setCurrentItem(1, true)
-                    }
-                    R.id.stopMap -> {
-                        if (byUser)
-                            viewBinding.viewPager.setCurrentItem(2, true)
-                    }
-                }
             }
         }
     }

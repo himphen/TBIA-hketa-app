@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,8 +15,8 @@ import hibernate.v2.sunshine.databinding.FragmentEtaBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
+import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
-import hibernate.v2.sunshine.ui.eta.leanback.EtaCardPresenter
 import hibernate.v2.sunshine.ui.main.mobile.MainFragment
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
@@ -130,20 +131,24 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
     private fun initAdapter() {
         Logger.d("updateAdapterViewType")
-        val viewBinding = viewBinding!!
+        val viewBinding = viewBinding ?: return
+        val context = context ?: return
         viewBinding.recyclerView.adapter = null
         viewBinding.recyclerView.adapter = adapter
         adapter.type = sharedPreferencesManager.etaCardType
 
         when (adapter.type) {
-            EtaCardPresenter.CardViewType.Classic -> {
-                context?.let { context ->
-                    val dividerItemDecoration =
-                        DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                    viewBinding.recyclerView.addItemDecoration(dividerItemDecoration)
-                }
-
+            EtaCardViewType.Classic -> {
                 viewBinding.recyclerView.apply {
+                    while (itemDecorationCount > 0) {
+                        removeItemDecorationAt(0)
+                    }
+                    addItemDecoration(
+                        DividerItemDecoration(
+                            context,
+                            LinearLayoutManager.VERTICAL
+                        )
+                    )
                     setPadding(
                         dpToPx(0),
                         dpToPx(0),
@@ -152,12 +157,21 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                     )
                 }
             }
-            EtaCardPresenter.CardViewType.Standard,
-            EtaCardPresenter.CardViewType.Compact -> {
+            EtaCardViewType.Standard,
+            EtaCardViewType.Compact -> {
                 viewBinding.recyclerView.apply {
                     while (itemDecorationCount > 0) {
                         removeItemDecorationAt(0)
                     }
+                    addItemDecoration(
+                        DividerItemDecoration(
+                            context,
+                            LinearLayoutManager.VERTICAL
+                        ).apply {
+                            setDrawable(
+                                ContextCompat.getDrawable(context, R.drawable.space_vertical)!!
+                            )
+                        })
 
                     setPadding(
                         dpToPx(0),

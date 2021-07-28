@@ -5,7 +5,7 @@ import android.view.View
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemAddEtaRouteBinding
 import hibernate.v2.sunshine.model.transport.TransportRoute
-import hibernate.v2.sunshine.ui.settings.eta.add.leanback.RouteForRowAdapter
+import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.ui.settings.eta.add.mobile.AddEtaAdapter
 
 class AddEtaViewHolderRoute(
