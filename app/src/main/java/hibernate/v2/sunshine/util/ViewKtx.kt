@@ -4,10 +4,15 @@ import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
 import android.graphics.PorterDuff
 import android.os.Build
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import androidx.annotation.ColorInt
 import androidx.core.widget.addTextChangedListener
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -42,3 +47,10 @@ fun View.updateBackgroundColor(@ColorInt color: Int) {
     }
 }
 
+fun View.slideToBottomAnimate(show: Boolean) {
+    val transition: Transition = Slide(Gravity.BOTTOM)
+    transition.duration = 600
+    transition.addTarget(this)
+    TransitionManager.beginDelayedTransition(parent as ViewGroup, transition)
+    visibility = if (show) View.VISIBLE else View.GONE
+}

@@ -177,7 +177,16 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 state = BottomSheetBehavior.STATE_HIDDEN
                 addBottomSheetCallback(object : BottomSheetCallback() {
                     override fun onStateChanged(bottomSheet: View, newState: Int) {
-                        mainViewModel.onStopBottomSheetStateChanged.value = newState
+                        when (newState) {
+                            BottomSheetBehavior.STATE_HIDDEN,
+                            BottomSheetBehavior.STATE_HALF_EXPANDED,
+                            BottomSheetBehavior.STATE_COLLAPSED,
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+                                mainViewModel.onStopBottomSheetStateChanged.value = newState
+                            }
+                            else -> {
+                            }
+                        }
                     }
 
                     override fun onSlide(bottomSheet: View, slideOffset: Float) {
@@ -192,7 +201,16 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 state = BottomSheetBehavior.STATE_HIDDEN
                 addBottomSheetCallback(object : BottomSheetCallback() {
                     override fun onStateChanged(bottomSheet: View, newState: Int) {
-                        mainViewModel.onRouteBottomSheetStateChanged.value = newState
+                        when (newState) {
+                            BottomSheetBehavior.STATE_HIDDEN,
+                            BottomSheetBehavior.STATE_HALF_EXPANDED,
+                            BottomSheetBehavior.STATE_COLLAPSED,
+                            BottomSheetBehavior.STATE_EXPANDED -> {
+                                mainViewModel.onRouteBottomSheetStateChanged.value = newState
+                            }
+                            else -> {
+                            }
+                        }
                     }
 
                     override fun onSlide(bottomSheet: View, slideOffset: Float) {}

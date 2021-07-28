@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import hibernate.v2.sunshine.databinding.FragmentMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
+import hibernate.v2.sunshine.util.slideToBottomAnimate
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class MainFragment : BaseFragment<FragmentMainBinding>() {
@@ -27,6 +28,16 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         initUI()
+        initEvent()
+    }
+
+    private fun initEvent() {
+        mainViewModel.onStopBottomSheetStateChanged.observe(viewLifecycleOwner) {
+            viewBinding?.bottomBar?.slideToBottomAnimate(mainViewModel.isBottomSheetClosed())
+        }
+        mainViewModel.onRouteBottomSheetStateChanged.observe(viewLifecycleOwner) {
+            viewBinding?.bottomBar?.slideToBottomAnimate(mainViewModel.isBottomSheetClosed())
+        }
     }
 
     private fun initUI() {
