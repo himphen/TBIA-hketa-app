@@ -2,9 +2,10 @@ package hibernate.v2.sunshine.ui.main.mobile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.databinding.ActivityMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
-import hibernate.v2.sunshine.ui.searchmap.SearchMapFragment
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseFragmentActivity<ActivityMainBinding>() {
@@ -20,13 +21,12 @@ class MainActivity : BaseFragmentActivity<ActivityMainBinding>() {
     }
 
     override fun onBackPressed() {
-        mainViewModel.selectedTab.value?.let {
-            (fragment?.childFragmentManager?.findFragmentByTag("f${it.position}") as? SearchMapFragment)?.let { fragment ->
-                // TODO should use view model MutableLiveData
-                if (fragment.isBottomSheetShown()) {
-                    fragment.closeBottomSheet()
-                    return
+        if (mainViewModel.selectedTab.value == MainViewPagerAdapter.TabType.SearchMap) {
+            if (!mainViewModel.isBottomSheetClosed()) {
+                lifecycleScope.launch {
+                    mainViewModel.onRequestedCloseBottomSheet.emit(Unit)
                 }
+                return
             }
         }
 

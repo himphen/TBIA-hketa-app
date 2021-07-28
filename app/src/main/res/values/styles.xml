@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ThemeOverlay.MyApp.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+    <style name="ThemeOverlay.MyApp.ActionBar" parent="ThemeOverlay.MaterialComponents.ActionBar">
         <item name="android:textColorPrimary">@color/actionbar_title_text</item>
-    </style>
-
-    <style name="Widget.MyApp.Toolbar.Solid" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/actionbar_color</item>
-        <item name="android:elevation">4dp</item>
     </style>
 
     <style name="LeftMenuStyle">
@@ -79,7 +75,7 @@
         <item name="android:padding">24dp</item>
     </style>
 
-    <style name="MainButton" parent="Widget.AppCompat.Button.Colored">
+    <style name="MainButton" parent="Widget.MaterialComponents.Button">
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/white</item>
         <item name="colorAccent">@color/mainButton</item>
@@ -87,7 +83,7 @@
         <item name="colorControlHighlight">@color/secondaryText</item>
     </style>
 
-    <style name="GreenButton" parent="Widget.AppCompat.Button.Colored">
+    <style name="GreenButton" parent="Widget.MaterialComponents.Button">
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/white</item>
         <item name="colorAccent">@color/greenButton</item>
@@ -95,7 +91,7 @@
         <item name="colorControlHighlight">@color/secondaryText</item>
     </style>
 
-    <style name="BorderlessButton" parent="Widget.AppCompat.Button.Borderless">
+    <style name="BorderlessButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/primaryText</item>
         <item name="colorAccent">@color/transparent</item>

@@ -7,7 +7,7 @@ import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 import hibernate.v2.sunshine.db.nc.NCStopEntity
 import hibernate.v2.sunshine.model.transport.EtaType
 
-data class Stop(
+data class SearchMapStop(
     val lat: Double,
     val lng: Double,
     val nameEn: String,
@@ -15,12 +15,11 @@ data class Stop(
     val nameTc: String,
     val stopId: String,
     val etaType: EtaType,
-    var routeNumberList: List<String> = emptyList(),
-    var mapRouteList: List<Route> = emptyList()
+    var mapRouteList: List<SearchMapRoute> = emptyList()
 ) : ClusterItem {
     companion object {
-        fun fromStopEntity(it: KmbStopEntity): Stop {
-            return Stop(
+        fun fromStopEntity(it: KmbStopEntity): SearchMapStop {
+            return SearchMapStop(
                 lat = it.lat,
                 lng = it.lng,
                 nameEn = it.nameEn,
@@ -31,8 +30,8 @@ data class Stop(
             )
         }
 
-        fun fromStopEntity(it: NCStopEntity): Stop {
-            return Stop(
+        fun fromStopEntity(it: NCStopEntity): SearchMapStop {
+            return SearchMapStop(
                 lat = it.lat,
                 lng = it.lng,
                 nameEn = it.nameEn,
@@ -43,8 +42,8 @@ data class Stop(
             )
         }
 
-        fun fromStopEntity(it: GmbStopEntity): Stop {
-            return Stop(
+        fun fromStopEntity(it: GmbStopEntity): SearchMapStop {
+            return SearchMapStop(
                 lat = it.lat,
                 lng = it.lng,
                 nameEn = it.nameEn,

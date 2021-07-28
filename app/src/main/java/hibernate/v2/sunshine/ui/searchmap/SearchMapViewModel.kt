@@ -3,8 +3,8 @@ package hibernate.v2.sunshine.ui.searchmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.model.searchmap.Route
-import hibernate.v2.sunshine.model.searchmap.Stop
+import hibernate.v2.sunshine.model.searchmap.SearchMapRoute
+import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.NCRepository
@@ -20,10 +20,10 @@ class SearchMapViewModel(
     private val gmbRepository: GmbRepository,
 ) : BaseViewModel() {
 
-    val selectedStop =  MutableLiveData<Stop>()
-    val stopList = MutableLiveData<List<Stop>?>()
-    val routeListForBottomSheet = MutableLiveData<List<Route>?>()
-    val stopListForBottomSheet = MutableLiveData<List<Stop>?>()
+    val selectedStop =  MutableLiveData<SearchMapStop>()
+    val stopList = MutableLiveData<List<SearchMapStop>?>()
+    val routeListForBottomSheet = MutableLiveData<List<SearchMapRoute>?>()
+    val stopListForBottomSheet = MutableLiveData<List<SearchMapStop>?>()
 
     fun getRouteListFromStop(etaType: EtaType, stopId: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -36,7 +36,7 @@ class SearchMapViewModel(
         }
     }
 
-    fun getRouteListFromStopList(stopList: List<Stop>) {
+    fun getRouteListFromStopList(stopList: List<SearchMapStop>) {
         viewModelScope.launch(Dispatchers.IO) {
             val list = stopList.groupBy({ it.etaType }, { it }).map { (etaType, stopMapList) ->
                 when (etaType) {
@@ -56,17 +56,17 @@ class SearchMapViewModel(
                 val deferredList = listOf(
                     async {
                         kmbRepository.getStopListDb().map {
-                            Stop.fromStopEntity(it)
+                            SearchMapStop.fromStopEntity(it)
                         }
                     },
                     async {
                         ncRepository.getStopListDb().map {
-                            Stop.fromStopEntity(it)
+                            SearchMapStop.fromStopEntity(it)
                         }
                     },
                     async {
                         gmbRepository.getStopListDb().map {
-                            Stop.fromStopEntity(it)
+                            SearchMapStop.fromStopEntity(it)
                         }
                     },
                 )

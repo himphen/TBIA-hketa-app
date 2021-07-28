@@ -40,6 +40,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             isUserInputEnabled = false
             offscreenPageLimit = 1
 
+            mainViewModel.selectedTab.value = MainViewPagerAdapter.TabType.Eta
+
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     val selectedItem = bottomBar.menu.items[position]

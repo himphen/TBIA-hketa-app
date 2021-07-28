@@ -50,6 +50,10 @@
     <string name="toast_eta_added">已加入站位。</string>
     <string name="eta_card_minute_unit">分</string>
 
+    <string name="dialog_add_eta_in_search_map_description">加入 %1$s %2$s 車站至主頁？</string>
+    <string name="dialog_add_eta_in_search_map_confirm_btn">確定</string>
+    <string name="dialog_add_eta_in_search_map_cancel_btn">取消</string>
+
     <string name="dialog_eta_layout_title">選擇到站時間卡片樣式</string>
     <string name="dialog_eta_layout_standard_btn">標準</string>
     <string name="dialog_eta_layout_compact_btn">緊湊</string>

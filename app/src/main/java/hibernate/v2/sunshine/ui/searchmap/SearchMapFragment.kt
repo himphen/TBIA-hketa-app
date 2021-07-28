@@ -1,6 +1,7 @@
 package hibernate.v2.sunshine.ui.searchmap
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +22,8 @@ import com.google.maps.android.ktx.awaitMap
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentSearchMapBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.searchmap.Route
-import hibernate.v2.sunshine.model.searchmap.Stop
+import hibernate.v2.sunshine.model.searchmap.SearchMapRoute
+import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
@@ -30,8 +31,10 @@ import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import kotlin.coroutines.resume
 
 class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
@@ -51,12 +54,12 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private var clusterManager: CustomClusterManager? = null
 
     private val routeListAdapter = RouteListAdapter(object : RouteListAdapter.ItemListener {
-        override fun onRouteSelected(mapRoute: Route) {
+        override fun onRouteSelected(searchMapRoute: SearchMapRoute) {
             val selectedStop = viewModel.selectedStop.value ?: return
 
-            etaViewModel.saveStop(
-                Card.RouteStopAddCard(
-                    mapRoute.route,
+            viewLifecycleOwner.lifecycleScope.launch {
+                val card = Card.RouteStopAddCard(
+                    searchMapRoute.route,
                     TransportStop(
                         lat = selectedStop.lat,
                         lng = selectedStop.lng,
@@ -64,17 +67,33 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                         nameSc = selectedStop.nameSc,
                         nameTc = selectedStop.nameTc,
                         stopId = selectedStop.stopId,
-                        seq = mapRoute.seq
+                        seq = searchMapRoute.seq
                     )
                 )
-            )
+                val result = suspendCancellableCoroutine<Boolean> { cont ->
+                    val dialog = SearchMapAddEtaDialog(
+                        card,
+                        { _, which ->
+                            if (which == DialogInterface.BUTTON_POSITIVE) {
+                                cont.resume(true)
+                            }
+                        }
+                    )
+                    dialog.show(childFragmentManager, null)
+                    cont.invokeOnCancellation { dialog.dismiss() }
+                }
+
+                if (result) {
+                    etaViewModel.saveStop(card)
+                }
+            }
         }
     })
 
     private val stopListAdapter = StopListAdapter(object : StopListAdapter.ItemListener {
-        override fun onStopSelected(stop: Stop) {
-            googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(stop.position, 19f))
-            showRouteBottomSheet(stop = stop)
+        override fun onStopSelected(searchMapStop: SearchMapStop) {
+            googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(searchMapStop.position, 19f))
+            showRouteBottomSheet(stop = searchMapStop)
         }
     })
 
@@ -125,6 +144,10 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 ).show()
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        mainViewModel.onRequestedCloseBottomSheet.onEach {
+            closeBottomSheet()
+        }.launchIn(lifecycleScope)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -154,15 +177,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 state = BottomSheetBehavior.STATE_HIDDEN
                 addBottomSheetCallback(object : BottomSheetCallback() {
                     override fun onStateChanged(bottomSheet: View, newState: Int) {
-                        when (newState) {
-                            BottomSheetBehavior.STATE_COLLAPSED,
-                            BottomSheetBehavior.STATE_HIDDEN -> {
-                            }
-                            BottomSheetBehavior.STATE_HALF_EXPANDED,
-                            BottomSheetBehavior.STATE_EXPANDED -> {
-
-                            }
-                        }
+                        mainViewModel.onStopBottomSheetStateChanged.value = newState
                     }
 
                     override fun onSlide(bottomSheet: View, slideOffset: Float) {
@@ -177,19 +192,10 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 state = BottomSheetBehavior.STATE_HIDDEN
                 addBottomSheetCallback(object : BottomSheetCallback() {
                     override fun onStateChanged(bottomSheet: View, newState: Int) {
-                        when (newState) {
-                            BottomSheetBehavior.STATE_COLLAPSED,
-                            BottomSheetBehavior.STATE_HIDDEN -> {
-                            }
-                            BottomSheetBehavior.STATE_HALF_EXPANDED,
-                            BottomSheetBehavior.STATE_EXPANDED -> {
-
-                            }
-                        }
+                        mainViewModel.onRouteBottomSheetStateChanged.value = newState
                     }
 
-                    override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    }
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) {}
                 })
             }
     }
@@ -268,7 +274,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         }
     }
 
-    private fun showRouteBottomSheet(stop: Stop) {
+    private fun showRouteBottomSheet(stop: SearchMapStop) {
         viewModel.selectedStop.value = stop
         stopListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
@@ -280,7 +286,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         viewModel.getRouteListFromStop(stop.etaType, stop.stopId)
     }
 
-    private fun showStopBottomSheet(list: List<Stop>?) {
+    private fun showStopBottomSheet(list: List<SearchMapStop>?) {
         if (list == null) return
         routeListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
@@ -293,23 +299,19 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         viewModel.getRouteListFromStopList(list)
     }
 
-    private fun showStopListOnBottomSheet(list: List<Stop>?) {
+    private fun showStopListOnBottomSheet(list: List<SearchMapStop>?) {
         stopListAdapter.setData(list?.toMutableList())
     }
 
-    private fun showRouteListOnBottomSheet(list: List<Route>?) {
+    private fun showRouteListOnBottomSheet(list: List<SearchMapRoute>?) {
         routeListAdapter.setData(list?.toMutableList())
     }
 
-    private fun showStopListOnMap(list: List<Stop>?) {
+    private fun showStopListOnMap(list: List<SearchMapStop>?) {
         clusterManager?.addItems(list)
     }
 
-    fun isBottomSheetShown() =
-        routeListBottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN
-                || stopListBottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN
-
-    fun closeBottomSheet() {
+    private fun closeBottomSheet() {
         routeListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         stopListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }

@@ -5,19 +5,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemBottomSheetRouteBinding
-import hibernate.v2.sunshine.model.searchmap.Route
+import hibernate.v2.sunshine.model.searchmap.SearchMapRoute
 
 class RouteListAdapter(val listener: ItemListener) :
-    RecyclerView.Adapter<RouteListAdapter.ItemStopMapVH>() {
+    RecyclerView.Adapter<RouteListAdapter.ItemVH>() {
 
     interface ItemListener {
-        fun onRouteSelected(mapRoute: Route)
+        fun onRouteSelected(searchMapRoute: SearchMapRoute)
     }
 
-    private var list = mutableListOf<Route>()
+    private var list = mutableListOf<SearchMapRoute>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        ItemStopMapVH(
+        ItemVH(
             ItemBottomSheetRouteBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -25,7 +25,7 @@ class RouteListAdapter(val listener: ItemListener) :
             )
         )
 
-    override fun onBindViewHolder(holder: ItemStopMapVH, position: Int) {
+    override fun onBindViewHolder(holder: ItemVH, position: Int) {
         val viewBinding = holder.viewBinding
         val item = list[position]
         val route = item.route
@@ -35,25 +35,25 @@ class RouteListAdapter(val listener: ItemListener) :
             routeDirectionTv.text = route.getDestDirectionText(context)
             routeCompanyColor.setBackgroundResource(route.getColor(true))
             root.tag = item
-            root.setOnClickListener { listener.onRouteSelected(it.tag as Route) }
+            root.setOnClickListener { listener.onRouteSelected(it.tag as SearchMapRoute) }
         }
     }
 
     override fun getItemCount(): Int = list.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(list: MutableList<Route>?) {
+    fun setData(list: MutableList<SearchMapRoute>?) {
         if (list == null) return
 
         this.list = list
         notifyDataSetChanged()
     }
 
-    fun replace(position: Int, item: Route) {
+    fun replace(position: Int, item: SearchMapRoute) {
         list[position] = item
         notifyItemChanged(position)
     }
 
-    inner class ItemStopMapVH(val viewBinding: ItemBottomSheetRouteBinding) :
+    inner class ItemVH(val viewBinding: ItemBottomSheetRouteBinding) :
         RecyclerView.ViewHolder(viewBinding.root)
 }
