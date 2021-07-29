@@ -4,11 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import hibernate.v2.sunshine.R
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import hibernate.v2.sunshine.databinding.ItemBottomSheetStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteBadgeBinding
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
@@ -35,13 +36,12 @@ class StopListAdapter(val listener: ItemListener) :
             )
         ).apply {
             viewBinding.routeNumberRecyclerView.apply {
-                addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL)
-                    .apply {
-                        setDrawable(
-                            ContextCompat.getDrawable(context, R.drawable.space_horizontal)!!
-                        )
-                    }
-                )
+                layoutManager = FlexboxLayoutManager(context).apply {
+                    flexWrap = FlexWrap.WRAP
+                    alignItems = AlignItems.CENTER
+                    flexDirection = FlexDirection.ROW
+                    justifyContent = JustifyContent.FLEX_START
+                }
                 adapter = RouteBadgeAdapter()
             }
         }
