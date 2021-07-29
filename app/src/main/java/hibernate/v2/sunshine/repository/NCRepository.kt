@@ -11,7 +11,7 @@ import hibernate.v2.sunshine.db.nc.NCDao
 import hibernate.v2.sunshine.db.nc.NCRouteEntity
 import hibernate.v2.sunshine.db.nc.NCRouteStopEntity
 import hibernate.v2.sunshine.db.nc.NCStopEntity
-import hibernate.v2.sunshine.model.searchmap.SearchMapRoute
+import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.util.getSnapshotValue
@@ -96,14 +96,14 @@ class NCRepository(
     suspend fun setMapRouteListIntoMapStop(stopList: List<SearchMapStop>): List<SearchMapStop> {
         return stopList.map {
             if (it.mapRouteList.isEmpty()) {
-                it.mapRouteList = getMapRouteList(it.stopId)
+                it.mapRouteList = getRouteEtaCardList(it)
             }
             it
         }
     }
 
-    suspend fun getMapRouteList(stopId: String): List<SearchMapRoute> {
-        val routeStopList = ncDao.getRouteStopListFromStopId(stopId)
+    suspend fun getRouteEtaCardList(stop: SearchMapStop): List<Card.EtaCard> {
+        val routeStopList = ncDao.getRouteStopListFromStopId(stop.stopId)
         val routeList = ncDao.getRouteListFromRouteId(routeStopList)
         val routeHashMap = routeList.map {
             it.routeHashId() to it
@@ -112,9 +112,10 @@ class NCRepository(
         return routeStopList.mapNotNull {
             val route = routeHashMap[it.routeHashId()] ?: return@mapNotNull null
 
-            SearchMapRoute(
+            Card.EtaCard(
                 route.toTransportModel(),
-                it.seq
+                stop.toTransportModelWithSeq(it.seq),
+                position = 0
             )
         }
     }

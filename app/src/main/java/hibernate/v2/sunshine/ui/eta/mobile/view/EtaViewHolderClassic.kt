@@ -4,44 +4,22 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemEtaClassicBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.TransportEta
-import hibernate.v2.sunshine.util.DateUtil
-import java.util.Date
 
-class EtaViewHolderClassic(override val viewBinding: ItemEtaClassicBinding) :
+class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
     BaseEtaViewHolder<ItemEtaClassicBinding>(viewBinding) {
 
     override fun onBind(card: Card.EtaCard) {
-        val color = when (card.route.company) {
-            Company.KMB -> R.color.brand_color_kmb
-            Company.NWFB -> R.color.brand_color_nwfb
-            Company.CTB -> R.color.brand_color_ctb
-            Company.GMB -> R.color.brand_color_gmb
-            Company.UNKNOWN -> R.color.eta_card_bg_selected
-        }
+        viewBinding.content.apply {
+            val route = card.route
+            val color = route.getColor(false)
 
-        viewBinding.content.routeCompanyColor.setBackgroundResource(color)
-        viewBinding.content.routeNumberTv.text = card.route.routeNo
-        viewBinding.content.stopNameTv.text = card.stop.nameTc
-        viewBinding.content.routeDirectionTv.text = card.route.getDestDirectionText(context)
-        viewBinding.content.etaMinuteTv.text =
-            getEtaMinuteText(card.etaList.getOrNull(0))
-        viewBinding.content.etaTimeTv.text = getEtaTimeText(card.etaList)
-    }
-
-    private fun getEtaMinuteText(eta: TransportEta?): String {
-        eta?.eta?.let { etaDate ->
-            val minutes = DateUtil.getTimeDiffInMin(
-                etaDate,
-                Date()
-            )
-            return (minutes + 1).toString() + " 分鐘"
-        } ?: run {
-            eta?.rmkTc?.let { rmkTc ->
-                if (rmkTc.isNotEmpty()) return rmkTc
-            }
-
-            return "-"
+            routeCompanyColor.setBackgroundResource(color)
+            routeNumberTv.text = card.route.routeNo
+            stopNameTv.text = card.stop.nameTc
+            routeDirectionTv.text = card.route.getDestDirectionText(context)
+            etaMinuteTv.text =
+                card.etaList.getOrNull(0)?.getEtaMinuteText(context)
+            etaTimeTv.text = getEtaTimeText(card.etaList)
         }
     }
 }

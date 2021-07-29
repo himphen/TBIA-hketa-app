@@ -5,7 +5,9 @@ import com.google.maps.android.clustering.ClusterItem
 import hibernate.v2.sunshine.db.gmb.GmbStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 import hibernate.v2.sunshine.db.nc.NCStopEntity
+import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.EtaType
+import hibernate.v2.sunshine.model.transport.TransportStop
 
 data class SearchMapStop(
     val lat: Double,
@@ -15,7 +17,7 @@ data class SearchMapStop(
     val nameTc: String,
     val stopId: String,
     val etaType: EtaType,
-    var mapRouteList: List<SearchMapRoute> = emptyList()
+    var mapRouteList: List<Card.EtaCard> = emptyList()
 ) : ClusterItem {
     companion object {
         fun fromStopEntity(it: KmbStopEntity): SearchMapStop {
@@ -53,6 +55,18 @@ data class SearchMapStop(
                 etaType = EtaType.GMB
             )
         }
+    }
+
+    fun toTransportModelWithSeq(seq: Int): TransportStop {
+        return TransportStop(
+            stopId = stopId,
+            nameEn = nameEn,
+            nameTc = nameTc,
+            nameSc = nameSc,
+            lat = lat,
+            lng = lng,
+            seq = seq,
+        )
     }
 
     override fun getPosition(): LatLng {

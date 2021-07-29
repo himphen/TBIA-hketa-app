@@ -22,18 +22,24 @@ import com.google.maps.android.ktx.awaitMap
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentSearchMapBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.searchmap.SearchMapRoute
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
-import hibernate.v2.sunshine.model.transport.TransportStop
+import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
+import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
+import hibernate.v2.sunshine.util.DateUtil
+import hibernate.v2.sunshine.util.launchPeriodicAsync
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.util.Date
 import kotlin.coroutines.resume
 
 class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
@@ -48,31 +54,25 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private lateinit var routeListBottomSheetBehavior: BottomSheetBehavior<*>
 
     private val viewModel: SearchMapViewModel by inject()
-    private val etaViewModel: AddEtaViewModel by inject()
+    private val addEtaViewModel: AddEtaViewModel by inject()
+    private val etaViewModel: EtaViewModel by inject()
     private val mainViewModel: MainViewModel by sharedViewModel()
 
     private var clusterManager: CustomClusterManager? = null
 
-    private val routeListAdapter = RouteListAdapter(object : RouteListAdapter.ItemListener {
-        override fun onRouteSelected(searchMapRoute: SearchMapRoute) {
-            val selectedStop = viewModel.selectedStop.value ?: return
+    private var routeBottomSheetEtaCardList: MutableList<Card.EtaCard> = mutableListOf()
+    private var refreshEtaJob: Deferred<Unit>? = null
 
+    private val routeListAdapter = RouteListAdapter(object : RouteListAdapter.ItemListener {
+        override fun onRouteSelected(card: Card.EtaCard) {
             viewLifecycleOwner.lifecycleScope.launch {
-                val card = Card.RouteStopAddCard(
-                    searchMapRoute.route,
-                    TransportStop(
-                        lat = selectedStop.lat,
-                        lng = selectedStop.lng,
-                        nameEn = selectedStop.nameEn,
-                        nameSc = selectedStop.nameSc,
-                        nameTc = selectedStop.nameTc,
-                        stopId = selectedStop.stopId,
-                        seq = searchMapRoute.seq
-                    )
+                val addCard = Card.RouteStopAddCard(
+                    card.route,
+                    card.stop
                 )
                 val result = suspendCancellableCoroutine<Boolean> { cont ->
                     val dialog = SearchMapAddEtaDialog(
-                        card,
+                        addCard,
                         { _, which ->
                             if (which == DialogInterface.BUTTON_POSITIVE) {
                                 cont.resume(true)
@@ -84,7 +84,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 }
 
                 if (result) {
-                    etaViewModel.saveStop(card)
+                    addEtaViewModel.saveStop(addCard)
                 }
             }
         }
@@ -100,6 +100,8 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private var googleMap: GoogleMap? = null
 
     companion object {
+        private const val REFRESH_TIME = 60 * 1000L
+
         fun getInstance() = SearchMapFragment()
     }
 
@@ -126,7 +128,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             showStopListOnBottomSheet(it)
         }
 
-        etaViewModel.isAddEtaSuccessful.onEach {
+        addEtaViewModel.isAddEtaSuccessful.onEach {
             if (it) {
                 lifecycleScope.launchWhenResumed {
                     mainViewModel.onUpdatedEtaList.emit(Unit)
@@ -148,6 +150,18 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         mainViewModel.onRequestedCloseBottomSheet.onEach {
             closeBottomSheet()
         }.launchIn(lifecycleScope)
+
+        mainViewModel.onRouteBottomSheetStateChanged.observe(viewLifecycleOwner) {
+            if (it == BottomSheetBehavior.STATE_HIDDEN) {
+                stopRefreshEtaJob()
+            }
+        }
+
+        etaViewModel.savedEtaCardList.observe(viewLifecycleOwner) {
+            routeBottomSheetEtaCardList.clear()
+            routeBottomSheetEtaCardList.addAll(it)
+            processEtaList()
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -301,7 +315,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         }
         routeListAdapter.setData(mutableListOf())
         routeListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-        viewModel.getRouteListFromStop(stop.etaType, stop.stopId)
+        viewModel.getRouteListFromStop(stop.etaType, stop)
     }
 
     private fun showStopBottomSheet(list: List<SearchMapStop>?) {
@@ -321,8 +335,13 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         stopListAdapter.setData(list?.toMutableList())
     }
 
-    private fun showRouteListOnBottomSheet(list: List<SearchMapRoute>?) {
-        routeListAdapter.setData(list?.toMutableList())
+    private fun showRouteListOnBottomSheet(list: List<Card.EtaCard>) {
+        routeBottomSheetEtaCardList.clear()
+        routeBottomSheetEtaCardList.addAll(list)
+        routeListAdapter.setData(routeBottomSheetEtaCardList)
+        processEtaList()
+
+        restartRefreshEtaJob()
     }
 
     private fun showStopListOnMap(list: List<SearchMapStop>?) {
@@ -332,5 +351,55 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private fun closeBottomSheet() {
         routeListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         stopListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startRefreshEtaJob()
+    }
+
+    override fun onPause() {
+        stopRefreshEtaJob()
+        super.onPause()
+    }
+
+    private fun processEtaList() {
+        val etaCardList = routeBottomSheetEtaCardList
+        if (!etaCardList.isNullOrEmpty()) {
+            etaCardList.forEachIndexed { index, etaCard ->
+                etaCard.etaList = etaCard.etaList.filter { eta: TransportEta ->
+                    eta.eta?.let { etaDate ->
+                        val currentDate = Date()
+                        DateUtil.getTimeDiffInMin(
+                            etaDate,
+                            currentDate
+                        ) > 0
+                    } ?: run {
+                        false
+                    }
+                }
+
+                routeListAdapter.replace(index, etaCard)
+            }
+        }
+    }
+
+    private fun restartRefreshEtaJob() {
+        stopRefreshEtaJob()
+        startRefreshEtaJob()
+    }
+
+    private fun startRefreshEtaJob() {
+        if (routeBottomSheetEtaCardList.isNotEmpty()) {
+            refreshEtaJob =
+                CoroutineScope(Dispatchers.Main).launchPeriodicAsync(REFRESH_TIME) {
+                    etaViewModel.updateEtaList(routeBottomSheetEtaCardList)
+                }
+        }
+    }
+
+    private fun stopRefreshEtaJob() {
+        refreshEtaJob?.cancel()
+        refreshEtaJob = null
     }
 }

@@ -11,7 +11,7 @@ import hibernate.v2.sunshine.db.gmb.GmbDao
 import hibernate.v2.sunshine.db.gmb.GmbRouteEntity
 import hibernate.v2.sunshine.db.gmb.GmbRouteStopEntity
 import hibernate.v2.sunshine.db.gmb.GmbStopEntity
-import hibernate.v2.sunshine.model.searchmap.SearchMapRoute
+import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.util.getSnapshotValue
@@ -96,14 +96,14 @@ class GmbRepository(
     suspend fun setMapRouteListIntoMapStop(stopList: List<SearchMapStop>): List<SearchMapStop> {
         return stopList.map {
             if (it.mapRouteList.isEmpty()) {
-                it.mapRouteList = getMapRouteListFromStopId(it.stopId)
+                it.mapRouteList = getRouteEtaCardList(it)
             }
             it
         }
     }
 
-    suspend fun getMapRouteListFromStopId(stopId: String): List<SearchMapRoute> {
-        val routeStopList = gmbDao.getRouteStopListFromStopId(stopId)
+    suspend fun getRouteEtaCardList(stop: SearchMapStop): List<Card.EtaCard> {
+        val routeStopList = gmbDao.getRouteStopListFromStopId(stop.stopId)
         val routeList = gmbDao.getRouteListFromRouteId(routeStopList)
         val routeHashMap = routeList.map {
             it.routeHashId() to it
@@ -112,9 +112,10 @@ class GmbRepository(
         return routeStopList.mapNotNull {
             val route = routeHashMap[it.routeHashId()] ?: return@mapNotNull null
 
-            SearchMapRoute(
+            Card.EtaCard(
                 route.toTransportModel(),
-                it.seq
+                stop.toTransportModelWithSeq(it.seq),
+                position = 0
             )
         }
     }

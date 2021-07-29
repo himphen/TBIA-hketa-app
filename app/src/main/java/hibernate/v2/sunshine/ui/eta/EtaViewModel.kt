@@ -38,7 +38,6 @@ class EtaViewModel(
             convertedEtaCardList.sort()
 
             if (convertedEtaCardList.isEmpty()) {
-//                savedEtaCardList.postValue(getDefaultEtaEntityList())
                 savedEtaCardList.postValue(emptyList())
             } else {
                 savedEtaCardList.postValue(convertedEtaCardList)

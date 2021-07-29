@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.model.transport
 
+import android.content.Context
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.BusEta
 import hibernate.v2.api.model.transport.gmb.GmbEta
@@ -43,6 +44,22 @@ class TransportEta(
                 bound = Bound.O,
                 seq = eta.seq
             )
+        }
+    }
+
+    fun getEtaMinuteText(context: Context): String {
+        eta?.let { etaDate ->
+            val minutes = DateUtil.getTimeDiffInMin(
+                etaDate,
+                Date()
+            )
+            return (minutes + 1).toString() + " 分鐘"
+        } ?: run {
+            rmkTc?.let { rmkTc ->
+                if (rmkTc.isNotEmpty()) return rmkTc
+            }
+
+            return "-"
         }
     }
 }

@@ -139,6 +139,7 @@ class EtaFragment : VerticalGridSupportFragment() {
     override fun onPause() {
         super.onPause()
         refreshEtaJob?.cancel()
+        refreshEtaJob = null
     }
 
     private suspend fun getFragmentWidth(view: View): Int {

@@ -193,6 +193,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     override fun onPause() {
         super.onPause()
         refreshEtaJob?.cancel()
+        refreshEtaJob = null
     }
 
     override fun getViewBinding(

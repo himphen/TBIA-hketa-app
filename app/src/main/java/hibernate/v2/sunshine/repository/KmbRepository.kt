@@ -8,7 +8,7 @@ import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
-import hibernate.v2.sunshine.model.searchmap.SearchMapRoute
+import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
@@ -33,14 +33,14 @@ class KmbRepository(
     suspend fun setMapRouteListIntoMapStop(stopList: List<SearchMapStop>): List<SearchMapStop> {
         return stopList.map {
             if (it.mapRouteList.isEmpty()) {
-                it.mapRouteList = getMapRouteListFromStopId(it.stopId)
+                it.mapRouteList = getRouteEtaCardList(it)
             }
             it
         }
     }
 
-    suspend fun getMapRouteListFromStopId(stopId: String): List<SearchMapRoute> {
-        val routeStopList = kmbDao.getRouteStopListFromStopId(stopId)
+    suspend fun getRouteEtaCardList(stop: SearchMapStop): List<Card.EtaCard> {
+        val routeStopList = kmbDao.getRouteStopListFromStopId(stop.stopId)
         val routeList = kmbDao.getRouteListFromRouteId(routeStopList)
         val routeHashMap = routeList.map {
             it.routeHashId() to it
@@ -49,9 +49,10 @@ class KmbRepository(
         return routeStopList.mapNotNull {
             val route = routeHashMap[it.routeHashId()] ?: return@mapNotNull null
 
-            SearchMapRoute(
+            Card.EtaCard(
                 route.toTransportModel(),
-                it.seq
+                stop.toTransportModelWithSeq(it.seq),
+                position = 0
             )
         }
     }
