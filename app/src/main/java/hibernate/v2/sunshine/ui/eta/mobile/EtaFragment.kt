@@ -17,7 +17,7 @@ import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
-import hibernate.v2.sunshine.ui.main.mobile.MainFragment
+import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.dpToPx
@@ -153,7 +153,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                         dpToPx(0),
                         dpToPx(0),
                         dpToPx(0),
-                        dpToPx(MainFragment.bottomBarHeight)
+                        dpToPx(MainActivity.bottomBarHeight)
                     )
                 }
             }
@@ -177,7 +177,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                         dpToPx(0),
                         dpToPx(4),
                         dpToPx(0),
-                        dpToPx(MainFragment.bottomBarHeight)
+                        dpToPx(MainActivity.bottomBarHeight)
                     )
                 }
             }
