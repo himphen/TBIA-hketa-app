@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 
 class AddEtaViewPagerAdapter(
     private val fragment: Fragment,
@@ -14,14 +13,15 @@ class AddEtaViewPagerAdapter(
 
     val list = listOf(
         EtaType.KMB,
-        EtaType.NWFB_CTB,
+        EtaType.NWFB,
+        EtaType.CTB,
         EtaType.GMB
     )
 
     /**
      * Returns the number of pages
      */
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = 4
 
     /**
      * This method will be invoked when a page is requested to create
@@ -32,7 +32,7 @@ class AddEtaViewPagerAdapter(
 
     fun getTabView(position: Int): View {
         val v = View.inflate(fragment.context, R.layout.tab_add_eta, null)
-        v.findViewById<TextView>(R.id.tabTitleTv).text = list[position].etaTypeName(v.context)
+        v.findViewById<TextView>(R.id.tabTitleTv).text = list[position].name(v.context)
         return v
     }
 }

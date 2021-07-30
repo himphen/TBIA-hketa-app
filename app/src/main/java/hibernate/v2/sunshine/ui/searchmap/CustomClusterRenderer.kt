@@ -39,7 +39,8 @@ class CustomClusterRenderer(
         drawMarker(
             when (item.etaType) {
                 EtaType.KMB -> R.drawable.map_marker_bus_stop_kmb
-                EtaType.NWFB_CTB -> R.drawable.map_marker_bus_stop_nc
+                EtaType.NWFB -> R.drawable.map_marker_bus_stop_nc
+                EtaType.CTB -> R.drawable.map_marker_bus_stop_ctb
                 EtaType.GMB -> R.drawable.map_marker_bus_stop_gmb
             }
         )?.let {

@@ -4,6 +4,7 @@ import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.nc.NCRoute
 import hibernate.v2.api.model.transport.nc.NCRouteStop
 import hibernate.v2.api.model.transport.nc.NCStop
@@ -55,8 +56,8 @@ class NCRepository(
         }
     }
 
-    suspend fun getRouteListDb() = ncDao.getRouteList()
-    suspend fun getRouteStopComponentListDb() = ncDao.getRouteStopComponentList()
+    suspend fun getRouteListByCompanyDb(company: Company) = ncDao.getRouteList(company.value)
+    suspend fun getRouteStopComponentListDb(company: Company) = ncDao.getRouteStopComponentList(company.value)
 
     suspend fun hasStopListDb() = ncDao.getSingleStop() != null
     suspend fun hasRouteListDb() = ncDao.getSingleRoute() != null

@@ -50,7 +50,7 @@ class StopListAdapter(val listener: ItemListener) :
     override fun onBindViewHolder(holder: ItemVH, position: Int) {
         val item = list[position]
         holder.viewBinding.apply {
-            stopCompanyColor.setBackgroundColor(item.etaType.etaTypeColors(holder.context)[0])
+            stopCompanyColor.setBackgroundColor(item.etaType.color(holder.context))
             stopNameTv.text = item.nameTc
 
             (routeNumberRecyclerView.adapter as RouteBadgeAdapter).apply {
@@ -110,8 +110,7 @@ class StopListAdapter(val listener: ItemListener) :
             holder.viewBinding.routeNumberTv.text = list[position]
 
             holder.viewBinding.root.apply {
-                val color = etaType.etaTypeColors(context)[0]
-                updateBackgroundColor(color)
+                updateBackgroundColor(etaType.color(context))
             }
         }
 

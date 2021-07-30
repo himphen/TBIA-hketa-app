@@ -29,8 +29,9 @@ class SearchMapViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val result = when (etaType) {
                 EtaType.KMB -> kmbRepository.getRouteEtaCardList(stop)
-                EtaType.NWFB_CTB -> ncRepository.getRouteEtaCardList(stop)
+                EtaType.NWFB -> ncRepository.getRouteEtaCardList(stop)
                 EtaType.GMB -> gmbRepository.getRouteEtaCardList(stop)
+                EtaType.CTB -> ncRepository.getRouteEtaCardList(stop)
             }
             routeListForBottomSheet.postValue(result)
         }
@@ -41,8 +42,9 @@ class SearchMapViewModel(
             val list = stopList.groupBy({ it.etaType }, { it }).map { (etaType, stopMapList) ->
                 when (etaType) {
                     EtaType.KMB -> kmbRepository.setMapRouteListIntoMapStop(stopMapList)
-                    EtaType.NWFB_CTB -> ncRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.NWFB -> ncRepository.setMapRouteListIntoMapStop(stopMapList)
                     EtaType.GMB -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.CTB -> ncRepository.setMapRouteListIntoMapStop(stopMapList)
                 }
             }
 

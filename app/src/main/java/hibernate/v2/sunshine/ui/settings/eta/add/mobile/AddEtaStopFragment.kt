@@ -10,10 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentAddEtaBinding
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
-import hibernate.v2.sunshine.model.RouteForRowAdapter
-import hibernate.v2.sunshine.ui.view.ColorBarDrawable
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -60,9 +59,9 @@ class AddEtaStopFragment : BaseFragment<FragmentAddEtaBinding>() {
             R.string.text_add_eta_hint_stop,
             selectedRoute.getDirectionWithRouteText(requireContext())
         )
-        val etaTypeColors =
-            viewModel.selectedEtaType.value!!.etaTypeColors(requireContext())
-        viewBinding.hintCl.background = ColorBarDrawable(etaTypeColors)
+        val etaTypeColor =
+            viewModel.selectedEtaType.value!!.color(requireContext())
+        viewBinding.hintCl.setBackgroundColor(etaTypeColor)
 
     }
 
