@@ -118,4 +118,7 @@ dependencies {
 
     // https://github.com/google/flexbox-layout
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
+    // https://github.com/airbnb/lottie-android
+    implementation "com.airbnb.android:lottie:4.0.0"
 }

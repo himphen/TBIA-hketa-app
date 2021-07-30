@@ -1,0 +1,10 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/map_marker" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/background" />
+        </shape>
+    </item>
+</layer-list>

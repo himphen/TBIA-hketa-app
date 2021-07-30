@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentOnboardingBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.onboarding.FetchTransportDataType
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
@@ -48,13 +52,19 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
         viewModel.fetchTransportDataCompleted.observe(viewLifecycleOwner) {
             when (it) {
                 FetchTransportDataType.KMB -> {
-                    Toast.makeText(context, "Done KMB", Toast.LENGTH_LONG).show()
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_kmb)
                 }
                 FetchTransportDataType.NC -> {
-                    Toast.makeText(context, "Done NC", Toast.LENGTH_LONG).show()
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_ctb)
+                }
+                FetchTransportDataType.GMB -> {
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_gmb)
                 }
                 FetchTransportDataType.ALL -> {
-                    goToMainActivity()
+                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                        delay(1000)
+                        goToMainActivity()
+                    }
                 }
                 else -> {
                 }
@@ -64,10 +74,13 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
         viewModel.fetchTransportDataFailed.observe(viewLifecycleOwner) {
             when (it) {
                 FetchTransportDataType.KMB -> {
-                    Toast.makeText(context, "Failed KMB", Toast.LENGTH_LONG).show()
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_kmb)
                 }
                 FetchTransportDataType.NC -> {
-                    Toast.makeText(context, "Failed NC", Toast.LENGTH_LONG).show()
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_ctb)
+                }
+                FetchTransportDataType.GMB -> {
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_gmb)
                 }
                 else -> {
                 }
@@ -76,6 +89,7 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
     }
 
     fun initUI() {
+
     }
 
     fun initData() {

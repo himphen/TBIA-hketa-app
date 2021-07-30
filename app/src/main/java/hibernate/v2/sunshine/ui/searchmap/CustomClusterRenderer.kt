@@ -8,11 +8,13 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.SphericalUtil
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
+import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
+import hibernate.v2.sunshine.model.transport.EtaType
 
 class CustomClusterRenderer(
     val context: Context,
@@ -29,6 +31,13 @@ class CustomClusterRenderer(
 
     override fun onCameraMove() {
         currentZoomLevel = map.cameraPosition.zoom
+
+        val visibleRegion = map.projection.visibleRegion
+        val distance = SphericalUtil.computeDistanceBetween(
+            visibleRegion.farLeft, map.cameraPosition.target
+        )
+
+        Logger.d("distance: " + distance)
     }
 
     override fun shouldRenderAsCluster(cluster: Cluster<SearchMapStop>): Boolean {
