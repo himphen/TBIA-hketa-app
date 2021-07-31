@@ -8,8 +8,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import com.google.maps.android.clustering.ClusterManager
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.asin
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -110,33 +112,43 @@ class CustomClusterManager(
     }
 
     fun setMarkerVisibility() {
-        if (map.cameraPosition.zoom >= MARKER_IN_ZOOM_LEVEL) {
-            val pendingToAdd = allStopList
-                .filter {
-                    val distance = SphericalUtil.computeDistanceBetween(
-                        it.position, map.cameraPosition.target
-                    )
-
-                    distance < MARKER_IN_METER
-                }
-
-            val pendingToRemove = shownStopList
-                .filter {
-                    val distance = SphericalUtil.computeDistanceBetween(
-                        it.position, map.cameraPosition.target
-                    )
-
-                    distance > MARKER_IN_METER
-                }
-
-            removeItems(pendingToRemove)
-            addItems(pendingToAdd)
-            shownStopList.removeAll(pendingToRemove)
-            shownStopList.addAll(pendingToAdd)
-        } else {
-            removeItems(shownStopList)
+        if (currentZoomLevel == null) {
+            currentZoomLevel = map.cameraPosition.zoom
         }
 
-        cluster()
+        val currentZoomLevel = currentZoomLevel!!
+        val currentPosition = map.cameraPosition.target
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (currentZoomLevel >= MARKER_IN_ZOOM_LEVEL) {
+                val pendingToAdd = allStopList
+                    .filter {
+                        val distance = SphericalUtil.computeDistanceBetween(
+                            it.position, currentPosition
+                        )
+
+                        distance < MARKER_IN_METER
+                    }
+
+                val pendingToRemove = shownStopList
+                    .filter {
+                        val distance = SphericalUtil.computeDistanceBetween(
+                            it.position, currentPosition
+                        )
+
+                        distance > MARKER_IN_METER
+                    }
+
+                removeItems(pendingToRemove)
+                addItems(pendingToAdd)
+                shownStopList.removeAll(pendingToRemove)
+                shownStopList.addAll(pendingToAdd)
+            } else {
+                removeItems(shownStopList)
+            }
+
+            withContext(Dispatchers.Main) {
+                cluster()
+            }
+        }
     }
 }
