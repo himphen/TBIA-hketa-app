@@ -20,24 +20,10 @@ class CustomClusterRenderer(
     val context: Context,
     val map: GoogleMap,
     clusterManager: CustomClusterManager
-) : DefaultClusterRenderer<SearchMapStop>(context, map, clusterManager),
-    GoogleMap.OnCameraMoveListener {
+) : DefaultClusterRenderer<SearchMapStop>(context, map, clusterManager) {
 
     init {
         minClusterSize = 3
-    }
-
-    var currentZoomLevel = map.cameraPosition.zoom
-
-    override fun onCameraMove() {
-        currentZoomLevel = map.cameraPosition.zoom
-
-        val visibleRegion = map.projection.visibleRegion
-        val distance = SphericalUtil.computeDistanceBetween(
-            visibleRegion.farLeft, map.cameraPosition.target
-        )
-
-        Logger.d("distance: " + distance)
     }
 
     override fun shouldRenderAsCluster(cluster: Cluster<SearchMapStop>): Boolean {

@@ -2,11 +2,14 @@ package hibernate.v2.sunshine.ui.searchmap
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +32,7 @@ import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.util.DateUtil
+import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -47,7 +51,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FragmentSearchMapBinding.inflate(inflater, container, false)
 
     private lateinit var stopListBottomSheetBehavior: BottomSheetBehavior<*>
@@ -180,6 +184,12 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             addItemDecoration(dividerItemDecoration)
         }
 
+        viewBinding.layoutRouteList.streetViewBtn.setOnClickListener {
+            viewModel.selectedStop.value?.let {
+                goToStreetMapsActivity(it)
+            }
+        }
+
         initStopListBottomSheet(viewBinding)
         initRouteListBottomSheet(viewBinding)
         initMap(viewBinding)
@@ -195,7 +205,8 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                             BottomSheetBehavior.STATE_HIDDEN,
                             BottomSheetBehavior.STATE_HALF_EXPANDED,
                             BottomSheetBehavior.STATE_COLLAPSED,
-                            BottomSheetBehavior.STATE_EXPANDED -> {
+                            BottomSheetBehavior.STATE_EXPANDED,
+                            -> {
                                 mainViewModel.onStopBottomSheetStateChanged.value = newState
                             }
                             else -> {
@@ -219,7 +230,8 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                             BottomSheetBehavior.STATE_HIDDEN,
                             BottomSheetBehavior.STATE_HALF_EXPANDED,
                             BottomSheetBehavior.STATE_COLLAPSED,
-                            BottomSheetBehavior.STATE_EXPANDED -> {
+                            BottomSheetBehavior.STATE_EXPANDED,
+                            -> {
                                 mainViewModel.onRouteBottomSheetStateChanged.value = newState
                             }
                             else -> {
@@ -263,10 +275,48 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             clusterManager = CustomClusterManager(
                 context,
                 googleMap,
-                lifecycleScope
+                viewLifecycleOwner.lifecycleScope
             )
-
             clusterManager?.apply {
+                onGotCurrentCircleSize.onEach {
+                    viewBinding?.currentMarkerCircle?.apply {
+                        if (it.second < 20) {
+                            visibility = View.GONE
+                        } else {
+                            visibility = View.VISIBLE
+                            val pixel = dpToPx(it.second)
+                            val newLayoutParams = layoutParams as ConstraintLayout.LayoutParams
+                            newLayoutParams.width = pixel
+                            newLayoutParams.height = pixel
+                            requestLayout()
+                        }
+                    }
+
+                    viewBinding?.currentMarkerText?.apply {
+                        text = when (it.first) {
+                            CustomClusterManager.DistanceLevel.D0 -> ""
+                            CustomClusterManager.DistanceLevel.D5 -> getString(R.string.map_marker_distance_5)
+                            CustomClusterManager.DistanceLevel.D10 -> getString(R.string.map_marker_distance_10)
+                            CustomClusterManager.DistanceLevel.D15 -> getString(R.string.map_marker_distance_15)
+                        }
+                    }
+                }.launchIn(viewLifecycleOwner.lifecycleScope)
+                onCameraMoved.onEach {
+                    if (it) {
+                        viewBinding?.currentMarkerText?.apply {
+                            setTextColor(context.getColor(R.color.map_marker_moving))
+                        }
+                        viewBinding?.currentMarkerCircle?.setBackgroundResource(R.drawable.map_marker_current_dashed_moving)
+                        viewBinding?.currentMarker?.setBackgroundResource(R.drawable.map_marker_current_moving)
+                    } else {
+                        viewBinding?.currentMarkerText?.apply {
+                            setTextColor(context.getColor(R.color.map_marker))
+                        }
+                        viewBinding?.currentMarkerCircle?.setBackgroundResource(R.drawable.map_marker_current_dashed)
+                        viewBinding?.currentMarker?.setBackgroundResource(R.drawable.map_marker_current)
+                    }
+                }.launchIn(viewLifecycleOwner.lifecycleScope)
+
                 val renderer = CustomClusterRenderer(context, googleMap, this)
                 this.renderer = renderer
                 setOnClusterItemClickListener {
@@ -300,8 +350,9 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 }
 
                 googleMap.setOnCameraIdleListener(clusterManager)
-                googleMap.setOnCameraMoveListener(renderer)
-                googleMap.setOnMarkerClickListener(clusterManager)
+                googleMap.setOnCameraMoveListener(clusterManager)
+
+                updateCurrentMarkerCircle()
             }
         }
     }
@@ -322,11 +373,6 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         if (list == null) return
         routeListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-        viewBinding?.let {
-            it.layoutStopList.countTv.text =
-                getString(R.string.stop_list_bottom_sheet_title, list.size)
-        }
-
         stopListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         viewModel.getRouteListFromStopList(list)
     }
@@ -344,8 +390,12 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         restartRefreshEtaJob()
     }
 
-    private fun showStopListOnMap(list: List<SearchMapStop>?) {
-        clusterManager?.addItems(list)
+    private fun showStopListOnMap(list: List<SearchMapStop>) {
+        clusterManager?.apply {
+            allStopList.clear()
+            allStopList.addAll(list)
+            setMarkerVisibility()
+        }
     }
 
     private fun closeBottomSheet() {
@@ -401,5 +451,16 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private fun stopRefreshEtaJob() {
         refreshEtaJob?.cancel()
         refreshEtaJob = null
+    }
+
+    private fun goToStreetMapsActivity(stop: SearchMapStop) {
+        activity?.let { activity ->
+            val gmmIntentUri = Uri.parse("google.streetview:cbll=${stop.lat},${stop.lng}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            if (mapIntent.resolveActivity(activity.packageManager) != null) {
+                startActivity(mapIntent)
+            }
+        }
     }
 }

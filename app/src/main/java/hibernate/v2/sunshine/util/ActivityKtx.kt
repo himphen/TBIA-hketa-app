@@ -11,6 +11,10 @@ import android.os.Bundle
 import hibernate.v2.sunshine.receiver.WakeUpReceiver
 import java.util.Calendar
 import kotlin.math.roundToInt
+import android.util.DisplayMetrics
+
+
+
 
 /**
  * Returns true when [Context] is unavailable or is about to become unavailable
@@ -63,6 +67,14 @@ fun Context.cancelAlarm() {
 
 fun dpToPx(dp: Int): Int {
     return (dp * Resources.getSystem().displayMetrics.density).roundToInt()
+}
+
+fun dpToPx(dp: Float): Int {
+    return (dp * Resources.getSystem().displayMetrics.density).roundToInt()
+}
+
+fun pxToDp(px: Int): Int {
+    return (px / (Resources.getSystem().displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
 }
 
 inline fun <reified T : Enum<T>> Bundle.getEnum(key: String, default: T) =

@@ -3,7 +3,7 @@
         <shape android:shape="oval">
             <stroke
                 android:width="2dp"
-                android:color="@color/map_marker"
+                android:color="@color/map_marker_moving"
                 android:dashWidth="16dp"
                 android:dashGap="16dp" />
         </shape>

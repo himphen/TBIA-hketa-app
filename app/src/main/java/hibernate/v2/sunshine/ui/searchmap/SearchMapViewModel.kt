@@ -21,7 +21,7 @@ class SearchMapViewModel(
 ) : BaseViewModel() {
 
     val selectedStop = MutableLiveData<SearchMapStop>()
-    val stopList = MutableLiveData<List<SearchMapStop>?>()
+    val stopList = MutableLiveData<List<SearchMapStop>>(listOf())
     val routeListForBottomSheet = MutableLiveData<List<Card.EtaCard>>(emptyList())
     val stopListForBottomSheet = MutableLiveData<List<SearchMapStop>>(emptyList())
 
