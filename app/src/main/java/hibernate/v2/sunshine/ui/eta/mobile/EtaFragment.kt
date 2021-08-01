@@ -73,7 +73,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
             updateAdapterData()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        mainViewModel.onUpdatedEtaList.onEach {
+        mainViewModel.onUpdatedEtaLayout.onEach {
             initAdapter()
             updateAdapterData()
         }.launchIn(viewLifecycleOwner.lifecycleScope)

@@ -8,10 +8,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.maps.android.SphericalUtil
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
-import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.EtaType
@@ -19,7 +17,7 @@ import hibernate.v2.sunshine.model.transport.EtaType
 class CustomClusterRenderer(
     val context: Context,
     val map: GoogleMap,
-    clusterManager: CustomClusterManager
+    val clusterManager: CustomClusterManager,
 ) : DefaultClusterRenderer<SearchMapStop>(context, map, clusterManager) {
 
     init {
@@ -27,6 +25,10 @@ class CustomClusterRenderer(
     }
 
     override fun shouldRenderAsCluster(cluster: Cluster<SearchMapStop>): Boolean {
+        clusterManager.currentZoomLevel?.let {
+            return super.shouldRenderAsCluster(cluster) && it < 19f
+        }
+
         return super.shouldRenderAsCluster(cluster)
     }
 

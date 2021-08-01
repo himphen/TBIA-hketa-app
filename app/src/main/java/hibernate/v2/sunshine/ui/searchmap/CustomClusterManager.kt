@@ -39,7 +39,7 @@ class CustomClusterManager(
 
     val allStopList = mutableListOf<SearchMapStop>()
     private val shownStopList = mutableListOf<SearchMapStop>()
-    private var currentZoomLevel: Float? = null
+    var currentZoomLevel: Float? = null
 
     override fun onCameraMove() {
         if (currentZoomLevel != map.cameraPosition.zoom) {

@@ -4,6 +4,7 @@ import android.content.Context
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.BusEta
 import hibernate.v2.api.model.transport.gmb.GmbEta
+import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
@@ -47,19 +48,19 @@ class TransportEta(
         }
     }
 
-    fun getEtaMinuteText(context: Context): String {
+    fun getEtaMinuteText(context: Context): String? {
         eta?.let { etaDate ->
             val minutes = DateUtil.getTimeDiffInMin(
                 etaDate,
                 Date()
             )
-            return (minutes + 1).toString() + " 分鐘"
+            return context.getString(R.string.text_eta_card_classic_minute, minutes + 1)
         } ?: run {
             rmkTc?.let { rmkTc ->
                 if (rmkTc.isNotEmpty()) return rmkTc
             }
 
-            return "-"
+            return null
         }
     }
 }

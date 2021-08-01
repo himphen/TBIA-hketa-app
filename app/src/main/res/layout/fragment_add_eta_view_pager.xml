@@ -53,8 +53,10 @@
         style="@style/EtaAddTabLayout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="center_horizontal"
         app:layout_constraintBottom_toTopOf="@id/searchCl"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabMode="scrollable" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

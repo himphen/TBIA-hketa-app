@@ -48,7 +48,16 @@ class EtaLayoutAdapter(
             listener.onItemSelected(it.tag as EtaCardViewType)
 
             val copyOfLastCheckedPosition = lastCheckedPosition
-            lastCheckedPosition = position
+            lastCheckedPosition = holder.absoluteAdapterPosition
+            notifyItemChanged(copyOfLastCheckedPosition)
+            notifyItemChanged(lastCheckedPosition)
+        }
+        viewBinding.radioButton.tag = item
+        viewBinding.radioButton.setOnClickListener {
+            listener.onItemSelected(it.tag as EtaCardViewType)
+
+            val copyOfLastCheckedPosition = lastCheckedPosition
+            lastCheckedPosition = holder.absoluteAdapterPosition
             notifyItemChanged(copyOfLastCheckedPosition)
             notifyItemChanged(lastCheckedPosition)
         }

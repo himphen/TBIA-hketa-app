@@ -1,7 +1,5 @@
 package hibernate.v2.sunshine.ui.eta.mobile.view
 
-import hibernate.v2.api.model.transport.Company
-import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemEtaClassicBinding
 import hibernate.v2.sunshine.model.Card
 
@@ -18,7 +16,7 @@ class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
             stopNameTv.text = card.stop.nameTc
             routeDirectionTv.text = card.route.getDestDirectionText(context)
             etaMinuteTv.text =
-                card.etaList.getOrNull(0)?.getEtaMinuteText(context)
+                card.etaList.getOrNull(0)?.getEtaMinuteText(context) ?: "-"
             etaTimeTv.text = getEtaTimeText(card.etaList)
         }
     }

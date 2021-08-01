@@ -17,44 +17,6 @@
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/streetViewBtn"
-            style="@style/MainButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:paddingStart="8dp"
-            android:paddingTop="0dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="0dp"
-            android:text="@string/button_street_view_text"
-            android:textSize="12sp"
-            app:icon="@drawable/ic_streetview_24"
-            app:iconPadding="0dp"
-            app:iconSize="14dp"
-            app:layout_constraintBottom_toBottomOf="@id/stopNameTv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/stopNameTv" />
-
-        <Button
-            android:id="@+id/navigationBtn"
-            style="@style/MainButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:paddingStart="8dp"
-            android:paddingTop="0dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="0dp"
-            android:text="@string/button_navigation_text"
-            android:textSize="12sp"
-            app:icon="@drawable/ic_navigation_24"
-            app:iconPadding="0dp"
-            app:iconSize="14dp"
-            app:layout_constraintBottom_toBottomOf="@id/stopNameTv"
-            app:layout_constraintEnd_toStartOf="@id/streetViewBtn"
-            app:layout_constraintTop_toTopOf="@id/stopNameTv" />
-
         <TextView
             android:id="@+id/stopNameTv"
             android:layout_width="0dp"
@@ -78,6 +40,52 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/streetViewBtn"
+            style="@style/MainBorderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:maxWidth="48dp"
+            android:minWidth="48dp"
+            android:paddingStart="8dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="0dp"
+            app:icon="@drawable/ic_streetview_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/stopNameTv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/stopNameTv" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/navigationBtn"
+            style="@style/MainBorderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:maxWidth="48dp"
+            android:minWidth="48dp"
+            android:paddingStart="8dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="0dp"
+            app:icon="@drawable/ic_navigation_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/stopNameTv"
+            app:layout_constraintEnd_toStartOf="@id/streetViewBtn"
+            app:layout_constraintTop_toTopOf="@id/stopNameTv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

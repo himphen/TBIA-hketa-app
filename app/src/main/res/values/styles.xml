@@ -97,6 +97,15 @@
         <item name="colorControlHighlight">@color/secondaryText</item>
     </style>
 
+    <style name="MainBorderButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="colorAccent">@color/mainButton</item>
+        <item name="colorButtonNormal">@color/mainButton</item>
+        <item name="colorControlHighlight">@color/secondaryText</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Button.50</item>
+    </style>
+
     <style name="BorderlessButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/primaryText</item>

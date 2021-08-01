@@ -48,7 +48,7 @@ class AddEtaViewPagerFragment : BaseFragment<FragmentAddEtaViewPagerBinding>() {
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FragmentAddEtaViewPagerBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,6 +68,8 @@ class AddEtaViewPagerFragment : BaseFragment<FragmentAddEtaViewPagerBinding>() {
                     val colorRes = when (tab.position) {
                         0 -> R.color.brand_color_kmb
                         1 -> R.color.brand_color_nwfb
+                        2 -> R.color.brand_color_ctb
+                        3 -> R.color.brand_color_gmb
                         else -> R.color.brand_color_gmb
                     }
 

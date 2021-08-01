@@ -59,7 +59,7 @@ class RouteListAdapter(val listener: ItemListener) :
                 root.tag = card
                 root.setOnClickListener { listener.onRouteSelected(it.tag as Card.EtaCard) }
                 etaMinuteTv.text =
-                    card.etaList.getOrNull(0)?.getEtaMinuteText(context)
+                    card.etaList.getOrNull(0)?.getEtaMinuteText(context) ?: "-"
                 etaTimeTv.text = getEtaTimeText(card.etaList)
             }
         }

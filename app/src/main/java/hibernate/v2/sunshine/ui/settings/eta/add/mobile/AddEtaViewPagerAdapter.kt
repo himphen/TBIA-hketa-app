@@ -1,10 +1,12 @@
 package hibernate.v2.sunshine.ui.settings.eta.add.mobile
 
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.databinding.TabAddEtaBinding
 import hibernate.v2.sunshine.model.transport.EtaType
 
 class AddEtaViewPagerAdapter(
@@ -31,8 +33,22 @@ class AddEtaViewPagerAdapter(
     }
 
     fun getTabView(position: Int): View {
-        val v = View.inflate(fragment.context, R.layout.tab_add_eta, null)
-        v.findViewById<TextView>(R.id.tabTitleTv).text = list[position].name(v.context)
-        return v
+        val context = fragment.requireContext()
+        val etaType = list[position]
+        val viewBinding = TabAddEtaBinding.inflate(LayoutInflater.from(context))
+        viewBinding.tabTitleTv.text = etaType.name(context)
+
+        when (position) {
+            0, 1, 2, 3 -> {
+                val busDrawable = ContextCompat.getDrawable(context, R.drawable.ic_bus_24)
+                busDrawable?.let {
+                    it.mutate()
+                    viewBinding.tabTitleTv.setCompoundDrawablesRelativeWithIntrinsicBounds(it, null, null, null)
+                    viewBinding.tabTitleTv.compoundDrawablesRelative[0]?.setTint(etaType.color(context))
+                }
+            }
+        }
+
+        return viewBinding.root
     }
 }

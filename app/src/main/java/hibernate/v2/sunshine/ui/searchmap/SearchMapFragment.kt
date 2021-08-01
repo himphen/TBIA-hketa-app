@@ -192,6 +192,12 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             }
         }
 
+        viewBinding.layoutRouteList.navigationBtn.setOnClickListener {
+            viewModel.selectedStop.value?.let {
+                goToNavigationActivity(it)
+            }
+        }
+
         initStopListBottomSheet(viewBinding)
         initRouteListBottomSheet(viewBinding)
         initMap(viewBinding)
@@ -254,6 +260,11 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.style_stop_map)
             )
 //            isTrafficEnabled = true
+            uiSettings.apply {
+                isMapToolbarEnabled = false
+                isIndoorLevelPickerEnabled = false
+                isBuildingsEnabled = false
+            }
             setMinZoomPreference(10f)
             setLatLngBoundsForCameraTarget(
                 LatLngBounds(
@@ -461,6 +472,17 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private fun goToStreetMapsActivity(stop: SearchMapStop) {
         activity?.let { activity ->
             val gmmIntentUri = Uri.parse("google.streetview:cbll=${stop.lat},${stop.lng}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            if (mapIntent.resolveActivity(activity.packageManager) != null) {
+                startActivity(mapIntent)
+            }
+        }
+    }
+
+    private fun goToNavigationActivity(stop: SearchMapStop) {
+        activity?.let { activity ->
+            val gmmIntentUri = Uri.parse("google.navigation:q==${stop.lat},${stop.lng}")
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             if (mapIntent.resolveActivity(activity.packageManager) != null) {
