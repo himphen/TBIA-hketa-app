@@ -22,8 +22,8 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.maps.android.ktx.awaitMap
-import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentSearchMapBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
@@ -58,6 +58,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private lateinit var stopListBottomSheetBehavior: BottomSheetBehavior<*>
     private lateinit var routeListBottomSheetBehavior: BottomSheetBehavior<*>
 
+    private val preferences: SharedPreferencesManager by inject()
     private val viewModel: SearchMapViewModel by inject()
     private val addEtaViewModel: AddEtaViewModel by inject()
     private val etaViewModel: EtaViewModel by inject()
@@ -261,7 +262,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 )
             )
 
-            moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(22.3111191, 114.1688018), 15f))
+            moveCamera(CameraUpdateFactory.newLatLngZoom(preferences.lastLatLng, 15f))
             // set default zoom
             setUpClusterer(this)
         }
@@ -302,7 +303,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                         }
                     }
                 }.launchIn(viewLifecycleOwner.lifecycleScope)
-                onCameraMoved.onEach {
+                onCameraMoving.onEach {
                     if (it) {
                         viewBinding?.currentMarkerText?.apply {
                             setTextColor(context.getColor(R.color.map_marker_moving))
@@ -310,6 +311,9 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                         viewBinding?.currentMarkerCircle?.setBackgroundResource(R.drawable.map_marker_current_dashed_moving)
                         viewBinding?.currentMarker?.setBackgroundResource(R.drawable.map_marker_current_moving)
                     } else {
+                        // Save last position for next launch
+                        preferences.lastLatLng = map.cameraPosition.target
+
                         viewBinding?.currentMarkerText?.apply {
                             setTextColor(context.getColor(R.color.map_marker))
                         }

@@ -27,12 +27,32 @@
             android:paddingTop="0dp"
             android:paddingEnd="8dp"
             android:paddingBottom="0dp"
-            android:text="街景相片"
+            android:text="@string/button_street_view_text"
             android:textSize="12sp"
             app:icon="@drawable/ic_streetview_24"
+            app:iconPadding="0dp"
             app:iconSize="14dp"
             app:layout_constraintBottom_toBottomOf="@id/stopNameTv"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/stopNameTv" />
+
+        <Button
+            android:id="@+id/navigationBtn"
+            style="@style/MainButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:paddingStart="8dp"
+            android:paddingTop="0dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="0dp"
+            android:text="@string/button_navigation_text"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_navigation_24"
+            app:iconPadding="0dp"
+            app:iconSize="14dp"
+            app:layout_constraintBottom_toBottomOf="@id/stopNameTv"
+            app:layout_constraintEnd_toStartOf="@id/streetViewBtn"
             app:layout_constraintTop_toTopOf="@id/stopNameTv" />
 
         <TextView
@@ -43,7 +63,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/streetViewBtn"
+            app:layout_constraintEnd_toStartOf="@id/navigationBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewToggle"
             tools:text="@string/demo_card_stop_name" />

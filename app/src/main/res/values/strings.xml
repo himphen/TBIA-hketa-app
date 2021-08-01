@@ -108,5 +108,7 @@
     <string name="map_marker_distance_5">5分鐘路程</string>
     <string name="map_marker_distance_10">10分鐘路程</string>
     <string name="map_marker_distance_15">15分鐘路程</string>
+    <string name="button_street_view_text">街景</string>
+    <string name="button_navigation_text">前往</string>
 
 </resources>

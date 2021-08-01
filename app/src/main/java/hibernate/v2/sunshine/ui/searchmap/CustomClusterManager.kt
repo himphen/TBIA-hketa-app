@@ -25,9 +25,9 @@ class CustomClusterManager(
     GoogleMap.OnCameraMoveListener {
 
     val onGotCurrentCircleSize = MutableSharedFlow<Pair<DistanceLevel, Int>>()
-    val onCameraMoved = MutableSharedFlow<Boolean>()
+    val onCameraMoving = MutableSharedFlow<Boolean>()
 
-    private var onCameraMoving = false
+    private var isCameraMoving = false
     private val levels = arrayListOf(DistanceLevel.D15, DistanceLevel.D10, DistanceLevel.D5)
 
     enum class DistanceLevel(val distance: Double) { D0(0.0), D5(333.3), D10(666.6), D15(1000.0) }
@@ -48,18 +48,18 @@ class CustomClusterManager(
             updateCurrentMarkerCircle()
         }
 
-        if (!onCameraMoving) {
-            onCameraMoving = true
+        if (!isCameraMoving) {
+            isCameraMoving = true
             lifecycleScope.launch {
-                onCameraMoved.emit(true)
+                onCameraMoving.emit(true)
             }
         }
     }
 
     override fun onCameraIdle() {
-        onCameraMoving = false
+        isCameraMoving = false
         lifecycleScope.launch {
-            onCameraMoved.emit(false)
+            onCameraMoving.emit(false)
         }
         setMarkerVisibility()
     }
