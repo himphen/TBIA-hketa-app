@@ -13,6 +13,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.callbacks.onCancel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -72,24 +74,34 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private val routeListAdapter = RouteListAdapter(object : RouteListAdapter.ItemListener {
         override fun onRouteSelected(card: Card.EtaCard) {
             viewLifecycleOwner.lifecycleScope.launch {
-                val addCard = Card.RouteStopAddCard(
-                    card.route,
-                    card.stop
-                )
+                val context = context ?: return@launch
                 val result = suspendCancellableCoroutine<Boolean> { cont ->
-                    val dialog = SearchMapAddEtaDialog(
-                        addCard,
-                        { _, which ->
-                            if (which == DialogInterface.BUTTON_POSITIVE) {
-                                cont.resume(true)
-                            }
+                    MaterialDialog(context)
+                        .message(
+                            text =
+                            getString(
+                                R.string.dialog_add_eta_in_search_map_description,
+                                card.route.routeNo,
+                                card.stop.nameTc
+                            )
+                        )
+                        .positiveButton(R.string.dialog_add_eta_in_search_map_confirm_btn) {
+                            cont.resume(true)
                         }
-                    )
-                    dialog.show(childFragmentManager, null)
-                    cont.invokeOnCancellation { dialog.dismiss() }
+                        .negativeButton(R.string.dialog_add_eta_in_search_map_cancel_btn) {
+                            cont.resume(false)
+                        }
+                        .onCancel {
+                            cont.resume(false)
+                        }
+                        .show()
                 }
 
                 if (result) {
+                    val addCard = Card.RouteStopAddCard(
+                        card.route,
+                        card.stop
+                    )
                     addEtaViewModel.saveStop(addCard)
                 }
             }

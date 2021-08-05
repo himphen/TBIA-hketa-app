@@ -29,40 +29,61 @@ class AddEtaBrandSelectionFragment : GuidedStepSupportFragment() {
         actions.add(action)
 
         action = GuidedAction.Builder(context)
-            .id(ACTION_ID_NWFB_CTB)
+            .id(ACTION_ID_NWFB)
+            .title(getString(R.string.dialog_add_eta_brand_selection_nwfb_btn)).build()
+        actions.add(action)
+
+        action = GuidedAction.Builder(context)
+            .id(ACTION_ID_NWFB)
             .title(getString(R.string.dialog_add_eta_brand_selection_ctb_btn)).build()
         actions.add(action)
 
         action = GuidedAction.Builder(context)
-            .id(ACTION_ID_GMB_CTB)
-            .title(getString(R.string.dialog_add_eta_brand_selection_gmb_btn)).build()
+            .id(ACTION_ID_GMB_HKI)
+            .title(getString(R.string.dialog_add_eta_brand_selection_gmb_hki_btn)).build()
+        actions.add(action)
+
+        action = GuidedAction.Builder(context)
+            .id(ACTION_ID_GMB_KLN)
+            .title(getString(R.string.dialog_add_eta_brand_selection_gmb_kln_btn)).build()
+        actions.add(action)
+
+        action = GuidedAction.Builder(context)
+            .id(ACTION_ID_GMB_NT)
+            .title(getString(R.string.dialog_add_eta_brand_selection_gmb_nt_btn)).build()
         actions.add(action)
     }
 
     override fun onGuidedActionClicked(action: GuidedAction) {
         val etaType = when (action.id) {
             ACTION_ID_KMB -> EtaType.KMB
-            ACTION_ID_NWFB_CTB -> EtaType.NWFB
-            ACTION_ID_GMB_CTB -> EtaType.GMB
+            ACTION_ID_NWFB -> EtaType.NWFB
+            ACTION_ID_CTB -> EtaType.CTB
+            ACTION_ID_GMB_HKI -> EtaType.GMB_HKI
+            ACTION_ID_GMB_KLN -> EtaType.GMB_KLN
+            ACTION_ID_GMB_NT -> EtaType.GMB_NT
             else -> return
         }
 
-        val fragmentTransaction =
-            activity?.supportFragmentManager?.beginTransaction()
-        fragmentTransaction?.replace(
-            R.id.container,
-            AddEtaFragment.getInstance(Bundle().apply {
-                putEnum(ARG_ETA_TYPE, etaType)
-            })
-        )
-        fragmentTransaction?.commit()
+        activity?.supportFragmentManager?.beginTransaction()?.apply {
+            replace(
+                R.id.container,
+                AddEtaFragment.getInstance(Bundle().apply {
+                    putEnum(ARG_ETA_TYPE, etaType)
+                })
+            )
+            commit()
+        }
     }
 
     companion object {
         fun getInstance() = AddEtaBrandSelectionFragment()
 
         const val ACTION_ID_KMB = 1L
-        const val ACTION_ID_NWFB_CTB = 2L
-        const val ACTION_ID_GMB_CTB = 3L
+        const val ACTION_ID_NWFB = 2L
+        const val ACTION_ID_CTB = 3L
+        const val ACTION_ID_GMB_HKI = 4L
+        const val ACTION_ID_GMB_KLN = 5L
+        const val ACTION_ID_GMB_NT = 6L
     }
 }

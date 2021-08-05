@@ -27,13 +27,15 @@ class SettingsEtaViewHolder(
             Company.UNKNOWN -> R.color.eta_card_bg_selected
         }
 
-        viewBinding.routeCompanyColor.setBackgroundResource(color)
-        viewBinding.routeNumberTv.text = card.route.routeNo
-        viewBinding.stopNameTv.text = card.stop.nameTc
-        viewBinding.routeDirectionTv.text = card.route.getDestDirectionText(context)
-        viewBinding.routeDirectionTv.visibility = View.VISIBLE
+        viewBinding.apply {
+            routeCompanyColor.setBackgroundResource(color)
+            routeNumberTv.text = card.route.routeNo
+            stopNameTv.text = card.stop.nameTc
+            routeDirectionTv.text = card.route.getDestDirectionText(context)
+            routeDirectionTv.visibility = View.VISIBLE
 
-        viewBinding.root.tag = card
-        viewBinding.root.setOnClickListener { listener.onItemClick(it.tag as Card.SettingsEtaItemCard) }
+            root.tag = card
+            root.setOnClickListener { listener.onItemClick(it.tag as Card.SettingsEtaItemCard) }
+        }
     }
 }

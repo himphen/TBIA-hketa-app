@@ -4,6 +4,7 @@ import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.api.model.transport.gmb.GmbRoute
 import hibernate.v2.api.model.transport.gmb.GmbRouteStop
 import hibernate.v2.api.model.transport.gmb.GmbStop
@@ -55,8 +56,9 @@ class GmbRepository(
         }
     }
 
-    suspend fun getRouteListDb() = gmbDao.getRouteList()
-    suspend fun getRouteStopComponentListDb() = gmbDao.getRouteStopComponentList()
+    suspend fun getRouteListDb(region: GmbRegion) = gmbDao.getRouteList(region.value)
+    suspend fun getRouteStopComponentListDb(routeIdList: List<String>) =
+        gmbDao.getRouteStopComponentList(routeIdList)
 
     suspend fun hasStopListDb() = gmbDao.getSingleStop() != null
     suspend fun hasRouteListDb() = gmbDao.getSingleRoute() != null

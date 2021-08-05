@@ -17,13 +17,15 @@ class AddEtaViewPagerAdapter(
         EtaType.KMB,
         EtaType.NWFB,
         EtaType.CTB,
-        EtaType.GMB
+        EtaType.GMB_HKI,
+        EtaType.GMB_KLN,
+        EtaType.GMB_NT
     )
 
     /**
      * Returns the number of pages
      */
-    override fun getItemCount(): Int = 4
+    override fun getItemCount(): Int = 6
 
     /**
      * This method will be invoked when a page is requested to create
@@ -38,13 +40,26 @@ class AddEtaViewPagerAdapter(
         val viewBinding = TabAddEtaBinding.inflate(LayoutInflater.from(context))
         viewBinding.tabTitleTv.text = etaType.name(context)
 
-        when (position) {
-            0, 1, 2, 3 -> {
-                val busDrawable = ContextCompat.getDrawable(context, R.drawable.ic_bus_24)
-                busDrawable?.let {
+        when (etaType) {
+            EtaType.KMB,
+            EtaType.NWFB,
+            EtaType.CTB,
+            EtaType.GMB_HKI,
+            EtaType.GMB_KLN,
+            EtaType.GMB_NT -> {
+                ContextCompat.getDrawable(context, R.drawable.ic_bus_24)?.let {
                     it.mutate()
-                    viewBinding.tabTitleTv.setCompoundDrawablesRelativeWithIntrinsicBounds(it, null, null, null)
-                    viewBinding.tabTitleTv.compoundDrawablesRelative[0]?.setTint(etaType.color(context))
+                    viewBinding.tabTitleTv.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        it,
+                        null,
+                        null,
+                        null
+                    )
+                    viewBinding.tabTitleTv.compoundDrawablesRelative[0]?.setTint(
+                        etaType.color(
+                            context
+                        )
+                    )
                 }
             }
         }

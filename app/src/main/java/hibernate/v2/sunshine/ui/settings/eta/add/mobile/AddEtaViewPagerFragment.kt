@@ -62,6 +62,7 @@ class AddEtaViewPagerFragment : BaseFragment<FragmentAddEtaViewPagerBinding>() {
         val adapter = AddEtaViewPagerAdapter(this)
         viewBinding.viewPager.adapter = adapter
         viewBinding.viewPager.offscreenPageLimit = 1
+        viewBinding.viewPager.isUserInputEnabled = false
         viewBinding.tabLayout.addOnTabSelectedListener(
             object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
@@ -69,7 +70,7 @@ class AddEtaViewPagerFragment : BaseFragment<FragmentAddEtaViewPagerBinding>() {
                         0 -> R.color.brand_color_kmb
                         1 -> R.color.brand_color_nwfb
                         2 -> R.color.brand_color_ctb
-                        3 -> R.color.brand_color_gmb
+                        3, 4, 5 -> R.color.brand_color_gmb
                         else -> R.color.brand_color_gmb
                     }
 
@@ -89,13 +90,16 @@ class AddEtaViewPagerFragment : BaseFragment<FragmentAddEtaViewPagerBinding>() {
             override fun onPageSelected(position: Int) {
                 etaType = adapter.list[position]
 
-                viewBinding.searchEt.setText("")
+//                viewBinding.searchEt.setText("")
+                viewModel.searchRoute(etaType)
             }
         })
 
         TabLayoutMediator(
             viewBinding.tabLayout,
-            viewBinding.viewPager
+            viewBinding.viewPager,
+            true,
+            false
         ) { tab, position ->
             tab.customView = adapter.getTabView(position)
         }.attach()

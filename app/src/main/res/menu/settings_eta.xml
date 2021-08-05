@@ -7,5 +7,12 @@
         android:orderInCategory="1"
         android:title="@string/menu_settings_eta_action_add"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/settings_eta_action_save_order"
+        android:icon="@drawable/outline_done_white_24"
+        android:orderInCategory="1"
+        android:title="@string/menu_settings_eta_action_add"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 
 </menu>

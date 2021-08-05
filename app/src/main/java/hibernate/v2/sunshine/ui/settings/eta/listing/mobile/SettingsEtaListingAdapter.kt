@@ -2,6 +2,7 @@ package hibernate.v2.sunshine.ui.settings.eta.listing.mobile
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemSettingsEtaListingBinding
@@ -14,12 +15,13 @@ class SettingsEtaListingAdapter(
 
     interface ItemListener {
         fun onItemClick(card: Card.SettingsEtaItemCard)
-
         fun onItemMove(fromPosition: Int, toPosition: Int)
+        fun requestDrag(viewHolder: SettingsEtaViewHolder)
     }
 
     private var list = mutableListOf<Card.SettingsEtaItemCard>()
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             SettingsEtaViewHolder {
         return SettingsEtaViewHolder(
@@ -29,7 +31,14 @@ class SettingsEtaListingAdapter(
                 false
             ),
             listener
-        )
+        ).apply {
+            viewBinding.orderCl.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    listener.requestDrag(this)
+                }
+                false
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: SettingsEtaViewHolder, position: Int) {

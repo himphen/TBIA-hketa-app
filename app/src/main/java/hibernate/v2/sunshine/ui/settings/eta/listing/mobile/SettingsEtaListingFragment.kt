@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.ui.settings.eta.listing.mobile
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.callbacks.onCancel
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentSettingsEtaListingBinding
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
@@ -27,10 +29,14 @@ import hibernate.v2.sunshine.ui.settings.eta.add.mobile.AddEtaActivity
 import hibernate.v2.sunshine.util.swap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import org.koin.android.ext.android.inject
+import kotlin.coroutines.resume
 
 class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBinding>() {
 
+    private lateinit var menu: Menu
+    private lateinit var touchHelper: ItemTouchHelper
     private var addEtaLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             viewModel.getSavedEtaCardList()
@@ -44,29 +50,31 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
     }
 
     private val adapter: SettingsEtaListingAdapter by lazy {
-        SettingsEtaListingAdapter(object : SettingsEtaListingAdapter.ItemListener {
-            override fun onItemClick(card: Card.SettingsEtaItemCard) {
-                showRemoveEtaConfirmDialog(card)
-            }
+        SettingsEtaListingAdapter(
+            object : SettingsEtaListingAdapter.ItemListener {
+                override fun onItemClick(card: Card.SettingsEtaItemCard) {
+                    if (!isEditingOrdering) {
+                        showRemoveEtaConfirmDialog(card)
+                    }
+                }
 
-            override fun onItemMove(fromPosition: Int, toPosition: Int) {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    val currentEtaOrderList = viewModel.getEtaOrderList().toMutableList()
-                    currentEtaOrderList.swap(fromPosition, toPosition)
-                    val updatedEtaOrderList =
-                        currentEtaOrderList.mapIndexed { index, etaOrderEntity ->
-                            EtaOrderEntity(id = etaOrderEntity.id, position = index)
-                        }
-                    viewModel.updateEtaOrderList(updatedEtaOrderList)
+                override fun onItemMove(fromPosition: Int, toPosition: Int) {
+                    if (!isEditingOrdering) {
+                        toggleEditingState(true)
+                    }
 
                     savedEtaCardList.swap(fromPosition, toPosition)
                     adapter.move(fromPosition, toPosition)
                 }
-            }
-        })
+
+                override fun requestDrag(viewHolder: SettingsEtaViewHolder) {
+                    touchHelper.startDrag(viewHolder)
+                }
+            })
     }
 
     private var firstLoading = true
+    var isEditingOrdering = false
 
     private fun showRemoveEtaConfirmDialog(card: Card.SettingsEtaItemCard) {
         context?.let { context ->
@@ -135,7 +143,7 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
         viewBinding.recyclerView.adapter = adapter
         val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
         viewBinding.recyclerView.addItemDecoration(dividerItemDecoration)
-        val touchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
+        touchHelper = ItemTouchHelper(ItemTouchHelperCallback(adapter))
         touchHelper.attachToRecyclerView(viewBinding.recyclerView)
     }
 
@@ -159,6 +167,7 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        this.menu = menu
         inflater.inflate(R.menu.settings_eta, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -169,12 +178,75 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
                 launchAddEtaActivity()
                 return true
             }
+            R.id.settings_eta_action_save_order -> {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    saveNewEtaOrder()
+                    toggleEditingState(false)
+                }
+                return true
+            }
+            android.R.id.home -> {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    checkSaveNewEtaOrder()
+                    activity?.finish()
+                }
+                return false
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun launchAddEtaActivity() {
-        addEtaLauncher.launch(Intent(context, AddEtaActivity::class.java))
+        lifecycleScope.launch(Dispatchers.Main) {
+            addEtaLauncher.launch(Intent(context, AddEtaActivity::class.java))
+        }
+    }
+
+    suspend fun checkSaveNewEtaOrder() {
+        if (!isEditingOrdering) return
+        val context = context ?: return
+
+        val result = suspendCancellableCoroutine<Boolean> { cont ->
+            MaterialDialog(context)
+                .message(R.string.dialog_check_edit_eta_order_description)
+                .positiveButton(R.string.dialog_check_edit_eta_order_save_btn) {
+                    cont.resume(true)
+                }
+                .negativeButton(R.string.dialog_check_edit_eta_order_leave_btn) {
+                    cont.resume(false)
+                }
+                .onCancel {
+                    cont.resume(false)
+                }
+                .show()
+        }
+
+        if (result) {
+            saveNewEtaOrder()
+        }
+
+        toggleEditingState(false)
+    }
+
+    private suspend fun saveNewEtaOrder() {
+        val updatedEtaOrderList =
+            savedEtaCardList.mapIndexed { index, card ->
+                EtaOrderEntity(id = card.entity.id, position = index)
+            }
+        viewModel.updateEtaOrderList(updatedEtaOrderList)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun toggleEditingState(startEditing: Boolean) {
+        if (startEditing) {
+            isEditingOrdering = true
+            menu.findItem(R.id.settings_eta_action_add)?.isVisible = false
+            menu.findItem(R.id.settings_eta_action_save_order)?.isVisible = true
+        } else {
+            isEditingOrdering = false
+            menu.findItem(R.id.settings_eta_action_add)?.isVisible = true
+            menu.findItem(R.id.settings_eta_action_save_order)?.isVisible = false
+        }
     }
 
     override fun getViewBinding(

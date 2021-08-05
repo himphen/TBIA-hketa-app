@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/background"
     android:foreground="?android:attr/selectableItemBackground">
 
     <View
@@ -19,10 +20,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -30,6 +27,9 @@
             android:id="@+id/routeNumberLl"
             android:layout_width="80dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,12 +56,12 @@
             android:gravity="center_vertical"
             android:orientation="vertical"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/orderLl"
+            android:paddingEnd="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/routeNumberLl"
+            app:layout_constraintEnd_toStartOf="@id/orderCl"
             app:layout_constraintHorizontal_weight="3"
             app:layout_constraintStart_toEndOf="@id/routeNumberLl"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@id/routeNumberLl">
 
             <TextView
                 android:id="@+id/routeDirectionTv"
@@ -94,16 +94,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/orderLl"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|end"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/orderCl"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/routeNumberLl"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toEndOf="@id/routeDirectionLl"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@id/routeNumberLl">
 
             <ImageView
                 android:layout_width="24dp"
@@ -112,6 +110,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/md_grey_500"
                 tools:ignore="ContentDescription" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

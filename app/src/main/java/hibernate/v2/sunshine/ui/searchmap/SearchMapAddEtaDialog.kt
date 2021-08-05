@@ -14,10 +14,6 @@ class SearchMapAddEtaDialog(
     private val onCancelListener: DialogInterface.OnCancelListener? = null
 ) : DialogFragment() {
 
-    companion object {
-        const val TAG = "SearchMapAddEtaDialog"
-    }
-
     override fun onCreateDialog(
         savedInstanceState: Bundle?
     ): Dialog {

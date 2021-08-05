@@ -30,8 +30,8 @@ interface GmbDao {
 
     //////
 
-    @Query("SELECT * FROM gmb_route")
-    suspend fun getRouteList(): List<GmbRouteEntity>
+    @Query("SELECT * FROM gmb_route WHERE region = (:region)")
+    suspend fun getRouteList(region: String): List<GmbRouteEntity>
 
     @Query("SELECT * FROM gmb_route LIMIT 1")
     suspend fun getSingleRoute(): GmbRouteEntity?
@@ -70,6 +70,10 @@ interface GmbDao {
     @Transaction
     @Query("SELECT * FROM gmb_route_stop")
     suspend fun getRouteStopComponentList(): List<GmbRouteStopComponent>
+
+    @Transaction
+    @Query("SELECT * FROM gmb_route_stop WHERE gmb_route_stop_route_id IN (:routeIdList)")
+    suspend fun getRouteStopComponentList(routeIdList: List<String>): List<GmbRouteStopComponent>
 
     @Query("SELECT * FROM gmb_route_stop LIMIT 1")
     suspend fun getSingleRouteStop(): GmbRouteStopEntity?

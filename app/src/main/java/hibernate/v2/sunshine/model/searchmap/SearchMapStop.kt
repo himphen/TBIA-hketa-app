@@ -52,7 +52,7 @@ data class SearchMapStop(
                 nameSc = it.nameSc,
                 nameTc = it.nameTc,
                 stopId = it.stopId,
-                etaType = EtaType.GMB
+                etaType = EtaType.GMB_HKI
             )
         }
     }

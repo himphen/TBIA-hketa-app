@@ -33,11 +33,14 @@
     <string name="text_add_eta_destination_mobile">%1$s 往 %2$s</string>
     <string name="text_add_eta_destination_sp_mobile">特別線 %1$s</string>
 
-    <string name="dialog_add_eta_brand_selection_title">選擇公共運輸機構</string>
+    <string name="dialog_add_eta_brand_selection_title">選擇公共運輸類別</string>
     <string name="dialog_add_eta_brand_selection_kmb_btn">九巴／龍運</string>
     <string name="dialog_add_eta_brand_selection_nwfb_btn">新巴</string>
     <string name="dialog_add_eta_brand_selection_ctb_btn">城巴</string>
     <string name="dialog_add_eta_brand_selection_gmb_btn">專線小巴</string>
+    <string name="dialog_add_eta_brand_selection_gmb_hki_btn">港島專線小巴</string>
+    <string name="dialog_add_eta_brand_selection_gmb_kln_btn">九龍專線小巴</string>
+    <string name="dialog_add_eta_brand_selection_gmb_nt_btn">新界專線小巴</string>
 
     <string name="text_add_eta_hint_route">你正瀏覧 %1$s 路線</string>
     <string name="text_add_eta_hint_stop">你正瀏覧 %1$s 車站</string>
@@ -65,6 +68,10 @@
     <string name="dialog_add_eta_in_search_map_description">加入 %1$s %2$s 車站至主頁？</string>
     <string name="dialog_add_eta_in_search_map_confirm_btn">確定</string>
     <string name="dialog_add_eta_in_search_map_cancel_btn">取消</string>
+
+    <string name="dialog_check_edit_eta_order_description">是否需要儲存新的車站排序？</string>
+    <string name="dialog_check_edit_eta_order_leave_btn">離開</string>
+    <string name="dialog_check_edit_eta_order_save_btn">儲存</string>
 
     <string name="dialog_eta_layout_title">選擇到站時間卡片樣式</string>
     <string name="dialog_eta_layout_standard_btn">標準</string>

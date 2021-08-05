@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
@@ -72,9 +73,11 @@ class AddEtaViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             when (etaType) {
                 EtaType.KMB -> getKmbRouteList(context)
-                EtaType.NWFB -> getNCRouteList(context, EtaType.NWFB)
-                EtaType.CTB -> getNCRouteList(context, EtaType.CTB)
-                EtaType.GMB -> getGmbRouteList(context)
+                EtaType.NWFB,
+                EtaType.CTB -> getNCRouteList(context, etaType)
+                EtaType.GMB_HKI,
+                EtaType.GMB_KLN,
+                EtaType.GMB_NT -> getGmbRouteList(context, etaType)
             }
 
             searchRoute(etaType)
@@ -201,15 +204,21 @@ class AddEtaViewModel(
         }
     }
 
-    private suspend fun getGmbRouteList(context: Context) {
-        val etaType = EtaType.GMB
+    private suspend fun getGmbRouteList(context: Context, etaType: EtaType) {
         if (RouteAndStopListDataHolder.hasData(etaType)) {
             return
         }
 
+        val region = when (etaType) {
+            EtaType.GMB_HKI -> GmbRegion.HKI
+            EtaType.GMB_KLN -> GmbRegion.KLN
+            EtaType.GMB_NT -> GmbRegion.NT
+            else -> return
+        }
+
         try {
-            val allRouteList = gmbRepository.getRouteListDb()
-            val allRouteStopList = gmbRepository.getRouteStopComponentListDb()
+            val allRouteList = gmbRepository.getRouteListDb(region)
+            val allRouteStopList = gmbRepository.getRouteStopComponentListDb(allRouteList.map { it.routeId })
 
             val transportRouteStopHashMap = allRouteList.associate { entity ->
                 val route = entity.toTransportModel()
@@ -304,7 +313,7 @@ class AddEtaViewModel(
     fun searchRoute(etaType: EtaType) {
         executingSearchJob?.cancel()
         if (!RouteAndStopListDataHolder.hasData(etaType)) {
-            executingSearchJob = viewModelScope.launch {
+            executingSearchJob = viewModelScope.launch(Dispatchers.IO) {
                 filteredTransportRouteList.emit(Pair(etaType, emptyList()))
             }
             return
@@ -316,15 +325,17 @@ class AddEtaViewModel(
         val allTransportRouteList = RouteAndStopListDataHolder.getData(etaType)!!
 
         if (keyword.isNullOrBlank()) {
-            executingSearchJob = viewModelScope.launch {
+            executingSearchJob = viewModelScope.launch(Dispatchers.IO) {
                 filteredTransportRouteList.emit(Pair(etaType, allTransportRouteList))
             }
             return
         }
 
-        executingSearchJob = viewModelScope.launch {
+        executingSearchJob = viewModelScope.launch(Dispatchers.IO) {
             val result = allTransportRouteList.filter { routeForRowAdapter ->
                 routeForRowAdapter.route.routeNo.startsWith(keyword, true)
+                        || routeForRowAdapter.route.destTc.startsWith(keyword, true)
+                        || routeForRowAdapter.route.origTc.startsWith(keyword, true)
             }
 
             filteredTransportRouteList.emit(Pair(etaType, result))
