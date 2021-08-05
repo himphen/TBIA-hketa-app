@@ -2,6 +2,7 @@ package hibernate.v2.sunshine.ui.searchmap
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemBottomSheetRouteBinding
@@ -58,9 +59,16 @@ class RouteListAdapter(val listener: ItemListener) :
                 routeCompanyColor.setBackgroundResource(color)
                 root.tag = card
                 root.setOnClickListener { listener.onRouteSelected(it.tag as Card.EtaCard) }
-                etaMinuteTv.text =
-                    card.etaList.getOrNull(0)?.getEtaMinuteText(context) ?: "-"
-                etaTimeTv.text = getEtaTimeText(card.etaList)
+                card.etaList.getOrNull(0)?.getEtaMinuteText()?.let {
+                    etaMinuteTv.text = it
+                    etaMinuteUnitTv.visibility = View.VISIBLE
+                    etaTimeTv.text = getEtaTimeText(card.etaList)
+                    etaTimeTv.visibility = View.VISIBLE
+                } ?: run {
+                    etaMinuteTv.text = ""
+                    etaMinuteUnitTv.visibility = View.GONE
+                    etaTimeTv.visibility = View.GONE
+                }
             }
         }
     }
