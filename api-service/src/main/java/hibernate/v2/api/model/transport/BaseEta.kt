@@ -32,6 +32,9 @@ enum class Company(val value: String) {
     GMB("gmb"),
 
     @Keep
+    MTR("mtr"),
+
+    @Keep
     UNKNOWN("unknown");
 
     companion object {

@@ -3,9 +3,7 @@ package hibernate.v2.sunshine.ui.eta
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
-import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.repository.EtaRepository
@@ -118,60 +116,5 @@ class EtaViewModel(
             Logger.d("lifecycle getEtaList done")
             savedEtaCardList.postValue(result.values.toList())
         }
-    }
-
-    private fun getDefaultEtaEntityList(): MutableList<SavedEtaEntity> {
-        val defaultEtaEntityList = mutableListOf<SavedEtaEntity>()
-        defaultEtaEntityList.add(
-            SavedEtaEntity(
-                stopId = "9D208FE6B2CFD450",
-                routeId = "290",
-                bound = Bound.O,
-                serviceType = "1",
-                seq = 2,
-                company = Company.KMB
-            )
-        )
-        defaultEtaEntityList.add(
-            SavedEtaEntity(
-                stopId = "9D208FE6B2CFD450",
-                routeId = "290X",
-                bound = Bound.O,
-                serviceType = "1",
-                seq = 12,
-                company = Company.KMB
-            )
-        )
-        defaultEtaEntityList.add(
-            SavedEtaEntity(
-                stopId = "403881982F9E7209",
-                routeId = "296A",
-                bound = Bound.O,
-                serviceType = "1",
-                seq = 1,
-                company = Company.KMB
-            )
-        )
-        defaultEtaEntityList.add(
-            SavedEtaEntity(
-                stopId = "5527FF8CC85CF139",
-                routeId = "296C",
-                bound = Bound.O,
-                serviceType = "1",
-                seq = 1,
-                company = Company.KMB
-            )
-        )
-        defaultEtaEntityList.add(
-            SavedEtaEntity(
-                stopId = "21E3E95EAEB2048C",
-                routeId = "296D",
-                bound = Bound.O,
-                serviceType = "1",
-                seq = 1,
-                company = Company.KMB
-            )
-        )
-        return defaultEtaEntityList
     }
 }

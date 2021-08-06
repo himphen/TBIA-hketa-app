@@ -66,7 +66,10 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
                         goToMainActivity()
                     }
                 }
-                else -> {
+                FetchTransportDataType.MTR -> {
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_mtr)
+                }
+                null -> {
                 }
             }
         }
@@ -82,7 +85,12 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
                 FetchTransportDataType.GMB -> {
                     viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_gmb)
                 }
-                else -> {
+                FetchTransportDataType.MTR -> {
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_mtr)
+                }
+                FetchTransportDataType.ALL -> {
+                }
+                null -> {
                 }
             }
         }

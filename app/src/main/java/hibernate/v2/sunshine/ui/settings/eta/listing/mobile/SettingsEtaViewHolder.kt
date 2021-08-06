@@ -24,6 +24,7 @@ class SettingsEtaViewHolder(
             Company.NWFB -> R.color.brand_color_nwfb
             Company.CTB -> R.color.brand_color_ctb
             Company.GMB -> R.color.brand_color_gmb
+            Company.MTR -> R.color.brand_color_gmb
             Company.UNKNOWN -> R.color.eta_card_bg_selected
         }
 

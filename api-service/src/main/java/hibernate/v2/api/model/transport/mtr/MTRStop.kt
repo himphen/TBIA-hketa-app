@@ -1,16 +1,12 @@
-package hibernate.v2.api.model.transport.nc
+package hibernate.v2.api.model.transport.mtr
 
 import com.google.firebase.database.PropertyName
 
-data class NCStop(
-    /**
-     * Document shows this is double type
-     * However, API return string instead of double
-     */
-    var lat: String = "",
+data class MTRStop(
+    var lat: Double = 0.0,
     @get:PropertyName("long")
     @set:PropertyName("long")
-    var lng: String = "",
+    var lng: Double = 0.0,
     @get:PropertyName("name_en")
     @set:PropertyName("name_en")
     var nameEn: String = "",

@@ -14,10 +14,12 @@
     <string name="test_onboarding_loading_kmb">已載入九巴／龍運路線數據</string>
     <string name="test_onboarding_loading_ctb">已載入新巴／城巴路線數據</string>
     <string name="test_onboarding_loading_gmb">已載入專線小巴路線數據</string>
+    <string name="test_onboarding_loading_mtr">已載入港鐵路線數據</string>
 
     <string name="test_onboarding_loading_failed_kmb">載入九巴／龍運路線數據失敗，請重新再試。</string>
     <string name="test_onboarding_loading_failed_ctb">載入新巴／城巴路線數據失敗，請重新再試。</string>
     <string name="test_onboarding_loading_failed_gmb">載入專線小巴路線數據失敗，請重新再試。</string>
+    <string name="test_onboarding_loading_failed_mtr">載入港鐵路線數據失敗，請重新再試。</string>
 
     <string name="text_eta_card_classic_minute">%1$d 分鐘</string>
     <string name="text_eta_destination_to">往</string>

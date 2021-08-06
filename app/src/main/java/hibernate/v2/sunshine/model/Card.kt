@@ -32,6 +32,12 @@ sealed class Card {
         override val position: Int
     ) : SettingsEtaCard()
 
+    data class SettingsTrainEtaItemCard(
+        val entity: SavedEtaEntity,
+        val stop: TransportStop,
+        override val position: Int
+    ) : SettingsEtaCard()
+
     class SettingsEtaAddCard : SettingsEtaCard() {
         override val position: Int = 0
     }
@@ -43,6 +49,16 @@ sealed class Card {
 
     data class EtaCard(
         val route: TransportRoute,
+        val stop: TransportStop,
+        val position: Int,
+        var etaList: List<TransportEta> = listOf(),
+    ) : Card(), Comparable<EtaCard> {
+        override fun compareTo(other: EtaCard): Int {
+            return position.compareTo(other.position)
+        }
+    }
+
+    data class EtaTrainCard(
         val stop: TransportStop,
         val position: Int,
         var etaList: List<TransportEta> = listOf(),
