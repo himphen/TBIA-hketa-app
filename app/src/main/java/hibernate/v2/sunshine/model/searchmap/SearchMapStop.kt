@@ -17,7 +17,7 @@ data class SearchMapStop(
     val nameTc: String,
     val stopId: String,
     val etaType: EtaType,
-    var mapRouteList: List<Card.EtaCard> = emptyList()
+    var mapRouteList: List<Card.EtaCard> = emptyList(),
 ) : ClusterItem {
     companion object {
         fun fromStopEntity(it: KmbStopEntity): SearchMapStop {

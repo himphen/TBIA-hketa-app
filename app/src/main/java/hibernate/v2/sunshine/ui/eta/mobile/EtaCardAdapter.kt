@@ -16,7 +16,7 @@ import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderCompact
 import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderStandard
 
 class EtaCardAdapter(
-    var type: EtaCardViewType
+    var type: EtaCardViewType,
 ) : RecyclerView.Adapter<BaseEtaViewHolder<out ViewBinding>>() {
 
     private var list = mutableListOf<Card.EtaCard>()

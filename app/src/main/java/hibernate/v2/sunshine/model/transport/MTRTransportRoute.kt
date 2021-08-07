@@ -2,6 +2,7 @@ package hibernate.v2.sunshine.model.transport
 
 import android.content.Context
 import android.os.Parcelable
+import androidx.annotation.ColorInt
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
@@ -57,4 +58,9 @@ data class MTRTransportRoute(
         )
     }
 
+    override fun getCardRouteText(): String = routeInfo.nameTc
+
+    @ColorInt
+    override fun getColor(context: Context, combineNC: Boolean): Int =
+        routeInfo.color
 }

@@ -22,6 +22,7 @@ class EtaRepository(
     suspend fun getSavedKmbEtaList() = etaDao.getAllKmbEtaWithOrdering()
     suspend fun getSavedNCEtaList() = etaDao.getAllNCEtaWithOrdering()
     suspend fun getSavedGmbEtaList() = etaDao.getAllGmbEtaWithOrdering()
+    suspend fun getSavedMTREtaList() = etaDao.getAllMTREtaWithOrdering()
 
     suspend fun hasEtaInDb(
         stopId: String,
@@ -92,7 +93,7 @@ class EtaRepository(
         )
     }
 
-    suspend fun getStopEtaApi(
+    suspend fun getMTRStopEtaApi(
         stopId: String,
         route: String
     ): MTREtaResponse {

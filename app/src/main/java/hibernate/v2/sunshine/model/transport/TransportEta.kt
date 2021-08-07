@@ -7,7 +7,7 @@ import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
-class TransportEta(
+open class TransportEta(
     val eta: Date? = null,
     val rmkEn: String? = null,
     val rmkSc: String? = null,

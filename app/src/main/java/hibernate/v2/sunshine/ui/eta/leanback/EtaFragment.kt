@@ -82,7 +82,7 @@ class EtaFragment : VerticalGridSupportFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         val customInflater = inflater.cloneInContext(
             ContextThemeWrapper(
@@ -120,7 +120,7 @@ class EtaFragment : VerticalGridSupportFragment() {
 
     private fun processEtaList() {
         etaCardList?.forEachIndexed { index, etaCard ->
-            etaCard.etaList = etaCard.etaList.filter { eta: TransportEta ->
+            val temp = etaCard.etaList.filter { eta: TransportEta ->
                 eta.eta?.let { etaDate ->
                     val currentDate = Date()
                     DateUtil.getTimeDiffInMin(
@@ -131,6 +131,9 @@ class EtaFragment : VerticalGridSupportFragment() {
                     false
                 }
             }
+
+            etaCard.etaList.clear()
+            etaCard.etaList.addAll(temp)
 
             mAdapter?.replace(index, etaCard)
         }

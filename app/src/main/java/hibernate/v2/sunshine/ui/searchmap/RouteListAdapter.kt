@@ -51,12 +51,12 @@ class RouteListAdapter(val listener: ItemListener) :
 
         override fun onBind(card: Card.EtaCard) {
             val route = card.route
-            val color = route.getColor(false)
+            val color = route.getColor(context, false)
 
             viewBinding.apply {
                 routeNumberTv.text = route.routeNo
                 routeDirectionTv.text = route.getDestDirectionText(context)
-                routeCompanyColor.setBackgroundResource(color)
+                routeCompanyColor.setBackgroundColor(color)
                 root.tag = card
                 root.setOnClickListener { listener.onRouteSelected(it.tag as Card.EtaCard) }
                 card.etaList.getOrNull(0)?.getEtaMinuteText()?.let {

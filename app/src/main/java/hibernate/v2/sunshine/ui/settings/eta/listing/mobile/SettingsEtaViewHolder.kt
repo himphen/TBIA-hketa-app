@@ -10,7 +10,7 @@ import hibernate.v2.sunshine.model.Card
 
 class SettingsEtaViewHolder(
     val viewBinding: ItemSettingsEtaListingBinding,
-    private val listener: SettingsEtaListingAdapter.ItemListener
+    private val listener: SettingsEtaListingAdapter.ItemListener,
 ) : RecyclerView.ViewHolder(viewBinding.root) {
 
     val context: Context
@@ -24,7 +24,7 @@ class SettingsEtaViewHolder(
             Company.NWFB -> R.color.brand_color_nwfb
             Company.CTB -> R.color.brand_color_ctb
             Company.GMB -> R.color.brand_color_gmb
-            Company.MTR -> R.color.brand_color_gmb
+            Company.MTR -> R.color.brand_color_mtr
             Company.UNKNOWN -> R.color.eta_card_bg_selected
         }
 

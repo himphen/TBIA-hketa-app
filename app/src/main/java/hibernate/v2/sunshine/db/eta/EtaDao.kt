@@ -22,6 +22,10 @@ interface EtaDao {
     @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id JOIN gmb_route ON saved_eta_route_bound = gmb_route_bound AND saved_eta_service_type = gmb_route_service_type AND saved_eta_route_id = gmb_route_id JOIN gmb_stop ON saved_eta_stop_id = gmb_stop_id WHERE saved_eta_company = 'gmb'")
     suspend fun getAllGmbEtaWithOrdering(): List<EtaGmbDetails>
 
+    @Transaction
+    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id JOIN mtr_route ON saved_eta_route_bound = mtr_route_bound AND saved_eta_service_type = mtr_route_service_type AND saved_eta_route_id = mtr_route_id JOIN mtr_stop ON saved_eta_stop_id = mtr_stop_id WHERE saved_eta_company = 'mtr'")
+    suspend fun getAllMTREtaWithOrdering(): List<EtaMTRDetails>
+
     @Query("SELECT * FROM saved_eta WHERE saved_eta_stop_id=(:stopId) AND saved_eta_route_id=(:routeId) AND saved_eta_route_bound=(:bound) AND saved_eta_service_type=(:serviceType) AND saved_eta_seq=(:seq) AND saved_eta_company=(:company) LIMIT 1")
     suspend fun getSingleEta(
         stopId: String,
@@ -29,7 +33,7 @@ interface EtaDao {
         bound: Bound,
         serviceType: String,
         seq: Int,
-        company: Company
+        company: Company,
     ): SavedEtaEntity?
 
     @Update
@@ -47,7 +51,7 @@ interface EtaDao {
         routeId: String,
         bound: Bound,
         serviceType: String,
-        seq: String
+        seq: String,
     )
 
     @Query("DELETE FROM saved_eta")

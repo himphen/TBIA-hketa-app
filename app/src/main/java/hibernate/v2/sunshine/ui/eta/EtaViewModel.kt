@@ -3,8 +3,10 @@ package hibernate.v2.sunshine.ui.eta
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
+import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.MTRTransportEta
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
@@ -15,7 +17,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentSkipListMap
 
 class EtaViewModel(
-    private val etaRepository: EtaRepository
+    private val etaRepository: EtaRepository,
 ) : BaseViewModel() {
 
     val savedEtaCardList = MutableLiveData<List<Card.EtaCard>>()
@@ -31,6 +33,9 @@ class EtaViewModel(
             )
             convertedEtaCardList.addAll(
                 etaRepository.getSavedGmbEtaList().map { it.toEtaCard() }
+            )
+            convertedEtaCardList.addAll(
+                etaRepository.getSavedMTREtaList().map { it.toEtaCard() }
             )
 
             convertedEtaCardList.sort()
@@ -54,60 +59,103 @@ class EtaViewModel(
                 async {
                     when (etaCard.route.company) {
                         Company.KMB -> {
+
                             val apiEtaResponse = etaRepository.getKmbStopEtaApi(
                                 stopId = etaCard.stop.stopId,
                                 route = etaCard.route.routeId
                             )
                             apiEtaResponse.data?.let { etaList ->
-                                etaCard.etaList = etaList
+                                val temp = etaList
                                     .map { TransportEta.fromApiModel(it) }
                                     .filter { eta ->
                                         // e.g. Filter not same bound in bus terminal stops
                                         eta.bound == etaCard.route.bound
                                                 && eta.seq == etaCard.stop.seq
                                     }
+
+                                etaCard.etaList.clear()
+                                etaCard.etaList.addAll(temp)
+
                             }
 
                             result[index] = etaCard
                         }
                         Company.NWFB,
-                        Company.CTB -> {
+                        Company.CTB,
+                        -> {
+
                             val apiEtaResponse = etaRepository.getNCStopEtaApi(
                                 company = etaCard.route.company,
                                 stopId = etaCard.stop.stopId,
                                 route = etaCard.route.routeId
                             )
                             apiEtaResponse.data?.let { etaList ->
-                                etaCard.etaList = etaList
+                                val temp = etaList
                                     .map { TransportEta.fromApiModel(it) }
                                     .filter { eta ->
                                         // e.g. Filter not same bound in bus terminal stops
                                         eta.bound == etaCard.route.bound
                                                 && eta.seq == etaCard.stop.seq
                                     }
+
+                                etaCard.etaList.clear()
+                                etaCard.etaList.addAll(temp)
                             }
 
                             result[index] = etaCard
                         }
                         Company.GMB -> {
+
                             val apiEtaResponse = etaRepository.getGmbStopEtaApi(
                                 stopSeq = etaCard.stop.seq!!,
                                 route = etaCard.route.routeId,
                                 serviceType = etaCard.route.serviceType
                             )
                             apiEtaResponse.data?.let { etaRouteStop ->
-                                etaCard.etaList = etaRouteStop.etaList
+                                val temp = etaRouteStop.etaList
                                     ?.map { TransportEta.fromApiModel(it) }
                                     ?.filter { eta ->
                                         // e.g. Filter not same bound in bus terminal stops
                                         eta.bound == etaCard.route.bound
                                                 && eta.seq == etaCard.stop.seq
                                     } ?: emptyList()
+
+                                etaCard.etaList.clear()
+                                etaCard.etaList.addAll(temp)
                             }
 
                             result[index] = etaCard
                         }
                         Company.UNKNOWN -> {
+                        }
+                        Company.MTR -> {
+                            val apiEtaResponse = etaRepository.getMTRStopEtaApi(
+                                stopId = etaCard.stop.stopId,
+                                route = etaCard.route.routeId
+                            )
+                            val matchedIndex = etaCard.route.routeId + "-" + etaCard.stop.stopId
+                            apiEtaResponse.data?.let { etaRouteStopMap ->
+                                etaRouteStopMap.forEach { (index, etaRouteStop) ->
+                                    if (index != matchedIndex) return@forEach
+
+                                    val temp = when (etaCard.route.bound) {
+                                        Bound.O -> etaRouteStop.down
+                                        Bound.I -> etaRouteStop.up
+                                        Bound.UNKNOWN -> null
+                                    }
+                                        ?.map { MTRTransportEta.fromApiModel(it) }
+                                        ?: emptyList()
+
+                                    etaCard.etaList.clear()
+                                    etaCard.etaList.addAll(temp)
+
+                                    etaCard.platform =
+                                        (etaCard.etaList.getOrNull(0) as? MTRTransportEta)?.platform
+                                            ?: "1"
+                                }
+                            }
+
+                            result[index] = etaCard
                         }
                     }
                 }

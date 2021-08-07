@@ -7,7 +7,7 @@ import hibernate.v2.api.response.BaseResponse
 data class MTREtaResponse(
     @SerializedName("data")
     @Expose
-    val result: Map<String, MTREtaRouteStop>
+    val data: Map<String, MTREtaRouteStop>? = null
 ) : BaseResponse()
 
 data class MTREtaRouteStop(
@@ -16,9 +16,9 @@ data class MTREtaRouteStop(
     @SerializedName("sys_time")
     val sysTime: String? = null,
     @SerializedName("DOWN")
-    val dOWN: List<MTREta>? = null,
+    val down: List<MTREta>? = null,
     @SerializedName("UP")
-    val uP: List<MTREta>? = null
+    val up: List<MTREta>? = null
 )
 
 data class MTREta(

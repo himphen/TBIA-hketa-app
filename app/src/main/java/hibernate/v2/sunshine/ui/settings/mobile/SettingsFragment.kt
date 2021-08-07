@@ -9,12 +9,18 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
+import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
+import hibernate.v2.sunshine.ui.onboarding.mobile.OnboardingActivity
 import hibernate.v2.sunshine.ui.settings.eta.layout.mobile.EtaLayoutSelectionActivity
 import hibernate.v2.sunshine.ui.settings.eta.listing.mobile.SettingsEtaListingActivity
 import hibernate.v2.sunshine.util.GeneralUtils
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SettingsFragment : PreferenceFragmentCompat() {
+
+    private val onboardingViewModel by inject<OnboardingViewModel>()
 
     private var etaLayoutLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -50,6 +56,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
         findPreference<Preference>("pref_settings_version")?.apply {
             summary = GeneralUtils.getAppVersionName(context)
+        }
+        findPreference<Preference>("pref_settings_reset")?.apply {
+            setOnPreferenceClickListener {
+                lifecycleScope.launch {
+                    onboardingViewModel.resetTransportData()
+                    startActivity(Intent(activity, OnboardingActivity::class.java))
+                    activity?.finish()
+                }
+                true
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ import hibernate.v2.sunshine.util.DateUtil.formatString
 abstract class BaseEtaCardView<T : ViewBinding>(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.style.FullCardStyle
+    defStyleAttr: Int = R.style.FullCardStyle,
 ) : BaseCardView(
     context,
     attrs,

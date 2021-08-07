@@ -4,6 +4,7 @@
     <string name="title_activity_eta_layout">更改到站卡片樣式</string>
     <string name="title_settings_version_leanback">版本 %1$s</string>
     <string name="title_settings_version">版本</string>
+    <string name="title_settings_reset">重設數據</string>
     <string name="title_activity_add_eta">加入車站</string>
 
     <string name="title_fragment_home">主頁</string>
@@ -22,6 +23,7 @@
     <string name="test_onboarding_loading_failed_mtr">載入港鐵路線數據失敗，請重新再試。</string>
 
     <string name="text_eta_card_classic_minute">%1$d 分鐘</string>
+    <string name="text_eta_card_classic_mtr_station">%1$s站</string>
     <string name="text_eta_destination_to">往</string>
 
     <string name="text_eta_destination">往 %1$s</string>

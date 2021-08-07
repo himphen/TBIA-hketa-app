@@ -18,7 +18,7 @@ sealed class Card {
     }
 
     abstract class SettingsEtaCard(
-        open val position: Int = 0
+        open val position: Int = 0,
     ) : Card(), Comparable<SettingsEtaCard> {
         override fun compareTo(other: SettingsEtaCard): Int {
             return position.compareTo(other.position)
@@ -29,13 +29,13 @@ sealed class Card {
         val entity: SavedEtaEntity,
         val route: TransportRoute,
         val stop: TransportStop,
-        override val position: Int
+        override val position: Int,
     ) : SettingsEtaCard()
 
     data class SettingsTrainEtaItemCard(
         val entity: SavedEtaEntity,
         val stop: TransportStop,
-        override val position: Int
+        override val position: Int,
     ) : SettingsEtaCard()
 
     class SettingsEtaAddCard : SettingsEtaCard() {
@@ -51,19 +51,11 @@ sealed class Card {
         val route: TransportRoute,
         val stop: TransportStop,
         val position: Int,
-        var etaList: List<TransportEta> = listOf(),
+        val etaList: MutableList<TransportEta> = mutableListOf(),
+        var platform: String? = "",
     ) : Card(), Comparable<EtaCard> {
-        override fun compareTo(other: EtaCard): Int {
-            return position.compareTo(other.position)
-        }
-    }
 
-    data class EtaTrainCard(
-        val stop: TransportStop,
-        val position: Int,
-        var etaList: List<TransportEta> = listOf(),
-    ) : Card(), Comparable<EtaCard> {
-        override fun compareTo(other: EtaCard): Int {
+        override fun compareTo(other: Card.EtaCard): Int {
             return position.compareTo(other.position)
         }
     }

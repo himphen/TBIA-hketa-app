@@ -174,6 +174,13 @@ class OnboardingViewModel(
             ).joinAll()
         }
     }
+
+    suspend fun resetTransportData() {
+        kmbRepository.initDatabase()
+        ncRepository.initDatabase()
+        gmbRepository.initDatabase()
+        mtrRepository.initDatabase()
+    }
 }
 
 enum class FetchTransportDataType {

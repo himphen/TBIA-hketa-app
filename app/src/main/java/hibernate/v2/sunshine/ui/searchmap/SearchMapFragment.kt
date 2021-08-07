@@ -1,7 +1,6 @@
 package hibernate.v2.sunshine.ui.searchmap
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -445,7 +444,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         val etaCardList = routeBottomSheetEtaCardList
         if (!etaCardList.isNullOrEmpty()) {
             etaCardList.forEachIndexed { index, etaCard ->
-                etaCard.etaList = etaCard.etaList.filter { eta: TransportEta ->
+                val temp = etaCard.etaList.filter { eta: TransportEta ->
                     eta.eta?.let { etaDate ->
                         val currentDate = Date()
                         DateUtil.getTimeDiffInMin(
@@ -456,6 +455,9 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                         false
                     }
                 }
+
+                etaCard.etaList.clear()
+                etaCard.etaList.addAll(temp)
 
                 routeListAdapter.replace(index, etaCard)
             }

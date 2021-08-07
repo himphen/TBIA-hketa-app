@@ -17,7 +17,7 @@ import hibernate.v2.sunshine.ui.eta.leanback.view.EtaCardViewStandard
 class EtaCardPresenter(
     context: Context,
     private val fragmentWidth: Int,
-    private val type: EtaCardViewType
+    private val type: EtaCardViewType,
 ) : BaseCardPresenter<BaseEtaCardView<out ViewBinding>, Card.EtaCard>(
     ContextThemeWrapper(context, R.style.AppTheme_Leanback_Eta)
 ) {

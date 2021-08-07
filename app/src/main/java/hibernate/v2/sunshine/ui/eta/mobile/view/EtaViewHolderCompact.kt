@@ -17,19 +17,19 @@ class EtaViewHolderCompact(viewBinding: ItemEtaCompactBinding) :
     override fun onBind(card: Card.EtaCard) {
         viewBinding.content.apply {
             val route = card.route
-            val color = route.getColor(false)
+            val color = route.getColor(context, false)
 
             (ContextCompat.getDrawable(
                 context,
                 R.drawable.eta_card_line_arrow
             ) as? RotateDrawable?).let { arrowDrawable ->
                 arrowDrawable?.mutate()
-                (arrowDrawable?.drawable as? GradientDrawable)?.setColor(context.getColor(color))
+                (arrowDrawable?.drawable as? GradientDrawable)?.setColor(color)
                 lineArrowBgView.background = arrowDrawable
-                lineBgView.setBackgroundResource(color)
+                lineBgView.setBackgroundColor(color)
             }
 
-            routeNumberTv.text = route.routeNo
+            routeNumberTv.apply { text = card.route.getCardRouteText() }
             stopNameTv.text = card.stop.nameTc
             routeDirectionTv.text = route.getDestDirectionText(context)
 

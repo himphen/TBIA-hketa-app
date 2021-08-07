@@ -112,7 +112,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         } else {
             viewBinding?.emptyViewCl?.root?.visibility = View.GONE
             etaCardList.forEachIndexed { index, etaCard ->
-                etaCard.etaList = etaCard.etaList.filter { eta: TransportEta ->
+
+                val temp = etaCard.etaList.filter { eta: TransportEta ->
                     eta.eta?.let { etaDate ->
                         val currentDate = Date()
                         DateUtil.getTimeDiffInMin(
@@ -123,6 +124,9 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                         false
                     }
                 }
+
+                etaCard.etaList.clear()
+                etaCard.etaList.addAll(temp)
 
                 adapter.replace(index, etaCard)
             }

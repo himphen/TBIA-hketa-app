@@ -19,4 +19,9 @@
         android:key="pref_settings_version"
         android:title="@string/title_settings_version"
         tools:summary="Dark Mode" />
+
+    <Preference
+        android:icon="@drawable/ic_settings_version_24"
+        android:key="pref_settings_reset"
+        android:title="@string/title_settings_reset" />
 </PreferenceScreen>
