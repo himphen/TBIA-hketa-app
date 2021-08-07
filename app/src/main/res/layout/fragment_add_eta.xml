@@ -11,12 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recyclerView"
-        tools:background="@color/brand_color_kmb"
-        tools:visibility="visible">
+        tools:background="@color/brand_color_kmb">
 
         <TextView
             android:id="@+id/hintTv"

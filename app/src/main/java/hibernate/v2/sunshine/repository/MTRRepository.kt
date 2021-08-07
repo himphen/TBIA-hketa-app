@@ -55,7 +55,7 @@ class MTRRepository(
         }
     }
 
-    suspend fun getRouteListByCompanyDb() = mtrDao.getRouteList()
+    suspend fun getRouteListDb() = mtrDao.getRouteList()
     suspend fun getRouteStopComponentListDb() =
         mtrDao.getRouteStopComponentList()
 

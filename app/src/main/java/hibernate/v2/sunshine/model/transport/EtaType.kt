@@ -11,13 +11,15 @@ enum class EtaType {
     CTB,
     GMB_HKI,
     GMB_KLN,
-    GMB_NT;
+    GMB_NT,
+    MTR;
 
     fun company() = when (this) {
         KMB -> Company.KMB
         NWFB -> Company.NWFB
         CTB -> Company.CTB
         GMB_HKI, GMB_KLN, GMB_NT -> Company.GMB
+        MTR -> Company.MTR
     }
 
     fun name(context: Context) = when (this) {
@@ -27,6 +29,7 @@ enum class EtaType {
         GMB_HKI -> context.getString(R.string.dialog_add_eta_brand_selection_gmb_hki_btn)
         GMB_KLN -> context.getString(R.string.dialog_add_eta_brand_selection_gmb_kln_btn)
         GMB_NT -> context.getString(R.string.dialog_add_eta_brand_selection_gmb_nt_btn)
+        MTR -> context.getString(R.string.dialog_add_eta_brand_selection_mtr_btn)
     }
 
     @ColorInt
@@ -35,5 +38,6 @@ enum class EtaType {
         NWFB -> context.getColor(R.color.brand_color_nwfb)
         GMB_HKI, GMB_KLN, GMB_NT -> context.getColor(R.color.brand_color_gmb)
         CTB -> context.getColor(R.color.brand_color_ctb)
+        MTR -> context.getColor(R.color.brand_color_mtr)
     }
 }

@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentAddEtaBinding
-import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
-import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.util.getEnum
 import hibernate.v2.sunshine.util.putEnum
 import kotlinx.coroutines.flow.launchIn
@@ -37,8 +36,8 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaBinding>() {
         arguments?.getEnum(ARG_ETA_TYPE, EtaType.KMB) ?: EtaType.KMB
     }
     private val viewModel: AddEtaViewModel by sharedViewModel()
-    private val adapter: AddEtaAdapter by lazy {
-        AddEtaAdapter(AddEtaAdapter.SelectionType.Route, object : AddEtaAdapter.ItemListener {
+    private val adapter: AddEtaRouteAdapter by lazy {
+        AddEtaRouteAdapter(etaType, object : AddEtaRouteAdapter.ItemListener {
             override fun onRouteSelected(route: RouteForRowAdapter) {
                 viewModel.selectedEtaType.value = etaType
                 viewModel.selectedRoute.value = route
@@ -55,16 +54,13 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaBinding>() {
                     commit()
                 }
             }
-
-            override fun onStopSelected(card: Card.RouteStopAddCard) {
-            }
         })
     }
 
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FragmentAddEtaBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

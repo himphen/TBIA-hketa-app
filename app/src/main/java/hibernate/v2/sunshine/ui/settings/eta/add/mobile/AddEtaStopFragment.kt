@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentAddEtaBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.RouteForRowAdapter
+import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -24,11 +24,8 @@ class AddEtaStopFragment : BaseFragment<FragmentAddEtaBinding>() {
     }
 
     private val viewModel: AddEtaViewModel by sharedViewModel()
-    private val adapter: AddEtaAdapter by lazy {
-        AddEtaAdapter(AddEtaAdapter.SelectionType.Stop, object : AddEtaAdapter.ItemListener {
-            override fun onRouteSelected(route: RouteForRowAdapter) {
-            }
-
+    private val adapter: AddEtaStopAdapter by lazy {
+        AddEtaStopAdapter(object : AddEtaStopAdapter.ItemListener {
             override fun onStopSelected(card: Card.RouteStopAddCard) {
                 viewModel.saveStop(card)
             }
@@ -38,7 +35,7 @@ class AddEtaStopFragment : BaseFragment<FragmentAddEtaBinding>() {
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FragmentAddEtaBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,15 +51,18 @@ class AddEtaStopFragment : BaseFragment<FragmentAddEtaBinding>() {
         viewBinding.recyclerView.adapter = adapter
 
         val selectedRoute = viewModel.selectedRoute.value!!.route
-        viewBinding.hintCl.visibility = View.VISIBLE
         viewBinding.hintTv.text = getString(
             R.string.text_add_eta_hint_stop,
             selectedRoute.getDirectionWithRouteText(requireContext())
         )
-        val etaTypeColor =
-            viewModel.selectedEtaType.value!!.color(requireContext())
-        viewBinding.hintCl.setBackgroundColor(etaTypeColor)
 
+        if (selectedRoute is MTRTransportRoute) {
+            viewBinding.hintCl.setBackgroundColor(selectedRoute.routeInfo.color)
+        } else {
+            val etaTypeColor =
+                viewModel.selectedEtaType.value!!.color(requireContext())
+            viewBinding.hintCl.setBackgroundColor(etaTypeColor)
+        }
     }
 
     private fun initData() {

@@ -41,6 +41,8 @@ class CustomClusterRenderer(
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
                 EtaType.GMB_NT -> R.drawable.map_marker_bus_stop_gmb
+                // TODO
+                EtaType.MTR -> R.drawable.map_marker_bus_stop_gmb
             }
         )?.let {
             markerOptions.icon(it)

@@ -5,99 +5,60 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.ItemAddEtaRouteBinding
 import hibernate.v2.sunshine.databinding.ItemAddEtaStopBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.RouteForRowAdapter
-import hibernate.v2.sunshine.ui.settings.eta.add.mobile.view.AddEtaViewHolderRoute
-import hibernate.v2.sunshine.ui.settings.eta.add.mobile.view.BaseAddEtaViewHolder
+import hibernate.v2.sunshine.model.transport.MTRTransportRoute
+import hibernate.v2.sunshine.ui.base.BaseViewHolder
 
-class AddEtaAdapter(
-    private val type: SelectionType,
-    private val listener: ItemListener
-) : RecyclerView.Adapter<BaseAddEtaViewHolder<out ViewBinding>>() {
-
-    enum class SelectionType {
-        Route, Stop
-    }
+class AddEtaStopAdapter(
+    private val listener: ItemListener,
+) : RecyclerView.Adapter<AddEtaStopAdapter.AddEtaViewHolderStop>() {
 
     interface ItemListener {
-        fun onRouteSelected(route: RouteForRowAdapter)
         fun onStopSelected(card: Card.RouteStopAddCard)
     }
 
-    private var list2 = mutableListOf<RouteForRowAdapter>()
-    private var list3 = mutableListOf<Card.RouteStopAddCard>()
+    private var list = mutableListOf<Card.RouteStopAddCard>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
-            BaseAddEtaViewHolder<out ViewBinding> {
-        return when (type) {
-            SelectionType.Route -> AddEtaViewHolderRoute(
-                ItemAddEtaRouteBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                ),
-                listener
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        AddEtaViewHolderStop(
+            ItemAddEtaStopBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
             )
-            SelectionType.Stop -> AddEtaViewHolderStop(
-                ItemAddEtaStopBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                ),
-                listener
-            )
-        }
+        )
+
+    override fun onBindViewHolder(holder: AddEtaViewHolderStop, position: Int) {
+        val isFirst = position == 0
+        val isLast = position == list.lastIndex
+        holder.onBind(list[position], isFirst, isLast)
     }
 
-    override fun onBindViewHolder(holder: BaseAddEtaViewHolder<out ViewBinding>, position: Int) {
-        when (holder) {
-            is AddEtaViewHolderRoute -> holder.onBind(list2[position])
-            is AddEtaViewHolderStop -> {
-                val isFirst = position == 0
-                val isLast = position == list3.lastIndex
-                holder.onBind(list3[position], isFirst, isLast)
-            }
-        }
-    }
-
-    override fun getItemCount(): Int = when (type) {
-        SelectionType.Route -> list2.size
-        SelectionType.Stop -> list3.size
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun setRouteData(mutableList: List<RouteForRowAdapter>?) {
-        if (mutableList == null) return
-
-        list2.clear()
-        list2.addAll(mutableList)
-        notifyDataSetChanged()
-    }
+    override fun getItemCount(): Int = list.size
 
     @SuppressLint("NotifyDataSetChanged")
     fun setStopData(mutableList: List<Card.RouteStopAddCard>?) {
         if (mutableList == null) return
 
-        list3.clear()
-        list3.addAll(mutableList)
+        list.clear()
+        list.addAll(mutableList)
         notifyDataSetChanged()
     }
 
     inner class AddEtaViewHolderStop(
-        override val viewBinding: ItemAddEtaStopBinding,
-        private val listener: ItemListener
-    ) : BaseAddEtaViewHolder<ItemAddEtaStopBinding>(viewBinding) {
+        viewBinding: ItemAddEtaStopBinding,
+    ) : BaseViewHolder<ItemAddEtaStopBinding>(viewBinding) {
 
         fun onBind(card: Card.RouteStopAddCard, isFirst: Boolean, isLast: Boolean) {
             viewBinding.stopNameTv.text = card.stop.nameTc
             viewBinding.stopSeqTv.text = String.format("%02d", card.stop.seq)
 
             when (card.route.company) {
+                Company.UNKNOWN -> {
+                }
                 Company.KMB -> {
                     viewBinding.stopLineTop.setBackgroundResource(R.color.brand_color_kmb)
                     viewBinding.stopLineMiddle.setBackgroundResource(R.color.brand_color_kmb)
@@ -118,7 +79,11 @@ class AddEtaAdapter(
                     viewBinding.stopLineMiddle.setBackgroundResource(R.color.brand_color_gmb)
                     viewBinding.stopLineBottom.setBackgroundResource(R.color.brand_color_gmb)
                 }
-                Company.UNKNOWN -> {
+                Company.MTR -> {
+                    val route = card.route as MTRTransportRoute
+                    viewBinding.stopLineTop.setBackgroundColor(route.routeInfo.color)
+                    viewBinding.stopLineMiddle.setBackgroundColor(route.routeInfo.color)
+                    viewBinding.stopLineBottom.setBackgroundColor(route.routeInfo.color)
                 }
             }
 

@@ -7,6 +7,7 @@ import hibernate.v2.api.core.ApiConverterFactory
 import hibernate.v2.api.service.GmbService
 import hibernate.v2.api.service.KmbService
 import hibernate.v2.api.service.HkoWeatherService
+import hibernate.v2.api.service.MTRService
 import hibernate.v2.api.service.NCService
 import hibernate.v2.api.service.OpenWeatherService
 import hibernate.v2.sunshine.BuildConfig
@@ -25,6 +26,7 @@ open class ApiManager(val context: Context) {
     lateinit var kmbService: KmbService
     lateinit var gmbService: GmbService
     lateinit var ncService: NCService
+    lateinit var mtrService: MTRService
     lateinit var hkoWeatherService: HkoWeatherService
     lateinit var openWeatherService: OpenWeatherService
 
@@ -77,6 +79,13 @@ open class ApiManager(val context: Context) {
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ApiConverterFactory(Gson()))
             .build().create(GmbService::class.java)
+
+        mtrService = Retrofit.Builder()
+            .baseUrl("https://rt.data.gov.hk/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(ApiConverterFactory(Gson()))
+            .build().create(MTRService::class.java)
     }
 
     init {

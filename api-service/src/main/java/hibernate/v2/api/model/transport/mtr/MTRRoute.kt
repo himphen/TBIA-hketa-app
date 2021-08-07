@@ -1,8 +1,10 @@
 package hibernate.v2.api.model.transport.mtr
 
+import android.os.Parcelable
 import com.google.firebase.database.PropertyName
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import kotlinx.parcelize.Parcelize
 
 data class MTRRoute(
     @get:PropertyName("co")
@@ -32,13 +34,14 @@ data class MTRRoute(
     var routeId: String = "",
     @get:PropertyName("route_info")
     @set:PropertyName("route_info")
-    var routeInfo: RouteInfo = RouteInfo("", "", ""),
+    var routeInfo: MTRRouteInfo = MTRRouteInfo("", "", ""),
     @get:PropertyName("service_type")
     @set:PropertyName("service_type")
     var serviceType: String = "",
 )
 
-data class RouteInfo(
+@Parcelize
+data class MTRRouteInfo(
     @get:PropertyName("name_en")
     @set:PropertyName("name_en")
     var nameEn: String = "",
@@ -46,4 +49,4 @@ data class RouteInfo(
     @set:PropertyName("name_tc")
     var nameTc: String = "",
     var color: String = "",
-)
+) : Parcelable

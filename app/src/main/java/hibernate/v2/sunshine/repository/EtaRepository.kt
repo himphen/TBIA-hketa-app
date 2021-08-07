@@ -4,6 +4,7 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.response.eta.EtaResponse
 import hibernate.v2.api.response.eta.GmbEtaResponse
+import hibernate.v2.api.response.eta.MTREtaResponse
 import hibernate.v2.api.response.kmb.KmbRouteResponse
 import hibernate.v2.api.response.kmb.KmbStopResponse
 import hibernate.v2.sunshine.api.ApiManager
@@ -91,21 +92,13 @@ class EtaRepository(
         )
     }
 
-    suspend fun getStopApi(stopId: String): KmbStopResponse {
-        return apiManager.kmbService.getStop(
-            stopId = stopId
-        )
-    }
-
-    suspend fun getRouteApi(
-        routeId: String,
-        bound: Bound,
-        serviceType: String
-    ): KmbRouteResponse {
-        return apiManager.kmbService.getRoute(
-            route = routeId,
-            bound = bound.value,
-            serviceType = serviceType
+    suspend fun getStopEtaApi(
+        stopId: String,
+        route: String
+    ): MTREtaResponse {
+        return apiManager.mtrService.getStopEta(
+            stopId = stopId,
+            routeId = route
         )
     }
 }

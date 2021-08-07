@@ -13,7 +13,6 @@ import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentAddEtaViewPagerBinding
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseActivity
@@ -66,19 +65,12 @@ class AddEtaViewPagerFragment : BaseFragment<FragmentAddEtaViewPagerBinding>() {
         viewBinding.tabLayout.addOnTabSelectedListener(
             object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
-                    val colorRes = when (tab.position) {
-                        0 -> R.color.brand_color_kmb
-                        1 -> R.color.brand_color_nwfb
-                        2 -> R.color.brand_color_ctb
-                        3, 4, 5 -> R.color.brand_color_gmb
-                        else -> R.color.brand_color_gmb
-                    }
+                    val item = adapter.list[tab.position]
 
                     context?.let { context ->
-                        viewBinding.tabLayout.setSelectedTabIndicatorColor(context.getColor(colorRes))
+                        viewBinding.tabLayout.setSelectedTabIndicatorColor(item.color(context))
+                        viewBinding.searchCl.setBackgroundColor(item.color(context))
                     }
-
-                    viewBinding.searchCl.setBackgroundResource(colorRes)
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab) {}

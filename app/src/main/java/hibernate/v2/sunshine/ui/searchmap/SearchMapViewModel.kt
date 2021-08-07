@@ -34,6 +34,8 @@ class SearchMapViewModel(
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
                 EtaType.GMB_NT -> gmbRepository.getRouteEtaCardList(stop)
+                EtaType.MTR ->  gmbRepository.getRouteEtaCardList(stop)
+                // TODO
             }
             routeListForBottomSheet.postValue(result)
         }
@@ -49,6 +51,8 @@ class SearchMapViewModel(
                     EtaType.GMB_HKI,
                     EtaType.GMB_KLN,
                     EtaType.GMB_NT -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.MTR -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
+                     // TODO
                 }
             }
 

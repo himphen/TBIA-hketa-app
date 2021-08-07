@@ -19,13 +19,14 @@ class AddEtaViewPagerAdapter(
         EtaType.CTB,
         EtaType.GMB_HKI,
         EtaType.GMB_KLN,
-        EtaType.GMB_NT
+        EtaType.GMB_NT,
+        EtaType.MTR
     )
 
     /**
      * Returns the number of pages
      */
-    override fun getItemCount(): Int = 6
+    override fun getItemCount(): Int = 7
 
     /**
      * This method will be invoked when a page is requested to create
@@ -56,9 +57,21 @@ class AddEtaViewPagerAdapter(
                         null
                     )
                     viewBinding.tabTitleTv.compoundDrawablesRelative[0]?.setTint(
-                        etaType.color(
-                            context
-                        )
+                        etaType.color(context)
+                    )
+                }
+            }
+            EtaType.MTR -> {
+                ContextCompat.getDrawable(context, R.drawable.ic_train_24)?.let {
+                    it.mutate()
+                    viewBinding.tabTitleTv.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        it,
+                        null,
+                        null,
+                        null
+                    )
+                    viewBinding.tabTitleTv.compoundDrawablesRelative[0]?.setTint(
+                        etaType.color(context)
                     )
                 }
             }

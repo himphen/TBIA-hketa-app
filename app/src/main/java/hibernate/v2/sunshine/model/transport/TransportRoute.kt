@@ -3,7 +3,6 @@ package hibernate.v2.sunshine.model.transport
 import android.content.Context
 import android.os.Parcelable
 import androidx.annotation.ColorRes
-import androidx.annotation.IdRes
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
@@ -24,7 +23,7 @@ open class TransportRoute(
     open val destSc: String,
     open val company: Company,
 
-    var routeComponent: RouteComponent? = null,
+    var routeComponent: RouteComponent = RouteComponent(),
 ) : TransportHashable, Comparable<TransportRoute>, Parcelable {
 
     fun routeHashId() = routeHashId(company, routeId, bound, serviceType)
@@ -33,7 +32,7 @@ open class TransportRoute(
         parseRouteNumber()
         other.parseRouteNumber()
 
-        val routeCompare = routeComponent!!.compareTo(other.routeComponent!!)
+        val routeCompare = routeComponent.compareTo(other.routeComponent)
         if (routeCompare != 0) return routeCompare
 
         val serviceTypeCompare = serviceType.compareTo(other.serviceType)
@@ -43,22 +42,15 @@ open class TransportRoute(
     }
 
     private fun parseRouteNumber() {
-        if (routeComponent == null) {
-            var routePrefix = ""
-            var routeNumber = 0
-            var routeSuffix = ""
+        if (routeComponent.parsed) return
 
-            Regex("([A-Z]*)(\\d+)([A-Z]*)").find(routeNo)?.let { match ->
-                routePrefix = match.destructured.component1()
-                routeNumber = match.destructured.component2().toInt()
-                routeSuffix = match.destructured.component3()
-            }
-            routeComponent = RouteComponent(
-                routePrefix,
-                routeNumber,
-                routeSuffix
-            )
+        Regex("([A-Z]*)(\\d+)([A-Z]*)").find(routeNo)?.let { match ->
+            routeComponent.routePrefix = match.destructured.component1()
+            routeComponent.routeNumber = match.destructured.component2().toInt()
+            routeComponent.routeSuffix = match.destructured.component3()
         }
+
+        routeComponent.parsed = true
     }
 
     open fun isSpecialRoute(): Boolean = serviceType != "1"
@@ -115,9 +107,10 @@ open class TransportRoute(
 
 @Parcelize
 class RouteComponent(
-    var routePrefix: String,
-    var routeNumber: Int,
-    var routeSuffix: String,
+    var routePrefix: String = "",
+    var routeNumber: Int = 0,
+    var routeSuffix: String = "",
+    var parsed: Boolean = false,
 ) : Comparable<RouteComponent>, Parcelable {
     override fun compareTo(other: RouteComponent): Int {
         val routePrefixCompare = routePrefix.compareTo(other.routePrefix)
