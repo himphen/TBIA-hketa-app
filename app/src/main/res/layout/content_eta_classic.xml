@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/background">
 
     <View
         android:id="@+id/routeCompanyColor"
@@ -38,18 +39,19 @@
                 android:id="@+id/routeMTRNumberTv"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_route_mtr_number"
                 android:gravity="center"
                 android:maxLines="1"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="1"
-                tools:visibility="gone" />
+                tools:text="1" />
 
             <TextView
                 android:id="@+id/routeNumberTv"
@@ -118,7 +120,7 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toEndOf="@id/routeDirectionLl"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -153,7 +155,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|end"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="@string/demo_card_eta_minute_classic_time"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -32,6 +32,10 @@ class SettingsEtaViewModel(
                 etaRepository.getSavedGmbEtaList()
                     .map { it.toSettingsEtaCard() }
             )
+            convertedEtaCardList.addAll(
+                etaRepository.getSavedMTREtaList()
+                    .map { it.toSettingsEtaCard() }
+            )
 
             convertedEtaCardList.sort()
 

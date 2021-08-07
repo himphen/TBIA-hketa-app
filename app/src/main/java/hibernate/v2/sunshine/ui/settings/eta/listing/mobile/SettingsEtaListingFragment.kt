@@ -21,6 +21,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentSettingsEtaListingBinding
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.base.ItemTouchHelperCallback
@@ -80,13 +81,25 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
         context?.let { context ->
             MaterialDialog(context)
                 .title(R.string.dialog_settings_eta_remove_title)
-                .message(
-                    text = getString(
-                        R.string.dialog_settings_eta_remove_message,
-                        card.route.routeNo,
-                        card.stop.nameTc
-                    )
-                )
+                .apply {
+                    if (card.route is MTRTransportRoute) {
+                        message(
+                            text = getString(
+                                R.string.dialog_settings_eta_remove_mtr_message,
+                                card.route.routeInfo.nameTc,
+                                card.stop.nameTc
+                            )
+                        )
+                    } else {
+                        message(
+                            text = getString(
+                                R.string.dialog_settings_eta_remove_message,
+                                card.route.routeNo,
+                                card.stop.nameTc
+                            )
+                        )
+                    }
+                }
                 .positiveButton(R.string.dialog_settings_eta_remove_pos_btn) {
                     lifecycleScope.launch(Dispatchers.Main) {
                         viewModel.clearData(card.entity)
@@ -252,6 +265,6 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FragmentSettingsEtaListingBinding.inflate(inflater, container, false)
 }

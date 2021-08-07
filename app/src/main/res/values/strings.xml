@@ -53,6 +53,7 @@
     <string name="menu_settings_eta_action_add">加入到站</string>
     <string name="dialog_settings_eta_remove_title">注意</string>
     <string name="dialog_settings_eta_remove_message">確定移除 %1$s 號線 %2$s 車站嗎？</string>
+    <string name="dialog_settings_eta_remove_mtr_message">確定移除 %1$s %2$s 車站嗎？</string>
     <string name="dialog_settings_eta_remove_pos_btn">移除</string>
     <string name="dialog_cancel_btn">取消</string>
 
@@ -95,7 +96,7 @@
     <string name="demo_card_eta_minute_compact_3">23</string>
     <string name="demo_card_eta_minute_classic">3</string>
     <string name="demo_card_eta_minute_classic_unit">分鐘</string>
-    <string name="demo_card_eta_minute_classic_time">07:30\u00A0\u00A0\u00A0\u00A007:40\u00A0\u00A0\u00A0\u00A007:50</string>
+    <string name="demo_card_eta_minute_classic_time">07:30\u00A0\u00A0\u00A0\u00A007:40</string>
 
     <string name="stop_list_bottom_sheet_title">請選擇車站</string>
     <string name="route_list_bottom_sheet_title">觀塘市中心 (T4)</string>
