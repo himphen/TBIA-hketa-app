@@ -10,6 +10,7 @@ import hibernate.v2.sunshine.db.LocalDatabase
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
+import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.WeatherRepository
@@ -64,20 +65,22 @@ class App : Application() {
         single { get<LocalDatabase>().ncDao() }
         single { get<LocalDatabase>().gmbDao() }
         single { get<LocalDatabase>().mtrDao() }
+        single { get<LocalDatabase>().lrtDao() }
         single { EtaRepository(get(), get(), get()) }
         single { KmbRepository(get(), get()) }
         single { NCRepository(get()) }
         single { GmbRepository(get()) }
         single { MTRRepository(get()) }
+        single { LRTRepository(get()) }
 
         // ViewModels
         viewModel { EtaViewModel(get()) }
-        viewModel { OnboardingViewModel(get(), get(), get(), get()) }
+        viewModel { OnboardingViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettingsEtaViewModel(get()) }
-        viewModel { AddEtaViewModel(get(), get(), get(), get(), get()) }
+        viewModel { AddEtaViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { WeatherViewModel(get()) }
         viewModel { TrafficViewModel(get()) }
-        viewModel { SearchMapViewModel(get(), get(), get()) }
+        viewModel { SearchMapViewModel(get(), get(), get(), get(), get()) }
         viewModel { MainViewModel() }
     }
 

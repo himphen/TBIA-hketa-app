@@ -69,6 +69,9 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
                 FetchTransportDataType.MTR -> {
                     viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_mtr)
                 }
+                FetchTransportDataType.LRT -> {
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_lrt)
+                }
                 null -> {
                 }
             }
@@ -87,6 +90,9 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
                 }
                 FetchTransportDataType.MTR -> {
                     viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_mtr)
+                }
+                FetchTransportDataType.LRT -> {
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_lrt)
                 }
                 FetchTransportDataType.ALL -> {
                 }

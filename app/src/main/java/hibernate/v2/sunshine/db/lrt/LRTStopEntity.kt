@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.db.lrt
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import hibernate.v2.api.model.transport.kmb.KmbStop
+import hibernate.v2.api.model.transport.lrt.LRTStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
 @Entity(
@@ -23,7 +23,7 @@ data class LRTStopEntity(
     val lng: Double,
 ) {
     companion object {
-        fun fromApiModel(stop: KmbStop): LRTStopEntity {
+        fun fromApiModel(stop: LRTStop): LRTStopEntity {
             return LRTStopEntity(
                 stopId = stop.stopId,
                 nameEn = stop.nameEn,

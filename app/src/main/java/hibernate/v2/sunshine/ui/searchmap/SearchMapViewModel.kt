@@ -7,6 +7,8 @@ import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
+import hibernate.v2.sunshine.repository.LRTRepository
+import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +20,8 @@ class SearchMapViewModel(
     private val kmbRepository: KmbRepository,
     private val ncRepository: NCRepository,
     private val gmbRepository: GmbRepository,
+    private val mtrRepository: MTRRepository,
+    private val lrtRepository: LRTRepository,
 ) : BaseViewModel() {
 
     val selectedStop = MutableLiveData<SearchMapStop>()
@@ -34,8 +38,8 @@ class SearchMapViewModel(
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
                 EtaType.GMB_NT -> gmbRepository.getRouteEtaCardList(stop)
-                EtaType.MTR ->  gmbRepository.getRouteEtaCardList(stop)
-                // TODO
+                EtaType.MTR -> mtrRepository.getRouteEtaCardList(stop)
+                EtaType.LRT -> lrtRepository.getRouteEtaCardList(stop)
             }
             routeListForBottomSheet.postValue(result)
         }
@@ -50,9 +54,10 @@ class SearchMapViewModel(
                     EtaType.CTB -> ncRepository.setMapRouteListIntoMapStop(stopMapList)
                     EtaType.GMB_HKI,
                     EtaType.GMB_KLN,
-                    EtaType.GMB_NT -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.GMB_NT,
+                    -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
                     EtaType.MTR -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
-                     // TODO
+                    EtaType.LRT -> TODO()
                 }
             }
 

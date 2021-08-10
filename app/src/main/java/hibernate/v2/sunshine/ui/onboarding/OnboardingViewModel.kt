@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
+import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
@@ -19,7 +20,8 @@ class OnboardingViewModel(
     private val kmbRepository: KmbRepository,
     private val ncRepository: NCRepository,
     private val gmbRepository: GmbRepository,
-    private val mtrRepository: MTRRepository
+    private val mtrRepository: MTRRepository,
+    private val lrtRepository: LRTRepository,
 ) : BaseViewModel() {
 
     val fetchTransportDataRequired = MutableLiveData<Boolean>()
@@ -33,6 +35,7 @@ class OnboardingViewModel(
                 async { ncRepository.isDataExisted() },
                 async { gmbRepository.isDataExisted() },
                 async { mtrRepository.isDataExisted() },
+                async { lrtRepository.isDataExisted() },
             )
             val result = deferredList.awaitAll().toMutableList()
 
@@ -80,6 +83,15 @@ class OnboardingViewModel(
             } catch (e: Exception) {
                 Logger.e(e, "=== lifecycle downloadMTRTransportData error ===")
                 fetchTransportDataFailed.postValue(FetchTransportDataType.MTR)
+                return@launch
+            }
+
+            try {
+                downloadLRTTransportData()
+                fetchTransportDataCompleted.postValue(FetchTransportDataType.LRT)
+            } catch (e: Exception) {
+                Logger.e(e, "=== lifecycle downloadLRTTransportData error ===")
+                fetchTransportDataFailed.postValue(FetchTransportDataType.LRT)
                 return@launch
             }
 
@@ -175,14 +187,37 @@ class OnboardingViewModel(
         }
     }
 
+    private suspend fun downloadLRTTransportData() {
+        Logger.d("=== lifecycle downloadNCTransportData start ===")
+        lrtRepository.initDatabase()
+
+        coroutineScope {
+            listOf(
+                launch {
+                    lrtRepository.saveRouteListFromFirebase()
+                    Logger.d("lifecycle downloadLRTTransportData saveRouteListFromFirebase done")
+                },
+                launch {
+                    lrtRepository.saveRouteStopListFromFirebase()
+                    Logger.d("lifecycle downloadLRTTransportData saveRouteStopListFromFirebase done")
+                },
+                launch {
+                    lrtRepository.saveStopListFromFirebase()
+                    Logger.d("lifecycle downloadLRTTransportData saveStopListFromFirebase done")
+                }
+            ).joinAll()
+        }
+    }
+
     suspend fun resetTransportData() {
         kmbRepository.initDatabase()
         ncRepository.initDatabase()
         gmbRepository.initDatabase()
         mtrRepository.initDatabase()
+        lrtRepository.initDatabase()
     }
 }
 
 enum class FetchTransportDataType {
-    KMB, NC, GMB, MTR, ALL
+    KMB, NC, GMB, MTR, LRT, ALL
 }

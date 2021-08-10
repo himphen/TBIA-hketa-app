@@ -35,6 +35,9 @@ enum class Company(val value: String) {
     MTR("mtr"),
 
     @Keep
+    LRT("lrt"),
+
+    @Keep
     UNKNOWN("unknown");
 
     companion object {

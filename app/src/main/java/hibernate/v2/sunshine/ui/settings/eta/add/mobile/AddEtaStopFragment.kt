@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentAddEtaBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -55,14 +54,7 @@ class AddEtaStopFragment : BaseFragment<FragmentAddEtaBinding>() {
             R.string.text_add_eta_hint_stop,
             selectedRoute.getDirectionWithRouteText(requireContext())
         )
-
-        if (selectedRoute is MTRTransportRoute) {
-            viewBinding.hintCl.setBackgroundColor(selectedRoute.routeInfo.color)
-        } else {
-            val etaTypeColor =
-                viewModel.selectedEtaType.value!!.color(requireContext())
-            viewBinding.hintCl.setBackgroundColor(etaTypeColor)
-        }
+        viewBinding.hintCl.setBackgroundColor(selectedRoute.getColor(requireContext()))
     }
 
     private fun initData() {

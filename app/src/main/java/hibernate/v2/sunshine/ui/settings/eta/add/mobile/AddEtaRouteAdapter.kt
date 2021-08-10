@@ -2,7 +2,6 @@ package hibernate.v2.sunshine.ui.settings.eta.add.mobile
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,9 +79,8 @@ class AddEtaRouteAdapter(
                 }
 
                 routeCompanyColor.apply {
-                    if (etaType == EtaType.MTR) {
-                        val route = item.route as MTRTransportRoute
-                        routeCompanyColor.setBackgroundColor(route.routeInfo.color)
+                    if (etaType == EtaType.MTR || etaType == EtaType.LRT) {
+                        setBackgroundColor(item.route.getColor(context))
                     }
                 }
 
@@ -91,8 +89,10 @@ class AddEtaRouteAdapter(
 
                 routeSpTv.apply {
                     if (item.route.isSpecialRoute()) {
-                        text = context.getString(R.string.text_add_eta_destination_sp_mobile,
-                            item.route.serviceType)
+                        text = context.getString(
+                            R.string.text_add_eta_destination_sp_mobile,
+                            item.route.serviceType
+                        )
                         visibility = View.VISIBLE
                     } else {
                         visibility = View.GONE

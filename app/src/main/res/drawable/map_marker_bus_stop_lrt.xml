@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/stopBackground">
+        <shape android:shape="rectangle">
+            <corners android:radius="4dp" />
+            <size
+                android:width="16dp"
+                android:height="16dp" />
+            <solid android:color="@color/brand_color_lrt" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_tram_24" />
+</layer-list>

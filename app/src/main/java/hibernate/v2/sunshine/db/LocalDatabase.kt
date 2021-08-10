@@ -20,6 +20,10 @@ import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
+import hibernate.v2.sunshine.db.lrt.LRTDao
+import hibernate.v2.sunshine.db.lrt.LRTRouteEntity
+import hibernate.v2.sunshine.db.lrt.LRTRouteStopEntity
+import hibernate.v2.sunshine.db.lrt.LRTStopEntity
 import hibernate.v2.sunshine.db.mtr.MTRDao
 import hibernate.v2.sunshine.db.mtr.MTRRouteEntity
 import hibernate.v2.sunshine.db.mtr.MTRRouteStopEntity
@@ -39,8 +43,9 @@ private const val DATABASE_NAME = "saved_data"
         NCRouteEntity::class, NCStopEntity::class, NCRouteStopEntity::class,
         GmbRouteEntity::class, GmbStopEntity::class, GmbRouteStopEntity::class,
         MTRRouteEntity::class, MTRStopEntity::class, MTRRouteStopEntity::class,
+        LRTRouteEntity::class, LRTStopEntity::class, LRTRouteStopEntity::class,
     ],
-    version = 14,
+    version = 15,
     exportSchema = false
 )
 @TypeConverters(DataTypeConverter::class)
@@ -51,6 +56,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun ncDao(): NCDao
     abstract fun gmbDao(): GmbDao
     abstract fun mtrDao(): MTRDao
+    abstract fun lrtDao(): LRTDao
 
     companion object {
         private val MIGRATION_1_2 = object : Migration(1, 2) {

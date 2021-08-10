@@ -5,11 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import hibernate.v2.api.model.transport.Company
-import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemAddEtaStopBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 
 class AddEtaStopAdapter(
@@ -53,45 +50,22 @@ class AddEtaStopAdapter(
     ) : BaseViewHolder<ItemAddEtaStopBinding>(viewBinding) {
 
         fun onBind(card: Card.RouteStopAddCard, isFirst: Boolean, isLast: Boolean) {
-            viewBinding.stopNameTv.text = card.stop.nameTc
-            viewBinding.stopSeqTv.text = String.format("%02d", card.stop.seq)
+            val color = card.route.getColor(context)
 
-            when (card.route.company) {
-                Company.UNKNOWN -> {
-                }
-                Company.KMB -> {
-                    viewBinding.stopLineTop.setBackgroundResource(R.color.brand_color_kmb)
-                    viewBinding.stopLineMiddle.setBackgroundResource(R.color.brand_color_kmb)
-                    viewBinding.stopLineBottom.setBackgroundResource(R.color.brand_color_kmb)
-                }
-                Company.NWFB -> {
-                    viewBinding.stopLineTop.setBackgroundResource(R.color.brand_color_nwfb)
-                    viewBinding.stopLineMiddle.setBackgroundResource(R.color.brand_color_nwfb)
-                    viewBinding.stopLineBottom.setBackgroundResource(R.color.brand_color_nwfb)
-                }
-                Company.CTB -> {
-                    viewBinding.stopLineTop.setBackgroundResource(R.color.brand_color_ctb)
-                    viewBinding.stopLineMiddle.setBackgroundResource(R.color.brand_color_ctb)
-                    viewBinding.stopLineBottom.setBackgroundResource(R.color.brand_color_ctb)
-                }
-                Company.GMB -> {
-                    viewBinding.stopLineTop.setBackgroundResource(R.color.brand_color_gmb)
-                    viewBinding.stopLineMiddle.setBackgroundResource(R.color.brand_color_gmb)
-                    viewBinding.stopLineBottom.setBackgroundResource(R.color.brand_color_gmb)
-                }
-                Company.MTR -> {
-                    val route = card.route as MTRTransportRoute
-                    viewBinding.stopLineTop.setBackgroundColor(route.routeInfo.color)
-                    viewBinding.stopLineMiddle.setBackgroundColor(route.routeInfo.color)
-                    viewBinding.stopLineBottom.setBackgroundColor(route.routeInfo.color)
-                }
+            viewBinding.apply {
+                stopNameTv.text = card.stop.nameTc
+                stopSeqTv.text = String.format("%02d", card.stop.seq)
+
+                stopLineTop.setBackgroundColor(color)
+                stopLineMiddle.setBackgroundColor(color)
+                stopLineBottom.setBackgroundColor(color)
+
+                stopLineTop.visibility = if (isFirst) View.INVISIBLE else View.VISIBLE
+                stopLineBottom.visibility = if (isLast) View.INVISIBLE else View.VISIBLE
+
+                root.tag = card
+                root.setOnClickListener { listener.onStopSelected(card) }
             }
-
-            viewBinding.stopLineTop.visibility = if (isFirst) View.INVISIBLE else View.VISIBLE
-            viewBinding.stopLineBottom.visibility = if (isLast) View.INVISIBLE else View.VISIBLE
-
-            viewBinding.root.tag = card
-            viewBinding.root.setOnClickListener { listener.onStopSelected(card) }
         }
     }
 }

@@ -14,10 +14,12 @@ import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.MTRTransportRoute
+import hibernate.v2.sunshine.model.transport.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportRouteStopList
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
+import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
@@ -34,6 +36,7 @@ class AddEtaViewModel(
     private val ncRepository: NCRepository,
     private val gmbRepository: GmbRepository,
     private val mtrRepository: MTRRepository,
+    private val lrtRepository: LRTRepository,
 ) : BaseViewModel() {
 
     val filteredTransportRouteList = MutableSharedFlow<Pair<EtaType, List<RouteForRowAdapter>>>()
@@ -82,6 +85,7 @@ class AddEtaViewModel(
                 EtaType.GMB_KLN,
                 EtaType.GMB_NT -> getGmbRouteList(context, etaType)
                 EtaType.MTR -> getMTRRouteList(context)
+                EtaType.LRT -> getLRTRouteList(context)
             }
 
             searchRoute(etaType)
@@ -314,6 +318,73 @@ class AddEtaViewModel(
                 transportRouteStopList.map { routeAndStopList ->
                     val route = routeAndStopList.route
                     route as MTRTransportRoute
+                    val headerTitle = route.getDirectionWithRouteText(context)
+
+                    RouteForRowAdapter(
+                        headerTitle = headerTitle,
+                        route = route,
+                        filteredList = routeAndStopList.stopList.map { stop ->
+                            Card.RouteStopAddCard(
+                                route = route,
+                                stop = stop
+                            )
+                        }
+                    )
+                }.toMutableList()
+
+            Logger.d(transportRouteStopHashMap)
+            Logger.d(transportRouteList)
+
+            RouteAndStopListDataHolder.setData(
+                etaType,
+                transportRouteList
+            )
+
+            Logger.d("lifecycle getTransportRouteList done")
+        } catch (e: Exception) {
+            RouteAndStopListDataHolder.setData(etaType, mutableListOf())
+
+            Logger.e(e, "lifecycle getTransportRouteList error")
+        }
+    }
+
+    private suspend fun getLRTRouteList(context: Context) {
+        val etaType = EtaType.LRT
+        if (RouteAndStopListDataHolder.hasData(etaType)) {
+            return
+        }
+
+        try {
+            val allRouteList = lrtRepository.getRouteListDb()
+            val allRouteStopList = lrtRepository.getRouteStopComponentListDb()
+
+            val transportRouteStopHashMap = allRouteList.associate { entity ->
+                val route = entity.toTransportModel()
+                route.routeHashId() to TransportRouteStopList(
+                    route = route,
+                    stopList = mutableListOf()
+                )
+            }
+
+            Logger.d(allRouteStopList)
+
+            allRouteStopList.forEach {
+                val routeHashId = it.routeStopEntity.routeHashId()
+                val stop = it.stopEntity?.toTransportModelWithSeq(
+                    it.routeStopEntity.seq
+                )
+                stop?.let {
+                    transportRouteStopHashMap[routeHashId]?.stopList?.add(stop)
+                }
+            }
+
+            val transportRouteStopList = transportRouteStopHashMap.values.toMutableList()
+            transportRouteStopList.sort()
+
+            val transportRouteList =
+                transportRouteStopList.map { routeAndStopList ->
+                    val route = routeAndStopList.route
+                    route as LRTTransportRoute
                     val headerTitle = route.getDirectionWithRouteText(context)
 
                     RouteForRowAdapter(

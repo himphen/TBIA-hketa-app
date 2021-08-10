@@ -1,25 +1,25 @@
-package hibernate.v2.sunshine.db.mtr
+package hibernate.v2.sunshine.db.lrt
 
 import android.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.mtr.MTRRoute
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
-import hibernate.v2.sunshine.model.transport.MTRRouteInfo
+import hibernate.v2.api.model.transport.lrt.LRTRoute
+import hibernate.v2.sunshine.model.transport.LRTRouteInfo
+import hibernate.v2.sunshine.model.transport.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Entity(
-    tableName = "mtr_route",
-    primaryKeys = ["mtr_route_id", "mtr_route_bound", "mtr_route_service_type"],
+    tableName = "lrt_route",
+    primaryKeys = ["lrt_route_id", "lrt_route_bound", "lrt_route_service_type"],
 )
-data class MTRRouteEntity(
-    @ColumnInfo(name = "mtr_route_id")
+data class LRTRouteEntity(
+    @ColumnInfo(name = "lrt_route_id")
     val routeId: String,
-    @ColumnInfo(name = "mtr_route_bound")
+    @ColumnInfo(name = "lrt_route_bound")
     val bound: Bound,
-    @ColumnInfo(name = "mtr_route_service_type")
+    @ColumnInfo(name = "lrt_route_service_type")
     val serviceType: String,
     @ColumnInfo(name = "orig_en")
     val origEn: String,
@@ -33,18 +33,12 @@ data class MTRRouteEntity(
     val destTc: String,
     @ColumnInfo(name = "dest_sc")
     val destSc: String,
-    @ColumnInfo(name = "route_info_name_en")
-    val routeInfoNameEn: String,
-    @ColumnInfo(name = "route_info_name_tc")
-    val routeInfoNameTc: String,
-    @ColumnInfo(name = "route_info_name_sc")
-    val routeInfoNameSc: String,
     @ColumnInfo(name = "route_info_name_color")
     val routeInfoColor: String,
 ) : TransportHashable {
     companion object {
-        fun fromApiModel(route: MTRRoute): MTRRouteEntity {
-            return MTRRouteEntity(
+        fun fromApiModel(route: LRTRoute): LRTRouteEntity {
+            return LRTRouteEntity(
                 routeId = route.routeId,
                 bound = route.bound,
                 serviceType = route.serviceType,
@@ -54,16 +48,13 @@ data class MTRRouteEntity(
                 destEn = route.destEn,
                 destTc = route.destTc,
                 destSc = route.destSc,
-                routeInfoNameEn = route.routeInfo.nameEn,
-                routeInfoNameTc = route.routeInfo.nameTc,
-                routeInfoNameSc = route.routeInfo.nameTc,
                 routeInfoColor = route.routeInfo.color,
             )
         }
     }
 
-    fun toTransportModel(): MTRTransportRoute {
-        return MTRTransportRoute(
+    fun toTransportModel(): LRTTransportRoute {
+        return LRTTransportRoute(
             routeId = routeId,
             routeNo = routeId,
             bound = bound,
@@ -74,10 +65,8 @@ data class MTRRouteEntity(
             destEn = destEn,
             destTc = destTc,
             destSc = destSc,
-            company = Company.MTR,
-            routeInfo = MTRRouteInfo(
-                nameEn = routeInfoNameEn,
-                nameTc = routeInfoNameTc,
+            company = Company.LRT,
+            routeInfo = LRTRouteInfo(
                 color = try {
                     Color.parseColor(routeInfoColor)
                 } catch (e: IllegalArgumentException) {
@@ -87,5 +76,5 @@ data class MTRRouteEntity(
         )
     }
 
-    fun routeHashId() = routeHashId(Company.MTR, routeId, bound, serviceType)
+    fun routeHashId() = routeHashId(Company.LRT, routeId, bound, serviceType)
 }
