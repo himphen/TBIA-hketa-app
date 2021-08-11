@@ -7,9 +7,6 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaClassicBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.TransportEta
-import hibernate.v2.sunshine.util.DateUtil
-import java.util.Date
 
 class EtaCardViewClassic(context: Context) : BaseEtaCardView<ContentEtaClassicBinding>(context) {
     override var viewBinding =
@@ -28,10 +25,9 @@ class EtaCardViewClassic(context: Context) : BaseEtaCardView<ContentEtaClassicBi
 
         viewBinding.routeCompanyColor.setBackgroundResource(color)
         viewBinding.routeNumberTv.text = card.route.routeNo
-        viewBinding.stopNameTv.text = card.stop.nameTc
+        viewBinding.stopNameTv.text = card.stop.getName(context)
         viewBinding.routeDirectionTv.text = card.route.getDestDirectionText(context)
-        viewBinding.etaMinuteTv.text =
-            getEtaMinuteText(card.etaList.getOrNull(0))
+        viewBinding.etaMinuteTv.text = card.etaList.getOrNull(0)?.getEtaMinuteText("")?.second
         viewBinding.etaTimeTv.text = getEtaTimeText(card.etaList)
 
         onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
@@ -42,21 +38,5 @@ class EtaCardViewClassic(context: Context) : BaseEtaCardView<ContentEtaClassicBi
             }
         }
         setBackgroundResource(R.drawable.eta_card_bg_none)
-    }
-
-    private fun getEtaMinuteText(eta: TransportEta?): String {
-        eta?.eta?.let { etaDate ->
-            val minutes = DateUtil.getTimeDiffInMin(
-                etaDate,
-                Date()
-            )
-            return (minutes + 1).toString() + " 分鐘"
-        } ?: run {
-            eta?.rmkTc?.let { rmkTc ->
-                if (rmkTc.isNotEmpty()) return rmkTc
-            }
-
-            return "-"
-        }
     }
 }

@@ -2,10 +2,10 @@ package hibernate.v2.sunshine.ui.eta.mobile.view
 
 import android.graphics.drawable.GradientDrawable
 import android.view.View
-import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemEtaClassicBinding
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 
 class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
@@ -28,6 +28,18 @@ class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
                         setColor(color)
                     }
                 }
+            } else if (route is LRTTransportRoute) {
+                routeNumberTv.visibility = View.GONE
+                routeCompanyColor.visibility = View.GONE
+                routeMTRNumberTv.apply {
+                    text = card.platform
+                    visibility = View.VISIBLE
+
+                    (background as? GradientDrawable)?.apply {
+                        mutate()
+                        setColor(color)
+                    }
+                }
             } else {
                 routeNumberTv.apply {
                     text = card.route.getCardRouteText()
@@ -38,21 +50,22 @@ class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
                 routeCompanyColor.setBackgroundColor(color)
             }
 
-            if (route is MTRTransportRoute) {
-                stopNameTv.text =
-                    context.getString(R.string.text_eta_card_classic_mtr_station, card.stop.nameTc)
-            } else {
-                stopNameTv.text = card.stop.nameTc
-            }
-
+            stopNameTv.text = card.stop.getName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)
-            card.etaList.getOrNull(0)?.getEtaMinuteText()?.let {
-                etaMinuteTv.text = it
-                etaMinuteUnitTv.visibility = View.VISIBLE
-                etaTimeTv.text = getEtaTimeText(card.etaList)
-                etaTimeTv.visibility = View.VISIBLE
+            card.etaList.getOrNull(0)?.getEtaMinuteText("-")?.let {
+                etaMinuteTv.text = it.second
+
+                if (it.first) {
+                    etaMinuteUnitTv.visibility = View.VISIBLE
+                    etaTimeTv.text = getEtaTimeText(card.etaList)
+                    etaTimeTv.visibility = View.VISIBLE
+                } else {
+                    etaMinuteTv.text = "-"
+                    etaMinuteUnitTv.visibility = View.GONE
+                    etaTimeTv.visibility = View.GONE
+                }
             } ?: run {
-                etaMinuteTv.text = ""
+                etaMinuteTv.text = "-"
                 etaMinuteUnitTv.visibility = View.GONE
                 etaTimeTv.visibility = View.GONE
             }

@@ -1,27 +1,28 @@
 package hibernate.v2.api.response.eta
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.response.BaseResponse
 
-data class LRTResponse(
+data class LRTEtaResponse(
     @SerializedName("platform_list")
-    val platformList: List<Platform>,
+    val platformList: List<Platform>? = null,
     @SerializedName("status")
-    val status: Int,
+    val status: Int? = null,
     @SerializedName("system_time")
-    val systemTime: String,
+    val systemTime: String? = null,
 ) : BaseResponse()
 
 data class Platform(
     @SerializedName("platform_id")
     val platformId: Int,
     @SerializedName("route_list")
-    val routeList: List<Route>,
+    val etaList: List<LRTEta>,
 )
 
-data class Route(
+data class LRTEta(
     @SerializedName("arrival_departure")
-    val arrivalDeparture: String,
+    val arrivalDeparture: ArrivalDeparture,
     @SerializedName("dest_ch")
     val destCh: String,
     @SerializedName("dest_en")
@@ -37,3 +38,18 @@ data class Route(
     @SerializedName("train_length")
     val trainLength: Int,
 )
+
+enum class ArrivalDeparture(val value: String) {
+    @Keep
+    A("A"),
+
+    @Keep
+    D("D"),
+
+    @Keep
+    UNKNOWN("unknown");
+
+    companion object {
+        fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
+    }
+}

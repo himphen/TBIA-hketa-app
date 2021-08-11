@@ -3,6 +3,7 @@ package hibernate.v2.sunshine.db.gmb
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.gmb.GmbStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
@@ -37,6 +38,7 @@ data class GmbStopEntity(
 
     fun toTransportModel(): TransportStop {
         return TransportStop(
+            company = Company.GMB,
             stopId = stopId,
             nameEn = nameEn,
             nameTc = nameTc,
@@ -49,6 +51,7 @@ data class GmbStopEntity(
 
     fun toTransportModelWithSeq(seq: Int): TransportStop {
         return TransportStop(
+            company = Company.GMB,
             stopId = stopId,
             nameEn = nameEn,
             nameTc = nameTc,

@@ -3,6 +3,7 @@ package hibernate.v2.sunshine.db.mtr
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.mtr.MTRStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
@@ -37,6 +38,7 @@ data class MTRStopEntity(
 
     fun toTransportModel(): TransportStop {
         return TransportStop(
+            company = Company.MTR,
             stopId = stopId,
             nameEn = nameEn,
             nameTc = nameTc,
@@ -49,6 +51,7 @@ data class MTRStopEntity(
 
     fun toTransportModelWithSeq(seq: Int): TransportStop {
         return TransportStop(
+            company = Company.MTR,
             stopId = stopId,
             nameEn = nameEn,
             nameTc = nameTc,

@@ -8,12 +8,12 @@ import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
 open class TransportEta(
-    val eta: Date? = null,
-    val rmkEn: String? = null,
-    val rmkSc: String? = null,
-    val rmkTc: String? = null,
-    val bound: Bound? = null,
-    val seq: Int? = null,
+    val eta: Date?,
+    val rmkEn: String?,
+    val rmkSc: String?,
+    val rmkTc: String?,
+    val bound: Bound?,
+    val seq: Int?,
 ) {
 
     companion object {
@@ -46,19 +46,15 @@ open class TransportEta(
         }
     }
 
-    fun getEtaMinuteText(): String? {
+    open fun getEtaMinuteText(default: String = ""): Pair<Boolean, String> {
         eta?.let { etaDate ->
             val minutes = DateUtil.getTimeDiffInMin(
                 etaDate,
                 Date()
             )
-            return (minutes + 1).toString()
-        } ?: run {
-            rmkTc?.let { rmkTc ->
-                if (rmkTc.isNotEmpty()) return rmkTc
-            }
-
-            return null
+            return true to (minutes + 1).toString()
         }
+
+        return false to default
     }
 }

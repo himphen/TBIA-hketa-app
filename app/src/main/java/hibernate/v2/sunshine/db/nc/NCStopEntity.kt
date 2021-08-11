@@ -3,6 +3,7 @@ package hibernate.v2.sunshine.db.nc
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.nc.NCStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
@@ -35,6 +36,7 @@ data class NCStopEntity(
 
     fun toTransportModel(): TransportStop {
         return TransportStop(
+            company = Company.NWFB,
             stopId = stopId,
             nameEn = nameEn,
             nameTc = nameTc,
@@ -47,6 +49,7 @@ data class NCStopEntity(
 
     fun toTransportModelWithSeq(seq: Int): TransportStop {
         return TransportStop(
+            company = Company.NWFB,
             stopId = stopId,
             nameEn = nameEn,
             nameTc = nameTc,

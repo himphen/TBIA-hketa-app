@@ -31,44 +31,32 @@ class EtaViewHolderStandard(viewBinding: ItemEtaStandardBinding) :
 
             routeNumberTv.apply { text = card.route.getCardRouteText() }
 
-            stopNameTv.text = card.stop.nameTc
+            stopNameTv.text = card.stop.getName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)
 
-            getEtaMinuteText(card.etaList.getOrNull(0))?.let {
-                eta1MinuteTv.text = it
-                eta1UnitTv.visibility = View.VISIBLE
+            card.etaList.getOrNull(0)?.getEtaMinuteText()?.let {
+                eta1MinuteTv.text = it.second
+                eta1UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
                 eta1MinuteTv.text = "-"
                 eta1UnitTv.visibility = View.GONE
             }
 
-            getEtaMinuteText(card.etaList.getOrNull(1))?.let {
-                eta2MinuteTv.text = it
-                eta2UnitTv.visibility = View.VISIBLE
+            card.etaList.getOrNull(1)?.getEtaMinuteText()?.let {
+                eta2MinuteTv.text = it.second
+                eta2UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
                 eta2MinuteTv.text = "-"
                 eta2UnitTv.visibility = View.GONE
             }
 
-            getEtaMinuteText(card.etaList.getOrNull(2))?.let {
-                eta3MinuteTv.text = it
-                eta3UnitTv.visibility = View.VISIBLE
+            card.etaList.getOrNull(2)?.getEtaMinuteText()?.let {
+                eta3MinuteTv.text = it.second
+                eta3UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
                 eta3MinuteTv.text = "-"
                 eta3UnitTv.visibility = View.GONE
             }
         }
-    }
-
-    private fun getEtaMinuteText(eta: TransportEta?): String? {
-        eta?.eta?.let { etaDate ->
-            val minutes = DateUtil.getTimeDiffInMin(
-                etaDate,
-                Date()
-            )
-            return (minutes + 1).toString()
-        }
-
-        return null
     }
 }

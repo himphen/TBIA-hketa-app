@@ -6,6 +6,7 @@ import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.LRTTransportEta
 import hibernate.v2.sunshine.model.transport.MTRTransportEta
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.repository.EtaRepository
@@ -36,6 +37,9 @@ class EtaViewModel(
             )
             convertedEtaCardList.addAll(
                 etaRepository.getSavedMTREtaList().map { it.toEtaCard() }
+            )
+            convertedEtaCardList.addAll(
+                etaRepository.getSavedLRTEtaList().map { it.toEtaCard() }
             )
 
             convertedEtaCardList.sort()
@@ -153,6 +157,39 @@ class EtaViewModel(
                                         (etaCard.etaList.getOrNull(0) as? MTRTransportEta)?.platform
                                             ?: "1"
                                 }
+                            }
+
+                            result[index] = etaCard
+                        }
+                        Company.LRT -> {
+                            val apiEtaResponse = etaRepository.getLRTStopEtaApi(
+                                stopId = etaCard.stop.stopId
+                            )
+
+                            apiEtaResponse.platformList?.let { platformList ->
+                                val temp = mutableListOf<LRTTransportEta>()
+
+                                platformList.forEach platform@{ platform ->
+                                    platform.etaList.forEach eta@{ etaApi ->
+                                        if (etaApi.routeNo != etaCard.route.routeNo) return@eta
+                                        if (etaApi.destCh != etaCard.route.destTc) return@eta
+
+                                        temp.add(
+                                            LRTTransportEta.fromApiModel(
+                                                etaApi,
+                                                platform.platformId.toString(),
+                                                apiEtaResponse.systemTime
+                                            )
+                                        )
+                                    }
+                                }
+
+                                etaCard.etaList.clear()
+                                etaCard.etaList.addAll(temp)
+
+                                etaCard.platform =
+                                    (etaCard.etaList.getOrNull(0) as? LRTTransportEta)?.platform
+                                        ?: "1"
                             }
 
                             result[index] = etaCard

@@ -53,7 +53,7 @@ class AddEtaStopAdapter(
             val color = card.route.getColor(context)
 
             viewBinding.apply {
-                stopNameTv.text = card.stop.nameTc
+                stopNameTv.text = card.stop.getName(context)
                 stopSeqTv.text = String.format("%02d", card.stop.seq)
 
                 stopLineTop.setBackgroundColor(color)

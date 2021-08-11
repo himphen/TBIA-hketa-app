@@ -59,6 +59,7 @@ data class SearchMapStop(
 
     fun toTransportModelWithSeq(seq: Int): TransportStop {
         return TransportStop(
+            company = etaType.company(),
             stopId = stopId,
             nameEn = nameEn,
             nameTc = nameTc,

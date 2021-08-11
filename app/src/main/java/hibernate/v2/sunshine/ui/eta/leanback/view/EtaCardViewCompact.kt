@@ -11,59 +11,58 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaCompactBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.TransportEta
-import hibernate.v2.sunshine.util.DateUtil
-import java.util.Date
 
 class EtaCardViewCompact(context: Context) : BaseEtaCardView<ContentEtaCompactBinding>(context) {
     override var viewBinding =
         ContentEtaCompactBinding.inflate(LayoutInflater.from(context), this, true)
 
     override fun onBind(card: Card.EtaCard) {
-        val color = when (card.route.company) {
-            Company.KMB -> R.color.brand_color_kmb
-            Company.NWFB -> R.color.brand_color_nwfb
-            Company.CTB -> R.color.brand_color_ctb
-            Company.GMB -> R.color.brand_color_gmb
-            else -> R.color.brand_color_kmb
-        }
+        viewBinding.apply {
+            val color = when (card.route.company) {
+                Company.KMB -> R.color.brand_color_kmb
+                Company.NWFB -> R.color.brand_color_nwfb
+                Company.CTB -> R.color.brand_color_ctb
+                Company.GMB -> R.color.brand_color_gmb
+                else -> R.color.brand_color_kmb
+            }
 
-        (ContextCompat.getDrawable(
-            context,
-            R.drawable.eta_card_line_arrow
-        ) as? RotateDrawable?).let { arrowDrawable ->
-            arrowDrawable?.mutate()
-            (arrowDrawable?.drawable as? GradientDrawable)?.setColor(context.getColor(color))
-            viewBinding.lineArrowBgView.background = arrowDrawable
-            viewBinding.lineBgView.setBackgroundResource(color)
-        }
+            (ContextCompat.getDrawable(
+                context,
+                R.drawable.eta_card_line_arrow
+            ) as? RotateDrawable?).let { arrowDrawable ->
+                arrowDrawable?.mutate()
+                (arrowDrawable?.drawable as? GradientDrawable)?.setColor(context.getColor(color))
+                lineArrowBgView.background = arrowDrawable
+                lineBgView.setBackgroundResource(color)
+            }
 
-        viewBinding.routeNumberTv.text = card.route.routeNo
-        viewBinding.stopNameTv.text = card.stop.nameTc
-        viewBinding.routeDirectionTv.text = card.route.getDestDirectionText(context)
+            routeNumberTv.text = card.route.routeNo
+            stopNameTv.text = card.stop.getName(context)
+            routeDirectionTv.text = card.route.getDestDirectionText(context)
 
-        getEtaMinuteText(card.etaList.getOrNull(0))?.let {
-            viewBinding.eta1MinuteTv.text = it
-            viewBinding.eta1UnitTv.visibility = View.VISIBLE
-        } ?: run {
-            viewBinding.eta1MinuteTv.text = "-"
-            viewBinding.eta1UnitTv.visibility = View.GONE
-        }
+            card.etaList.getOrNull(0)?.getEtaMinuteText("-")?.let {
+                eta1MinuteTv.text = it.second
+                eta1UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
+            } ?: run {
+                eta1MinuteTv.text = "-"
+                eta1UnitTv.visibility = View.GONE
+            }
 
-        getEtaMinuteText(card.etaList.getOrNull(1))?.let {
-            viewBinding.eta2MinuteTv.text = it
-            viewBinding.eta2UnitTv.visibility = View.VISIBLE
-        } ?: run {
-            viewBinding.eta2MinuteTv.text = "-"
-            viewBinding.eta2UnitTv.visibility = View.GONE
-        }
+            card.etaList.getOrNull(1)?.getEtaMinuteText("-")?.let {
+                eta2MinuteTv.text = it.second
+                eta2UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
+            } ?: run {
+                eta2MinuteTv.text = "-"
+                eta2UnitTv.visibility = View.GONE
+            }
 
-        getEtaMinuteText(card.etaList.getOrNull(2))?.let {
-            viewBinding.eta3MinuteTv.text = it
-            viewBinding.eta3UnitTv.visibility = View.VISIBLE
-        } ?: run {
-            viewBinding.eta3MinuteTv.text = "-"
-            viewBinding.eta3UnitTv.visibility = View.GONE
+            card.etaList.getOrNull(2)?.getEtaMinuteText("-")?.let {
+                eta3MinuteTv.text = it.second
+                eta3UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
+            } ?: run {
+                eta3MinuteTv.text = "-"
+                eta3UnitTv.visibility = View.GONE
+            }
         }
 
         onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
@@ -74,17 +73,5 @@ class EtaCardViewCompact(context: Context) : BaseEtaCardView<ContentEtaCompactBi
             }
         }
         setBackgroundResource(R.drawable.eta_card_bg_none)
-    }
-
-    private fun getEtaMinuteText(eta: TransportEta?): String? {
-        eta?.eta?.let { etaDate ->
-            val minutes = DateUtil.getTimeDiffInMin(
-                etaDate,
-                Date()
-            )
-            return (minutes + 1).toString()
-        }
-
-        return null
     }
 }

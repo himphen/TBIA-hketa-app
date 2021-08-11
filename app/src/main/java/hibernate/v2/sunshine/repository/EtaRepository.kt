@@ -4,9 +4,8 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.response.eta.EtaResponse
 import hibernate.v2.api.response.eta.GmbEtaResponse
+import hibernate.v2.api.response.eta.LRTEtaResponse
 import hibernate.v2.api.response.eta.MTREtaResponse
-import hibernate.v2.api.response.kmb.KmbRouteResponse
-import hibernate.v2.api.response.kmb.KmbStopResponse
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.eta.EtaDao
 import hibernate.v2.sunshine.db.eta.EtaOrderDao
@@ -23,6 +22,7 @@ class EtaRepository(
     suspend fun getSavedNCEtaList() = etaDao.getAllNCEtaWithOrdering()
     suspend fun getSavedGmbEtaList() = etaDao.getAllGmbEtaWithOrdering()
     suspend fun getSavedMTREtaList() = etaDao.getAllMTREtaWithOrdering()
+    suspend fun getSavedLRTEtaList() = etaDao.getAllLRTEtaWithOrdering()
 
     suspend fun hasEtaInDb(
         stopId: String,
@@ -97,9 +97,17 @@ class EtaRepository(
         stopId: String,
         route: String
     ): MTREtaResponse {
-        return apiManager.mtrService.getStopEta(
+        return apiManager.mtrService.getMTRStopEta(
             stopId = stopId,
             routeId = route
+        )
+    }
+
+    suspend fun getLRTStopEtaApi(
+        stopId: String
+    ): LRTEtaResponse {
+        return apiManager.mtrService.getLRTStopEta(
+            stopId = stopId
         )
     }
 }

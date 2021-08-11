@@ -145,6 +145,7 @@ class SettingsEtaListingFragment : BaseFragment<FragmentSettingsEtaListingBindin
         viewModel.savedEtaCardList.observe(viewLifecycleOwner) {
             savedEtaCardList.clear()
             savedEtaCardList = it.map { card ->
+                // TODO SettingsTrainEtaItemCard
                 card as Card.SettingsEtaItemCard
             }.toMutableList()
             updateRows()

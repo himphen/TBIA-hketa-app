@@ -59,11 +59,18 @@ class RouteListAdapter(val listener: ItemListener) :
                 routeCompanyColor.setBackgroundColor(color)
                 root.tag = card
                 root.setOnClickListener { listener.onRouteSelected(it.tag as Card.EtaCard) }
-                card.etaList.getOrNull(0)?.getEtaMinuteText()?.let {
-                    etaMinuteTv.text = it
-                    etaMinuteUnitTv.visibility = View.VISIBLE
-                    etaTimeTv.text = getEtaTimeText(card.etaList)
-                    etaTimeTv.visibility = View.VISIBLE
+                card.etaList.getOrNull(0)?.getEtaMinuteText("-")?.let {
+                    etaMinuteTv.text = it.second
+
+                    if (it.first) {
+                        etaMinuteUnitTv.visibility = View.VISIBLE
+                        etaTimeTv.text = getEtaTimeText(card.etaList)
+                        etaTimeTv.visibility = View.VISIBLE
+                    } else {
+                        etaMinuteTv.text = "-"
+                        etaMinuteUnitTv.visibility = View.GONE
+                        etaTimeTv.visibility = View.GONE
+                    }
                 } ?: run {
                     etaMinuteTv.text = ""
                     etaMinuteUnitTv.visibility = View.GONE

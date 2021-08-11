@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import hibernate.v2.sunshine.db.mtr.MTRRouteEntity
 import hibernate.v2.sunshine.db.mtr.MTRStopEntity
 import hibernate.v2.sunshine.model.Card
+
 data class EtaMTRDetails(
     @Embedded
     val savedEta: SavedEtaEntity,
