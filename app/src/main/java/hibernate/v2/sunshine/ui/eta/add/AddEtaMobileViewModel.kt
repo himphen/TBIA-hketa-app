@@ -176,7 +176,7 @@ class AddEtaMobileViewModel(
         }
 
         try {
-            val allRouteList = mtrRepository.getRouteListDb().map { it.toTransportModel() }
+            val allRouteList = mtrRepository.getRouteEnabledListDb().map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList.toMutableList())
 
             Logger.d("lifecycle getTransportRouteList done")
@@ -194,7 +194,7 @@ class AddEtaMobileViewModel(
         }
 
         try {
-            val allRouteList = lrtRepository.getRouteListDb().map { it.toTransportModel() }
+            val allRouteList = lrtRepository.getRouteEnabledListDb().map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList.toMutableList())
 
             Logger.d("lifecycle getTransportRouteList done")

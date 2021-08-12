@@ -271,7 +271,7 @@ class AddEtaViewModel(
         }
 
         try {
-            val allRouteList = mtrRepository.getRouteListDb()
+            val allRouteList = mtrRepository.getRouteEnabledListDb()
             val allRouteStopList = mtrRepository.getRouteStopComponentListDb()
 
             val transportRouteStopHashMap = allRouteList.associate { entity ->
@@ -333,7 +333,7 @@ class AddEtaViewModel(
         }
 
         try {
-            val allRouteList = lrtRepository.getRouteListDb()
+            val allRouteList = lrtRepository.getRouteEnabledListDb()
             val allRouteStopList = lrtRepository.getRouteStopComponentListDb()
 
             val transportRouteStopHashMap = allRouteList.associate { entity ->

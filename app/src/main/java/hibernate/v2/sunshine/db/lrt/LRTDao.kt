@@ -7,6 +7,7 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import hibernate.v2.sunshine.db.mtr.MTRRouteEntity
 
 @Dao
 interface LRTDao {
@@ -34,6 +35,9 @@ interface LRTDao {
 
     @Query("SELECT * FROM lrt_route")
     suspend fun getRouteList(): List<LRTRouteEntity>
+
+    @Query("SELECT * FROM lrt_route WHERE route_info_is_enabled = (:isEnabled)")
+    suspend fun getRouteList(isEnabled: Boolean = true): List<LRTRouteEntity>
 
     @Query("SELECT * FROM lrt_route LIMIT 1")
     suspend fun getSingleRoute(): LRTRouteEntity?

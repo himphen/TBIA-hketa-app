@@ -35,6 +35,8 @@ data class LRTRouteEntity(
     val destSc: String,
     @ColumnInfo(name = "route_info_name_color")
     val routeInfoColor: String,
+    @ColumnInfo(name = "route_info_is_enabled")
+    val routeInfoIsEnabled: Boolean,
 ) : TransportHashable {
     companion object {
         fun fromApiModel(route: LRTRoute): LRTRouteEntity {
@@ -49,6 +51,7 @@ data class LRTRouteEntity(
                 destTc = route.destTc,
                 destSc = route.destSc,
                 routeInfoColor = route.routeInfo.color,
+                routeInfoIsEnabled = route.routeInfo.isEnabled,
             )
         }
     }

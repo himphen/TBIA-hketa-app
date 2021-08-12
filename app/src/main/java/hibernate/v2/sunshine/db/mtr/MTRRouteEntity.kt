@@ -6,8 +6,8 @@ import androidx.room.Entity
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.mtr.MTRRoute
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.MTRRouteInfo
+import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Entity(
@@ -41,6 +41,8 @@ data class MTRRouteEntity(
     val routeInfoNameSc: String,
     @ColumnInfo(name = "route_info_name_color")
     val routeInfoColor: String,
+    @ColumnInfo(name = "route_info_is_enabled")
+    val routeInfoIsEnabled: Boolean,
 ) : TransportHashable {
     companion object {
         fun fromApiModel(route: MTRRoute): MTRRouteEntity {
@@ -58,6 +60,7 @@ data class MTRRouteEntity(
                 routeInfoNameTc = route.routeInfo.nameTc,
                 routeInfoNameSc = route.routeInfo.nameTc,
                 routeInfoColor = route.routeInfo.color,
+                routeInfoIsEnabled = route.routeInfo.isEnabled,
             )
         }
     }

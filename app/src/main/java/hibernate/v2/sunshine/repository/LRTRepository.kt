@@ -56,6 +56,7 @@ class LRTRepository(
     }
 
     suspend fun getRouteListDb() = lrtDao.getRouteList()
+    suspend fun getRouteEnabledListDb() = lrtDao.getRouteList(true)
     suspend fun getRouteStopComponentListDb() =
         lrtDao.getRouteStopComponentList()
 

@@ -33,6 +33,9 @@ interface MTRDao {
     @Query("SELECT * FROM mtr_route")
     suspend fun getRouteList(): List<MTRRouteEntity>
 
+    @Query("SELECT * FROM mtr_route WHERE route_info_is_enabled = (:isEnabled)")
+    suspend fun getRouteList(isEnabled: Boolean = true): List<MTRRouteEntity>
+
     @Query("SELECT * FROM mtr_route LIMIT 1")
     suspend fun getSingleRoute(): MTRRouteEntity?
 
