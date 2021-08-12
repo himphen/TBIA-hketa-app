@@ -40,7 +40,7 @@ data class LRTTransportRoute(
 
     override fun getDirectionWithRouteText(context: Context): String {
         return context.getString(
-            R.string.text_add_eta_destination,
+            R.string.text_add_eta_destination_train,
             routeNo,
             origTc,
             destTc

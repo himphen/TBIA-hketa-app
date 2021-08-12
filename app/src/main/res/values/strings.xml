@@ -34,7 +34,8 @@
     <string name="text_settings_eta_destination_with_sp">往 %1$s (%2$s)</string>
 
     <string name="text_add_eta_destination">%1$s號線 - %2$s往%3$s</string>
-    <string name="text_add_eta_destination_with_sp">%1$s (特別線 %2$s) - %3$s往%4$s</string>
+    <string name="text_add_eta_destination_with_sp">%1$s號線 (特別線 %2$s) - %3$s往%4$s</string>
+    <string name="text_add_eta_destination_train">%1$s - %2$s往%3$s</string>
 
     <string name="text_add_eta_destination_mobile">%1$s 往 %2$s</string>
     <string name="text_add_eta_destination_sp_mobile">特別線 %1$s</string>
@@ -50,7 +51,7 @@
     <string name="dialog_add_eta_brand_selection_mtr_btn">港鐵</string>
     <string name="dialog_add_eta_brand_selection_lrt_btn">輕鐵</string>
 
-    <string name="text_add_eta_hint_stop">你正瀏覧%1$s車站</string>
+    <string name="text_add_eta_hint_stop">你正瀏覧%1$s所有車站</string>
 
     <string name="menu_edit_eta_action_save_order">儲存</string>
     <string name="dialog_settings_eta_remove_title">注意</string>
