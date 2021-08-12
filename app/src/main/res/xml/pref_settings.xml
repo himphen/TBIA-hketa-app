@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <Preference
-        android:icon="@drawable/ic_settings_eta_listing_24"
-        android:key="pref_settings_bus_eta"
-        android:title="@string/title_activity_settings_eta"
-        tools:summary="Dark Mode" />
-
     <Preference
         android:icon="@drawable/ic_settings_eta_layout_24"
         android:key="pref_settings_eta_layout"

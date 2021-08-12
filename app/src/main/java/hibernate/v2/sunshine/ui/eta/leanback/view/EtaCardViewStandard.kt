@@ -13,6 +13,7 @@ import hibernate.v2.sunshine.databinding.ContentEtaStandardBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.util.DateUtil
+import hibernate.v2.sunshine.util.gone
 import java.util.Date
 
 class EtaCardViewStandard(context: Context) : BaseEtaCardView<ContentEtaStandardBinding>(context) {
@@ -48,7 +49,7 @@ class EtaCardViewStandard(context: Context) : BaseEtaCardView<ContentEtaStandard
                 eta1UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
                 eta1MinuteTv.text = "-"
-                eta1UnitTv.visibility = View.GONE
+                eta1UnitTv.gone()
             }
 
             card.etaList.getOrNull(1)?.getEtaMinuteText()?.let {
@@ -56,7 +57,7 @@ class EtaCardViewStandard(context: Context) : BaseEtaCardView<ContentEtaStandard
                 eta2UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
                 eta2MinuteTv.text = "-"
-                eta2UnitTv.visibility = View.GONE
+                eta2UnitTv.gone()
             }
 
             card.etaList.getOrNull(2)?.getEtaMinuteText()?.let {
@@ -64,7 +65,7 @@ class EtaCardViewStandard(context: Context) : BaseEtaCardView<ContentEtaStandard
                 eta3UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
                 eta3MinuteTv.text = "-"
-                eta3UnitTv.visibility = View.GONE
+                eta3UnitTv.gone()
             }
         }
 

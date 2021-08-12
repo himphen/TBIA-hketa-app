@@ -53,7 +53,7 @@
     <string name="text_add_eta_hint_route">你正瀏覧 %1$s 路線</string>
     <string name="text_add_eta_hint_stop">你正瀏覧 %1$s 車站</string>
 
-    <string name="menu_settings_eta_action_add">加入到站</string>
+    <string name="menu_edit_eta_action_save_order">儲存</string>
     <string name="dialog_settings_eta_remove_title">注意</string>
     <string name="dialog_settings_eta_remove_message">確定移除 %1$s 號線 %2$s 車站嗎？</string>
     <string name="dialog_settings_eta_remove_mtr_message">確定移除 %1$s %2$s 車站嗎？</string>
@@ -130,5 +130,7 @@
     <string name="map_marker_distance_15">15分鐘路程</string>
     <string name="button_street_view_text">街景</string>
     <string name="button_navigation_text">前往</string>
+    <string name="eta_button_edit">編輯車站</string>
+    <string name="eta_button_add">瀏覽所有車站</string>
 
 </resources>

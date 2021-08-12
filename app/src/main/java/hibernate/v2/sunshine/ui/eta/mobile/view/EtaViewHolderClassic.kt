@@ -7,6 +7,8 @@ import hibernate.v2.sunshine.databinding.ItemEtaClassicBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.MTRTransportRoute
+import hibernate.v2.sunshine.util.gone
+import hibernate.v2.sunshine.util.visible
 
 class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
     BaseEtaViewHolder<ItemEtaClassicBinding>(viewBinding) {
@@ -17,23 +19,11 @@ class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
             val color = route.getColor(context, false)
 
             if (route is MTRTransportRoute) {
-                routeNumberTv.visibility = View.GONE
-                routeCompanyColor.visibility = View.GONE
+                routeNumberTv.gone()
+                routeCompanyColor.gone()
                 routeMTRNumberTv.apply {
                     text = card.platform
-                    visibility = View.VISIBLE
-
-                    (background as? GradientDrawable)?.apply {
-                        mutate()
-                        setColor(color)
-                    }
-                }
-            } else if (route is LRTTransportRoute) {
-                routeNumberTv.visibility = View.GONE
-                routeCompanyColor.visibility = View.GONE
-                routeMTRNumberTv.apply {
-                    text = card.platform
-                    visibility = View.VISIBLE
+                    visible()
 
                     (background as? GradientDrawable)?.apply {
                         mutate()
@@ -43,10 +33,10 @@ class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
             } else {
                 routeNumberTv.apply {
                     text = card.route.getCardRouteText()
-                    visibility = View.VISIBLE
+                    visible()
                 }
-                routeCompanyColor.visibility = View.VISIBLE
-                routeMTRNumberTv.visibility = View.GONE
+                routeCompanyColor.visible()
+                routeMTRNumberTv.gone()
                 routeCompanyColor.setBackgroundColor(color)
             }
 
@@ -56,18 +46,18 @@ class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
                 etaMinuteTv.text = it.second
 
                 if (it.first) {
-                    etaMinuteUnitTv.visibility = View.VISIBLE
+                    etaMinuteUnitTv.visible()
                     etaTimeTv.text = getEtaTimeText(card.etaList)
-                    etaTimeTv.visibility = View.VISIBLE
+                    etaTimeTv.visible()
                 } else {
                     etaMinuteTv.text = "-"
-                    etaMinuteUnitTv.visibility = View.GONE
-                    etaTimeTv.visibility = View.GONE
+                    etaMinuteUnitTv.gone()
+                    etaTimeTv.gone()
                 }
             } ?: run {
                 etaMinuteTv.text = "-"
-                etaMinuteUnitTv.visibility = View.GONE
-                etaTimeTv.visibility = View.GONE
+                etaMinuteUnitTv.gone()
+                etaTimeTv.gone()
             }
         }
     }

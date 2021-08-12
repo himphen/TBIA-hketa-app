@@ -12,6 +12,8 @@ import androidx.leanback.widget.GuidedAction
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
+import hibernate.v2.sunshine.util.gone
+import hibernate.v2.sunshine.util.visible
 import org.koin.android.ext.android.inject
 
 class EtaLayoutSelectionFragment : GuidedStepSupportFragment() {
@@ -36,7 +38,7 @@ class EtaLayoutSelectionFragment : GuidedStepSupportFragment() {
                 etaDemoClassic = view.findViewById(R.id.eta_demo_classic)
                 etaDemoCompact = view.findViewById(R.id.eta_demo_compact)
                 etaDemoStandard = view.findViewById(R.id.eta_demo_standard)
-                etaDemoStandard.visibility = View.VISIBLE
+                etaDemoStandard.visible()
                 return view
             }
         }
@@ -90,24 +92,24 @@ class EtaLayoutSelectionFragment : GuidedStepSupportFragment() {
     override fun onGuidedActionFocused(action: GuidedAction) {
         when (action.id) {
             ACTION_ID_STANDARD -> {
-                etaDemoClassic.visibility = View.GONE
-                etaDemoCompact.visibility = View.GONE
-                etaDemoStandard.visibility = View.VISIBLE
+                etaDemoClassic.gone()
+                etaDemoCompact.gone()
+                etaDemoStandard.visible()
             }
             ACTION_ID_COMPACT -> {
-                etaDemoClassic.visibility = View.GONE
-                etaDemoCompact.visibility = View.VISIBLE
-                etaDemoStandard.visibility = View.GONE
+                etaDemoClassic.gone()
+                etaDemoCompact.visible()
+                etaDemoStandard.gone()
             }
             ACTION_ID_CLASSIC -> {
-                etaDemoClassic.visibility = View.VISIBLE
-                etaDemoCompact.visibility = View.GONE
-                etaDemoStandard.visibility = View.GONE
+                etaDemoClassic.visible()
+                etaDemoCompact.gone()
+                etaDemoStandard.gone()
             }
             ACTION_ID_CANCEL -> {
-                etaDemoClassic.visibility = View.GONE
-                etaDemoCompact.visibility = View.GONE
-                etaDemoStandard.visibility = View.GONE
+                etaDemoClassic.gone()
+                etaDemoCompact.gone()
+                etaDemoStandard.gone()
             }
         }
     }

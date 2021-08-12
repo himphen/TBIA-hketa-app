@@ -13,6 +13,8 @@ import hibernate.v2.sunshine.ui.base.BaseLeanbackActivity
 import hibernate.v2.sunshine.ui.settings.leanback.SettingsFragment
 import hibernate.v2.sunshine.ui.widget.SideMenuView
 import hibernate.v2.sunshine.util.dpToPx
+import hibernate.v2.sunshine.util.gone
+import hibernate.v2.sunshine.util.visible
 
 class MainActivity : BaseLeanbackActivity<LbActivityMainBinding>(), SideMenuView.MenuItemClickListener {
 
@@ -90,7 +92,7 @@ class MainActivity : BaseLeanbackActivity<LbActivityMainBinding>(), SideMenuView
         val valueAnimator = ValueAnimator.ofInt(width, maxExpandWidth)
         viewBinding.sideMenuView.setupMenuExpandedUI()
 
-        viewBinding.transView.visibility = View.VISIBLE
+        viewBinding.transView.visible()
         SideMenuView.animateView(view, valueAnimator)
     }
 
@@ -99,7 +101,7 @@ class MainActivity : BaseLeanbackActivity<LbActivityMainBinding>(), SideMenuView
         val valueAnimator = ValueAnimator.ofInt(width, minExpandWidth)
         viewBinding.sideMenuView.setupMenuClosedUI()
 
-        viewBinding.transView.visibility = View.GONE
+        viewBinding.transView.gone()
         SideMenuView.animateView(view, valueAnimator)
     }
 

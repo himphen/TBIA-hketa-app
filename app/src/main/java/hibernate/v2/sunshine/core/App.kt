@@ -18,8 +18,8 @@ import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.ui.searchmap.SearchMapViewModel
-import hibernate.v2.sunshine.ui.settings.eta.SettingsEtaViewModel
-import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
+import hibernate.v2.sunshine.ui.eta.edit.EditEtaViewModel
+import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.traffic.TrafficViewModel
 import hibernate.v2.sunshine.ui.weather.WeatherViewModel
 import org.koin.android.ext.koin.androidContext
@@ -76,7 +76,7 @@ class App : Application() {
         // ViewModels
         viewModel { EtaViewModel(get()) }
         viewModel { OnboardingViewModel(get(), get(), get(), get(), get()) }
-        viewModel { SettingsEtaViewModel(get()) }
+        viewModel { EditEtaViewModel(get()) }
         viewModel { AddEtaViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { WeatherViewModel(get()) }
         viewModel { TrafficViewModel(get()) }

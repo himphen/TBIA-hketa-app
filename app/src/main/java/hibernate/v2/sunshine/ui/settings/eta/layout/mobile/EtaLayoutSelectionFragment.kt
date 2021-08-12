@@ -11,6 +11,8 @@ import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentEtaLayoutSelectionBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
+import hibernate.v2.sunshine.util.gone
+import hibernate.v2.sunshine.util.visible
 import org.koin.android.ext.android.inject
 
 class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBinding>() {
@@ -51,19 +53,19 @@ class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBindin
     fun updateDemoLayout(type: EtaCardViewType) {
         when (type) {
             EtaCardViewType.Standard -> {
-                etaDemoClassic.visibility = View.GONE
-                etaDemoCompact.visibility = View.GONE
-                etaDemoStandard.visibility = View.VISIBLE
+                etaDemoClassic.gone()
+                etaDemoCompact.gone()
+                etaDemoStandard.visible()
             }
             EtaCardViewType.Compact -> {
-                etaDemoClassic.visibility = View.GONE
-                etaDemoCompact.visibility = View.VISIBLE
-                etaDemoStandard.visibility = View.GONE
+                etaDemoClassic.gone()
+                etaDemoCompact.visible()
+                etaDemoStandard.gone()
             }
             EtaCardViewType.Classic -> {
-                etaDemoClassic.visibility = View.VISIBLE
-                etaDemoCompact.visibility = View.GONE
-                etaDemoStandard.visibility = View.GONE
+                etaDemoClassic.visible()
+                etaDemoCompact.gone()
+                etaDemoStandard.gone()
             }
         }
     }

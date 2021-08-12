@@ -5,12 +5,15 @@ import android.graphics.drawable.RotateDrawable
 import android.view.View
 import androidx.core.content.ContextCompat
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.ItemEtaCompactBinding
+import hibernate.v2.sunshine.databinding.ItemEtaStandardBinding
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.TransportEta
+import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.gone
+import java.util.Date
 
-class EtaViewHolderCompact(viewBinding: ItemEtaCompactBinding) :
-    BaseEtaViewHolder<ItemEtaCompactBinding>(viewBinding) {
+class EtaViewHolderButton(viewBinding: ItemEtaStandardBinding) :
+    BaseEtaViewHolder<ItemEtaStandardBinding>(viewBinding) {
 
     override fun onBind(card: Card.EtaCard) {
         viewBinding.content.apply {
@@ -28,8 +31,9 @@ class EtaViewHolderCompact(viewBinding: ItemEtaCompactBinding) :
             }
 
             routeNumberTv.apply { text = card.route.getCardRouteText() }
+
             stopNameTv.text = card.stop.getName(context)
-            routeDirectionTv.text = route.getDestDirectionText(context)
+            routeDirectionTv.text = card.route.getDestDirectionText(context)
 
             card.etaList.getOrNull(0)?.getEtaMinuteText()?.let {
                 eta1MinuteTv.text = it.second

@@ -1,9 +1,12 @@
 package hibernate.v2.sunshine.ui.eta.mobile
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -17,11 +20,15 @@ import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
+import hibernate.v2.sunshine.ui.eta.add.mobile.AddEtaActivity
+import hibernate.v2.sunshine.ui.eta.edit.mobile.EditEtaActivity
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.dpToPx
+import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
+import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -39,12 +46,31 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         fun getInstance() = EtaFragment()
     }
 
+    private var etaUpdatedLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                lifecycleScope.launchWhenResumed {
+                    mainViewModel.onUpdatedEtaList.emit(Unit)
+                }
+            }
+        }
+
     private val sharedPreferencesManager: SharedPreferencesManager by inject()
 
     private val viewModel by inject<EtaViewModel>()
     private val mainViewModel: MainViewModel by sharedViewModel()
 
-    private val adapter = EtaCardAdapter(sharedPreferencesManager.etaCardType)
+    private val adapter = EtaCardAdapter(
+        sharedPreferencesManager.etaCardType,
+        object : EtaCardAdapter.ButtonListener {
+            override fun onAddButtonClick() {
+                etaUpdatedLauncher.launch(Intent(context, AddEtaActivity::class.java))
+            }
+
+            override fun onEditButtonClick() {
+                etaUpdatedLauncher.launch(Intent(context, EditEtaActivity::class.java))
+            }
+        })
 
     private var etaCardList: MutableList<Card.EtaCard>? = null
     private var refreshEtaJob: Deferred<Unit>? = null
@@ -93,6 +119,12 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     }
 
     private fun initUi() {
+        viewBinding?.apply {
+            emptyViewCl.addStopButton.visible()
+            emptyViewCl.addStopButton.setOnClickListener {
+                etaUpdatedLauncher.launch(Intent(context, AddEtaActivity::class.java))
+            }
+        }
         initAdapter()
     }
 
@@ -107,12 +139,17 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     private fun processEtaList() {
         val etaCardList = etaCardList
         if (etaCardList.isNullOrEmpty()) {
-            viewBinding?.emptyViewCl?.root?.visibility = View.VISIBLE
-            viewBinding?.emptyViewCl?.emptyDescTv?.text = getString(R.string.empty_eta_list)
+            viewBinding?.apply {
+                emptyViewCl.root.visible()
+                emptyViewCl.emptyDescTv.text = getString(R.string.empty_eta_list)
+                recyclerView.gone()
+            }
         } else {
-            viewBinding?.emptyViewCl?.root?.visibility = View.GONE
+            viewBinding?.apply {
+                emptyViewCl.root.gone()
+                recyclerView.visible()
+            }
             etaCardList.forEachIndexed { index, etaCard ->
-
                 val temp = etaCard.etaList.filter { eta: TransportEta ->
                     eta.eta?.let { etaDate ->
                         val currentDate = Date()
@@ -176,7 +213,6 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                                 ContextCompat.getDrawable(context, R.drawable.space_vertical)!!
                             )
                         })
-
                     setPadding(
                         dpToPx(0),
                         dpToPx(4),

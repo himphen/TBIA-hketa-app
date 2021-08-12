@@ -87,9 +87,9 @@ class CustomClusterManager(
         val topLatLng = getDestinationPoint(currentLatLng, 0.0, level.distance) ?: return false
         val currentPoint = projection.toScreenLocation(currentLatLng)
         val topPoint = projection.toScreenLocation(topLatLng)
-        if (topPoint.y < 250) return false
+        if (topPoint.y < 400) return false
         val diff = currentPoint.y - topPoint.y
-        if (diff < 200) return false
+        if (diff < 400) return false
 
         lifecycleScope.launch {
             onGotCurrentCircleSize.emit(Pair(level, diff))

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemBottomSheetRouteBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.eta.mobile.view.BaseEtaViewHolder
+import hibernate.v2.sunshine.util.gone
+import hibernate.v2.sunshine.util.visible
 
 class RouteListAdapter(val listener: ItemListener) :
     RecyclerView.Adapter<RouteListAdapter.ItemVH>() {
@@ -63,18 +65,18 @@ class RouteListAdapter(val listener: ItemListener) :
                     etaMinuteTv.text = it.second
 
                     if (it.first) {
-                        etaMinuteUnitTv.visibility = View.VISIBLE
+                        etaMinuteUnitTv.visible()
                         etaTimeTv.text = getEtaTimeText(card.etaList)
-                        etaTimeTv.visibility = View.VISIBLE
+                        etaTimeTv.visible()
                     } else {
                         etaMinuteTv.text = "-"
-                        etaMinuteUnitTv.visibility = View.GONE
-                        etaTimeTv.visibility = View.GONE
+                        etaMinuteUnitTv.gone()
+                        etaTimeTv.gone()
                     }
                 } ?: run {
                     etaMinuteTv.text = ""
-                    etaMinuteUnitTv.visibility = View.GONE
-                    etaTimeTv.visibility = View.GONE
+                    etaMinuteUnitTv.gone()
+                    etaTimeTv.gone()
                 }
             }
         }

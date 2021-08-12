@@ -11,6 +11,7 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaCompactBinding
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.util.gone
 
 class EtaCardViewCompact(context: Context) : BaseEtaCardView<ContentEtaCompactBinding>(context) {
     override var viewBinding =
@@ -45,7 +46,7 @@ class EtaCardViewCompact(context: Context) : BaseEtaCardView<ContentEtaCompactBi
                 eta1UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
                 eta1MinuteTv.text = "-"
-                eta1UnitTv.visibility = View.GONE
+                eta1UnitTv.gone()
             }
 
             card.etaList.getOrNull(1)?.getEtaMinuteText("-")?.let {
@@ -53,7 +54,7 @@ class EtaCardViewCompact(context: Context) : BaseEtaCardView<ContentEtaCompactBi
                 eta2UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
                 eta2MinuteTv.text = "-"
-                eta2UnitTv.visibility = View.GONE
+                eta2UnitTv.gone()
             }
 
             card.etaList.getOrNull(2)?.getEtaMinuteText("-")?.let {
@@ -61,7 +62,7 @@ class EtaCardViewCompact(context: Context) : BaseEtaCardView<ContentEtaCompactBi
                 eta3UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
                 eta3MinuteTv.text = "-"
-                eta3UnitTv.visibility = View.GONE
+                eta3UnitTv.gone()
             }
         }
 

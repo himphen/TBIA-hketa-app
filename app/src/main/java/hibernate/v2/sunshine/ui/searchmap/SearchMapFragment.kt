@@ -32,10 +32,12 @@ import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
-import hibernate.v2.sunshine.ui.settings.eta.add.AddEtaViewModel
+import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.dpToPx
+import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
+import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -305,9 +307,9 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 onGotCurrentCircleSize.onEach {
                     viewBinding?.currentMarkerCircle?.apply {
                         if (it.second < 20) {
-                            visibility = View.GONE
+                            gone()
                         } else {
-                            visibility = View.VISIBLE
+                            visible()
                             val pixel = dpToPx(it.second)
                             val newLayoutParams = layoutParams as ConstraintLayout.LayoutParams
                             newLayoutParams.width = pixel
