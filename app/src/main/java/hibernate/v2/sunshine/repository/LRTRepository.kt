@@ -59,6 +59,14 @@ class LRTRepository(
     suspend fun getRouteStopComponentListDb() =
         lrtDao.getRouteStopComponentList()
 
+    suspend fun getRouteStopComponentListDb(
+        route: TransportRoute,
+    ) = lrtDao.getRouteStopComponentList(
+        route.routeId,
+        route.bound.value,
+        route.serviceType
+    )
+
     suspend fun hasStopListDb() = lrtDao.getSingleStop() != null
     suspend fun hasRouteListDb() = lrtDao.getSingleRoute() != null
     suspend fun hasRouteStopListDb() = lrtDao.getSingleRouteStop() != null

@@ -20,10 +20,10 @@ import hibernate.v2.sunshine.util.visible
 
 class AddEtaRouteAdapter(
     val etaType: EtaType,
-    private val onRouteSelected: (RouteForRowAdapter) -> Unit,
+    private val onRouteSelected: (TransportRoute) -> Unit,
 ) : RecyclerView.Adapter<AddEtaViewHolderRoute>() {
 
-    private var list = mutableListOf<RouteForRowAdapter>()
+    private var list = mutableListOf<TransportRoute>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         AddEtaViewHolderRoute(
@@ -52,7 +52,7 @@ class AddEtaRouteAdapter(
     override fun getItemCount(): Int = list.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setRouteData(mutableList: List<RouteForRowAdapter>?) {
+    fun setRouteData(mutableList: List<TransportRoute>?) {
         if (mutableList == null) return
 
         list.clear()
@@ -64,31 +64,31 @@ class AddEtaRouteAdapter(
         viewBinding: ItemAddEtaRouteBinding,
     ) : BaseViewHolder<ItemAddEtaRouteBinding>(viewBinding) {
 
-        fun onBind(item: RouteForRowAdapter) {
+        fun onBind(route: TransportRoute) {
             viewBinding.apply {
                 routeNumberTv.apply {
                     text = if (etaType == EtaType.MTR) {
-                        val route = item.route as MTRTransportRoute
+                        route as MTRTransportRoute
                         route.routeInfo.nameTc
                     } else {
-                        item.route.routeNo
+                        route.routeNo
                     }
                 }
 
                 routeCompanyColor.apply {
                     if (etaType == EtaType.MTR || etaType == EtaType.LRT) {
-                        setBackgroundColor(item.route.getColor(context))
+                        setBackgroundColor(route.getColor(context))
                     }
                 }
 
-                routeOrigTv.text = item.route.origTc
-                routeDestTv.text = item.route.destTc
+                routeOrigTv.text = route.origTc
+                routeDestTv.text = route.destTc
 
                 routeSpTv.apply {
-                    if (item.route.isSpecialRoute()) {
+                    if (route.isSpecialRoute()) {
                         text = context.getString(
                             R.string.text_add_eta_destination_sp_mobile,
-                            item.route.serviceType
+                            route.serviceType
                         )
                         visible()
                     } else {
@@ -96,8 +96,8 @@ class AddEtaRouteAdapter(
                     }
                 }
 
-                root.tag = item
-                root.setOnClickListener { onRouteSelected(item) }
+                root.tag = route
+                root.setOnClickListener { onRouteSelected(route) }
             }
         }
 

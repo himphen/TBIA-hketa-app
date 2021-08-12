@@ -91,6 +91,14 @@ interface LRTDao {
     @Query("SELECT * FROM lrt_route_stop")
     suspend fun getRouteStopComponentList(): List<LRTRouteStopComponent>
 
+    @Transaction
+    @Query("SELECT * FROM lrt_route_stop WHERE lrt_route_stop_route_id = (:route) AND lrt_route_stop_bound = (:bound) AND lrt_route_stop_service_type = (:serviceType)")
+    suspend fun getRouteStopComponentList(
+        route: String,
+        bound: String,
+        serviceType: String,
+    ): List<LRTRouteStopComponent>
+
     @Query("SELECT * FROM lrt_route_stop LIMIT 1")
     suspend fun getSingleRouteStop(): LRTRouteStopEntity?
 

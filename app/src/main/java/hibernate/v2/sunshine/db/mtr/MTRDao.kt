@@ -89,6 +89,14 @@ interface MTRDao {
     @Query("SELECT * FROM mtr_route_stop")
     suspend fun getRouteStopComponentList(): List<MTRRouteStopComponent>
 
+    @Transaction
+    @Query("SELECT * FROM mtr_route_stop WHERE mtr_route_stop_route_id = (:route) AND mtr_route_stop_bound = (:bound) AND mtr_route_stop_service_type = (:serviceType)")
+    suspend fun getRouteStopComponentList(
+        route: String,
+        bound: String,
+        serviceType: String,
+    ): List<MTRRouteStopComponent>
+
     @Query("SELECT * FROM mtr_route_stop LIMIT 1")
     suspend fun getSingleRouteStop(): MTRRouteStopEntity?
 

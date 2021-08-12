@@ -49,7 +49,7 @@ data class GmbTransportRoute(
 
     override fun isSpecialRoute(): Boolean = false
 
-    fun getRegionName(context: Context): String {
+    private fun getRegionName(context: Context): String {
         return when (region) {
             GmbRegion.HKI -> context.getString(R.string.text_gmb_region_hki)
             GmbRegion.KLN -> context.getString(R.string.text_gmb_region_kln)
@@ -61,7 +61,7 @@ data class GmbTransportRoute(
     override fun getDirectionWithRouteText(context: Context): String {
         return context.getString(
             R.string.text_add_eta_destination,
-            "${getRegionName(context)} $routeNo",
+            "${getRegionName(context)}$routeNo",
             origTc,
             destTc
         )

@@ -40,8 +40,6 @@ class AddEtaViewModel(
 ) : BaseViewModel() {
 
     val filteredTransportRouteList = MutableSharedFlow<Pair<EtaType, List<RouteForRowAdapter>>>()
-    var selectedEtaType = MutableLiveData<EtaType?>()
-    var selectedRoute = MutableLiveData<RouteForRowAdapter?>()
     var isAddEtaSuccessful = MutableSharedFlow<Boolean>()
 
     val searchRouteKeyword = MutableLiveData<String>()

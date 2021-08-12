@@ -18,7 +18,7 @@ import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.util.getSnapshotValue
 
 class NCRepository(
-    private val ncDao: NCDao,
+    private val dao: NCDao,
 ) {
     val database =
         Firebase.database("https://android-tv-c733a-default-rtdb.asia-southeast1.firebasedatabase.app/")
@@ -56,38 +56,47 @@ class NCRepository(
         }
     }
 
-    suspend fun getRouteListByCompanyDb(company: Company) = ncDao.getRouteList(company.value)
-    suspend fun getRouteStopComponentListDb(company: Company) = ncDao.getRouteStopComponentList(company.value)
+    suspend fun getRouteListByCompanyDb(company: Company) = dao.getRouteList(company.value)
+    suspend fun getRouteStopComponentListDb(company: Company) =
+        dao.getRouteStopComponentList(company.value)
 
-    suspend fun hasStopListDb() = ncDao.getSingleStop() != null
-    suspend fun hasRouteListDb() = ncDao.getSingleRoute() != null
-    suspend fun hasRouteStopListDb() = ncDao.getSingleRouteStop() != null
+    suspend fun getRouteStopComponentListDb(
+        route: TransportRoute,
+    ) = dao.getRouteStopComponentList(
+        route.company.value,
+        route.routeId,
+        route.bound.value
+    )
+
+    suspend fun hasStopListDb() = dao.getSingleStop() != null
+    suspend fun hasRouteListDb() = dao.getSingleRoute() != null
+    suspend fun hasRouteStopListDb() = dao.getSingleRouteStop() != null
 
     suspend fun isDataExisted() = hasStopListDb() && hasRouteListDb() && hasRouteStopListDb()
 
     suspend fun initDatabase() {
-        ncDao.clearRouteList()
-        ncDao.clearStopList()
-        ncDao.clearRouteStopList()
+        dao.clearRouteList()
+        dao.clearStopList()
+        dao.clearRouteStopList()
     }
 
     suspend fun saveRouteList(entityList: List<NCRouteEntity>) {
-        ncDao.addRouteList(entityList)
+        dao.addRouteList(entityList)
     }
 
     suspend fun saveRouteStopList(entityList: List<NCRouteStopEntity>) {
-        ncDao.addRouteStopList(entityList)
+        dao.addRouteStopList(entityList)
     }
 
     suspend fun saveStopList(entityList: List<NCStopEntity>) {
-        ncDao.addStopList(entityList)
+        dao.addStopList(entityList)
     }
 
-    suspend fun getStopListDb() = ncDao.getStopList()
+    suspend fun getStopListDb() = dao.getStopList()
 
     suspend fun getRouteListFromStopId(stopId: String): List<TransportRoute> {
-        val routeStopList = ncDao.getRouteStopListFromStopId(stopId)
-        val routeList = ncDao.getRouteListFromRouteId(routeStopList)
+        val routeStopList = dao.getRouteStopListFromStopId(stopId)
+        val routeList = dao.getRouteListFromRouteId(routeStopList)
 
         return routeList.map {
             it.toTransportModel()
@@ -104,8 +113,8 @@ class NCRepository(
     }
 
     suspend fun getRouteEtaCardList(stop: SearchMapStop): List<Card.EtaCard> {
-        val routeStopList = ncDao.getRouteStopListFromStopId(stop.stopId)
-        val routeList = ncDao.getRouteListFromRouteId(routeStopList)
+        val routeStopList = dao.getRouteStopListFromStopId(stop.stopId)
+        val routeList = dao.getRouteListFromRouteId(routeStopList)
         val routeHashMap = routeList.map {
             it.routeHashId() to it
         }.toMap()

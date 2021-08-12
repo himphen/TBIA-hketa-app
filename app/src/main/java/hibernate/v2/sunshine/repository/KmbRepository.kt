@@ -20,6 +20,13 @@ class KmbRepository(
     suspend fun getStopListDb() = kmbDao.getStopList()
     suspend fun getRouteListDb() = kmbDao.getRouteList()
     suspend fun getRouteStopComponentListDb() = kmbDao.getRouteStopComponentList()
+    suspend fun getRouteStopComponentListDb(
+        route: TransportRoute,
+    ) = kmbDao.getRouteStopComponentList(
+        route.routeId,
+        route.bound.value,
+        route.serviceType
+    )
 
     suspend fun getRouteListFromStopId(stopId: String): List<TransportRoute> {
         val routeStopList = kmbDao.getRouteStopListFromStopId(stopId)

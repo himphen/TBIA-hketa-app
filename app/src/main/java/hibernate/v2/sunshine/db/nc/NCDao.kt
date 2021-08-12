@@ -55,6 +55,14 @@ interface NCDao {
     @Query("SELECT * FROM nc_route_stop WHERE nc_route_stop_company = (:company)")
     suspend fun getRouteStopComponentList(company: String): List<NCRouteStopComponent>
 
+    @Transaction
+    @Query("SELECT * FROM nc_route_stop WHERE nc_route_stop_company = (:company) AND nc_route_stop_route_id = (:route) AND nc_route_stop_bound = (:bound)")
+    suspend fun getRouteStopComponentList(
+        company: String,
+        route: String,
+        bound: String
+    ): List<NCRouteStopComponent>
+
     @Query("SELECT * FROM nc_route_stop LIMIT 1")
     suspend fun getSingleRouteStop(): NCRouteStopEntity?
 

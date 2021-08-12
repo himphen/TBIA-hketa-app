@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+    android:minHeight="48dp">
 
     <View
         android:id="@+id/routeCompanyColor"
@@ -17,12 +18,14 @@
         tools:background="@color/brand_color_kmb" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
         android:paddingBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -64,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_east_24"
-                app:layout_constraintBottom_toTopOf="@id/routeSpTv"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/routeDestTv"
                 app:layout_constraintStart_toEndOf="@id/routeOrigTv"
                 app:layout_constraintTop_toTopOf="parent"
@@ -96,7 +99,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/routeDestTv"
+                app:layout_constraintTop_toBottomOf="@id/routeOrigTv"
                 tools:text="@string/text_add_eta_destination_sp_mobile" />
 
             <TextView
@@ -106,7 +109,7 @@
                 android:gravity="center_vertical|end"
                 android:textColor="@color/primaryText"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@id/routeSpTv"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/routeDirectionArrowIv"
                 app:layout_constraintTop_toTopOf="parent"

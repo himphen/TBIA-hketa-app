@@ -17,7 +17,7 @@ import hibernate.v2.sunshine.databinding.FragmentAddEtaViewPagerBinding
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseActivity
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
+import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
 import hibernate.v2.sunshine.util.afterTextChanged
 import hibernate.v2.sunshine.util.onTextChanged
 import kotlinx.coroutines.flow.debounce
@@ -27,6 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class AddEtaViewPagerFragment : BaseFragment<FragmentAddEtaViewPagerBinding>() {
     companion object {
+        const val kDrawableRight = 2
         const val searchDelay = 500L
     }
 
@@ -34,15 +35,17 @@ class AddEtaViewPagerFragment : BaseFragment<FragmentAddEtaViewPagerBinding>() {
         get() {
             val viewBinding = viewBinding ?: return null
 
-            return if (viewBinding.searchEt.compoundDrawables.asList().size > AddEtaRouteFragment.kDrawableRight) {
-                viewBinding.searchEt.compoundDrawables[AddEtaRouteFragment.kDrawableRight]
+            return if (viewBinding.searchEt.compoundDrawables.asList().size > kDrawableRight) {
+                viewBinding.searchEt.compoundDrawables[kDrawableRight]
             } else {
                 null
             }
         }
 
-    private val viewModel: AddEtaViewModel by sharedViewModel()
+    private val viewModel: AddEtaMobileViewModel by sharedViewModel()
     private var etaType: EtaType = EtaType.KMB
+
+    private var isFirstLoad = true
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -83,7 +86,11 @@ class AddEtaViewPagerFragment : BaseFragment<FragmentAddEtaViewPagerBinding>() {
                 etaType = adapter.list[position]
 
 //                viewBinding.searchEt.setText("")
-                viewModel.searchRoute(etaType)
+                if (isFirstLoad) {
+                    isFirstLoad = false
+                } else {
+                    viewModel.searchRoute(etaType)
+                }
             }
         })
 

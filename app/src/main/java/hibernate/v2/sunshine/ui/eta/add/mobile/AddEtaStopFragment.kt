@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentAddEtaBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
+import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -21,10 +21,10 @@ class AddEtaStopFragment : BaseFragment<FragmentAddEtaBinding>() {
         fun getInstance() = AddEtaStopFragment()
     }
 
-    private val viewModel: AddEtaViewModel by sharedViewModel()
+    private val viewModel: AddEtaMobileViewModel by sharedViewModel()
     private val adapter: AddEtaStopAdapter by lazy {
         AddEtaStopAdapter(
-            viewModel.selectedRoute.value!!.route
+            viewModel.selectedRoute.value!!
         ) { card -> viewModel.saveStop(card) }
     }
 
@@ -46,7 +46,7 @@ class AddEtaStopFragment : BaseFragment<FragmentAddEtaBinding>() {
         val viewBinding = viewBinding!!
         viewBinding.recyclerView.adapter = adapter
 
-        val selectedRoute = viewModel.selectedRoute.value!!.route
+        val selectedRoute = viewModel.selectedRoute.value!!
         viewBinding.hintTv.text = getString(
             R.string.text_add_eta_hint_stop,
             selectedRoute.getDirectionWithRouteText(requireContext())
@@ -55,16 +55,22 @@ class AddEtaStopFragment : BaseFragment<FragmentAddEtaBinding>() {
     }
 
     private fun initData() {
-        viewModel.selectedRoute.value?.filteredList?.let { stopList ->
-            adapter.setStopData(stopList)
-        }
+        viewModel.getTransportStopList()
     }
 
     private fun initEvent() {
+        viewModel.stopList.onEach { stopList ->
+            adapter.setStopData(stopList)
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
         viewModel.isAddEtaSuccessful.onEach {
             if (it) {
                 activity?.setResult(Activity.RESULT_OK)
-                activity?.finish()
+                activity?.supportFragmentManager?.popBackStack()
+                Toast.makeText(
+                    context,
+                    getString(R.string.toast_eta_added),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 Toast.makeText(
                     context,

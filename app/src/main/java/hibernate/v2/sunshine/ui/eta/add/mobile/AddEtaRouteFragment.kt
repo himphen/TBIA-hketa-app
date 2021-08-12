@@ -11,7 +11,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentAddEtaBinding
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
+import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
 import hibernate.v2.sunshine.util.getEnum
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.putEnum
@@ -23,7 +23,6 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaBinding>() {
 
     companion object {
         private const val ARG_ETA_TYPE = "ARG_ETA_TYPE"
-        const val kDrawableRight = 2
         fun getInstance(etaType: EtaType) =
             AddEtaRouteFragment().apply {
                 arguments = Bundle().apply {
@@ -35,7 +34,7 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaBinding>() {
     private val etaType by lazy {
         arguments?.getEnum(ARG_ETA_TYPE, EtaType.KMB) ?: EtaType.KMB
     }
-    private val viewModel: AddEtaViewModel by sharedViewModel()
+    private val viewModel: AddEtaMobileViewModel by sharedViewModel()
     private val adapter: AddEtaRouteAdapter by lazy {
         AddEtaRouteAdapter(etaType) { route ->
             viewModel.selectedEtaType.value = etaType
@@ -81,7 +80,6 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaBinding>() {
 
     private fun initData() {
         viewModel.getTransportRouteList(
-            requireContext(),
             etaType
         )
     }

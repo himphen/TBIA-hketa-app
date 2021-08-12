@@ -33,8 +33,8 @@
     <string name="text_settings_eta_destination">往 %1$s</string>
     <string name="text_settings_eta_destination_with_sp">往 %1$s (%2$s)</string>
 
-    <string name="text_add_eta_destination">%1$s - %2$s 往 %3$s</string>
-    <string name="text_add_eta_destination_with_sp">%1$s (特別線 %2$s) - %3$s 往 %4$s</string>
+    <string name="text_add_eta_destination">%1$s號線 - %2$s往%3$s</string>
+    <string name="text_add_eta_destination_with_sp">%1$s (特別線 %2$s) - %3$s往%4$s</string>
 
     <string name="text_add_eta_destination_mobile">%1$s 往 %2$s</string>
     <string name="text_add_eta_destination_sp_mobile">特別線 %1$s</string>
@@ -50,8 +50,7 @@
     <string name="dialog_add_eta_brand_selection_mtr_btn">港鐵</string>
     <string name="dialog_add_eta_brand_selection_lrt_btn">輕鐵</string>
 
-    <string name="text_add_eta_hint_route">你正瀏覧 %1$s 路線</string>
-    <string name="text_add_eta_hint_stop">你正瀏覧 %1$s 車站</string>
+    <string name="text_add_eta_hint_stop">你正瀏覧%1$s車站</string>
 
     <string name="menu_edit_eta_action_save_order">儲存</string>
     <string name="dialog_settings_eta_remove_title">注意</string>
@@ -60,9 +59,9 @@
     <string name="dialog_settings_eta_remove_pos_btn">移除</string>
     <string name="dialog_cancel_btn">取消</string>
 
-    <string name="text_gmb_region_hki">港島區</string>
-    <string name="text_gmb_region_kln">九龍區</string>
-    <string name="text_gmb_region_nt">新界區</string>
+    <string name="text_gmb_region_hki">港島專線小巴</string>
+    <string name="text_gmb_region_kln">九龍專線小巴</string>
+    <string name="text_gmb_region_nt">新界專線小巴</string>
 
     <string name="dialog_edit_eta_title">編輯 %1$s 號線 %2$s 車站選項</string>
     <string name="dialog_edit_eta_description"></string>
@@ -70,8 +69,8 @@
     <string name="dialog_edit_eta_move_down_btn">下移</string>
     <string name="dialog_edit_eta_remove_btn">移除</string>
     <string name="dialog_edit_eta_cancel_btn">取消</string>
-    <string name="toast_eta_already_added">無法重覆選擇已加入的站位。</string>
-    <string name="toast_eta_added">已加入站位。</string>
+    <string name="toast_eta_already_added">無法重覆選擇已加入的站位</string>
+    <string name="toast_eta_added">已成功加入站位</string>
     <string name="eta_card_minute_unit">分</string>
 
     <string name="dialog_add_eta_in_search_map_description">加入 %1$s %2$s 車站至主頁？</string>

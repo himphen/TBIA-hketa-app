@@ -59,6 +59,12 @@ class GmbRepository(
     suspend fun getRouteListDb(region: GmbRegion) = gmbDao.getRouteList(region.value)
     suspend fun getRouteStopComponentListDb(routeIdList: List<String>) =
         gmbDao.getRouteStopComponentList(routeIdList)
+    suspend fun getRouteStopComponentListDb(
+        route: TransportRoute,
+    ) = gmbDao.getRouteStopComponentList(
+        route.routeId,
+        route.bound.value
+    )
 
     suspend fun hasStopListDb() = gmbDao.getSingleStop() != null
     suspend fun hasRouteListDb() = gmbDao.getSingleRoute() != null

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityContainerBinding
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
+import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
@@ -13,7 +14,7 @@ class AddEtaActivity : BaseFragmentActivity<ActivityContainerBinding>() {
     override var fragment: Fragment? = AddEtaViewPagerFragment()
     override var titleId: Int? = R.string.title_activity_add_eta
 
-    val viewModel by stateViewModel<AddEtaViewModel>()
+    val viewModel by stateViewModel<AddEtaMobileViewModel>()
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
