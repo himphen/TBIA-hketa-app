@@ -17,12 +17,8 @@ import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.util.updateBackgroundColor
 
-class StopListAdapter(val listener: ItemListener) :
+class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
     RecyclerView.Adapter<StopListAdapter.ItemVH>() {
-
-    interface ItemListener {
-        fun onStopSelected(searchMapStop: SearchMapStop)
-    }
 
     private var list = mutableListOf<SearchMapStop>()
 
@@ -64,7 +60,7 @@ class StopListAdapter(val listener: ItemListener) :
             }
 
             root.tag = item
-            root.setOnClickListener { listener.onStopSelected(it.tag as SearchMapStop) }
+            root.setOnClickListener { onStopSelected(it.tag as SearchMapStop) }
         }
     }
 

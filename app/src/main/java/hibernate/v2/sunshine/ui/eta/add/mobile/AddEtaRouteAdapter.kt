@@ -3,7 +3,6 @@ package hibernate.v2.sunshine.ui.eta.add.mobile
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -21,12 +20,8 @@ import hibernate.v2.sunshine.util.visible
 
 class AddEtaRouteAdapter(
     val etaType: EtaType,
-    private val listener: ItemListener,
+    private val onRouteSelected: (RouteForRowAdapter) -> Unit,
 ) : RecyclerView.Adapter<AddEtaViewHolderRoute>() {
-
-    interface ItemListener {
-        fun onRouteSelected(route: RouteForRowAdapter)
-    }
 
     private var list = mutableListOf<RouteForRowAdapter>()
 
@@ -102,7 +97,7 @@ class AddEtaRouteAdapter(
                 }
 
                 root.tag = item
-                root.setOnClickListener { listener.onRouteSelected(item) }
+                root.setOnClickListener { onRouteSelected(item) }
             }
         }
 

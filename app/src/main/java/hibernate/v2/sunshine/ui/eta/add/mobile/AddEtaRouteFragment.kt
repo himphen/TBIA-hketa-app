@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentAddEtaBinding
-import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
@@ -38,24 +37,22 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaBinding>() {
     }
     private val viewModel: AddEtaViewModel by sharedViewModel()
     private val adapter: AddEtaRouteAdapter by lazy {
-        AddEtaRouteAdapter(etaType, object : AddEtaRouteAdapter.ItemListener {
-            override fun onRouteSelected(route: RouteForRowAdapter) {
-                viewModel.selectedEtaType.value = etaType
-                viewModel.selectedRoute.value = route
+        AddEtaRouteAdapter(etaType) { route ->
+            viewModel.selectedEtaType.value = etaType
+            viewModel.selectedRoute.value = route
 
-                activity?.supportFragmentManager?.beginTransaction()?.apply {
-                    setCustomAnimations(
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_left,
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                    )
-                    add(R.id.container, AddEtaStopFragment.getInstance())
-                    addToBackStack(null)
-                    commit()
-                }
+            activity?.supportFragmentManager?.beginTransaction()?.apply {
+                setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
+                add(R.id.container, AddEtaStopFragment.getInstance())
+                addToBackStack(null)
+                commit()
             }
-        })
+        }
     }
 
     override fun getViewBinding(

@@ -11,12 +11,8 @@ import hibernate.v2.sunshine.ui.eta.mobile.view.BaseEtaViewHolder
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
 
-class RouteListAdapter(val listener: ItemListener) :
+class RouteListAdapter(val onRouteSelected: (Card.EtaCard) -> Unit) :
     RecyclerView.Adapter<RouteListAdapter.ItemVH>() {
-
-    interface ItemListener {
-        fun onRouteSelected(card: Card.EtaCard)
-    }
 
     private var list = mutableListOf<Card.EtaCard>()
 
@@ -60,7 +56,7 @@ class RouteListAdapter(val listener: ItemListener) :
                 routeDirectionTv.text = route.getDestDirectionText(context)
                 routeCompanyColor.setBackgroundColor(color)
                 root.tag = card
-                root.setOnClickListener { listener.onRouteSelected(it.tag as Card.EtaCard) }
+                root.setOnClickListener { onRouteSelected(it.tag as Card.EtaCard) }
                 card.etaList.getOrNull(0)?.getEtaMinuteText("-")?.let {
                     etaMinuteTv.text = it.second
 

@@ -9,12 +9,8 @@ import hibernate.v2.sunshine.ui.base.BaseCardPresenter
 
 class EditEtaCardPresenter(
     context: Context,
-    private val listener: ClickListener
+    private val onItemClick: (Card.SettingsEtaCard) -> Unit
 ) : BaseCardPresenter<EditEtaCardView, Card.SettingsEtaCard>(context) {
-
-    interface ClickListener {
-        fun onItemClick(card: Card.SettingsEtaCard)
-    }
 
     override fun onCreateView(): EditEtaCardView {
         val cardView = EditEtaCardView(context)
@@ -31,7 +27,7 @@ class EditEtaCardPresenter(
 
     override fun onBindViewHolder(card: Card.SettingsEtaCard, cardView: EditEtaCardView) {
         cardView.tag = card
-        cardView.setOnClickListener { listener.onItemClick(it.tag as Card.SettingsEtaCard) }
+        cardView.setOnClickListener { onItemClick(it.tag as Card.SettingsEtaCard) }
 
         when (card) {
             is Card.SettingsEtaItemCard -> cardView.onBindItemView(card)

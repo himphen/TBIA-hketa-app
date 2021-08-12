@@ -23,15 +23,12 @@ class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBindin
 
     private val sharedPreferencesManager: SharedPreferencesManager by inject()
 
-    private val adapter = EtaLayoutAdapter(sharedPreferencesManager.etaCardType,
-        object : EtaLayoutAdapter.ItemListener {
-            override fun onItemSelected(item: EtaCardViewType) {
-                sharedPreferencesManager.etaCardType = item
-                updateDemoLayout(item)
-                activity?.setResult(Activity.RESULT_OK)
-            }
+    private val adapter =
+        EtaLayoutAdapter(sharedPreferencesManager.etaCardType) { item: EtaCardViewType ->
+            sharedPreferencesManager.etaCardType = item
+            updateDemoLayout(item)
+            activity?.setResult(Activity.RESULT_OK)
         }
-    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -77,6 +74,6 @@ class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBindin
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FragmentEtaLayoutSelectionBinding.inflate(inflater, container, false)
 }

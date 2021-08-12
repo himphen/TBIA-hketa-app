@@ -7,17 +7,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemAddEtaStopBinding
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 
 class AddEtaStopAdapter(
-    private val listener: ItemListener,
+    val route: TransportRoute,
+    private val onStopSelected: (Card.RouteStopAddCard) -> Unit,
 ) : RecyclerView.Adapter<AddEtaStopAdapter.AddEtaViewHolderStop>() {
 
-    interface ItemListener {
-        fun onStopSelected(card: Card.RouteStopAddCard)
-    }
-
-    private var list = mutableListOf<Card.RouteStopAddCard>()
+    private var list = mutableListOf<TransportStop>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         AddEtaViewHolderStop(
@@ -37,7 +36,7 @@ class AddEtaStopAdapter(
     override fun getItemCount(): Int = list.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setStopData(mutableList: List<Card.RouteStopAddCard>?) {
+    fun setStopData(mutableList: List<TransportStop>?) {
         if (mutableList == null) return
 
         list.clear()
@@ -49,12 +48,12 @@ class AddEtaStopAdapter(
         viewBinding: ItemAddEtaStopBinding,
     ) : BaseViewHolder<ItemAddEtaStopBinding>(viewBinding) {
 
-        fun onBind(card: Card.RouteStopAddCard, isFirst: Boolean, isLast: Boolean) {
-            val color = card.route.getColor(context)
+        fun onBind(stop: TransportStop, isFirst: Boolean, isLast: Boolean) {
+            val color = route.getColor(context)
 
             viewBinding.apply {
-                stopNameTv.text = card.stop.getName(context)
-                stopSeqTv.text = String.format("%02d", card.stop.seq)
+                stopNameTv.text = stop.getName(context)
+                stopSeqTv.text = String.format("%02d", stop.seq)
 
                 stopLineTop.setBackgroundColor(color)
                 stopLineMiddle.setBackgroundColor(color)
@@ -63,8 +62,13 @@ class AddEtaStopAdapter(
                 stopLineTop.visibility = if (isFirst) View.INVISIBLE else View.VISIBLE
                 stopLineBottom.visibility = if (isLast) View.INVISIBLE else View.VISIBLE
 
-                root.tag = card
-                root.setOnClickListener { listener.onStopSelected(card) }
+                root.tag = stop
+                root.setOnClickListener {
+                    onStopSelected(Card.RouteStopAddCard(
+                        route = route,
+                        stop = stop
+                    ))
+                }
             }
         }
     }

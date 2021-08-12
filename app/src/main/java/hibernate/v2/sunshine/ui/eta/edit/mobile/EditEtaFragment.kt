@@ -44,26 +44,23 @@ class EditEtaFragment : BaseFragment<FragmentEditEtaBinding>() {
 
     private val adapter: EditEtaAdapter by lazy {
         EditEtaAdapter(
-            object : EditEtaAdapter.ItemListener {
-                override fun onItemClick(card: Card.SettingsEtaItemCard) {
-                    if (!isEditingOrdering) {
-                        showRemoveEtaConfirmDialog(card)
-                    }
+            onItemClick = { card: Card.SettingsEtaItemCard ->
+                if (!isEditingOrdering) {
+                    showRemoveEtaConfirmDialog(card)
+                }
+            },
+            onItemMoveCallback = { fromPosition: Int, toPosition: Int ->
+                if (!isEditingOrdering) {
+                    toggleEditingState(true)
                 }
 
-                override fun onItemMove(fromPosition: Int, toPosition: Int) {
-                    if (!isEditingOrdering) {
-                        toggleEditingState(true)
-                    }
-
-                    savedEtaCardList.swap(fromPosition, toPosition)
-                    adapter.move(fromPosition, toPosition)
-                }
-
-                override fun requestDrag(viewHolder: EditEtaViewHolder) {
-                    touchHelper.startDrag(viewHolder)
-                }
-            })
+                savedEtaCardList.swap(fromPosition, toPosition)
+                adapter.move(fromPosition, toPosition)
+            },
+            requestDrag = { viewHolder: EditEtaViewHolder ->
+                touchHelper.startDrag(viewHolder)
+            }
+        )
     }
 
     var isEditingOrdering = false

@@ -10,14 +10,10 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.ItemTouchHelperAdapter
 
 class EditEtaAdapter(
-    private val listener: ItemListener
+    private val onItemClick: (card: Card.SettingsEtaItemCard) -> Unit,
+    private val onItemMoveCallback: (fromPosition: Int, toPosition: Int) -> Unit,
+    private val requestDrag: (viewHolder: EditEtaViewHolder) -> Unit,
 ) : RecyclerView.Adapter<EditEtaViewHolder>(), ItemTouchHelperAdapter {
-
-    interface ItemListener {
-        fun onItemClick(card: Card.SettingsEtaItemCard)
-        fun onItemMove(fromPosition: Int, toPosition: Int)
-        fun requestDrag(viewHolder: EditEtaViewHolder)
-    }
 
     private var list = mutableListOf<Card.SettingsEtaItemCard>()
 
@@ -30,11 +26,11 @@ class EditEtaAdapter(
                 parent,
                 false
             ),
-            listener
+            onItemClick
         ).apply {
             viewBinding.orderCl.setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
-                    listener.requestDrag(this)
+                    requestDrag(this)
                 }
                 false
             }
@@ -65,7 +61,7 @@ class EditEtaAdapter(
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
-        listener.onItemMove(fromPosition, toPosition)
+        onItemMoveCallback(fromPosition, toPosition)
     }
 
     override fun onItemDismiss(position: Int) {}

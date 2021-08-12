@@ -8,7 +8,7 @@ import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 
 class EtaLayoutAdapter(
     defaultType: EtaCardViewType,
-    private val listener: ItemListener,
+    private val onItemSelected: (EtaCardViewType) -> Unit,
 ) : RecyclerView.Adapter<EtaLayoutAdapter.ItemViewHolder>() {
 
     private var lastCheckedPosition: Int = when (defaultType) {
@@ -17,9 +17,6 @@ class EtaLayoutAdapter(
         EtaCardViewType.Classic -> 2
     }
 
-    interface ItemListener {
-        fun onItemSelected(item: EtaCardViewType)
-    }
 
     private val list: MutableList<EtaCardViewType> = mutableListOf(
         EtaCardViewType.Standard,
@@ -45,7 +42,7 @@ class EtaLayoutAdapter(
         viewBinding.title.text = item.getTitle(context)
         viewBinding.root.tag = item
         viewBinding.root.setOnClickListener {
-            listener.onItemSelected(it.tag as EtaCardViewType)
+            onItemSelected(it.tag as EtaCardViewType)
 
             val copyOfLastCheckedPosition = lastCheckedPosition
             lastCheckedPosition = holder.absoluteAdapterPosition
@@ -54,7 +51,7 @@ class EtaLayoutAdapter(
         }
         viewBinding.radioButton.tag = item
         viewBinding.radioButton.setOnClickListener {
-            listener.onItemSelected(it.tag as EtaCardViewType)
+            onItemSelected(it.tag as EtaCardViewType)
 
             val copyOfLastCheckedPosition = lastCheckedPosition
             lastCheckedPosition = holder.absoluteAdapterPosition

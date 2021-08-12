@@ -62,15 +62,13 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
     private val adapter = EtaCardAdapter(
         sharedPreferencesManager.etaCardType,
-        object : EtaCardAdapter.ButtonListener {
-            override fun onAddButtonClick() {
-                etaUpdatedLauncher.launch(Intent(context, AddEtaActivity::class.java))
-            }
-
-            override fun onEditButtonClick() {
-                etaUpdatedLauncher.launch(Intent(context, EditEtaActivity::class.java))
-            }
-        })
+        onAddButtonClick = {
+            etaUpdatedLauncher.launch(Intent(context, AddEtaActivity::class.java))
+        },
+        onEditButtonClick = {
+            etaUpdatedLauncher.launch(Intent(context, EditEtaActivity::class.java))
+        }
+    )
 
     private var etaCardList: MutableList<Card.EtaCard>? = null
     private var refreshEtaJob: Deferred<Unit>? = null
@@ -199,7 +197,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 }
             }
             EtaCardViewType.Standard,
-            EtaCardViewType.Compact -> {
+            EtaCardViewType.Compact,
+            -> {
                 viewBinding.recyclerView.apply {
                     while (itemDecorationCount > 0) {
                         removeItemDecorationAt(0)
@@ -239,6 +238,6 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = FragmentEtaBinding.inflate(inflater, container, false)
 }

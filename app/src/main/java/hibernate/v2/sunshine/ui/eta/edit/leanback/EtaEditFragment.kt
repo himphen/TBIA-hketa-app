@@ -15,8 +15,8 @@ import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.EditEta
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
-import hibernate.v2.sunshine.ui.eta.edit.EditEtaViewModel
 import hibernate.v2.sunshine.ui.eta.add.leanback.AddEtaActivity
+import hibernate.v2.sunshine.ui.eta.edit.EditEtaViewModel
 import hibernate.v2.sunshine.ui.eta.edit.leanback.EditEtaDialogActivity.Companion.ARG_RESULT_CODE
 import hibernate.v2.sunshine.ui.eta.edit.leanback.EditEtaDialogFragment.Companion.ACTION_ID_MOVE_DOWN
 import hibernate.v2.sunshine.ui.eta.edit.leanback.EditEtaDialogFragment.Companion.ACTION_ID_MOVE_UP
@@ -140,58 +140,55 @@ class EtaEditFragment : VerticalGridSupportFragment() {
         val gridPresenter = VerticalGridPresenter(ZOOM_FACTOR)
         gridPresenter.numberOfColumns = COLUMNS
         setGridPresenter(gridPresenter)
-        val cardPresenter = EditEtaCardPresenter(requireContext(),
-            object : EditEtaCardPresenter.ClickListener {
-                override fun onItemClick(card: Card.SettingsEtaCard) {
-                    when (card) {
-                        is Card.SettingsEtaAddCard -> {
-                            addEtaLauncher.launch(Intent(context, AddEtaActivity::class.java))
-                        }
-                        is Card.SettingsEtaItemCard -> {
-                            viewModel.editCard.postValue(card)
+        val cardPresenter = EditEtaCardPresenter(requireContext()
+        ) { card: Card.SettingsEtaCard ->
+            when (card) {
+                is Card.SettingsEtaAddCard -> {
+                    addEtaLauncher.launch(Intent(context, AddEtaActivity::class.java))
+                }
+                is Card.SettingsEtaItemCard -> {
+                    viewModel.editCard.postValue(card)
 
-                            editEtaLauncher.launch(
-                                Intent(
-                                    context,
-                                    EditEtaDialogActivity::class.java
-                                ).apply {
-                                    putExtra(
-                                        EditEtaDialogActivity.ARG_BUNDLE,
-                                        Bundle().apply {
-                                            putParcelable(
-                                                EditEtaDialogActivity.ARG_SELECTED_ETA,
-                                                EditEta(
-                                                    entity = card.entity,
-                                                    route = card.route,
-                                                    stop = card.stop
-                                                )
-                                            )
-
-                                            val currentPosition = savedEtaCardList.indexOf(card)
-                                            if (currentPosition > 1) {
-                                                putString(
-                                                    EditEtaDialogActivity.ARG_BEFORE_ETA_ID,
-                                                    (savedEtaCardList.getOrNull(currentPosition - 1)
-                                                            as? Card.SettingsEtaItemCard)?.entity?.id?.toString()
-                                                )
-                                            }
-
-                                            if (currentPosition < savedEtaCardList.lastIndex) {
-                                                putString(
-                                                    EditEtaDialogActivity.ARG_AFTER_ETA_ID,
-                                                    (savedEtaCardList.getOrNull(currentPosition + 1)
-                                                            as? Card.SettingsEtaItemCard)?.entity?.id?.toString()
-                                                )
-                                            }
-                                        }
+                    editEtaLauncher.launch(
+                        Intent(
+                            context,
+                            EditEtaDialogActivity::class.java
+                        ).apply {
+                            putExtra(
+                                EditEtaDialogActivity.ARG_BUNDLE,
+                                Bundle().apply {
+                                    putParcelable(
+                                        EditEtaDialogActivity.ARG_SELECTED_ETA,
+                                        EditEta(
+                                            entity = card.entity,
+                                            route = card.route,
+                                            stop = card.stop
+                                        )
                                     )
+
+                                    val currentPosition = savedEtaCardList.indexOf(card)
+                                    if (currentPosition > 1) {
+                                        putString(
+                                            EditEtaDialogActivity.ARG_BEFORE_ETA_ID,
+                                            (savedEtaCardList.getOrNull(currentPosition - 1)
+                                                    as? Card.SettingsEtaItemCard)?.entity?.id?.toString()
+                                        )
+                                    }
+
+                                    if (currentPosition < savedEtaCardList.lastIndex) {
+                                        putString(
+                                            EditEtaDialogActivity.ARG_AFTER_ETA_ID,
+                                            (savedEtaCardList.getOrNull(currentPosition + 1)
+                                                    as? Card.SettingsEtaItemCard)?.entity?.id?.toString()
+                                        )
+                                    }
                                 }
                             )
                         }
-                    }
+                    )
                 }
             }
-        )
+        }
         mAdapter = ArrayObjectAdapter(cardPresenter)
         adapter = mAdapter
     }

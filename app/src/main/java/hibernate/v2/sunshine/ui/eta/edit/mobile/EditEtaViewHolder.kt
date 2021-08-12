@@ -13,7 +13,7 @@ import hibernate.v2.sunshine.util.visible
 
 class EditEtaViewHolder(
     val viewBinding: ItemEditEtaBinding,
-    private val listener: EditEtaAdapter.ItemListener,
+    private val onItemClick: (Card.SettingsEtaItemCard) -> Unit,
 ) : RecyclerView.ViewHolder(viewBinding.root) {
 
     val context: Context
@@ -68,7 +68,7 @@ class EditEtaViewHolder(
             routeDirectionTv.text = card.route.getDestDirectionText(context)
 
             root.tag = card
-            root.setOnClickListener { listener.onItemClick(it.tag as Card.SettingsEtaItemCard) }
+            root.setOnClickListener { onItemClick(it.tag as Card.SettingsEtaItemCard) }
         }
     }
 }

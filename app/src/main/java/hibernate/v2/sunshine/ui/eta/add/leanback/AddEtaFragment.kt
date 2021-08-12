@@ -11,7 +11,6 @@ import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.RouteForRowAdapter
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
@@ -31,12 +30,6 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
 
     private val etaType: EtaType by lazy {
         arguments?.getEnum(ARG_ETA_TYPE, EtaType.KMB) ?: EtaType.KMB
-    }
-
-    private val clickListener = object : AddEtaCardPresenter.ClickListener {
-        override fun onItemClick(card: Card.RouteStopAddCard) {
-            viewModel.saveStop(card)
-        }
     }
 
     private var searchJob: Job? = null
@@ -84,7 +77,9 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
         routeList.forEachIndexed { index, listForRowAdapter ->
             // Init Row
             val listRowAdapter =
-                ArrayObjectAdapter(AddEtaCardPresenter(requireContext(), clickListener))
+                ArrayObjectAdapter(AddEtaCardPresenter(requireContext()) {
+                    viewModel.saveStop(it)
+                })
 
             listRowAdapter.addAll(0, listForRowAdapter.filteredList)
             val header = HeaderItem(index.toLong(), listForRowAdapter.headerTitle)

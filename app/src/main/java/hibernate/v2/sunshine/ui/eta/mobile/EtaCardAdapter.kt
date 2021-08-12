@@ -19,13 +19,9 @@ import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderStandard
 
 class EtaCardAdapter(
     var type: EtaCardViewType,
-    val listener: ButtonListener
+    val onAddButtonClick: () -> Unit,
+    val onEditButtonClick: () -> Unit,
 ) : RecyclerView.Adapter<BaseViewHolder<out ViewBinding>>() {
-
-    interface ButtonListener {
-        fun onAddButtonClick()
-        fun onEditButtonClick()
-    }
 
     companion object {
         const val VIEW_TYPE_CONTENT = 1
@@ -70,10 +66,10 @@ class EtaCardAdapter(
             ).apply {
                 viewBinding.apply {
                     addStopButton.setOnClickListener {
-                        listener.onAddButtonClick()
+                        onAddButtonClick()
                     }
                     editStopButton.setOnClickListener {
-                        listener.onEditButtonClick()
+                        onEditButtonClick()
                     }
                 }
             }

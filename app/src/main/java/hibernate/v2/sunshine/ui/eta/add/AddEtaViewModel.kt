@@ -133,12 +133,7 @@ class AddEtaViewModel(
                     RouteForRowAdapter(
                         headerTitle = headerTitle,
                         route = route,
-                        filteredList = routeAndStopList.stopList.map { stop ->
-                            Card.RouteStopAddCard(
-                                route = route,
-                                stop = stop
-                            )
-                        }
+                        filteredList = routeAndStopList.stopList
                     )
                 }.toMutableList()
 
@@ -190,12 +185,7 @@ class AddEtaViewModel(
                     RouteForRowAdapter(
                         headerTitle = headerTitle,
                         route = route,
-                        filteredList = routeAndStopList.stopList.map { stop ->
-                            Card.RouteStopAddCard(
-                                route = route,
-                                stop = stop
-                            )
-                        }
+                        filteredList = routeAndStopList.stopList
                     )
                 }.toMutableList()
 
@@ -259,12 +249,7 @@ class AddEtaViewModel(
                     RouteForRowAdapter(
                         headerTitle = headerTitle,
                         route = route,
-                        filteredList = routeAndStopList.stopList.map { stop ->
-                            Card.RouteStopAddCard(
-                                route = route,
-                                stop = stop
-                            )
-                        }
+                        filteredList = routeAndStopList.stopList
                     )
                 }.toMutableList()
 
@@ -323,12 +308,7 @@ class AddEtaViewModel(
                     RouteForRowAdapter(
                         headerTitle = headerTitle,
                         route = route,
-                        filteredList = routeAndStopList.stopList.map { stop ->
-                            Card.RouteStopAddCard(
-                                route = route,
-                                stop = stop
-                            )
-                        }
+                        filteredList = routeAndStopList.stopList
                     )
                 }.toMutableList()
 
@@ -390,12 +370,7 @@ class AddEtaViewModel(
                     RouteForRowAdapter(
                         headerTitle = headerTitle,
                         route = route,
-                        filteredList = routeAndStopList.stopList.map { stop ->
-                            Card.RouteStopAddCard(
-                                route = route,
-                                stop = stop
-                            )
-                        }
+                        filteredList = routeAndStopList.stopList
                     )
                 }.toMutableList()
 

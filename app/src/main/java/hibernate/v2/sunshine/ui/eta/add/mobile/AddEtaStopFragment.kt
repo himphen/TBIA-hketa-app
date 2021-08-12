@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentAddEtaBinding
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -24,11 +23,9 @@ class AddEtaStopFragment : BaseFragment<FragmentAddEtaBinding>() {
 
     private val viewModel: AddEtaViewModel by sharedViewModel()
     private val adapter: AddEtaStopAdapter by lazy {
-        AddEtaStopAdapter(object : AddEtaStopAdapter.ItemListener {
-            override fun onStopSelected(card: Card.RouteStopAddCard) {
-                viewModel.saveStop(card)
-            }
-        })
+        AddEtaStopAdapter(
+            viewModel.selectedRoute.value!!.route
+        ) { card -> viewModel.saveStop(card) }
     }
 
     override fun getViewBinding(

@@ -11,14 +11,10 @@ import hibernate.v2.sunshine.ui.base.BaseCardPresenter
 
 class SettingsIconPresenter(
     context: Context,
-    private val listener: ClickListener
+    private val onItemClick: (Card.SettingsCard) -> Unit
 ) : BaseCardPresenter<SettingsCardView, Card.SettingsCard>(
     ContextThemeWrapper(context, R.style.AppTheme_Leanback_SettingsEta)
 ) {
-    interface ClickListener {
-        fun onItemClick(card: Card.SettingsCard)
-    }
-
     override fun onCreateView(): SettingsCardView {
         val cardView = SettingsCardView(context)
         cardView.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
@@ -29,7 +25,7 @@ class SettingsIconPresenter(
             }
         }
         setImageBackground(cardView, R.color.settings_card_background)
-        cardView.setOnClickListener { listener.onItemClick(it.tag as Card.SettingsCard) }
+        cardView.setOnClickListener { onItemClick(it.tag as Card.SettingsCard) }
         return cardView
     }
 

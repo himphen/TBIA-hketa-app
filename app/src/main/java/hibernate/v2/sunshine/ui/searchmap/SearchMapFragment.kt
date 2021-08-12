@@ -31,8 +31,8 @@ import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
-import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
+import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
@@ -72,49 +72,45 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private var routeBottomSheetEtaCardList: MutableList<Card.EtaCard> = mutableListOf()
     private var refreshEtaJob: Deferred<Unit>? = null
 
-    private val routeListAdapter = RouteListAdapter(object : RouteListAdapter.ItemListener {
-        override fun onRouteSelected(card: Card.EtaCard) {
-            viewLifecycleOwner.lifecycleScope.launch {
-                val context = context ?: return@launch
-                val result = suspendCancellableCoroutine<Boolean> { cont ->
-                    MaterialDialog(context)
-                        .message(
-                            text =
-                            getString(
-                                R.string.dialog_add_eta_in_search_map_description,
-                                card.route.routeNo,
-                                card.stop.nameTc
-                            )
+    private val routeListAdapter = RouteListAdapter { card: Card.EtaCard ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            val context = context ?: return@launch
+            val result = suspendCancellableCoroutine<Boolean> { cont ->
+                MaterialDialog(context)
+                    .message(
+                        text =
+                        getString(
+                            R.string.dialog_add_eta_in_search_map_description,
+                            card.route.routeNo,
+                            card.stop.nameTc
                         )
-                        .positiveButton(R.string.dialog_add_eta_in_search_map_confirm_btn) {
-                            cont.resume(true)
-                        }
-                        .negativeButton(R.string.dialog_add_eta_in_search_map_cancel_btn) {
-                            cont.resume(false)
-                        }
-                        .onCancel {
-                            cont.resume(false)
-                        }
-                        .show()
-                }
-
-                if (result) {
-                    val addCard = Card.RouteStopAddCard(
-                        card.route,
-                        card.stop
                     )
-                    addEtaViewModel.saveStop(addCard)
-                }
+                    .positiveButton(R.string.dialog_add_eta_in_search_map_confirm_btn) {
+                        cont.resume(true)
+                    }
+                    .negativeButton(R.string.dialog_add_eta_in_search_map_cancel_btn) {
+                        cont.resume(false)
+                    }
+                    .onCancel {
+                        cont.resume(false)
+                    }
+                    .show()
+            }
+
+            if (result) {
+                val addCard = Card.RouteStopAddCard(
+                    card.route,
+                    card.stop
+                )
+                addEtaViewModel.saveStop(addCard)
             }
         }
-    })
+    }
 
-    private val stopListAdapter = StopListAdapter(object : StopListAdapter.ItemListener {
-        override fun onStopSelected(searchMapStop: SearchMapStop) {
-            googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(searchMapStop.position, 19f))
-            showRouteBottomSheet(stop = searchMapStop)
-        }
-    })
+    private val stopListAdapter = StopListAdapter { searchMapStop: SearchMapStop ->
+        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(searchMapStop.position, 19f))
+        showRouteBottomSheet(stop = searchMapStop)
+    }
 
     private var googleMap: GoogleMap? = null
 

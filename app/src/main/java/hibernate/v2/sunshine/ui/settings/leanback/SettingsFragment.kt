@@ -9,8 +9,8 @@ import androidx.leanback.widget.VerticalGridPresenter
 import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.ui.settings.eta.layout.leanback.EtaLayoutSelectionActivity
 import hibernate.v2.sunshine.ui.eta.edit.leanback.EditEtaActivity
+import hibernate.v2.sunshine.ui.settings.eta.layout.leanback.EtaLayoutSelectionActivity
 
 class SettingsFragment : VerticalGridSupportFragment() {
 
@@ -33,31 +33,26 @@ class SettingsFragment : VerticalGridSupportFragment() {
         val gridPresenter = VerticalGridPresenter(ZOOM_FACTOR)
         gridPresenter.numberOfColumns = COLUMNS
         setGridPresenter(gridPresenter)
-        val cardPresenter = SettingsIconPresenter(requireContext(),
-            object : SettingsIconPresenter.ClickListener {
-                override fun onItemClick(card: Card.SettingsCard) {
-                    when (card.type) {
-                        Card.SettingsCard.Type.ETA -> {
-                            startActivity(
-                                Intent(context, EditEtaActivity::class.java)
-                            )
-                        }
-                        Card.SettingsCard.Type.TRAFFIC -> {
-                        }
-                        Card.SettingsCard.Type.NONE -> {
-                        }
-                        Card.SettingsCard.Type.VERSION -> {
-                        }
-                        Card.SettingsCard.Type.ETA_LAYOUT -> {
-                            startActivity(
-                                Intent(context, EtaLayoutSelectionActivity::class.java)
-                            )
-                        }
-                    }
+        val cardPresenter = SettingsIconPresenter(requireContext()) { card: Card.SettingsCard ->
+            when (card.type) {
+                Card.SettingsCard.Type.ETA -> {
+                    startActivity(
+                        Intent(context, EditEtaActivity::class.java)
+                    )
                 }
-
+                Card.SettingsCard.Type.TRAFFIC -> {
+                }
+                Card.SettingsCard.Type.NONE -> {
+                }
+                Card.SettingsCard.Type.VERSION -> {
+                }
+                Card.SettingsCard.Type.ETA_LAYOUT -> {
+                    startActivity(
+                        Intent(context, EtaLayoutSelectionActivity::class.java)
+                    )
+                }
             }
-        )
+        }
         mAdapter = ArrayObjectAdapter(cardPresenter)
         adapter = mAdapter
         createRows()
@@ -81,7 +76,8 @@ class SettingsFragment : VerticalGridSupportFragment() {
         )
         list.add(
             Card.SettingsCard(
-                title = getString(R.string.title_settings_version_leanback, BuildConfig.VERSION_NAME),
+                title = getString(R.string.title_settings_version_leanback,
+                    BuildConfig.VERSION_NAME),
                 type = Card.SettingsCard.Type.VERSION,
                 icon = R.drawable.ic_settings_version_24
             )
