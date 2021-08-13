@@ -99,7 +99,6 @@
 
     <style name="MainBorderButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/white</item>
         <item name="colorAccent">@color/mainButton</item>
         <item name="colorButtonNormal">@color/mainButton</item>
         <item name="colorControlHighlight">@color/secondaryText</item>

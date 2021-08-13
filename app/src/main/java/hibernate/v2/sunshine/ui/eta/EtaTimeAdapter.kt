@@ -32,8 +32,8 @@ class EtaTimeAdapter : RecyclerView.Adapter<BaseViewHolder<ItemEtaTimeBinding>>(
         position: Int
     ) {
         val item = list[position]
-        holder.viewBinding.etaTimeTv.text =
-            item.eta.formatString(DateFormat.HH_MM.value)
+        val etaTime = item.eta.formatString(DateFormat.HH_MM.value)
+        holder.viewBinding.etaTimeTv.text = etaTime.trim()
     }
 
     override fun getItemCount() = list.size
