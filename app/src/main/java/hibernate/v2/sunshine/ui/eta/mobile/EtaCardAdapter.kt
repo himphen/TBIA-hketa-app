@@ -5,6 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import hibernate.v2.sunshine.databinding.ItemEtaButtonGroupBinding
 import hibernate.v2.sunshine.databinding.ItemEtaClassicBinding
 import hibernate.v2.sunshine.databinding.ItemEtaCompactBinding
@@ -12,6 +17,7 @@ import hibernate.v2.sunshine.databinding.ItemEtaStandardBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
+import hibernate.v2.sunshine.ui.eta.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.eta.mobile.view.BaseEtaViewHolder
 import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderClassic
 import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderCompact
@@ -40,7 +46,17 @@ class EtaCardAdapter(
                         parent,
                         false
                     )
-                )
+                ).apply {
+                    viewBinding.content.etaTimeRv.apply {
+                        layoutManager = FlexboxLayoutManager(context).apply {
+                            flexWrap = FlexWrap.WRAP
+                            alignItems = AlignItems.FLEX_END
+                            flexDirection = FlexDirection.ROW
+                            justifyContent = JustifyContent.FLEX_END
+                        }
+                        adapter = EtaTimeAdapter()
+                    }
+                }
                 EtaCardViewType.Compact -> EtaViewHolderCompact(
                     ItemEtaCompactBinding.inflate(
                         LayoutInflater.from(parent.context),

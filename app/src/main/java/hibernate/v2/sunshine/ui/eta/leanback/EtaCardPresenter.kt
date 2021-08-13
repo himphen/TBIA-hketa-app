@@ -5,10 +5,16 @@ import android.widget.FrameLayout
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.leanback.widget.BaseCardView
 import androidx.viewbinding.ViewBinding
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseCardPresenter
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
+import hibernate.v2.sunshine.ui.eta.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.eta.leanback.view.BaseEtaCardView
 import hibernate.v2.sunshine.ui.eta.leanback.view.EtaCardViewClassic
 import hibernate.v2.sunshine.ui.eta.leanback.view.EtaCardViewCompact
@@ -41,7 +47,17 @@ class EtaCardPresenter(
                     context,
                     R.style.FullCardStyle
                 )
-            )
+            ).apply {
+                viewBinding.etaTimeRv.apply {
+                    layoutManager = FlexboxLayoutManager(context).apply {
+                        flexWrap = FlexWrap.WRAP
+                        alignItems = AlignItems.CENTER
+                        flexDirection = FlexDirection.ROW
+                        justifyContent = JustifyContent.FLEX_START
+                    }
+                    adapter = EtaTimeAdapter()
+                }
+            }
         }
         cardView.layoutParams = BaseCardView.LayoutParams(
             fragmentWidth,

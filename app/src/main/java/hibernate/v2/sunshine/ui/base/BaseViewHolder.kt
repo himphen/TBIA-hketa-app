@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseViewHolder<T : ViewBinding>(val viewBinding: T) :
+open class BaseViewHolder<T : ViewBinding>(val viewBinding: T) :
     RecyclerView.ViewHolder(viewBinding.root) {
 
     val context: Context

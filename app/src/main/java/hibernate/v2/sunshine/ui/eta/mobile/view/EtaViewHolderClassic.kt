@@ -7,6 +7,7 @@ import hibernate.v2.sunshine.databinding.ItemEtaClassicBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.MTRTransportRoute
+import hibernate.v2.sunshine.ui.eta.EtaTimeAdapter
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
 
@@ -42,22 +43,22 @@ class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
 
             stopNameTv.text = card.stop.getName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)
+
+            (etaTimeRv.adapter as EtaTimeAdapter).apply {
+                setData(card.etaList)
+            }
+
             card.etaList.getOrNull(0)?.getEtaMinuteText("-")?.let {
                 etaMinuteTv.text = it.second
 
                 if (it.first) {
                     etaMinuteUnitTv.visible()
-                    etaTimeTv.text = getEtaTimeText(card.etaList)
-                    etaTimeTv.visible()
                 } else {
-                    etaMinuteTv.text = "-"
                     etaMinuteUnitTv.gone()
-                    etaTimeTv.gone()
                 }
             } ?: run {
                 etaMinuteTv.text = "-"
                 etaMinuteUnitTv.gone()
-                etaTimeTv.gone()
             }
         }
     }

@@ -99,7 +99,7 @@
     <string name="demo_card_eta_minute_compact_3">23</string>
     <string name="demo_card_eta_minute_classic">3</string>
     <string name="demo_card_eta_minute_classic_unit">分鐘</string>
-    <string name="demo_card_eta_minute_classic_time">07:30\u00A0\u00A0\u00A0\u00A007:40</string>
+    <string name="demo_card_eta_minute_classic_time">07:30</string>
 
     <string name="stop_list_bottom_sheet_title">請選擇車站</string>
     <string name="route_list_bottom_sheet_title">觀塘市中心 (T4)</string>
