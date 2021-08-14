@@ -7,12 +7,12 @@ import androidx.core.content.ContextCompat
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemEtaStandardBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
+import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
-import hibernate.v2.sunshine.util.visible
 
 class EtaViewHolderStandard(viewBinding: ItemEtaStandardBinding) :
-    BaseEtaViewHolder<ItemEtaStandardBinding>(viewBinding) {
+    BaseEtaViewHolder<ItemEtaStandardBinding>(viewBinding),
+    EtaRouteView {
 
     override fun onBind(card: Card.EtaCard) {
         viewBinding.content.apply {
@@ -29,24 +29,7 @@ class EtaViewHolderStandard(viewBinding: ItemEtaStandardBinding) :
                 lineBgView.setBackgroundColor(color)
             }
 
-            if (route is MTRTransportRoute) {
-                routeNumberTv.gone()
-                routeMTRNumberTv.apply {
-                    text = card.platform
-                    visible()
-
-                    (background as? GradientDrawable)?.apply {
-                        mutate()
-                        setColor(color)
-                    }
-                }
-            } else {
-                routeNumberTv.apply {
-                    text = card.route.getCardRouteText()
-                    visible()
-                }
-                routeMTRNumberTv.gone()
-            }
+            applyRouteNumberContainer(card, routeNumberContainer, false)
 
             stopNameTv.text = card.stop.getName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)

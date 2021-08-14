@@ -11,12 +11,13 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaStandardBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.TransportEta
-import hibernate.v2.sunshine.util.DateUtil
+import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
-import java.util.Date
 
-class EtaCardViewStandard(context: Context) : BaseEtaCardView<ContentEtaStandardBinding>(context) {
+class EtaCardViewStandard(context: Context) :
+    BaseEtaCardView<ContentEtaStandardBinding>(context),
+    EtaRouteView {
+
     override var viewBinding =
         ContentEtaStandardBinding.inflate(LayoutInflater.from(context), this, true)
 
@@ -40,7 +41,8 @@ class EtaCardViewStandard(context: Context) : BaseEtaCardView<ContentEtaStandard
                 lineBgView.setBackgroundResource(color)
             }
 
-            routeNumberTv.text = card.route.routeNo
+            applyRouteNumberContainer(card, routeNumberContainer, false)
+
             stopNameTv.text = card.stop.getName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)
 

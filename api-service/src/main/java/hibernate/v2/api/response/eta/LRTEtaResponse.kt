@@ -17,7 +17,9 @@ data class Platform(
     @SerializedName("platform_id")
     val platformId: Int,
     @SerializedName("route_list")
-    val etaList: List<LRTEta>,
+    val etaList: List<LRTEta>? = null,
+    @SerializedName("end_service_status")
+    val endServiceStatus: Int? = null,
 )
 
 data class LRTEta(

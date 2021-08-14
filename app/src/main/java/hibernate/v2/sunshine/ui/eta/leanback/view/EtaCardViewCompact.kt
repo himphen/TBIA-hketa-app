@@ -11,9 +11,12 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaCompactBinding
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 
-class EtaCardViewCompact(context: Context) : BaseEtaCardView<ContentEtaCompactBinding>(context) {
+class EtaCardViewCompact(context: Context) :
+    BaseEtaCardView<ContentEtaCompactBinding>(context),
+    EtaRouteView {
     override var viewBinding =
         ContentEtaCompactBinding.inflate(LayoutInflater.from(context), this, true)
 
@@ -37,7 +40,8 @@ class EtaCardViewCompact(context: Context) : BaseEtaCardView<ContentEtaCompactBi
                 lineBgView.setBackgroundResource(color)
             }
 
-            routeNumberTv.text = card.route.routeNo
+            applyRouteNumberContainer(card, routeNumberContainer, false)
+
             stopNameTv.text = card.stop.getName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)
 

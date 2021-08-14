@@ -63,7 +63,6 @@ class EtaViewModel(
                 async {
                     when (etaCard.route.company) {
                         Company.KMB -> {
-
                             val apiEtaResponse = etaRepository.getKmbStopEtaApi(
                                 stopId = etaCard.stop.stopId,
                                 route = etaCard.route.routeId
@@ -85,9 +84,7 @@ class EtaViewModel(
                             result[index] = etaCard
                         }
                         Company.NWFB,
-                        Company.CTB,
-                        -> {
-
+                        Company.CTB -> {
                             val apiEtaResponse = etaRepository.getNCStopEtaApi(
                                 company = etaCard.route.company,
                                 stopId = etaCard.stop.stopId,
@@ -109,7 +106,6 @@ class EtaViewModel(
                             result[index] = etaCard
                         }
                         Company.GMB -> {
-
                             val apiEtaResponse = etaRepository.getGmbStopEtaApi(
                                 stopSeq = etaCard.stop.seq!!,
                                 route = etaCard.route.routeId,
@@ -129,8 +125,6 @@ class EtaViewModel(
                             }
 
                             result[index] = etaCard
-                        }
-                        Company.UNKNOWN -> {
                         }
                         Company.MTR -> {
                             val apiEtaResponse = etaRepository.getMTRStopEtaApi(
@@ -170,7 +164,7 @@ class EtaViewModel(
                                 val temp = mutableListOf<LRTTransportEta>()
 
                                 platformList.forEach platform@{ platform ->
-                                    platform.etaList.forEach eta@{ etaApi ->
+                                    platform.etaList?.forEach eta@{ etaApi ->
                                         if (etaApi.routeNo != etaCard.route.routeNo) return@eta
                                         if (etaApi.destCh != etaCard.route.destTc) return@eta
 
@@ -193,6 +187,8 @@ class EtaViewModel(
                             }
 
                             result[index] = etaCard
+                        }
+                        Company.UNKNOWN -> {
                         }
                     }
                 }

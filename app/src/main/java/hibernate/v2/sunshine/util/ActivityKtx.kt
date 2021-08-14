@@ -8,13 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.DisplayMetrics
 import hibernate.v2.sunshine.receiver.WakeUpReceiver
 import java.util.Calendar
 import kotlin.math.roundToInt
-import android.util.DisplayMetrics
-
-
-
 
 /**
  * Returns true when [Context] is unavailable or is about to become unavailable

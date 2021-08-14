@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
@@ -122,6 +123,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
             emptyViewCl.addStopButton.setOnClickListener {
                 etaUpdatedLauncher.launch(Intent(context, AddEtaActivity::class.java))
             }
+            (recyclerView.itemAnimator as? SimpleItemAnimator)
+                ?.supportsChangeAnimations = false
         }
         initAdapter()
     }
@@ -197,8 +200,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 }
             }
             EtaCardViewType.Standard,
-            EtaCardViewType.Compact,
-            -> {
+            EtaCardViewType.Compact -> {
                 viewBinding.recyclerView.apply {
                     while (itemDecorationCount > 0) {
                         removeItemDecorationAt(0)
