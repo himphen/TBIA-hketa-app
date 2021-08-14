@@ -10,7 +10,7 @@ import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.RouteForRowAdapter
+import hibernate.v2.sunshine.model.AddEtaRowItem
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.MTRTransportRoute
@@ -39,7 +39,7 @@ class AddEtaViewModel(
     private val lrtRepository: LRTRepository,
 ) : BaseViewModel() {
 
-    val filteredTransportRouteList = MutableSharedFlow<Pair<EtaType, List<RouteForRowAdapter>>>()
+    val filteredTransportRouteList = MutableSharedFlow<Pair<EtaType, List<AddEtaRowItem>>>()
     var isAddEtaSuccessful = MutableSharedFlow<Boolean>()
 
     val searchRouteKeyword = MutableLiveData<String>()
@@ -128,7 +128,7 @@ class AddEtaViewModel(
                     val route = routeAndStopList.route
                     val headerTitle = route.getDirectionWithRouteText(context)
 
-                    RouteForRowAdapter(
+                    AddEtaRowItem(
                         headerTitle = headerTitle,
                         route = route,
                         filteredList = routeAndStopList.stopList
@@ -180,7 +180,7 @@ class AddEtaViewModel(
                     val route = routeAndStopList.route
                     val headerTitle = route.getDirectionWithRouteText(context)
 
-                    RouteForRowAdapter(
+                    AddEtaRowItem(
                         headerTitle = headerTitle,
                         route = route,
                         filteredList = routeAndStopList.stopList
@@ -244,7 +244,7 @@ class AddEtaViewModel(
                     route as GmbTransportRoute
                     val headerTitle = route.getDirectionWithRouteText(context)
 
-                    RouteForRowAdapter(
+                    AddEtaRowItem(
                         headerTitle = headerTitle,
                         route = route,
                         filteredList = routeAndStopList.stopList
@@ -303,7 +303,7 @@ class AddEtaViewModel(
                     route as MTRTransportRoute
                     val headerTitle = route.getDirectionWithRouteText(context)
 
-                    RouteForRowAdapter(
+                    AddEtaRowItem(
                         headerTitle = headerTitle,
                         route = route,
                         filteredList = routeAndStopList.stopList
@@ -365,7 +365,7 @@ class AddEtaViewModel(
                     route as LRTTransportRoute
                     val headerTitle = route.getDirectionWithRouteText(context)
 
-                    RouteForRowAdapter(
+                    AddEtaRowItem(
                         headerTitle = headerTitle,
                         route = route,
                         filteredList = routeAndStopList.stopList
