@@ -20,7 +20,8 @@
             android:background="@color/brand_color_kmb"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/routeBusNumberTv"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/routeBusNumberTv"
@@ -45,6 +46,7 @@
         android:id="@+id/routeMTRNumberTv"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/bg_route_badge_mtr"
         android:gravity="center"
         android:maxLines="1"
@@ -62,6 +64,7 @@
         android:id="@+id/routeLRTNumberTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:background="@drawable/bg_route_badge_lrt"
         android:gravity="center"
         android:maxLines="1"

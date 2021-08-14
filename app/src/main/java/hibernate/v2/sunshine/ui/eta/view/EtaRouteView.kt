@@ -49,7 +49,7 @@ interface EtaRouteView {
                         (background as? LayerDrawable)?.apply {
                             mutate()
                             (findDrawableByLayerId(R.id.item_line_color) as? GradientDrawable)?.apply {
-                                setStroke(dpToPx(6), color)
+                                setStroke(dpToPx(4), color)
                             }
                         }
                     }

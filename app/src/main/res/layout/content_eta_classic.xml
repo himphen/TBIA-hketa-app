@@ -11,8 +11,6 @@
         layout="@layout/content_eta_route_number"
         android:layout_width="76dp"
         android:layout_height="0dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="4dp"
         app:layout_constraintBottom_toBottomOf="@id/routeInfoCl"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/routeInfoCl" />
