@@ -18,7 +18,7 @@
             <corners android:radius="30dp" />
             <solid android:color="@color/white" />
             <stroke
-                android:width="6dp"
+                android:width="4dp"
                 android:color="@color/brand_color_mtr" />
         </shape>
     </item>
