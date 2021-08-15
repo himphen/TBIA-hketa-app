@@ -7,59 +7,36 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:minHeight="48dp">
 
-    <View
-        android:id="@+id/routeCompanyColor"
-        android:layout_width="4dp"
+    <include
+        android:id="@+id/routeNumberContainer"
+        layout="@layout/content_eta_route_number"
+        android:layout_width="80dp"
         android:layout_height="0dp"
-        android:elevation="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/routeInfoCl"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:background="@color/brand_color_kmb" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/routeInfoCl"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
+        android:paddingStart="0dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/routeNumberContainer"
         app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:id="@+id/routeNumberLl"
-            android:layout_width="68dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/routeNumberTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:textColor="@color/primaryText"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                tools:text="@string/demo_card_route_number" />
-        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/routeDirectionLl"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingStart="8dp"
-            android:paddingEnd="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/routeNumberLl"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView

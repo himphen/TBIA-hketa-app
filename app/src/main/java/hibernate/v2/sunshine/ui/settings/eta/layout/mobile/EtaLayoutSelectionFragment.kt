@@ -43,11 +43,13 @@ class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBindin
         etaDemoCompact = viewBinding.etaDemoCompact
         etaDemoStandard = viewBinding.etaDemoStandard
 
+        viewBinding.contentEtaClassic.routeNumberContainer.routeCompanyColor.visible()
+
         viewBinding.recyclerView.adapter = adapter
         updateDemoLayout(sharedPreferencesManager.etaCardType)
     }
 
-    fun updateDemoLayout(type: EtaCardViewType) {
+    private fun updateDemoLayout(type: EtaCardViewType) {
         when (type) {
             EtaCardViewType.Standard -> {
                 etaDemoClassic.gone()

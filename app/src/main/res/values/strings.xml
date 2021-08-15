@@ -74,7 +74,7 @@
     <string name="toast_eta_added">已成功加入站位</string>
     <string name="eta_card_minute_unit">分</string>
 
-    <string name="dialog_add_eta_in_search_map_description">加入 %1$s %2$s 車站至主頁？</string>
+    <string name="dialog_add_eta_in_search_map_description_bus">加入%1$s號線%2$s車站至主頁？</string>
     <string name="dialog_add_eta_in_search_map_confirm_btn">確定</string>
     <string name="dialog_add_eta_in_search_map_cancel_btn">取消</string>
 

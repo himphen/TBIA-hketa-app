@@ -19,7 +19,7 @@
         android:id="@+id/routeInfoCl"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="4dp"
+        android:paddingStart="0dp"
         android:paddingTop="4dp"
         android:paddingEnd="8dp"
         android:paddingBottom="4dp"

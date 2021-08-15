@@ -13,6 +13,7 @@ import hibernate.v2.sunshine.databinding.ItemBottomSheetRouteBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.eta.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.eta.mobile.view.BaseEtaViewHolder
+import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
 
@@ -60,22 +61,21 @@ class RouteListAdapter(val onRouteSelected: (Card.EtaCard) -> Unit) :
     }
 
     inner class ItemVH(viewBinding: ItemBottomSheetRouteBinding) :
-        BaseEtaViewHolder<ItemBottomSheetRouteBinding>(viewBinding) {
+        BaseEtaViewHolder<ItemBottomSheetRouteBinding>(viewBinding),
+        EtaRouteView {
 
         override fun onBind(card: Card.EtaCard) {
-            val route = card.route
-            val color = route.getColor(context, false)
-
             viewBinding.apply {
-                routeNumberTv.text = route.routeNo
-                routeDirectionTv.text = route.getDestDirectionText(context)
-                routeCompanyColor.setBackgroundColor(color)
-                root.tag = card
-                root.setOnClickListener { onRouteSelected(it.tag as Card.EtaCard) }
+                applyRouteNumberContainer(card, routeNumberContainer, true)
+
+                routeDirectionTv.text = card.route.getDestDirectionText(context)
 
                 (etaTimeRv.adapter as EtaTimeAdapter).apply {
                     setData(card.etaList)
                 }
+
+                root.tag = card
+                root.setOnClickListener { onRouteSelected(it.tag as Card.EtaCard) }
 
                 card.etaList.getOrNull(0)?.getEtaMinuteText("-")?.let {
                     etaMinuteTv.text = it.second
@@ -83,11 +83,10 @@ class RouteListAdapter(val onRouteSelected: (Card.EtaCard) -> Unit) :
                     if (it.first) {
                         etaMinuteUnitTv.visible()
                     } else {
-                        etaMinuteTv.text = "-"
                         etaMinuteUnitTv.gone()
                     }
                 } ?: run {
-                    etaMinuteTv.text = ""
+                    etaMinuteTv.text = "-"
                     etaMinuteUnitTv.gone()
                 }
             }

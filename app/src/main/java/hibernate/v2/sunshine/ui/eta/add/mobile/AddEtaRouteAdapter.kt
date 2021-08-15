@@ -2,6 +2,8 @@ package hibernate.v2.sunshine.ui.eta.add.mobile
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -9,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemAddEtaRouteBinding
 import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
+import hibernate.v2.sunshine.model.transport.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.eta.add.mobile.AddEtaRouteAdapter.AddEtaViewHolderRoute
@@ -32,14 +34,41 @@ class AddEtaRouteAdapter(
                 false
             )
         ).apply {
-            if (etaType == EtaType.MTR) {
-                viewBinding.routeNumberTv.textSize = 16f
+            viewBinding.routeNumberContainer.apply {
+                when (etaType) {
+                    EtaType.MTR -> {
+                        val newLayoutParams = root.layoutParams as ConstraintLayout.LayoutParams
+                        newLayoutParams.width = dpToPx(100)
+                        root.requestLayout()
 
-                viewBinding.routeNumberLl.apply {
-                    val newLayoutParams =
-                        viewBinding.routeNumberLl.layoutParams as ConstraintLayout.LayoutParams
-                    newLayoutParams.width = dpToPx(80)
-                    requestLayout()
+                        routeBusNumberLl.apply {
+                            visible()
+                        }
+                        routeBusNumberTv.apply {
+                            textSize = 16f
+                            visible()
+                        }
+                        routeCompanyColor.visible()
+                        routeMTRNumberTv.gone()
+                        routeLRTNumberTv.gone()
+                    }
+                    EtaType.LRT -> {
+                        routeBusNumberLl.gone()
+                        routeCompanyColor.gone()
+                        routeMTRNumberTv.gone()
+                        routeLRTNumberTv.apply {
+                            visible()
+                        }
+                    }
+                    else -> {
+                        routeBusNumberLl.visible()
+                        routeBusNumberTv.apply {
+                            visible()
+                        }
+                        routeCompanyColor.visible()
+                        routeMTRNumberTv.gone()
+                        routeLRTNumberTv.gone()
+                    }
                 }
             }
         }
@@ -65,18 +94,30 @@ class AddEtaRouteAdapter(
 
         fun onBind(route: TransportRoute) {
             viewBinding.apply {
-                routeNumberTv.apply {
-                    text = if (etaType == EtaType.MTR) {
-                        route as MTRTransportRoute
-                        route.routeInfo.nameTc
-                    } else {
-                        route.routeNo
-                    }
-                }
+                val color = route.getColor(context, false)
 
-                routeCompanyColor.apply {
-                    if (etaType == EtaType.MTR || etaType == EtaType.LRT) {
-                        setBackgroundColor(route.getColor(context))
+                routeNumberContainer.apply {
+                    when (route) {
+                        is LRTTransportRoute -> {
+                            routeLRTNumberTv.apply {
+                                text = route.routeNo
+                                visible()
+
+                                (background as? LayerDrawable)?.apply {
+                                    mutate()
+                                    (findDrawableByLayerId(R.id.item_line_color) as? GradientDrawable)?.apply {
+                                        setStroke(dpToPx(3), color)
+                                    }
+                                }
+                            }
+                        }
+                        else -> {
+                            routeBusNumberTv.apply {
+                                text = route.getCardRouteText()
+                                visible()
+                            }
+                            routeCompanyColor.setBackgroundColor(color)
+                        }
                     }
                 }
 

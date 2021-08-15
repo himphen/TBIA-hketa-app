@@ -68,12 +68,22 @@ class EtaViewModel(
                                 route = etaCard.route.routeId
                             )
                             apiEtaResponse.data?.let { etaList ->
+                                val allSeq = etaList.mapNotNull { it.seq }.distinct()
+                                val isCircular = allSeq.size > 1
+
                                 val temp = etaList
                                     .map { TransportEta.fromApiModel(it) }
                                     .filter { eta ->
-                                        // e.g. Filter not same bound in bus terminal stops
-                                        eta.bound == etaCard.route.bound
-                                                && eta.seq == etaCard.stop.seq
+                                        if (isCircular) {
+                                            // e.g. Filter bus terminal stops in circular line
+                                            if (etaCard.stop.seq == 1) {
+                                                eta.seq == 1
+                                            } else {
+                                                eta.seq != 1
+                                            }
+                                        } else {
+                                            true
+                                        }
                                     }
 
                                 etaCard.etaList.clear()
@@ -91,12 +101,22 @@ class EtaViewModel(
                                 route = etaCard.route.routeId
                             )
                             apiEtaResponse.data?.let { etaList ->
+                                val allSeq = etaList.mapNotNull { it.seq }.distinct()
+                                val isCircular = allSeq.size > 1
+
                                 val temp = etaList
                                     .map { TransportEta.fromApiModel(it) }
                                     .filter { eta ->
-                                        // e.g. Filter not same bound in bus terminal stops
-                                        eta.bound == etaCard.route.bound
-                                                && eta.seq == etaCard.stop.seq
+                                        if (isCircular) {
+                                            // e.g. Filter bus terminal stops in circular line
+                                            if (etaCard.stop.seq == 1) {
+                                                eta.seq == 1
+                                            } else {
+                                                eta.seq != 1
+                                            }
+                                        } else {
+                                            true
+                                        }
                                     }
 
                                 etaCard.etaList.clear()
@@ -112,12 +132,22 @@ class EtaViewModel(
                                 serviceType = etaCard.route.serviceType
                             )
                             apiEtaResponse.data?.let { etaRouteStop ->
+                                val allSeq = etaRouteStop.etaList?.mapNotNull { it.seq }?.distinct()
+                                val isCircular = (allSeq?.size ?: 0) > 1
+
                                 val temp = etaRouteStop.etaList
                                     ?.map { TransportEta.fromApiModel(it) }
                                     ?.filter { eta ->
-                                        // e.g. Filter not same bound in bus terminal stops
-                                        eta.bound == etaCard.route.bound
-                                                && eta.seq == etaCard.stop.seq
+                                        if (isCircular) {
+                                            // e.g. Filter bus terminal stops in circular line
+                                            if (etaCard.stop.seq == 1) {
+                                                eta.seq == 1
+                                            } else {
+                                                eta.seq != 1
+                                            }
+                                        } else {
+                                            true
+                                        }
                                     } ?: emptyList()
 
                                 etaCard.etaList.clear()

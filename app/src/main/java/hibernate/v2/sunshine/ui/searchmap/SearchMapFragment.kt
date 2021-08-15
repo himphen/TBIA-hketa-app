@@ -80,7 +80,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                     .message(
                         text =
                         getString(
-                            R.string.dialog_add_eta_in_search_map_description,
+                            R.string.dialog_add_eta_in_search_map_description_bus,
                             card.route.routeNo,
                             card.stop.nameTc
                         )
@@ -169,6 +169,14 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         mainViewModel.onRouteBottomSheetStateChanged.observe(viewLifecycleOwner) {
             if (it == BottomSheetBehavior.STATE_HIDDEN) {
                 stopRefreshEtaJob()
+                routeListAdapter.setData(mutableListOf())
+            }
+        }
+
+        mainViewModel.onStopBottomSheetStateChanged.observe(viewLifecycleOwner) {
+            if (it == BottomSheetBehavior.STATE_HIDDEN) {
+                stopRefreshEtaJob()
+                stopListAdapter.setData(mutableListOf())
             }
         }
 

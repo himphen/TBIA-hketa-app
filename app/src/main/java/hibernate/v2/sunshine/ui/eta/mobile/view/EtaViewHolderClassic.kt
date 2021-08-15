@@ -8,7 +8,8 @@ import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
 
 class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
-    BaseEtaViewHolder<ItemEtaClassicBinding>(viewBinding), EtaRouteView {
+    BaseEtaViewHolder<ItemEtaClassicBinding>(viewBinding),
+    EtaRouteView {
 
     override fun onBind(card: Card.EtaCard) {
         viewBinding.content.apply {

@@ -43,7 +43,7 @@ interface EtaRouteView {
                     routeCompanyColor.gone()
                     routeMTRNumberTv.gone()
                     routeLRTNumberTv.apply {
-                        text = card.route.routeNo
+                        text = route.routeNo
                         visible()
 
                         (background as? LayerDrawable)?.apply {
@@ -57,7 +57,7 @@ interface EtaRouteView {
                 else -> {
                     routeBusNumberLl.visible()
                     routeBusNumberTv.apply {
-                        text = card.route.getCardRouteText()
+                        text = route.getCardRouteText()
                         visible()
                     }
                     if (showRouteColor) {
