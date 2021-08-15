@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onCancel
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -196,11 +197,13 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         viewBinding.layoutStopList.recyclerView.apply {
             adapter = stopListAdapter
             addItemDecoration(dividerItemDecoration)
+            (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
         }
 
         viewBinding.layoutRouteList.recyclerView.apply {
             adapter = routeListAdapter
             addItemDecoration(dividerItemDecoration)
+            (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
         }
 
         viewBinding.layoutRouteList.streetViewBtn.setOnClickListener {
