@@ -116,7 +116,9 @@ class AddEtaMobileViewModel(
         }
 
         try {
-            val allRouteList = kmbRepository.getRouteListDb().map { it.toTransportModel() }
+            val allRouteList = kmbRepository.getRouteListDb()
+                .filter { !it.isSpecialRoute() }
+                .map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList.toMutableList())
 
             Logger.d("lifecycle getTransportRouteList done")

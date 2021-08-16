@@ -39,6 +39,7 @@
             tools:visibility="visible">
 
             <include
+                android:id="@+id/content_eta_compact"
                 layout="@layout/content_eta_compact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -53,6 +54,7 @@
             android:visibility="gone">
 
             <include
+                android:id="@+id/content_eta_standard"
                 layout="@layout/content_eta_standard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

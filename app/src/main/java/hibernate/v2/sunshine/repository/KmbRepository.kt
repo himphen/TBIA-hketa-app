@@ -28,15 +28,6 @@ class KmbRepository(
         route.serviceType
     )
 
-    suspend fun getRouteListFromStopId(stopId: String): List<TransportRoute> {
-        val routeStopList = kmbDao.getRouteStopListFromStopId(stopId)
-        val routeList = kmbDao.getRouteListFromRouteId(routeStopList)
-
-        return routeList.map {
-            it.toTransportModel()
-        }
-    }
-
     suspend fun setMapRouteListIntoMapStop(stopList: List<SearchMapStop>): List<SearchMapStop> {
         return stopList.map {
             if (it.mapRouteList.isEmpty()) {
@@ -48,7 +39,8 @@ class KmbRepository(
 
     suspend fun getRouteEtaCardList(stop: SearchMapStop): List<Card.EtaCard> {
         val routeStopList = kmbDao.getRouteStopListFromStopId(stop.stopId)
-        val routeList = kmbDao.getRouteListFromRouteId(routeStopList)
+        val routeList =
+            kmbDao.getRouteListFromRouteId(routeStopList).filter { !it.isSpecialRoute() }
         val routeHashMap = routeList.map {
             it.routeHashId() to it
         }.toMap()
@@ -63,16 +55,6 @@ class KmbRepository(
             )
         }
     }
-
-//    suspend fun getRouteStopComponentList(
-//        routeId: String,
-//        bound: Bound,
-//        serviceType: String,
-//    ) = kmbDao.getRouteStopComponentList(
-//        routeId = routeId,
-//        bound = bound,
-//        serviceType = serviceType
-//    )
 
     suspend fun hasStopListDb() = kmbDao.getSingleStop() != null
     suspend fun hasRouteListDb() = kmbDao.getSingleRoute() != null

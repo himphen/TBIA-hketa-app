@@ -2,6 +2,7 @@ package hibernate.v2.sunshine.ui.settings.eta.layout.mobile
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,15 +38,23 @@ class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBindin
     }
 
     private fun initUi() {
-        val viewBinding = viewBinding!!
+        viewBinding!!.apply {
+            this@EtaLayoutSelectionFragment.etaDemoClassic = etaDemoClassic
+            this@EtaLayoutSelectionFragment.etaDemoCompact = etaDemoCompact
+            this@EtaLayoutSelectionFragment.etaDemoStandard = etaDemoStandard
 
-        etaDemoClassic = viewBinding.etaDemoClassic
-        etaDemoCompact = viewBinding.etaDemoCompact
-        etaDemoStandard = viewBinding.etaDemoStandard
+            contentEtaStandard.routeNumberContainer.routeBusNumberTv.apply {
+                textSize = 28f
+                gravity = Gravity.CENTER
+            }
+            contentEtaCompact.routeNumberContainer.routeBusNumberTv.apply {
+                textSize = 28f
+                gravity = Gravity.CENTER
+            }
+            contentEtaClassic.routeNumberContainer.routeCompanyColor.apply { visible() }
 
-        viewBinding.contentEtaClassic.routeNumberContainer.routeCompanyColor.visible()
-
-        viewBinding.recyclerView.adapter = adapter
+            recyclerView.adapter = adapter
+        }
         updateDemoLayout(sharedPreferencesManager.etaCardType)
     }
 

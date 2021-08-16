@@ -9,12 +9,12 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.AddEtaRowItem
+import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.GmbTransportRoute
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.LRTTransportRoute
+import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportRouteStopList
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.GmbRepository
@@ -97,7 +97,7 @@ class AddEtaViewModel(
         }
 
         try {
-            val allRouteList = kmbRepository.getRouteListDb()
+            val allRouteList = kmbRepository.getRouteListDb().filter { !it.isSpecialRoute() }
             val allRouteStopList = kmbRepository.getRouteStopComponentListDb()
 
             val transportRouteStopHashMap = allRouteList.associate { entity ->

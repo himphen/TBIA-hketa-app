@@ -32,6 +32,9 @@ data class KmbRouteEntity(
     @ColumnInfo(name = "dest_sc")
     val destSc: String,
 ) : TransportHashable {
+
+    fun isSpecialRoute(): Boolean = serviceType != "1"
+
     companion object {
         fun fromApiModel(route: KmbRoute): KmbRouteEntity {
             return KmbRouteEntity(
