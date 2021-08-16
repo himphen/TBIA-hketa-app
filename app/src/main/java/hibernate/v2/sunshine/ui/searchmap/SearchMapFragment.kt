@@ -505,7 +505,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
     private fun goToNavigationActivity(stop: SearchMapStop) {
         activity?.let { activity ->
-            val gmmIntentUri = Uri.parse("google.navigation:q==${stop.lat},${stop.lng}")
+            val gmmIntentUri = Uri.parse("google.navigation:q=${stop.lat},${stop.lng}")
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             if (mapIntent.resolveActivity(activity.packageManager) != null) {
