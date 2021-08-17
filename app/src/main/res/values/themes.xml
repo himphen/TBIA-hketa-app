@@ -10,6 +10,9 @@
         <item name="android:windowBackground">@color/background</item>
 
         <item name="md_color_button_text">@color/primaryText</item>
+
+        <item name="android:listSeparatorTextViewStyle">@style/PreferenceStyle</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="AppTheme.Mobile.MainActivity" parent="AppTheme.Mobile">

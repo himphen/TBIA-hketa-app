@@ -66,7 +66,7 @@ class RouteListAdapter(val onRouteSelected: (Card.EtaCard) -> Unit) :
 
         override fun onBind(card: Card.EtaCard) {
             viewBinding.apply {
-                applyRouteNumberContainer(card, routeNumberContainer, true)
+                applyRouteNumberContainer(card, routeNumberContainer)
 
                 routeDirectionTv.text = card.route.getDestDirectionText(context)
 

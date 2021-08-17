@@ -17,4 +17,12 @@
         android:icon="@drawable/ic_settings_version_24"
         android:key="pref_settings_reset"
         android:title="@string/title_settings_reset" />
+
+    <Preference
+        android:icon="@drawable/ic_integration_instructions_24"
+        android:key="pref_settings_acknowledgement"
+        android:summary="@string/settings_acknowledgement_summary"
+        android:title="@string/settings_acknowledgement_title" />
+
+
 </PreferenceScreen>

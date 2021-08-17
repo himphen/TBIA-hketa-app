@@ -2,7 +2,6 @@ package hibernate.v2.sunshine.ui.settings.eta.layout.mobile
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,16 +41,6 @@ class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBindin
             this@EtaLayoutSelectionFragment.etaDemoClassic = etaDemoClassic
             this@EtaLayoutSelectionFragment.etaDemoCompact = etaDemoCompact
             this@EtaLayoutSelectionFragment.etaDemoStandard = etaDemoStandard
-
-            contentEtaStandard.routeNumberContainer.routeBusNumberTv.apply {
-                textSize = 28f
-                gravity = Gravity.CENTER
-            }
-            contentEtaCompact.routeNumberContainer.routeBusNumberTv.apply {
-                textSize = 28f
-                gravity = Gravity.CENTER
-            }
-            contentEtaClassic.routeNumberContainer.routeCompanyColor.apply { visible() }
 
             recyclerView.adapter = adapter
         }

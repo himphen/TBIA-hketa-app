@@ -41,33 +41,20 @@ class AddEtaRouteAdapter(
                         newLayoutParams.width = dpToPx(100)
                         root.requestLayout()
 
-                        routeBusNumberLl.apply {
-                            visible()
-                        }
-                        routeBusNumberTv.apply {
-                            textSize = 16f
-                            visible()
-                        }
-                        routeCompanyColor.visible()
-                        routeMTRNumberTv.gone()
-                        routeLRTNumberTv.gone()
+                        routeBusNumberLl.visible()
+                        routeBusNumberTv.textSize = 16f
+                        routeMTRNumberLl.gone()
+                        routeLRTNumberLl.gone()
                     }
                     EtaType.LRT -> {
                         routeBusNumberLl.gone()
-                        routeCompanyColor.gone()
-                        routeMTRNumberTv.gone()
-                        routeLRTNumberTv.apply {
-                            visible()
-                        }
+                        routeMTRNumberLl.gone()
+                        routeLRTNumberLl.visible()
                     }
                     else -> {
                         routeBusNumberLl.visible()
-                        routeBusNumberTv.apply {
-                            visible()
-                        }
-                        routeCompanyColor.visible()
-                        routeMTRNumberTv.gone()
-                        routeLRTNumberTv.gone()
+                        routeMTRNumberLl.gone()
+                        routeLRTNumberLl.gone()
                     }
                 }
             }

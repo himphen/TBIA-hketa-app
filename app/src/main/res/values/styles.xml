@@ -6,6 +6,11 @@
         <item name="android:background">@color/actionbar_color</item>
     </style>
 
+    <style name="PreferenceStyle" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/primary_dark</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="LeftMenuStyle">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
@@ -103,6 +108,7 @@
         <item name="colorButtonNormal">@color/mainButton</item>
         <item name="colorControlHighlight">@color/secondaryText</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Button.50</item>
+        <item name="background">@color/white</item>
     </style>
 
     <style name="BorderlessButton" parent="Widget.MaterialComponents.Button.TextButton">

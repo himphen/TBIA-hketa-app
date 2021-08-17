@@ -6,6 +6,8 @@
     <string name="title_settings_version">版本</string>
     <string name="title_settings_reset">重設數據</string>
     <string name="title_activity_add_eta">加入車站</string>
+    <string name="settings_acknowledgement_title">Acknowledgement</string>
+    <string name="settings_acknowledgement_summary">Some icons are from Material Icons and www.flaticon.com</string>
 
     <string name="title_fragment_home">主頁</string>
     <string name="title_fragment_settings">設定</string>

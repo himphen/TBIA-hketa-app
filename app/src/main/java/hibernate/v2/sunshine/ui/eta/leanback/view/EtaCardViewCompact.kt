@@ -40,7 +40,7 @@ class EtaCardViewCompact(context: Context) :
                 lineBgView.setBackgroundResource(color)
             }
 
-            applyRouteNumberContainer(card, routeNumberContainer, false)
+            applyRouteNumberContainer(card, routeNumberContainer)
 
             stopNameTv.text = card.stop.getName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)

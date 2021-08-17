@@ -20,7 +20,7 @@ class EtaCardViewClassic(context: Context) :
 
     override fun onBind(card: Card.EtaCard) {
         viewBinding.apply {
-            applyRouteNumberContainer(card, routeNumberContainer, true)
+            applyRouteNumberContainer(card, routeNumberContainer)
 
             stopNameTv.text = card.stop.getName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)

@@ -29,7 +29,7 @@ class EtaViewHolderStandard(viewBinding: ItemEtaStandardBinding) :
                 lineBgView.setBackgroundColor(color)
             }
 
-            applyRouteNumberContainer(card, routeNumberContainer, false)
+            applyRouteNumberContainer(card, routeNumberContainer)
 
             stopNameTv.text = card.stop.getName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)

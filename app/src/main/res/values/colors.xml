@@ -1,4 +1,6 @@
 <resources>
+    <color name="ic_launcher_background">#FFFFFF</color>
+
     <!-- mobile -->
     <color name="primary">@color/md_blue_A400</color>
     <color name="primary_dark">@color/md_blue_800</color>
@@ -15,6 +17,7 @@
 
     <color name="eta_card_line_text_mobile">@color/white</color>
     <color name="eta_card_background">@color/white</color>
+    <color name="bottom_sheet_background">@color/white</color>
 
     <color name="map_marker">#1565C0</color>
     <color name="map_marker_moving">#990D47A1</color>

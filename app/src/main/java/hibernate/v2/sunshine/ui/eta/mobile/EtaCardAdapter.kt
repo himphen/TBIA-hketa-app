@@ -1,7 +1,6 @@
 package hibernate.v2.sunshine.ui.eta.mobile
 
 import android.annotation.SuppressLint
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -57,10 +56,6 @@ class EtaCardAdapter(
                         }
                         adapter = EtaTimeAdapter()
                     }
-                }.apply {
-                    viewBinding.content.routeNumberContainer.routeBusNumberTv.apply {
-                        gravity = Gravity.START
-                    }
                 }
                 EtaCardViewType.Compact -> EtaViewHolderCompact(
                     ItemEtaCompactBinding.inflate(
@@ -68,24 +63,14 @@ class EtaCardAdapter(
                         parent,
                         false
                     )
-                ).apply {
-                    viewBinding.content.routeNumberContainer.routeBusNumberTv.apply {
-                        textSize = 28f
-                        gravity = Gravity.CENTER
-                    }
-                }
+                )
                 EtaCardViewType.Standard -> EtaViewHolderStandard(
                     ItemEtaStandardBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
                     )
-                ).apply {
-                    viewBinding.content.routeNumberContainer.routeBusNumberTv.apply {
-                        textSize = 28f
-                        gravity = Gravity.CENTER
-                    }
-                }
+                )
             }
         } else {
             EtaViewHolderButtonGroup(
