@@ -28,12 +28,12 @@ class CustomClusterManager(
     val onCameraMoving = MutableSharedFlow<Boolean>()
 
     private var isCameraMoving = false
-    private val levels = arrayListOf(DistanceLevel.D15, DistanceLevel.D10, DistanceLevel.D5)
+    private val levels = arrayListOf(DistanceLevel.D10, DistanceLevel.D5)
 
-    enum class DistanceLevel(val distance: Double) { D0(0.0), D5(333.3), D10(666.6), D15(1000.0) }
+    enum class DistanceLevel(val distance: Double) { D0(0.0), D5(416.7), D10(833.3) }
 
     companion object {
-        const val MARKER_IN_METER = 1000.0
+        const val MARKER_IN_METER = 1250.0
         const val MARKER_IN_ZOOM_LEVEL = 14.5
     }
 
@@ -89,7 +89,7 @@ class CustomClusterManager(
         val topPoint = projection.toScreenLocation(topLatLng)
         if (topPoint.y < 400) return false
         val diff = currentPoint.y - topPoint.y
-        if (diff < 400) return false
+//        if (diff < 400) return false
 
         lifecycleScope.launch {
             onGotCurrentCircleSize.emit(Pair(level, diff))

@@ -292,7 +292,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                     LatLng(22.555006, 114.418655)
                 )
             )
-
+            setPadding(dpToPx(12), dpToPx(12), dpToPx(12), dpToPx(116))
             moveCamera(CameraUpdateFactory.newLatLngZoom(preferences.lastLatLng, 15f))
             // set default zoom
             setUpClusterer(this)
@@ -330,7 +330,6 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                             CustomClusterManager.DistanceLevel.D0 -> ""
                             CustomClusterManager.DistanceLevel.D5 -> getString(R.string.map_marker_distance_5)
                             CustomClusterManager.DistanceLevel.D10 -> getString(R.string.map_marker_distance_10)
-                            CustomClusterManager.DistanceLevel.D15 -> getString(R.string.map_marker_distance_15)
                         }
                     }
                 }.launchIn(viewLifecycleOwner.lifecycleScope)
