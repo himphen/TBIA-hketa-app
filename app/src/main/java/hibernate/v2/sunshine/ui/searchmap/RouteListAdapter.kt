@@ -56,6 +56,8 @@ class RouteListAdapter(val onRouteSelected: (Card.EtaCard) -> Unit) :
     }
 
     fun replace(position: Int, item: Card.EtaCard) {
+        if (list.getOrNull(position) == null) return
+
         list[position] = item
         notifyItemChanged(position)
     }

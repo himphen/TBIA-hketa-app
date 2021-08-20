@@ -116,8 +116,6 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private var googleMap: GoogleMap? = null
 
     companion object {
-        private const val REFRESH_TIME = 60 * 1000L
-
         fun getInstance() = SearchMapFragment()
     }
 
@@ -480,7 +478,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private fun startRefreshEtaJob() {
         if (routeBottomSheetEtaCardList.isNotEmpty()) {
             refreshEtaJob =
-                CoroutineScope(Dispatchers.Main).launchPeriodicAsync(REFRESH_TIME) {
+                CoroutineScope(Dispatchers.Main).launchPeriodicAsync(EtaViewModel.REFRESH_TIME) {
                     etaViewModel.updateEtaList(routeBottomSheetEtaCardList)
                 }
         }
