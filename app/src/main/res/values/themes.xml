@@ -3,13 +3,13 @@
     <style name="AppTheme.Mobile" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorAccent">@color/accent</item>
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="buttonStyle">@style/MainButton</item>
+        <item name="colorPrimaryDark">@color/primary</item>
+        <item name="buttonStyle">@style/PrimaryButton</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:textColor">@color/primaryText</item>
-        <item name="android:windowBackground">@color/background</item>
+        <item name="android:textColor">@color/common_text_primary</item>
+        <item name="android:windowBackground">@color/common_bg</item>
 
-        <item name="md_color_button_text">@color/primaryText</item>
+        <item name="md_color_button_text">@color/common_text_primary</item>
 
         <item name="android:listSeparatorTextViewStyle">@style/PreferenceStyle</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>

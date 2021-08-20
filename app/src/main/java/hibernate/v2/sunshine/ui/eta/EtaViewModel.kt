@@ -21,6 +21,10 @@ class EtaViewModel(
     private val etaRepository: EtaRepository,
 ) : BaseViewModel() {
 
+    companion object {
+        const val REFRESH_TIME = 60 * 1000L
+    }
+
     val savedEtaCardList = MutableLiveData<List<Card.EtaCard>>()
 
     fun getEtaListFromDb() {

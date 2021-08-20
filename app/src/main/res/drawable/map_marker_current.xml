@@ -4,7 +4,7 @@
             <solid android:color="@color/map_marker" />
             <stroke
                 android:width="2dp"
-                android:color="@color/background" />
+                android:color="@color/common_bg" />
         </shape>
     </item>
 </layer-list>

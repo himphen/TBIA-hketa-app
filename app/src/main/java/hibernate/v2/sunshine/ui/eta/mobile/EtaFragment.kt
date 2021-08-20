@@ -35,7 +35,6 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.Date
@@ -43,7 +42,6 @@ import java.util.Date
 class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
     companion object {
-        private const val REFRESH_TIME = 60 * 1000L
         fun getInstance() = EtaFragment()
     }
 
@@ -112,13 +110,12 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     }
 
     private fun initData() {
-        lifecycleScope.launch {
-            viewModel.getEtaListFromDb()
-        }
+        viewModel.getEtaListFromDb()
     }
 
     private fun initUi() {
         viewBinding?.apply {
+            emptyViewCl.emptyDescTv.text = getString(R.string.empty_eta_list)
             emptyViewCl.addStopButton.visible()
             emptyViewCl.addStopButton.setOnClickListener {
                 etaUpdatedLauncher.launch(Intent(context, AddEtaActivity::class.java))
@@ -131,9 +128,10 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
     private fun updateRouteEtaStopList() {
         if (refreshEtaJob == null) {
-            refreshEtaJob = CoroutineScope(Dispatchers.Main).launchPeriodicAsync(REFRESH_TIME) {
-                viewModel.updateEtaList(etaCardList)
-            }
+            refreshEtaJob =
+                CoroutineScope(Dispatchers.Main).launchPeriodicAsync(EtaViewModel.REFRESH_TIME) {
+                    viewModel.updateEtaList(etaCardList)
+                }
         }
     }
 
@@ -142,7 +140,6 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         if (etaCardList.isNullOrEmpty()) {
             viewBinding?.apply {
                 emptyViewCl.root.visible()
-                emptyViewCl.emptyDescTv.text = getString(R.string.empty_eta_list)
                 recyclerView.gone()
             }
         } else {

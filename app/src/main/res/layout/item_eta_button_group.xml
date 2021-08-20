@@ -12,12 +12,12 @@
 
     <Button
         android:id="@+id/addStopButton"
-        style="@style/MainBorderButton"
+        style="@style/PrimaryBorderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/eta_button_add"
         android:textSize="18sp"
-        app:icon="@drawable/outline_add_white_24"
+        app:icon="@drawable/ic_add_24"
         app:iconGravity="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/editStopButton"
@@ -26,12 +26,12 @@
 
     <Button
         android:id="@+id/editStopButton"
-        style="@style/MainBorderButton"
+        style="@style/PrimaryBorderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/eta_button_edit"
         android:textSize="18sp"
-        app:icon="@drawable/outline_edit_white_24"
+        app:icon="@drawable/ic_edit_24"
         app:iconGravity="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

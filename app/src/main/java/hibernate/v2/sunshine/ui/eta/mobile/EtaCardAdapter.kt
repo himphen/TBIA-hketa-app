@@ -11,9 +11,9 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import hibernate.v2.sunshine.databinding.ItemEtaButtonGroupBinding
-import hibernate.v2.sunshine.databinding.ItemEtaClassicBinding
-import hibernate.v2.sunshine.databinding.ItemEtaCompactBinding
-import hibernate.v2.sunshine.databinding.ItemEtaStandardBinding
+import hibernate.v2.sunshine.databinding.ItemEtaCardClassicBinding
+import hibernate.v2.sunshine.databinding.ItemEtaCardCompactBinding
+import hibernate.v2.sunshine.databinding.ItemEtaCardStandardBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
@@ -41,7 +41,7 @@ class EtaCardAdapter(
         return if (viewType == VIEW_TYPE_CONTENT) {
             when (type) {
                 EtaCardViewType.Classic -> EtaViewHolderClassic(
-                    ItemEtaClassicBinding.inflate(
+                    ItemEtaCardClassicBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -58,14 +58,14 @@ class EtaCardAdapter(
                     }
                 }
                 EtaCardViewType.Compact -> EtaViewHolderCompact(
-                    ItemEtaCompactBinding.inflate(
+                    ItemEtaCardCompactBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
                     )
                 )
                 EtaCardViewType.Standard -> EtaViewHolderStandard(
-                    ItemEtaStandardBinding.inflate(
+                    ItemEtaCardStandardBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false

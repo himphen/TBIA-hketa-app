@@ -1,14 +1,14 @@
 package hibernate.v2.sunshine.ui.eta.mobile.view
 
-import hibernate.v2.sunshine.databinding.ItemEtaClassicBinding
+import hibernate.v2.sunshine.databinding.ItemEtaCardClassicBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.eta.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
 
-class EtaViewHolderClassic(viewBinding: ItemEtaClassicBinding) :
-    BaseEtaViewHolder<ItemEtaClassicBinding>(viewBinding),
+class EtaViewHolderClassic(viewBinding: ItemEtaCardClassicBinding) :
+    BaseEtaViewHolder<ItemEtaCardClassicBinding>(viewBinding),
     EtaRouteView {
 
     override fun onBind(card: Card.EtaCard) {

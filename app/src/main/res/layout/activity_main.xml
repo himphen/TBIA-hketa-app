@@ -22,6 +22,7 @@
         app:exb_backgroundCornerRadius="24dp"
         app:exb_itemInactiveColor="@color/md_grey_900"
         app:exb_itemStyle="normal"
+        app:exb_item_vertical_padding="8dp"
         app:exb_items="@menu/main_bottom_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -18,7 +18,7 @@
             android:id="@+id/transView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black_trans_88"
+            android:background="@color/lb_menu_overlay_bg"
             android:visibility="gone" />
 
         <hibernate.v2.sunshine.ui.widget.SideMenuView

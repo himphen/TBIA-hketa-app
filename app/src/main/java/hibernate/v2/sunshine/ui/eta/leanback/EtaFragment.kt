@@ -12,12 +12,15 @@ import androidx.leanback.widget.FocusHighlight
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
+import hibernate.v2.sunshine.databinding.LbFragmentEtaBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.FullWidthGridPresenter
 import hibernate.v2.sunshine.ui.eta.EtaViewModel
 import hibernate.v2.sunshine.util.DateUtil
+import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
+import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +39,6 @@ class EtaFragment : VerticalGridSupportFragment() {
         private const val COLUMNS = 1
         private const val ZOOM_FACTOR = FocusHighlight.ZOOM_FACTOR_NONE
 
-        private const val REFRESH_TIME = 60 * 1000L
         fun getInstance() = EtaFragment()
     }
 
@@ -47,6 +49,8 @@ class EtaFragment : VerticalGridSupportFragment() {
     private val viewModel by inject<EtaViewModel>()
     private var etaCardList: MutableList<Card.EtaCard>? = null
     private var refreshEtaJob: Deferred<Unit>? = null
+
+    var rootViewBinding: LbFragmentEtaBinding? = null
 
     override fun onResume() {
         super.onResume()
@@ -90,52 +94,76 @@ class EtaFragment : VerticalGridSupportFragment() {
                 R.style.AppTheme_Leanback_Eta
             )
         )
-        return super.onCreateView(customInflater, container, savedInstanceState)
+        val view = super.onCreateView(customInflater, container, savedInstanceState)
+
+        rootViewBinding = LbFragmentEtaBinding.inflate(inflater).apply {
+            lbContainer.addView(view)
+            emptyViewCl.apply {
+                gone()
+                contentEmptyList.emptyDescTv.text = getString(R.string.empty_eta_list)
+            }
+        }
+        return rootViewBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initEvent()
-
         lifecycleScope.launch {
-            val cardPresenter = EtaCardPresenter(
-                requireContext(),
-                getFragmentWidth(view),
-                sharedPreferencesManager.etaCardType
-            )
-            mAdapter = ArrayObjectAdapter(cardPresenter)
-            adapter = mAdapter
-
-            viewModel.getEtaListFromDb()
+            initUi()
+            initData()
         }
+    }
+
+    private suspend fun initUi() {
+        val cardPresenter = EtaCardPresenter(
+            requireContext(),
+            getFragmentWidth(requireView()),
+            sharedPreferencesManager.etaCardType
+        )
+        mAdapter = ArrayObjectAdapter(cardPresenter)
+        adapter = mAdapter
+    }
+
+    private fun initData() {
+        viewModel.getEtaListFromDb()
     }
 
     private fun updateRouteEtaStopList() {
         if (refreshEtaJob == null) {
-            refreshEtaJob = CoroutineScope(Dispatchers.Main).launchPeriodicAsync(REFRESH_TIME) {
-                viewModel.updateEtaList(etaCardList)
-            }
+            refreshEtaJob =
+                CoroutineScope(Dispatchers.Main).launchPeriodicAsync(EtaViewModel.REFRESH_TIME) {
+                    viewModel.updateEtaList(etaCardList)
+                }
         }
     }
 
     private fun processEtaList() {
-        etaCardList?.forEachIndexed { index, etaCard ->
-            val temp = etaCard.etaList.filter { eta: TransportEta ->
-                eta.eta?.let { etaDate ->
-                    val currentDate = Date()
-                    DateUtil.getTimeDiffInMin(
-                        etaDate,
-                        currentDate
-                    ) > 0
-                } ?: run {
-                    false
+        val etaCardList = etaCardList
+        if (etaCardList.isNullOrEmpty()) {
+            rootViewBinding?.emptyViewCl?.visible()
+            rootViewBinding?.lbContainer?.gone()
+        } else {
+            rootViewBinding?.emptyViewCl?.gone()
+            rootViewBinding?.lbContainer?.visible()
+            etaCardList.forEachIndexed { index, etaCard ->
+                val temp = etaCard.etaList.filter { eta: TransportEta ->
+                    eta.eta?.let { etaDate ->
+                        val currentDate = Date()
+                        DateUtil.getTimeDiffInMin(
+                            etaDate,
+                            currentDate
+                        ) > 0
+                    } ?: run {
+                        false
+                    }
                 }
+
+                etaCard.etaList.clear()
+                etaCard.etaList.addAll(temp)
+
+                mAdapter?.replace(index, etaCard)
             }
-
-            etaCard.etaList.clear()
-            etaCard.etaList.addAll(temp)
-
-            mAdapter?.replace(index, etaCard)
         }
     }
 

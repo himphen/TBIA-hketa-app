@@ -17,14 +17,14 @@
 
         <Button
             android:id="@+id/addStopButton"
-            style="@style/MainButton"
+            style="@style/PrimaryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:text="@string/eta_button_add"
             android:textSize="18sp"
             android:visibility="gone"
-            app:icon="@drawable/outline_add_white_24"
+            app:icon="@drawable/ic_add_24"
             app:iconGravity="textStart"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

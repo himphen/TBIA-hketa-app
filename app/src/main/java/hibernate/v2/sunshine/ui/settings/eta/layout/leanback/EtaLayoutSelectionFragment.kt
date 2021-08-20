@@ -39,6 +39,8 @@ class EtaLayoutSelectionFragment : GuidedStepSupportFragment() {
                 etaDemoCompact = view.findViewById(R.id.eta_demo_compact)
                 etaDemoStandard = view.findViewById(R.id.eta_demo_standard)
                 etaDemoStandard.visible()
+
+                view.findViewById<View>(R.id.routeCompanyColor).visible()
                 return view
             }
         }

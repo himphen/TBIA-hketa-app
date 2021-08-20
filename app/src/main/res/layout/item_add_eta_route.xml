@@ -49,16 +49,16 @@
                 app:layout_constraintEnd_toStartOf="@id/routeDestTv"
                 app:layout_constraintStart_toEndOf="@id/routeOrigTv"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/primaryText"
+                app:tint="@color/common_text_primary"
                 tools:ignore="ContentDescription"
-                tools:tint="@color/primaryText" />
+                tools:tint="@color/common_text_primary" />
 
             <TextView
                 android:id="@+id/routeOrigTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textColor="@color/primaryText"
+                android:textColor="@color/common_text_primary"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@id/routeSpTv"
                 app:layout_constraintEnd_toStartOf="@id/routeDirectionArrowIv"
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/secondaryText"
+                android:textColor="@color/common_text_secondary"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +85,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical|end"
-                android:textColor="@color/primaryText"
+                android:textColor="@color/common_text_primary"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Eta.Card.Mobile"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/eta_card_background">
+    android:background="@color/eta_card_background"
+    app:cardCornerRadius="@dimen/eta_card_radius">
 
     <include
         android:id="@+id/content"
-        layout="@layout/content_eta_standard"
+        layout="@layout/content_eta_compact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

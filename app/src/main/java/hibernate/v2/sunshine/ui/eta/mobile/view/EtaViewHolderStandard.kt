@@ -5,13 +5,13 @@ import android.graphics.drawable.RotateDrawable
 import android.view.View
 import androidx.core.content.ContextCompat
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.ItemEtaStandardBinding
+import hibernate.v2.sunshine.databinding.ItemEtaCardStandardBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 
-class EtaViewHolderStandard(viewBinding: ItemEtaStandardBinding) :
-    BaseEtaViewHolder<ItemEtaStandardBinding>(viewBinding),
+class EtaViewHolderStandard(viewBinding: ItemEtaCardStandardBinding) :
+    BaseEtaViewHolder<ItemEtaCardStandardBinding>(viewBinding),
     EtaRouteView {
 
     override fun onBind(card: Card.EtaCard) {

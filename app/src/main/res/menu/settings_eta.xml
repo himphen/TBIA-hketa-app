@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/edit_eta_action_save_order"
-        android:icon="@drawable/outline_done_white_24"
+        android:icon="@drawable/ic_done_24"
         android:orderInCategory="1"
         android:title="@string/menu_edit_eta_action_save_order"
         android:visible="false"

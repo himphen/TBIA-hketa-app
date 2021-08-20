@@ -1,47 +1,60 @@
 <resources>
     <color name="ic_launcher_background">#FFFFFF</color>
 
-    <!-- mobile -->
-    <color name="primary">@color/md_blue_A400</color>
-    <color name="primary_dark">@color/md_blue_800</color>
-    <color name="accent">@color/md_blue_A400</color>
+    <color name="primary">@color/md_blue_700</color>
+    <color name="primary_light">@color/md_blue_300</color>
+    <color name="primary_dark">@color/md_blue_900</color>
 
-    <color name="background">@color/md_grey_50</color>
-    <color name="border">@color/md_grey_200</color>
-    <color name="primaryText">@color/md_grey_800</color>
-    <color name="secondaryText">@color/md_grey_700</color>
-    <color name="bottomSheetToggleView">@color/md_grey_300</color>
+    <color name="secondary_yellow">@color/md_yellow_700</color>
+    <color name="secondary_yellow_light">@color/md_yellow_300</color>
+    <color name="secondary_yellow_dark">@color/md_yellow_900</color>
+
+    <color name="secondary_pink">@color/md_pink_700</color>
+    <color name="secondary_pink_light">@color/md_pink_300</color>
+    <color name="secondary_pink_dark">@color/md_pink_900</color>
+
+    <color name="accent">@color/primary</color>
+
+    <color name="common_bg">@color/md_white_1000</color>
+    <color name="common_border">@color/md_grey_200</color>
+
+    <color name="common_text_primary">@color/md_grey_900</color>
+    <color name="common_text_secondary">@color/md_grey_800</color>
+    <color name="bottom_sheet_toggle_view_bg">@color/md_grey_300</color>
 
     <color name="badge_route_bg">@color/md_grey_700</color>
     <color name="badge_route_text">@color/white</color>
 
     <color name="eta_card_line_text_mobile">@color/white</color>
     <color name="eta_card_background">@color/white</color>
+    <color name="eta_card_classic_minute">@color/primary</color>
     <color name="bottom_sheet_background">@color/white</color>
 
-    <color name="map_marker">#1565C0</color>
+    <color name="map_marker">@color/primary</color>
     <color name="map_marker_moving">#990D47A1</color>
+
+    <color name="map_clustering_small">@color/primary_light</color>
+    <color name="map_clustering_medium">@color/primary</color>
+    <color name="map_clustering_large">@color/primary</color>
 
     <!-- action bar-->
     <color name="actionbar_color">@color/primary</color>
     <color name="actionbar_title_text">@color/white</color>
 
-    <color name="mainButton">@color/md_blue_900</color>
-    <color name="greenButton">@color/md_green_900</color>
-    <color name="greenButtonControlHighlight">@color/md_green_600</color>
-    <color name="textStationColor">@color/white</color>
+    <color name="button_primary_accent">@color/primary</color>
+    <color name="button_yellow_accent">@color/secondary_yellow</color>
+    <color name="button_pink_accent">@color/secondary_pink</color>
 
     <!-- leanback -->
-    <color name="black_trans_88">#88000000</color>
-    <color name="dark_green">#FF3F51B5</color>
-    <color name="fluorescent_orange">#2196F3</color>
-    <color name="fluorescent_orange_trans">#332196F3</color>
-    <color name="bg_mapview_title">#D82196F3</color>
+    <color name="lb_menu_bg">#332196F3</color>
+    <color name="lb_menu_bg_selected">@color/primary</color>
+    <color name="lb_menu_overlay_bg">#88000000</color>
+    <color name="lb_menu_icon_selected">@color/white</color>
+    <color name="lb_mapview_title_bg">@color/primary</color>
+    <color name="lb_mapview_title">@color/white</color>
 
-    <color name="settings_card_background">#0277BD</color>
-    <color name="settings_card_background_focussed">#01579B</color>
-
-    <color name="eta_card_line_text_leanback">@color/black_trans_88</color>
+    <color name="settings_card_background">@color/primary</color>
+    <color name="settings_card_background_focussed">@color/primary_dark</color>
 
     <!-- common -->
     <color name="white">@color/md_white_1000</color>

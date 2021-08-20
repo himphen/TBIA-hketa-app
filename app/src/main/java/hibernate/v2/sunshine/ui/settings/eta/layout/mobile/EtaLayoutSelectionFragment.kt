@@ -42,6 +42,8 @@ class EtaLayoutSelectionFragment : BaseFragment<FragmentEtaLayoutSelectionBindin
             this@EtaLayoutSelectionFragment.etaDemoCompact = etaDemoCompact
             this@EtaLayoutSelectionFragment.etaDemoStandard = etaDemoStandard
 
+            contentEtaClassic.routeNumberContainer.routeCompanyColor.visible()
+
             recyclerView.adapter = adapter
         }
         updateDemoLayout(sharedPreferencesManager.etaCardType)

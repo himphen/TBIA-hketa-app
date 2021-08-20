@@ -67,7 +67,7 @@ class SideMenuView : LinearLayout {
         menuTitles = resources.getStringArray(R.array.leftMenu)
         orientation = VERTICAL
         gravity = Gravity.CENTER
-        setBackgroundColor(ContextCompat.getColor(context, R.color.fluorescent_orange_trans))
+        setBackgroundColor(ContextCompat.getColor(context, R.color.lb_menu_bg))
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         viewBinding = SideMenuLayoutBinding.inflate(inflater, this)
@@ -108,14 +108,14 @@ class SideMenuView : LinearLayout {
                 viewBinding?.cllHomeView?.setBackgroundColor(
                     ContextCompat.getColor(
                         this.context,
-                        R.color.dark_green
+                        R.color.lb_menu_bg_selected
                     )
                 )
                 viewBinding?.civHome?.imageTintList =
                     ColorStateList.valueOf(
                         ContextCompat.getColor(
                             this.context,
-                            R.color.fluorescent_orange
+                            R.color.lb_menu_icon_selected
                         )
                     )
             }
@@ -123,14 +123,14 @@ class SideMenuView : LinearLayout {
                 viewBinding?.cllSettingsView?.setBackgroundColor(
                     ContextCompat.getColor(
                         this.context,
-                        R.color.dark_green
+                        R.color.lb_menu_bg_selected
                     )
                 )
                 viewBinding?.civSettings?.imageTintList =
                     ColorStateList.valueOf(
                         ContextCompat.getColor(
                             this.context,
-                            R.color.fluorescent_orange
+                            R.color.lb_menu_icon_selected
                         )
                     )
             }

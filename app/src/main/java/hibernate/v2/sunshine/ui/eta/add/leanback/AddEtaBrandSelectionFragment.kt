@@ -11,6 +11,17 @@ import hibernate.v2.sunshine.util.putEnum
 
 class AddEtaBrandSelectionFragment : GuidedStepSupportFragment() {
 
+    val list = listOf(
+        EtaType.KMB,
+        EtaType.NWFB,
+        EtaType.CTB,
+        EtaType.GMB_HKI,
+        EtaType.GMB_KLN,
+        EtaType.GMB_NT,
+        EtaType.MTR,
+        EtaType.LRT,
+    )
+
     override fun onCreateGuidance(savedInstanceState: Bundle?): Guidance {
         return Guidance(
             getString(
@@ -23,47 +34,16 @@ class AddEtaBrandSelectionFragment : GuidedStepSupportFragment() {
     }
 
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
-        var action = GuidedAction.Builder(context)
-            .id(ACTION_ID_KMB)
-            .title(getString(R.string.dialog_add_eta_brand_selection_kmb_btn)).build()
-        actions.add(action)
-
-        action = GuidedAction.Builder(context)
-            .id(ACTION_ID_NWFB)
-            .title(getString(R.string.dialog_add_eta_brand_selection_nwfb_btn)).build()
-        actions.add(action)
-
-        action = GuidedAction.Builder(context)
-            .id(ACTION_ID_NWFB)
-            .title(getString(R.string.dialog_add_eta_brand_selection_ctb_btn)).build()
-        actions.add(action)
-
-        action = GuidedAction.Builder(context)
-            .id(ACTION_ID_GMB_HKI)
-            .title(getString(R.string.dialog_add_eta_brand_selection_gmb_hki_btn)).build()
-        actions.add(action)
-
-        action = GuidedAction.Builder(context)
-            .id(ACTION_ID_GMB_KLN)
-            .title(getString(R.string.dialog_add_eta_brand_selection_gmb_kln_btn)).build()
-        actions.add(action)
-
-        action = GuidedAction.Builder(context)
-            .id(ACTION_ID_GMB_NT)
-            .title(getString(R.string.dialog_add_eta_brand_selection_gmb_nt_btn)).build()
-        actions.add(action)
+        list.forEachIndexed { index, etaType ->
+            val action = GuidedAction.Builder(context)
+                .id(index.toLong())
+                .title(etaType.name(requireContext())).build()
+            actions.add(action)
+        }
     }
 
     override fun onGuidedActionClicked(action: GuidedAction) {
-        val etaType = when (action.id) {
-            ACTION_ID_KMB -> EtaType.KMB
-            ACTION_ID_NWFB -> EtaType.NWFB
-            ACTION_ID_CTB -> EtaType.CTB
-            ACTION_ID_GMB_HKI -> EtaType.GMB_HKI
-            ACTION_ID_GMB_KLN -> EtaType.GMB_KLN
-            ACTION_ID_GMB_NT -> EtaType.GMB_NT
-            else -> return
-        }
+        val etaType = list.getOrNull(action.id.toInt()) ?: return
 
         activity?.supportFragmentManager?.beginTransaction()?.apply {
             replace(
@@ -78,12 +58,5 @@ class AddEtaBrandSelectionFragment : GuidedStepSupportFragment() {
 
     companion object {
         fun getInstance() = AddEtaBrandSelectionFragment()
-
-        const val ACTION_ID_KMB = 1L
-        const val ACTION_ID_NWFB = 2L
-        const val ACTION_ID_CTB = 3L
-        const val ACTION_ID_GMB_HKI = 4L
-        const val ACTION_ID_GMB_KLN = 5L
-        const val ACTION_ID_GMB_NT = 6L
     }
 }
