@@ -15,7 +15,7 @@ interface EtaDao {
     suspend fun getAllKmbEtaWithOrdering(): List<EtaKmbDetails>
 
     @Transaction
-    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id JOIN nc_route ON saved_eta_route_bound = nc_route_bound AND saved_eta_route_id = nc_route_id JOIN nc_stop ON saved_eta_stop_id = nc_stop_id WHERE saved_eta_company = 'nwfb'")
+    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id JOIN nc_route ON saved_eta_route_bound = nc_route_bound AND saved_eta_route_id = nc_route_id JOIN nc_stop ON saved_eta_stop_id = nc_stop_id WHERE saved_eta_company = 'nwfb' OR saved_eta_company = 'ctb'")
     suspend fun getAllNCEtaWithOrdering(): List<EtaNCDetails>
 
     @Transaction
