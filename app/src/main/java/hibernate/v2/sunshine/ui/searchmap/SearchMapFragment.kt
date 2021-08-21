@@ -31,7 +31,7 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.EtaViewModel
+import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
@@ -184,6 +184,9 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             routeBottomSheetEtaCardList.addAll(it)
             processEtaList()
         }
+        etaViewModel.etaUpdateError.onEach {
+            Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show()
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     @SuppressLint("ClickableViewAccessibility")

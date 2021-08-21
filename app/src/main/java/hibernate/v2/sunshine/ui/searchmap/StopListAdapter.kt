@@ -15,6 +15,7 @@ import hibernate.v2.sunshine.databinding.ItemRouteBadgeBinding
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
+import hibernate.v2.sunshine.ui.view.setStopRouteBadgeFlexManager
 import hibernate.v2.sunshine.util.updateBackgroundColor
 
 class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
@@ -32,12 +33,7 @@ class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
             )
         ).apply {
             viewBinding.routeNumberRecyclerView.apply {
-                layoutManager = FlexboxLayoutManager(context).apply {
-                    flexWrap = FlexWrap.WRAP
-                    alignItems = AlignItems.CENTER
-                    flexDirection = FlexDirection.ROW
-                    justifyContent = JustifyContent.FLEX_START
-                }
+                setStopRouteBadgeFlexManager()
                 adapter = RouteBadgeAdapter()
             }
         }

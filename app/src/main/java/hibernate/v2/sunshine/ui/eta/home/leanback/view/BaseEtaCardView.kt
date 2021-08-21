@@ -1,14 +1,12 @@
-package hibernate.v2.sunshine.ui.eta.leanback.view
+package hibernate.v2.sunshine.ui.eta.home.leanback.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View.OnFocusChangeListener
 import androidx.leanback.widget.BaseCardView
 import androidx.viewbinding.ViewBinding
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.TransportEta
-import hibernate.v2.sunshine.util.DateFormat
-import hibernate.v2.sunshine.util.DateUtil.formatString
 
 abstract class BaseEtaCardView<T : ViewBinding>(
     context: Context,
@@ -25,15 +23,12 @@ abstract class BaseEtaCardView<T : ViewBinding>(
 
     init {
         isFocusable = true
-    }
-
-    fun getEtaTimeText(etaList: List<TransportEta>): String {
-        var string = ""
-
-        etaList.forEach {
-            string += it.eta.formatString(DateFormat.HH_MM.value) + "    "
+        onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                setBackgroundColor(context.getColor(R.color.eta_card_background_selected))
+            } else {
+                setBackgroundColor(context.getColor(R.color.eta_card_background))
+            }
         }
-
-        return string.trim()
     }
 }

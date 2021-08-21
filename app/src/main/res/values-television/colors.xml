@@ -1,6 +1,5 @@
 <resources>
-    <color name="ic_launcher_background">#FFFFFF</color>
-
-    <color name="eta_card_background">#FF424242</color>
+    <color name="eta_card_background">#424242</color>
+    <color name="eta_card_background_selected">#525252</color>
     <color name="eta_card_classic_minute">@color/primary_light</color>
 </resources>

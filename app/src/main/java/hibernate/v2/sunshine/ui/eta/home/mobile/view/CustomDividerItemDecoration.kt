@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.eta.mobile.view
+package hibernate.v2.sunshine.ui.eta.home.mobile.view
 
 import android.content.Context
 import android.graphics.Canvas

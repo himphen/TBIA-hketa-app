@@ -25,8 +25,10 @@
     <color name="badge_route_bg">@color/md_grey_700</color>
     <color name="badge_route_text">@color/white</color>
 
-    <color name="eta_card_line_text_mobile">@color/white</color>
+    <color name="eta_card_line_text">@color/white</color>
     <color name="eta_card_background">@color/white</color>
+    <color name="eta_card_background_selected">@color/white</color>
+
     <color name="eta_card_classic_minute">@color/primary</color>
     <color name="bottom_sheet_background">@color/white</color>
 
@@ -46,7 +48,7 @@
     <color name="button_pink_accent">@color/secondary_pink</color>
 
     <!-- leanback -->
-    <color name="lb_menu_bg">#332196F3</color>
+    <color name="lb_menu_bg">#992196F3</color>
     <color name="lb_menu_bg_selected">@color/primary</color>
     <color name="lb_menu_overlay_bg">#88000000</color>
     <color name="lb_menu_icon_selected">@color/white</color>

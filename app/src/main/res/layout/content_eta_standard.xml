@@ -25,7 +25,7 @@
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
             android:text="@string/demo_card_route_desc"
-            android:textColor="@color/eta_card_line_text_mobile"
+            android:textColor="@color/eta_card_line_text"
             android:textSize="18sp"
             android:textStyle="bold" />
 

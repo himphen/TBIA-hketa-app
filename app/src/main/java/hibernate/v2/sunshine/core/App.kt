@@ -14,7 +14,7 @@ import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.WeatherRepository
-import hibernate.v2.sunshine.ui.eta.EtaViewModel
+import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.eta.edit.EditEtaViewModel

@@ -33,7 +33,7 @@ class SettingsFragment : VerticalGridSupportFragment() {
         val gridPresenter = VerticalGridPresenter(ZOOM_FACTOR)
         gridPresenter.numberOfColumns = COLUMNS
         setGridPresenter(gridPresenter)
-        val cardPresenter = SettingsIconPresenter(requireContext()) { card: Card.SettingsCard ->
+        val cardPresenter = SettingsCardPresenter(requireContext()) { card: Card.SettingsCard ->
             when (card.type) {
                 Card.SettingsCard.Type.ETA -> {
                     startActivity(

@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.eta.mobile.view
+package hibernate.v2.sunshine.ui.eta.home.mobile.view
 
 import androidx.viewbinding.ViewBinding
 import hibernate.v2.sunshine.model.Card

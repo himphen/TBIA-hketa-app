@@ -1,18 +1,23 @@
-package hibernate.v2.sunshine.ui.eta.mobile.view
+package hibernate.v2.sunshine.ui.eta.home.leanback.view
 
-import hibernate.v2.sunshine.databinding.ItemEtaCardClassicBinding
+import android.content.Context
+import android.view.LayoutInflater
+import hibernate.v2.sunshine.databinding.ContentEtaClassicBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.eta.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
 
-class EtaViewHolderClassic(viewBinding: ItemEtaCardClassicBinding) :
-    BaseEtaViewHolder<ItemEtaCardClassicBinding>(viewBinding),
+class EtaCardViewClassic(context: Context) :
+    BaseEtaCardView<ContentEtaClassicBinding>(context),
     EtaRouteView {
 
+    override var viewBinding =
+        ContentEtaClassicBinding.inflate(LayoutInflater.from(context), this, true)
+
     override fun onBind(card: Card.EtaCard) {
-        viewBinding.content.apply {
+        viewBinding.apply {
             applyRouteNumberContainer(card, routeNumberContainer)
 
             stopNameTv.text = card.stop.getName(context)

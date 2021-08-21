@@ -37,7 +37,7 @@
     </style>
 
     <style name="FullCardStyle" parent="Widget.Leanback.BaseCardViewStyle">
-
+        <item name="cardBackground">@color/eta_card_background</item>
     </style>
 
     <style name="VerticalGridView.FullWidth" parent="@style/Widget.Leanback.GridItems.VerticalGridView">

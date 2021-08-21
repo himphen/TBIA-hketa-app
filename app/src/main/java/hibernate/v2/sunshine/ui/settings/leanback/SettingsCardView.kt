@@ -16,4 +16,14 @@ class SettingsCardView(context: Context) : BaseCardView(
     init {
         isFocusable = true
     }
+
+    override fun setSelected(selected: Boolean) {
+        super.setSelected(selected)
+
+        if (selected) {
+            setBackgroundColor(context.getColor(R.color.settings_card_background_focussed))
+        } else {
+            setBackgroundColor(context.getColor(R.color.settings_card_background))
+        }
+    }
 }

@@ -1,23 +1,27 @@
-package hibernate.v2.sunshine.ui.eta.mobile.view
+package hibernate.v2.sunshine.ui.eta.home.leanback.view
 
+import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RotateDrawable
+import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.ItemEtaCardStandardBinding
+import hibernate.v2.sunshine.databinding.ContentEtaStandardBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 
-class EtaViewHolderStandard(viewBinding: ItemEtaCardStandardBinding) :
-    BaseEtaViewHolder<ItemEtaCardStandardBinding>(viewBinding),
+class EtaCardViewStandard(context: Context) :
+    BaseEtaCardView<ContentEtaStandardBinding>(context),
     EtaRouteView {
 
+    override var viewBinding =
+        ContentEtaStandardBinding.inflate(LayoutInflater.from(context), this, true)
+
     override fun onBind(card: Card.EtaCard) {
-        viewBinding.content.apply {
-            val route = card.route
-            val color = route.getColor(context, false)
+        viewBinding.apply {
+            val color = card.route.getColor(context)
 
             (ContextCompat.getDrawable(
                 context,

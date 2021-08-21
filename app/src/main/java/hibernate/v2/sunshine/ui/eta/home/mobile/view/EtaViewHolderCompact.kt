@@ -1,50 +1,38 @@
-package hibernate.v2.sunshine.ui.eta.leanback.view
+package hibernate.v2.sunshine.ui.eta.home.mobile.view
 
-import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RotateDrawable
-import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import androidx.core.content.ContextCompat
-import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.ContentEtaStandardBinding
+import hibernate.v2.sunshine.databinding.ItemEtaCardCompactBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 
-class EtaCardViewStandard(context: Context) :
-    BaseEtaCardView<ContentEtaStandardBinding>(context),
+class EtaViewHolderCompact(viewBinding: ItemEtaCardCompactBinding) :
+    BaseEtaViewHolder<ItemEtaCardCompactBinding>(viewBinding),
     EtaRouteView {
 
-    override var viewBinding =
-        ContentEtaStandardBinding.inflate(LayoutInflater.from(context), this, true)
-
     override fun onBind(card: Card.EtaCard) {
-        viewBinding.apply {
-            val color = when (card.route.company) {
-                Company.KMB -> R.color.brand_color_kmb
-                Company.NWFB -> R.color.brand_color_nwfb
-                Company.CTB -> R.color.brand_color_ctb
-                Company.GMB -> R.color.brand_color_gmb
-                else -> R.color.brand_color_kmb
-            }
+        viewBinding.content.apply {
+            val route = card.route
+            val color = route.getColor(context, false)
 
             (ContextCompat.getDrawable(
                 context,
                 R.drawable.eta_card_line_arrow
             ) as? RotateDrawable?).let { arrowDrawable ->
                 arrowDrawable?.mutate()
-                (arrowDrawable?.drawable as? GradientDrawable)?.setColor(context.getColor(color))
+                (arrowDrawable?.drawable as? GradientDrawable)?.setColor(color)
                 lineArrowBgView.background = arrowDrawable
-                lineBgView.setBackgroundResource(color)
+                lineBgView.setBackgroundColor(color)
             }
 
             applyRouteNumberContainer(card, routeNumberContainer)
 
             stopNameTv.text = card.stop.getName(context)
-            routeDirectionTv.text = card.route.getDestDirectionText(context)
+            routeDirectionTv.text = route.getDestDirectionText(context)
 
             card.etaList.getOrNull(0)?.getEtaMinuteText()?.let {
                 eta1MinuteTv.text = it.second
@@ -70,14 +58,5 @@ class EtaCardViewStandard(context: Context) :
                 eta3UnitTv.gone()
             }
         }
-
-        onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                setBackgroundResource(R.drawable.eta_card_bg_none_selected)
-            } else {
-                setBackgroundResource(R.drawable.eta_card_bg_none)
-            }
-        }
-        setBackgroundResource(R.drawable.eta_card_bg_none)
     }
 }

@@ -1,23 +1,27 @@
-package hibernate.v2.sunshine.ui.eta.mobile.view
+package hibernate.v2.sunshine.ui.eta.home.leanback.view
 
+import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RotateDrawable
+import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.ItemEtaCardCompactBinding
+import hibernate.v2.sunshine.databinding.ContentEtaCompactBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 
-class EtaViewHolderCompact(viewBinding: ItemEtaCardCompactBinding) :
-    BaseEtaViewHolder<ItemEtaCardCompactBinding>(viewBinding),
+class EtaCardViewCompact(context: Context) :
+    BaseEtaCardView<ContentEtaCompactBinding>(context),
     EtaRouteView {
 
+    override var viewBinding =
+        ContentEtaCompactBinding.inflate(LayoutInflater.from(context), this, true)
+
     override fun onBind(card: Card.EtaCard) {
-        viewBinding.content.apply {
-            val route = card.route
-            val color = route.getColor(context, false)
+        viewBinding.apply {
+            val color = card.route.getColor(context)
 
             (ContextCompat.getDrawable(
                 context,
@@ -32,9 +36,9 @@ class EtaViewHolderCompact(viewBinding: ItemEtaCardCompactBinding) :
             applyRouteNumberContainer(card, routeNumberContainer)
 
             stopNameTv.text = card.stop.getName(context)
-            routeDirectionTv.text = route.getDestDirectionText(context)
+            routeDirectionTv.text = card.route.getDestDirectionText(context)
 
-            card.etaList.getOrNull(0)?.getEtaMinuteText()?.let {
+            card.etaList.getOrNull(0)?.getEtaMinuteText("-")?.let {
                 eta1MinuteTv.text = it.second
                 eta1UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
@@ -42,7 +46,7 @@ class EtaViewHolderCompact(viewBinding: ItemEtaCardCompactBinding) :
                 eta1UnitTv.gone()
             }
 
-            card.etaList.getOrNull(1)?.getEtaMinuteText()?.let {
+            card.etaList.getOrNull(1)?.getEtaMinuteText("-")?.let {
                 eta2MinuteTv.text = it.second
                 eta2UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
@@ -50,7 +54,7 @@ class EtaViewHolderCompact(viewBinding: ItemEtaCardCompactBinding) :
                 eta2UnitTv.gone()
             }
 
-            card.etaList.getOrNull(2)?.getEtaMinuteText()?.let {
+            card.etaList.getOrNull(2)?.getEtaMinuteText("-")?.let {
                 eta3MinuteTv.text = it.second
                 eta3UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {

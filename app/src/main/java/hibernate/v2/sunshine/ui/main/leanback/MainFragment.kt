@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import hibernate.v2.sunshine.databinding.LbFragmentMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.leanback.EtaFragment
+import hibernate.v2.sunshine.ui.eta.home.leanback.EtaFragment
 
 class MainFragment : BaseFragment<LbFragmentMainBinding>() {
 

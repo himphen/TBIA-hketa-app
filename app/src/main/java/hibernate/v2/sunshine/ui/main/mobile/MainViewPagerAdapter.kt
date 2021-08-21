@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.ui.main.mobile
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.ui.eta.mobile.EtaFragment
+import hibernate.v2.sunshine.ui.eta.home.mobile.EtaFragment
 import hibernate.v2.sunshine.ui.searchmap.SearchMapFragment
 import hibernate.v2.sunshine.ui.settings.mobile.SettingsFragment
 

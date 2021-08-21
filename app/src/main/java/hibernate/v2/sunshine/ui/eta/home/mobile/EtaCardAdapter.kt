@@ -1,15 +1,10 @@
-package hibernate.v2.sunshine.ui.eta.mobile
+package hibernate.v2.sunshine.ui.eta.home.mobile
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import hibernate.v2.sunshine.databinding.ItemEtaButtonGroupBinding
 import hibernate.v2.sunshine.databinding.ItemEtaCardClassicBinding
 import hibernate.v2.sunshine.databinding.ItemEtaCardCompactBinding
@@ -18,10 +13,11 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import hibernate.v2.sunshine.ui.eta.EtaTimeAdapter
-import hibernate.v2.sunshine.ui.eta.mobile.view.BaseEtaViewHolder
-import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderClassic
-import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderCompact
-import hibernate.v2.sunshine.ui.eta.mobile.view.EtaViewHolderStandard
+import hibernate.v2.sunshine.ui.eta.home.mobile.view.BaseEtaViewHolder
+import hibernate.v2.sunshine.ui.eta.home.mobile.view.EtaViewHolderClassic
+import hibernate.v2.sunshine.ui.eta.home.mobile.view.EtaViewHolderCompact
+import hibernate.v2.sunshine.ui.eta.home.mobile.view.EtaViewHolderStandard
+import hibernate.v2.sunshine.ui.view.setEtaTimeFlexManager
 
 class EtaCardAdapter(
     var type: EtaCardViewType,
@@ -48,12 +44,7 @@ class EtaCardAdapter(
                     )
                 ).apply {
                     viewBinding.content.etaTimeRv.apply {
-                        layoutManager = FlexboxLayoutManager(context).apply {
-                            flexWrap = FlexWrap.WRAP
-                            alignItems = AlignItems.FLEX_END
-                            flexDirection = FlexDirection.ROW
-                            justifyContent = JustifyContent.FLEX_END
-                        }
+                        setEtaTimeFlexManager()
                         adapter = EtaTimeAdapter()
                     }
                 }

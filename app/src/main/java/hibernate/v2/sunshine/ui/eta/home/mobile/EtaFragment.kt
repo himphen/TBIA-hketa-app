@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.eta.mobile
+package hibernate.v2.sunshine.ui.eta.home.mobile
 
 import android.app.Activity
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -20,7 +21,7 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
-import hibernate.v2.sunshine.ui.eta.EtaViewModel
+import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.ui.eta.add.mobile.AddEtaActivity
 import hibernate.v2.sunshine.ui.eta.edit.mobile.EditEtaActivity
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
@@ -99,6 +100,9 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         mainViewModel.onUpdatedEtaLayout.onEach {
             initAdapter()
             updateAdapterData()
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.etaUpdateError.onEach {
+            Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 

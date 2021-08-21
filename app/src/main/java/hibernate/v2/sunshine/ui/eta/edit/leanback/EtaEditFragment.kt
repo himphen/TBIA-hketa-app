@@ -137,10 +137,13 @@ class EtaEditFragment : VerticalGridSupportFragment() {
     }
 
     private fun setupRowAdapter() {
-        val gridPresenter = VerticalGridPresenter(ZOOM_FACTOR)
+        val gridPresenter = VerticalGridPresenter(ZOOM_FACTOR, false)
+        gridPresenter.keepChildForeground = false
         gridPresenter.numberOfColumns = COLUMNS
+        gridPresenter.shadowEnabled = false
         setGridPresenter(gridPresenter)
-        val cardPresenter = EditEtaCardPresenter(requireContext()
+        val cardPresenter = EditEtaCardPresenter(
+            requireContext()
         ) { card: Card.SettingsEtaCard ->
             when (card) {
                 is Card.SettingsEtaAddCard -> {

@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.eta
+package hibernate.v2.sunshine.ui.eta.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,9 +11,11 @@ import hibernate.v2.sunshine.model.transport.MTRTransportEta
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentSkipListMap
 
@@ -26,9 +28,20 @@ class EtaViewModel(
     }
 
     val savedEtaCardList = MutableLiveData<List<Card.EtaCard>>()
+    val etaUpdateError = MutableSharedFlow<Throwable>()
+
+    private val etaExceptionHandler = CoroutineExceptionHandler { context, t ->
+        run {
+            viewModelScope.launch {
+                etaUpdateError.emit(t)
+            }
+        }
+    }
 
     fun getEtaListFromDb() {
-        viewModelScope.launch(Dispatchers.IO) {
+        val coroutineExceptionHandler = CoroutineExceptionHandler { _, t -> run {} }
+
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val convertedEtaCardList = mutableListOf<Card.EtaCard>()
             convertedEtaCardList.addAll(
                 etaRepository.getSavedKmbEtaList().map { it.toEtaCard() }
@@ -59,7 +72,7 @@ class EtaViewModel(
     fun updateEtaList(etaCardList: MutableList<Card.EtaCard>?) {
         if (etaCardList == null || etaCardList.isEmpty()) return
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO + etaExceptionHandler) {
             Logger.d("lifecycle getEtaList")
             val result = ConcurrentSkipListMap<Int, Card.EtaCard>()
 

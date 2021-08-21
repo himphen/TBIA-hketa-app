@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.eta.leanback
+package hibernate.v2.sunshine.ui.eta.home.leanback
 
 import android.os.Bundle
 import android.view.ContextThemeWrapper
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.widget.Toast
 import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
@@ -16,7 +17,7 @@ import hibernate.v2.sunshine.databinding.LbFragmentEtaBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.FullWidthGridPresenter
-import hibernate.v2.sunshine.ui.eta.EtaViewModel
+import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
@@ -24,6 +25,8 @@ import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.util.Date
@@ -81,6 +84,9 @@ class EtaFragment : VerticalGridSupportFragment() {
                 viewModel.updateEtaList(etaCardList)
             }
         }
+        viewModel.etaUpdateError.onEach {
+            Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show()
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     override fun onCreateView(

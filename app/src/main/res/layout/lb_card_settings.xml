@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="120dp"
     android:layout_height="wrap_content"
+    android:background="@color/settings_card_background"
     android:baselineAligned="false"
     android:gravity="center"
     android:orientation="vertical"
