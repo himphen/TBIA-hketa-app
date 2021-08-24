@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="hibernate.v2.sunshine">
 
     <application
@@ -7,11 +8,13 @@
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        tools:ignore="LockedOrientationActivity">
         <activity
             android:name=".ui.onboarding.mobile.OnboardingActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,25 +24,27 @@
         </activity>
         <activity
             android:name=".ui.main.mobile.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile.MainActivity" />
         <activity
             android:name=".ui.eta.edit.mobile.EditEtaActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
             android:name="hibernate.v2.sunshine.ui.eta.add.mobile.AddEtaActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
             android:name=".ui.settings.eta.layout.mobile.EtaLayoutSelectionActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
-        <!-- Leanback -->
 
+        <!-- Leanback -->
         <activity
             android:name=".ui.onboarding.leanback.OnboardingActivity"
-            android:banner="@drawable/app_icon"
+            android:banner="@drawable/app_tv_banner"
             android:exported="true"
-            android:icon="@drawable/app_icon"
             android:label="@string/app_name"
-            android:logo="@drawable/app_icon"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.Leanback">
             <intent-filter>

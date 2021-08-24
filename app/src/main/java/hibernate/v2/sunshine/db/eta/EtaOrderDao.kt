@@ -14,13 +14,4 @@ interface EtaOrderDao {
 
     @Query("DELETE FROM saved_eta_order")
     suspend fun clearAll()
-
-//    @Query("SELECT * FROM saved_train_eta_order ORDER BY position ASC")
-//    suspend fun getTrainList(): List<TrainEtaOrderEntity>
-//
-//    @Insert
-//    suspend fun addTrainList(entityList: List<TrainEtaOrderEntity>)
-//
-//    @Query("DELETE FROM saved_train_eta_order")
-//    suspend fun clearTrainList()
 }

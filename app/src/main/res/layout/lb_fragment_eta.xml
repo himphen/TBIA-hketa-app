@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -29,5 +31,22 @@
         android:id="@+id/lb_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/updateEtaFailedTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/eta_update_failed_background"
+        android:elevation="1dp"
+        android:gravity="center"
+        android:paddingStart="24dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/eta_update_failed_text"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="@string/text_eta_loading_failed"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

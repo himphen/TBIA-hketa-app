@@ -25,7 +25,7 @@ class SettingsFragment : VerticalGridSupportFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = getString(R.string.title_fragment_settings)
+        title = getString(R.string.leanback_main_tab_title_settings)
         setupRowAdapter()
     }
 

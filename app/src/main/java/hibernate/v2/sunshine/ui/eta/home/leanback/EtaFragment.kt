@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import android.widget.Toast
 import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
@@ -21,6 +20,7 @@ import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
+import hibernate.v2.sunshine.util.toggleSlideDown
 import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -53,7 +53,7 @@ class EtaFragment : VerticalGridSupportFragment() {
     private var etaCardList: MutableList<Card.EtaCard>? = null
     private var refreshEtaJob: Deferred<Unit>? = null
 
-    var rootViewBinding: LbFragmentEtaBinding? = null
+    private var rootViewBinding: LbFragmentEtaBinding? = null
 
     override fun onResume() {
         super.onResume()
@@ -72,6 +72,7 @@ class EtaFragment : VerticalGridSupportFragment() {
 
     private fun initEvent() {
         viewModel.savedEtaCardList.observe(viewLifecycleOwner) {
+            hideUpdateEtaFailedText()
             etaCardList?.let { etaCardList ->
                 etaCardList.clear()
                 etaCardList.addAll(it)
@@ -85,7 +86,12 @@ class EtaFragment : VerticalGridSupportFragment() {
             }
         }
         viewModel.etaUpdateError.onEach {
-            Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show()
+            rootViewBinding?.updateEtaFailedTv?.apply {
+                toggleSlideDown(true)
+                text = getString(R.string.text_eta_loading_failed, 400)
+            }
+
+//            Firebase.crashlytics.recordException(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
@@ -188,6 +194,12 @@ class EtaFragment : VerticalGridSupportFragment() {
                     continuation.resume(width)
                 }
             })
+        }
+    }
+
+    private fun hideUpdateEtaFailedText() {
+        rootViewBinding?.updateEtaFailedTv?.apply {
+            toggleSlideDown(false)
         }
     }
 }

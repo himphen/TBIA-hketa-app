@@ -9,9 +9,6 @@
     <string name="settings_acknowledgement_title">Acknowledgement</string>
     <string name="settings_acknowledgement_summary">Some icons are from Material Icons and www.flaticon.com</string>
 
-    <string name="title_fragment_home">主頁</string>
-    <string name="title_fragment_settings">設定</string>
-
     <string name="test_onboarding_loading_start">正在載入路線數據</string>
 
     <string name="test_onboarding_loading_kmb">已載入九巴／龍運路線數據</string>
@@ -26,11 +23,7 @@
     <string name="test_onboarding_loading_failed_mtr">載入港鐵路線數據失敗，請重新再試。</string>
     <string name="test_onboarding_loading_failed_lrt">載入輕鐵路線數據失敗，請重新再試。</string>
 
-    <string name="text_eta_card_classic_minute">%1$d 分鐘</string>
     <string name="text_eta_card_classic_mtr_station">%1$s站</string>
-    <string name="text_eta_destination_to">往</string>
-
-    <string name="text_eta_destination">往 %1$s</string>
 
     <string name="text_settings_eta_destination">往 %1$s</string>
     <string name="text_settings_eta_destination_with_sp">往 %1$s (%2$s)</string>
@@ -53,12 +46,14 @@
     <string name="dialog_add_eta_brand_selection_mtr_btn">港鐵</string>
     <string name="dialog_add_eta_brand_selection_lrt_btn">輕鐵</string>
 
+    <string name="text_eta_loading_failed">載入數據失敗，正在重新再試。（錯誤碼：%d）</string>
+
     <string name="text_add_eta_hint_stop">%1$s所有車站</string>
 
     <string name="menu_edit_eta_action_save_order">儲存</string>
     <string name="dialog_settings_eta_remove_title">注意</string>
-    <string name="dialog_settings_eta_remove_message">確定移除 %1$s 號線 %2$s 車站嗎？</string>
-    <string name="dialog_settings_eta_remove_mtr_message">確定移除 %1$s %2$s 車站嗎？</string>
+    <string name="dialog_settings_eta_remove_message">確定移除%1$s號線%2$s車站嗎？</string>
+    <string name="dialog_settings_eta_remove_mtr_message">確定移除%1$s%2$s車站嗎？</string>
     <string name="dialog_settings_eta_remove_pos_btn">移除</string>
     <string name="dialog_cancel_btn">取消</string>
 
@@ -66,8 +61,8 @@
     <string name="text_gmb_region_kln">九龍專線小巴</string>
     <string name="text_gmb_region_nt">新界專線小巴</string>
 
-    <string name="dialog_edit_eta_title">編輯 %1$s 號線 %2$s 車站選項</string>
-    <string name="dialog_edit_eta_description"></string>
+    <string name="dialog_edit_eta_title">編輯%1$s號線%2$s車站</string>
+    <string name="dialog_edit_eta_description" />
     <string name="dialog_edit_eta_move_up_btn">上移</string>
     <string name="dialog_edit_eta_move_down_btn">下移</string>
     <string name="dialog_edit_eta_remove_btn">移除</string>
@@ -106,13 +101,11 @@
     <string name="stop_list_bottom_sheet_title">請選擇車站</string>
     <string name="route_list_bottom_sheet_title">觀塘市中心 (T4)</string>
 
-    <string-array name="leftMenu">
-        <item>@string/title_fragment_home</item>
-        <item>@string/title_fragment_settings</item>
-    </string-array>
-
-    <string-array name="settingsMenu">
-        <item>@string/title_activity_settings_eta</item>
+    <string name="leanback_main_tab_title_home">主頁</string>
+    <string name="leanback_main_tab_title_settings">設定</string>
+    <string-array name="leanback_main_tab_title">
+        <item>@string/leanback_main_tab_title_home</item>
+        <item>@string/leanback_main_tab_title_settings</item>
     </string-array>
 
     <string name="main_tab_title_1">預計到達時間</string>

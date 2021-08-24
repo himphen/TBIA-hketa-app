@@ -12,6 +12,8 @@ import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.leanback.MainActivity
 import hibernate.v2.sunshine.ui.onboarding.FetchTransportDataType
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
+import hibernate.v2.sunshine.util.gone
+import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,7 +44,11 @@ class OnboardingFragment : BaseFragment<LbFragmentOnboardingBinding>() {
     fun initEvent() {
         viewModel.fetchTransportDataRequired.observe(viewLifecycleOwner) {
             if (it) {
-                // show download ui
+                viewBinding?.logoIv?.gone(true)
+                viewBinding?.animationView?.apply {
+                    visible()
+                    playAnimation()
+                }
                 viewModel.downloadTransportData()
             } else {
                 goToMainActivity()

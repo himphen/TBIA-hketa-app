@@ -64,7 +64,7 @@ class SideMenuView : LinearLayout {
 
     private fun setupUI(context: Context) {
         menuItemClick = context as MenuItemClickListener
-        menuTitles = resources.getStringArray(R.array.leftMenu)
+        menuTitles = resources.getStringArray(R.array.leanback_main_tab_title)
         orientation = VERTICAL
         gravity = Gravity.CENTER
         setBackgroundColor(ContextCompat.getColor(context, R.color.lb_menu_bg))

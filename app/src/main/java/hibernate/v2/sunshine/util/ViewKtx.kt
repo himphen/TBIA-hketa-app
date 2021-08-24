@@ -19,6 +19,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+
 fun EditText.afterTextChanged(): Flow<String> = callbackFlow {
     val textWatcher = addTextChangedListener(
         afterTextChanged = {
@@ -102,4 +103,20 @@ private fun View.hide(hidingStrategy: Int, animate: Boolean = false) {
     } else {
         visibility = hidingStrategy
     }
+}
+
+fun View.toggleSlideDown(show: Boolean, duration: Long = 500) {
+    val transition: Transition = Slide(Gravity.BOTTOM)
+    transition.duration = duration
+    transition.addTarget(this)
+    TransitionManager.beginDelayedTransition(parent as ViewGroup, transition)
+    visibility = if (show) View.VISIBLE else View.GONE
+}
+
+fun View.toggleSlideUp(show: Boolean, duration: Long = 500) {
+    val transition: Transition = Slide(Gravity.TOP)
+    transition.duration = duration
+    transition.addTarget(this)
+    TransitionManager.beginDelayedTransition(parent as ViewGroup, transition)
+    visibility = if (show) View.VISIBLE else View.GONE
 }

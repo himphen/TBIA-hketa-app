@@ -96,7 +96,7 @@
                 android:gravity="end"
                 android:maxLines="1"
                 android:text="@string/demo_card_eta_minute_compact_1"
-                android:textColor="@color/eta_card_classic_minute"
+                android:textColor="@color/eta_card_minutes_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/eta1UnitTv"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -132,7 +132,7 @@
                 android:gravity="end"
                 android:maxLines="1"
                 android:text="@string/demo_card_eta_minute_compact_2"
-                android:textColor="@color/eta_card_classic_minute"
+                android:textColor="@color/eta_card_minutes_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/eta2UnitTv"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -168,7 +168,7 @@
                 android:gravity="end"
                 android:maxLines="1"
                 android:text="@string/demo_card_eta_minute_compact_3"
-                android:textColor="@color/eta_card_classic_minute"
+                android:textColor="@color/eta_card_minutes_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/eta3UnitTv"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -21,15 +20,16 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
-import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.ui.eta.add.mobile.AddEtaActivity
 import hibernate.v2.sunshine.ui.eta.edit.mobile.EditEtaActivity
+import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
+import hibernate.v2.sunshine.util.toggleSlideUp
 import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -80,6 +80,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
     private fun initEvent() {
         viewModel.savedEtaCardList.observe(viewLifecycleOwner) {
+            hideUpdateEtaFailedText()
+
             etaCardList?.let { etaCardList ->
                 etaCardList.clear()
                 etaCardList.addAll(it)
@@ -94,15 +96,22 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         }
 
         mainViewModel.onUpdatedEtaList.onEach {
+            hideUpdateEtaFailedText()
             updateAdapterData()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         mainViewModel.onUpdatedEtaLayout.onEach {
+            hideUpdateEtaFailedText()
             initAdapter()
             updateAdapterData()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
         viewModel.etaUpdateError.onEach {
-            Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show()
+            viewBinding?.updateEtaFailedTv?.apply {
+                toggleSlideUp(true)
+                text = getString(R.string.text_eta_loading_failed, 400)
+            }
+
+//            Firebase.crashlytics.recordException(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
@@ -230,6 +239,12 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         Logger.d("updateAdapterData")
         etaCardList = null
         initData()
+    }
+
+    private fun hideUpdateEtaFailedText() {
+        viewBinding?.updateEtaFailedTv?.apply {
+            toggleSlideUp(false)
+        }
     }
 
     override fun onPause() {

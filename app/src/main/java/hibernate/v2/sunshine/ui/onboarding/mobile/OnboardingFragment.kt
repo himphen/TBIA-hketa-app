@@ -7,11 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentOnboardingBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
+import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.onboarding.FetchTransportDataType
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
+import hibernate.v2.sunshine.util.gone
+import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,6 +24,7 @@ import org.koin.android.ext.android.inject
 class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
 
     private val viewModel by inject<OnboardingViewModel>()
+    private val sharedPreferencesManager by inject<SharedPreferencesManager>()
 
     companion object {
         fun getInstance() = OnboardingFragment()
@@ -42,6 +47,13 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
     fun initEvent() {
         viewModel.fetchTransportDataRequired.observe(viewLifecycleOwner) {
             if (it) {
+                sharedPreferencesManager.etaCardType = EtaCardViewType.Classic
+                viewBinding?.logoIv?.gone(true)
+                viewBinding?.animationView?.apply {
+                    visible()
+                    playAnimation()
+                }
+
                 // show download ui
                 viewModel.downloadTransportData()
             } else {

@@ -28,8 +28,9 @@
     <color name="eta_card_line_text">@color/white</color>
     <color name="eta_card_background">@color/white</color>
     <color name="eta_card_background_selected">@color/white</color>
-
-    <color name="eta_card_classic_minute">@color/primary</color>
+    <color name="eta_card_minutes_text">@color/primary</color>
+    <color name="eta_update_failed_background">@color/primary</color>
+    <color name="eta_update_failed_text">@color/white</color>
     <color name="bottom_sheet_background">@color/white</color>
 
     <color name="map_marker">@color/primary</color>
