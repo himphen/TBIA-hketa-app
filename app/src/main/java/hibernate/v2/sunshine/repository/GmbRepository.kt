@@ -19,13 +19,12 @@ import hibernate.v2.sunshine.util.getSnapshotValue
 
 class GmbRepository(
     private val gmbDao: GmbDao,
-) {
-    val database =
-        Firebase.database("https://android-tv-c733a-default-rtdb.asia-southeast1.firebasedatabase.app/")
+) : BaseRepository() {
+    private val dbName = FIREBASE_DB_GMB
 
     @Throws(DatabaseException::class)
     suspend fun saveRouteListFromFirebase() {
-        val routeRef = database.reference.child("gms_route")
+        val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<GmbRoute>>()?.let { list ->
             saveRouteList(list.map { gmbRoute ->
@@ -36,7 +35,7 @@ class GmbRepository(
 
     @Throws(DatabaseException::class)
     suspend fun saveRouteStopListFromFirebase() {
-        val routeRef = database.reference.child("gms_route_stop")
+        val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<GmbRouteStop>>()?.let { list ->
             saveRouteStopList(list.map { gmbRouteStop ->
@@ -47,7 +46,7 @@ class GmbRepository(
 
     @Throws(DatabaseException::class)
     suspend fun saveStopListFromFirebase() {
-        val routeRef = database.reference.child("gms_stop")
+        val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<GmbStop>>()?.let { list ->
             saveStopList(list.map { gmbStop ->

@@ -40,6 +40,7 @@ class SearchMapViewModel(
                 EtaType.GMB_NT -> gmbRepository.getRouteEtaCardList(stop)
                 EtaType.MTR -> mtrRepository.getRouteEtaCardList(stop)
                 EtaType.LRT -> lrtRepository.getRouteEtaCardList(stop)
+                EtaType.NLB -> TODO()
             }
             routeListForBottomSheet.postValue(result)
         }
@@ -58,6 +59,7 @@ class SearchMapViewModel(
                     -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
                     EtaType.MTR -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
                     EtaType.LRT -> TODO()
+                    EtaType.NLB -> TODO()
                 }
             }
 

@@ -15,7 +15,7 @@ import hibernate.v2.sunshine.model.transport.TransportRoute
 class KmbRepository(
     private val apiManager: ApiManager,
     private val kmbDao: KmbDao,
-) {
+) : BaseRepository() {
 
     suspend fun getStopListDb() = kmbDao.getStopList()
     suspend fun getRouteListDb() = kmbDao.getRouteList()

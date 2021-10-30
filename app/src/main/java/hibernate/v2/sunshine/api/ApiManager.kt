@@ -8,7 +8,7 @@ import hibernate.v2.api.service.GmbService
 import hibernate.v2.api.service.KmbService
 import hibernate.v2.api.service.HkoWeatherService
 import hibernate.v2.api.service.MTRService
-import hibernate.v2.api.service.NCService
+import hibernate.v2.api.service.TransportService
 import hibernate.v2.api.service.OpenWeatherService
 import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.sunshine.util.JsonUtils
@@ -25,8 +25,7 @@ open class ApiManager(val context: Context) {
     private lateinit var client: OkHttpClient
     lateinit var kmbService: KmbService
     lateinit var gmbService: GmbService
-    lateinit var ncService: NCService
-    lateinit var mtrService: MTRService
+    lateinit var transportService: TransportService
     lateinit var hkoWeatherService: HkoWeatherService
     lateinit var openWeatherService: OpenWeatherService
 
@@ -51,13 +50,13 @@ open class ApiManager(val context: Context) {
             .build()
             .create(KmbService::class.java)
 
-        ncService = Retrofit.Builder()
+        transportService = Retrofit.Builder()
             .baseUrl("https://rt.data.gov.hk/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ApiConverterFactory(Gson()))
             .build()
-            .create(NCService::class.java)
+            .create(TransportService::class.java)
 
         hkoWeatherService = Retrofit.Builder()
             .baseUrl("https://data.weather.gov.hk/")
@@ -79,13 +78,6 @@ open class ApiManager(val context: Context) {
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ApiConverterFactory(Gson()))
             .build().create(GmbService::class.java)
-
-        mtrService = Retrofit.Builder()
-            .baseUrl("https://rt.data.gov.hk/")
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addConverterFactory(ApiConverterFactory(Gson()))
-            .build().create(MTRService::class.java)
     }
 
     init {

@@ -1,9 +1,7 @@
 package hibernate.v2.sunshine.repository
 
 import com.google.firebase.database.DatabaseException
-import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.nc.NCRoute
 import hibernate.v2.api.model.transport.nc.NCRouteStop
@@ -19,13 +17,12 @@ import hibernate.v2.sunshine.util.getSnapshotValue
 
 class NCRepository(
     private val dao: NCDao,
-) {
-    val database =
-        Firebase.database("https://android-tv-c733a-default-rtdb.asia-southeast1.firebasedatabase.app/")
+) : BaseRepository() {
+    private val dbName = FIREBASE_DB_NC
 
     @Throws(DatabaseException::class)
     suspend fun saveRouteListFromFirebase() {
-        val routeRef = database.reference.child("nwfb_citybus_route")
+        val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NCRoute>>()?.let { list ->
             saveRouteList(list.map { ncRoute ->
@@ -36,7 +33,7 @@ class NCRepository(
 
     @Throws(DatabaseException::class)
     suspend fun saveRouteStopListFromFirebase() {
-        val routeRef = database.reference.child("nwfb_citybus_route_stop")
+        val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NCRouteStop>>()?.let { list ->
             saveRouteStopList(list.map { ncRouteStop ->
@@ -47,7 +44,7 @@ class NCRepository(
 
     @Throws(DatabaseException::class)
     suspend fun saveStopListFromFirebase() {
-        val routeRef = database.reference.child("nwfb_citybus_stop")
+        val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NCStop>>()?.let { list ->
             saveStopList(list.map { ncStop ->

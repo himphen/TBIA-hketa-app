@@ -1,7 +1,6 @@
 package hibernate.v2.api.model.transport
 
 import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 
 enum class Bound(val value: String) {
     @Keep
@@ -36,6 +35,9 @@ enum class Company(val value: String) {
 
     @Keep
     LRT("lrt"),
+
+    @Keep
+    NLB("nlb"),
 
     @Keep
     UNKNOWN("unknown");

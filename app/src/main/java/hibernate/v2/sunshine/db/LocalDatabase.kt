@@ -32,6 +32,10 @@ import hibernate.v2.sunshine.db.nc.NCDao
 import hibernate.v2.sunshine.db.nc.NCRouteEntity
 import hibernate.v2.sunshine.db.nc.NCRouteStopEntity
 import hibernate.v2.sunshine.db.nc.NCStopEntity
+import hibernate.v2.sunshine.db.nlb.NLBDao
+import hibernate.v2.sunshine.db.nlb.NLBRouteEntity
+import hibernate.v2.sunshine.db.nlb.NLBRouteStopEntity
+import hibernate.v2.sunshine.db.nlb.NLBStopEntity
 import java.util.concurrent.Executors
 
 private const val DATABASE_NAME = "saved_data"
@@ -44,6 +48,7 @@ private const val DATABASE_NAME = "saved_data"
         GmbRouteEntity::class, GmbStopEntity::class, GmbRouteStopEntity::class,
         MTRRouteEntity::class, MTRStopEntity::class, MTRRouteStopEntity::class,
         LRTRouteEntity::class, LRTStopEntity::class, LRTRouteStopEntity::class,
+        NLBRouteEntity::class, NLBStopEntity::class, NLBRouteStopEntity::class,
     ],
     version = 16,
     exportSchema = false
@@ -57,6 +62,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun gmbDao(): GmbDao
     abstract fun mtrDao(): MTRDao
     abstract fun lrtDao(): LRTDao
+    abstract fun nlbDao(): NLBDao
 
     companion object {
         private val MIGRATION_1_2 = object : Migration(1, 2) {

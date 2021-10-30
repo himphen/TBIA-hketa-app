@@ -1,33 +1,31 @@
 package hibernate.v2.sunshine.repository
 
 import com.google.firebase.database.DatabaseException
-import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
-import hibernate.v2.api.model.transport.mtr.MTRRoute
-import hibernate.v2.api.model.transport.mtr.MTRRouteStop
-import hibernate.v2.api.model.transport.mtr.MTRStop
-import hibernate.v2.sunshine.db.mtr.MTRDao
-import hibernate.v2.sunshine.db.mtr.MTRRouteEntity
-import hibernate.v2.sunshine.db.mtr.MTRRouteStopEntity
-import hibernate.v2.sunshine.db.mtr.MTRStopEntity
+import hibernate.v2.api.model.transport.nlb.NLBRoute
+import hibernate.v2.api.model.transport.nlb.NLBRouteStop
+import hibernate.v2.api.model.transport.nlb.NLBStop
+import hibernate.v2.sunshine.db.nlb.NLBDao
+import hibernate.v2.sunshine.db.nlb.NLBRouteEntity
+import hibernate.v2.sunshine.db.nlb.NLBRouteStopEntity
+import hibernate.v2.sunshine.db.nlb.NLBStopEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.util.getSnapshotValue
 
-class MTRRepository(
-    private val mtrDao: MTRDao,
+class NLBRepository(
+    private val dao: NLBDao,
 ) : BaseRepository() {
-    private val dbName = FIREBASE_DB_MTR
+    private val dbName = FIREBASE_DB_NLB
 
     @Throws(DatabaseException::class)
     suspend fun saveRouteListFromFirebase() {
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<MTRRoute>>()?.let { list ->
-            saveRouteList(list.map { route ->
-                MTRRouteEntity.fromApiModel(route)
+        snapshot.getValue<List<NLBRoute>>()?.let { list ->
+            saveRouteList(list.map { nlbRoute ->
+                NLBRouteEntity.fromApiModel(nlbRoute)
             })
         }
     }
@@ -36,9 +34,9 @@ class MTRRepository(
     suspend fun saveRouteStopListFromFirebase() {
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<MTRRouteStop>>()?.let { list ->
-            saveRouteStopList(list.map { routeStop ->
-                MTRRouteStopEntity.fromApiModel(routeStop)
+        snapshot.getValue<List<NLBRouteStop>>()?.let { list ->
+            saveRouteStopList(list.map { nlbRouteStop ->
+                NLBRouteStopEntity.fromApiModel(nlbRouteStop)
             })
         }
     }
@@ -47,55 +45,54 @@ class MTRRepository(
     suspend fun saveStopListFromFirebase() {
         val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<MTRStop>>()?.let { list ->
-            saveStopList(list.map { stop ->
-                MTRStopEntity.fromApiModel(stop)
+        snapshot.getValue<List<NLBStop>>()?.let { list ->
+            saveStopList(list.map { nlbStop ->
+                NLBStopEntity.fromApiModel(nlbStop)
             })
         }
     }
 
-    suspend fun getRouteListDb() = mtrDao.getRouteList()
-    suspend fun getRouteEnabledListDb() = mtrDao.getRouteList(true)
+    suspend fun getRouteListByCompanyDb() = dao.getRouteList()
     suspend fun getRouteStopComponentListDb() =
-        mtrDao.getRouteStopComponentList()
+        dao.getRouteStopComponentList()
 
     suspend fun getRouteStopComponentListDb(
         route: TransportRoute,
-    ) = mtrDao.getRouteStopComponentList(
+    ) = dao.getRouteStopComponentList(
+        route.company.value,
         route.routeId,
-        route.bound.value,
-        route.serviceType
+        route.bound.value
     )
 
-    suspend fun hasStopListDb() = mtrDao.getSingleStop() != null
-    suspend fun hasRouteListDb() = mtrDao.getSingleRoute() != null
-    suspend fun hasRouteStopListDb() = mtrDao.getSingleRouteStop() != null
+    suspend fun hasStopListDb() = dao.getSingleStop() != null
+    suspend fun hasRouteListDb() = dao.getSingleRoute() != null
+    suspend fun hasRouteStopListDb() = dao.getSingleRouteStop() != null
 
     suspend fun isDataExisted() = hasStopListDb() && hasRouteListDb() && hasRouteStopListDb()
 
     suspend fun initDatabase() {
-        mtrDao.clearRouteList()
-        mtrDao.clearStopList()
-        mtrDao.clearRouteStopList()
+        dao.clearRouteList()
+        dao.clearStopList()
+        dao.clearRouteStopList()
     }
 
-    suspend fun saveRouteList(entityList: List<MTRRouteEntity>) {
-        mtrDao.addRouteList(entityList)
+    suspend fun saveRouteList(entityList: List<NLBRouteEntity>) {
+        dao.addRouteList(entityList)
     }
 
-    suspend fun saveRouteStopList(entityList: List<MTRRouteStopEntity>) {
-        mtrDao.addRouteStopList(entityList)
+    suspend fun saveRouteStopList(entityList: List<NLBRouteStopEntity>) {
+        dao.addRouteStopList(entityList)
     }
 
-    suspend fun saveStopList(entityList: List<MTRStopEntity>) {
-        mtrDao.addStopList(entityList)
+    suspend fun saveStopList(entityList: List<NLBStopEntity>) {
+        dao.addStopList(entityList)
     }
 
-    suspend fun getStopListDb() = mtrDao.getStopList()
+    suspend fun getStopListDb() = dao.getStopList()
 
     suspend fun getRouteListFromStopId(stopId: String): List<TransportRoute> {
-        val routeStopList = mtrDao.getRouteStopListFromStopId(stopId)
-        val routeList = mtrDao.getRouteListFromRouteId(routeStopList)
+        val routeStopList = dao.getRouteStopListFromStopId(stopId)
+        val routeList = dao.getRouteListFromRouteId(routeStopList)
 
         return routeList.map {
             it.toTransportModel()
@@ -112,8 +109,8 @@ class MTRRepository(
     }
 
     suspend fun getRouteEtaCardList(stop: SearchMapStop): List<Card.EtaCard> {
-        val routeStopList = mtrDao.getRouteStopListFromStopId(stop.stopId)
-        val routeList = mtrDao.getRouteListFromRouteId(routeStopList)
+        val routeStopList = dao.getRouteStopListFromStopId(stop.stopId)
+        val routeList = dao.getRouteListFromRouteId(routeStopList)
         val routeHashMap = routeList.map {
             it.routeHashId() to it
         }.toMap()

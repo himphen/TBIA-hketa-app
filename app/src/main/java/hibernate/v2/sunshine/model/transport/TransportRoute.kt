@@ -108,6 +108,7 @@ open class TransportRoute(
                 Company.MTR -> R.color.brand_color_mtr
                 Company.LRT -> R.color.brand_color_lrt
                 Company.UNKNOWN -> R.color.brand_color_kmb
+                Company.NLB -> R.color.brand_color_nlb
             }
         )
 }

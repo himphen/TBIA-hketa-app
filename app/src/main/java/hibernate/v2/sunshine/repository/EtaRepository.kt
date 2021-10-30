@@ -74,7 +74,7 @@ class EtaRepository(
     }
 
     suspend fun getNCStopEtaApi(company: Company, stopId: String, route: String): EtaResponse {
-        return apiManager.ncService.getStopEta(
+        return apiManager.transportService.getNCStopEta(
             company = company.value,
             stopId = stopId,
             route = route
@@ -97,7 +97,7 @@ class EtaRepository(
         stopId: String,
         route: String
     ): MTREtaResponse {
-        return apiManager.mtrService.getMTRStopEta(
+        return apiManager.transportService.getMTRStopEta(
             stopId = stopId,
             routeId = route
         )
@@ -106,7 +106,7 @@ class EtaRepository(
     suspend fun getLRTStopEtaApi(
         stopId: String
     ): LRTEtaResponse {
-        return apiManager.mtrService.getLRTStopEta(
+        return apiManager.transportService.getLRTStopEta(
             stopId = stopId
         )
     }

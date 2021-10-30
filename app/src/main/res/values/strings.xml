@@ -45,6 +45,7 @@
     <string name="dialog_add_eta_brand_selection_gmb_nt_btn">新界專線小巴</string>
     <string name="dialog_add_eta_brand_selection_mtr_btn">港鐵</string>
     <string name="dialog_add_eta_brand_selection_lrt_btn">輕鐵</string>
+    <string name="dialog_add_eta_brand_selection_nlb_btn">新大巴</string>
 
     <string name="text_eta_loading_failed">載入數據失敗，正在重新再試。（錯誤碼：%d）</string>
 

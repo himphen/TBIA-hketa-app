@@ -103,6 +103,7 @@ class AddEtaMobileViewModel(
                 EtaType.GMB_NT -> getGmbStopList(route)
                 EtaType.MTR -> getMTRStopList(route)
                 EtaType.LRT -> getLRTStopList(route)
+                EtaType.NLB -> TODO()
             }
 
             stopList.emit(list)

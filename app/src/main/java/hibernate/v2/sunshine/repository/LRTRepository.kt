@@ -1,9 +1,7 @@
 package hibernate.v2.sunshine.repository
 
 import com.google.firebase.database.DatabaseException
-import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import hibernate.v2.api.model.transport.lrt.LRTRoute
 import hibernate.v2.api.model.transport.lrt.LRTRouteStop
 import hibernate.v2.api.model.transport.lrt.LRTStop
@@ -19,12 +17,11 @@ import hibernate.v2.sunshine.util.getSnapshotValue
 class LRTRepository(
     private val lrtDao: LRTDao,
 ) : BaseRepository() {
-    val database =
-        Firebase.database("https://android-tv-c733a-default-rtdb.asia-southeast1.firebasedatabase.app/")
+    private val dbName = FIREBASE_DB_LRT
 
     @Throws(DatabaseException::class)
     suspend fun saveRouteListFromFirebase() {
-        val routeRef = database.reference.child("lrt_route")
+        val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<LRTRoute>>()?.let { list ->
             saveRouteList(list.map { route ->
@@ -35,7 +32,7 @@ class LRTRepository(
 
     @Throws(DatabaseException::class)
     suspend fun saveRouteStopListFromFirebase() {
-        val routeRef = database.reference.child("lrt_route_stop")
+        val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<LRTRouteStop>>()?.let { list ->
             saveRouteStopList(list.map { routeStop ->
@@ -46,7 +43,7 @@ class LRTRepository(
 
     @Throws(DatabaseException::class)
     suspend fun saveStopListFromFirebase() {
-        val routeRef = database.reference.child("lrt_stop")
+        val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<LRTStop>>()?.let { list ->
             saveStopList(list.map { stop ->

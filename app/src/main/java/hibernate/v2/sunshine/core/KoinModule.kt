@@ -8,6 +8,7 @@ import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NCRepository
+import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.repository.WeatherRepository
 import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
@@ -49,11 +50,13 @@ val koinRepositoryModule: Module = module {
     single { get<LocalDatabase>().gmbDao() }
     single { get<LocalDatabase>().mtrDao() }
     single { get<LocalDatabase>().lrtDao() }
+    single { get<LocalDatabase>().nlbDao() }
     single { EtaRepository(get(), get(), get()) }
     single { KmbRepository(get(), get()) }
     single { NCRepository(get()) }
     single { GmbRepository(get()) }
     single { MTRRepository(get()) }
     single { LRTRepository(get()) }
+    single { NLBRepository(get()) }
     single { WeatherRepository(get()) }
 }
