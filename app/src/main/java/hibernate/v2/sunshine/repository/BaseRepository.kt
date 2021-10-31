@@ -12,7 +12,9 @@ abstract class BaseRepository {
         const val FIREBASE_REF_ROUTE = "public/route/"
         const val FIREBASE_REF_ROUTE_STOP = "public/routeStop/"
         const val FIREBASE_REF_STOP = "public/stop/"
+        const val FIREBASE_REF_CHECKSUM = "config/checksum/"
 
+        const val FIREBASE_DB_KMB = "kmb"
         const val FIREBASE_DB_NC = "citybusNwfb"
         const val FIREBASE_DB_NLB = "nlb"
         const val FIREBASE_DB_MTR = "mtr"

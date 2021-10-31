@@ -53,9 +53,6 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
                     visible()
                     playAnimation()
                 }
-
-                // show download ui
-                viewModel.downloadTransportData()
             } else {
                 goToMainActivity()
             }

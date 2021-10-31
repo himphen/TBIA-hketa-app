@@ -4,12 +4,17 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
+import hibernate.v2.api.model.transport.Checksum
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import hibernate.v2.sunshine.util.PreferenceUtils
+
 
 class SharedPreferencesManager(val context: Context) {
 
     companion object {
+        const val PREF_TRANSPORT_DATA_CHECKSUM = "PREF_TRANSPORT_DATA_CHECKSUM"
+
         const val PREF_ETA_CARD_TYPE = "PREF_ETA_CARD_TYPE"
         const val PREF_LAST_POSITION_LAT = "PREF_LAST_POSITION_LAT"
         const val PREF_LAST_POSITION_LNG = "PREF_LAST_POSITION_LNG"
@@ -17,13 +22,11 @@ class SharedPreferencesManager(val context: Context) {
 
     private val preferences: SharedPreferences = PreferenceUtils.sharedPrefs(context)
 
-    var etaCardType: EtaCardViewType
+    var etaCardType
         get() = EtaCardViewType.from(preferences.getInt(PREF_ETA_CARD_TYPE, 0))
-        set(value) {
-            preferences.edit {
-                putInt(PREF_ETA_CARD_TYPE, value.value)
-                apply()
-            }
+        set(value) = preferences.edit {
+            putInt(PREF_ETA_CARD_TYPE, value.value)
+            apply()
         }
 
     var lastLatLng: LatLng
@@ -33,10 +36,22 @@ class SharedPreferencesManager(val context: Context) {
 
             return LatLng(lat, lng)
         }
+        set(value) = preferences.edit {
+            putFloat(PREF_LAST_POSITION_LAT, value.latitude.toFloat())
+            putFloat(PREF_LAST_POSITION_LNG, value.longitude.toFloat())
+            apply()
+        }
+
+    var transportDataChecksum: Checksum?
+        get() {
+            val json = preferences.getString(PREF_TRANSPORT_DATA_CHECKSUM, null)
+            if (json == null) return json
+            return Gson().fromJson(json, Checksum::class.java)
+        }
         set(value) {
+            val json = Gson().toJson(value)
             preferences.edit {
-                putFloat(PREF_LAST_POSITION_LAT, value.latitude.toFloat())
-                putFloat(PREF_LAST_POSITION_LNG, value.longitude.toFloat())
+                putString(PREF_TRANSPORT_DATA_CHECKSUM, json)
                 apply()
             }
         }

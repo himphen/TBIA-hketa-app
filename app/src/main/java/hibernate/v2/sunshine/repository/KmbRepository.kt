@@ -1,8 +1,10 @@
 package hibernate.v2.sunshine.repository
 
-import hibernate.v2.api.response.kmb.KmbRouteListResponse
-import hibernate.v2.api.response.kmb.KmbRouteStopListResponse
-import hibernate.v2.api.response.kmb.KmbStopListResponse
+import com.google.firebase.database.DatabaseException
+import com.google.firebase.database.ktx.getValue
+import hibernate.v2.api.model.transport.kmb.KmbRoute
+import hibernate.v2.api.model.transport.kmb.KmbRouteStop
+import hibernate.v2.api.model.transport.kmb.KmbStop
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
@@ -11,11 +13,46 @@ import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.util.getSnapshotValue
 
 class KmbRepository(
     private val apiManager: ApiManager,
     private val kmbDao: KmbDao,
 ) : BaseRepository() {
+    private val dbName = FIREBASE_DB_KMB
+
+    @Throws(DatabaseException::class)
+    suspend fun saveRouteListFromFirebase() {
+        val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
+        val snapshot = routeRef.getSnapshotValue()
+        snapshot.getValue<List<KmbRoute>>()?.let { list ->
+            saveRouteList(list.map { kmbRoute ->
+                KmbRouteEntity.fromApiModel(kmbRoute)
+            })
+        }
+    }
+
+    @Throws(DatabaseException::class)
+    suspend fun saveRouteStopListFromFirebase() {
+        val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
+        val snapshot = routeRef.getSnapshotValue()
+        snapshot.getValue<List<KmbRouteStop>>()?.let { list ->
+            saveRouteStopList(list.map { kmbRouteStop ->
+                KmbRouteStopEntity.fromApiModel(kmbRouteStop)
+            })
+        }
+    }
+
+    @Throws(DatabaseException::class)
+    suspend fun saveStopListFromFirebase() {
+        val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
+        val snapshot = routeRef.getSnapshotValue()
+        snapshot.getValue<List<KmbStop>>()?.let { list ->
+            saveStopList(list.map { kmbStop ->
+                KmbStopEntity.fromApiModel(kmbStop)
+            })
+        }
+    }
 
     suspend fun getStopListDb() = kmbDao.getStopList()
     suspend fun getRouteListDb() = kmbDao.getRouteList()
@@ -74,45 +111,21 @@ class KmbRepository(
         serviceType,
     )
 
-    suspend fun getRouteListApi(): KmbRouteListResponse {
-        return apiManager.kmbService.getRouteList()
-    }
-
-    suspend fun getStopListApi(): KmbStopListResponse {
-        return apiManager.kmbService.getStopList()
-    }
-
-    suspend fun getRouteStopListApi(): KmbRouteStopListResponse {
-        return apiManager.kmbService.getRouteStopList()
-    }
-
     suspend fun initDatabase() {
         kmbDao.clearRouteList()
         kmbDao.clearStopList()
         kmbDao.clearRouteStopList()
     }
 
-    suspend fun saveRouteListApi() {
-        val list = getRouteListApi().routeList.map { route ->
-            KmbRouteEntity.fromApiModel(route)
-        }
-
-        kmbDao.addRouteList(list)
+    suspend fun saveRouteList(entityList: List<KmbRouteEntity>) {
+        kmbDao.addRouteList(entityList)
     }
 
-    suspend fun saveStopListApi() {
-        val list = getStopListApi().stopList.map { stop ->
-            KmbStopEntity.fromApiModel(stop)
-        }
-
-        kmbDao.addStopList(list)
+    suspend fun saveRouteStopList(entityList: List<KmbRouteStopEntity>) {
+        kmbDao.addRouteStopList(entityList)
     }
 
-    suspend fun saveRouteStopListApi() {
-        val list = getRouteStopListApi().routeStopList.map { routeStop ->
-            KmbRouteStopEntity.fromApiModel(routeStop)
-        }
-
-        kmbDao.addRouteStopList(list)
+    suspend fun saveStopList(entityList: List<KmbStopEntity>) {
+        kmbDao.addStopList(entityList)
     }
 }
