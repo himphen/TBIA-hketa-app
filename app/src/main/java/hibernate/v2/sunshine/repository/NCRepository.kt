@@ -65,12 +65,6 @@ class NCRepository(
         route.bound.value
     )
 
-    suspend fun hasStopListDb() = ncDao.getSingleStop() != null
-    suspend fun hasRouteListDb() = ncDao.getSingleRoute() != null
-    suspend fun hasRouteStopListDb() = ncDao.getSingleRouteStop() != null
-
-    suspend fun isDataExisted() = hasStopListDb() && hasRouteListDb() && hasRouteStopListDb()
-
     suspend fun initDatabase() {
         ncDao.clearRouteList()
         ncDao.clearStopList()

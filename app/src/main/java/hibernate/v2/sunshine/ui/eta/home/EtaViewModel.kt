@@ -58,6 +58,9 @@ class EtaViewModel(
             convertedEtaCardList.addAll(
                 etaRepository.getSavedLRTEtaList().map { it.toEtaCard() }
             )
+            convertedEtaCardList.addAll(
+                etaRepository.getSavedNLBEtaList().map { it.toEtaCard() }
+            )
 
             convertedEtaCardList.sort()
 
@@ -231,6 +234,22 @@ class EtaViewModel(
                                 etaCard.platform =
                                     (etaCard.etaList.getOrNull(0) as? LRTTransportEta)?.platform
                                         ?: "1"
+                            }
+
+                            result[index] = etaCard
+                        }
+                        Company.NLB -> {
+                            val apiEtaResponse = etaRepository.getNLBStopEtaApi(
+                                stopId = etaCard.stop.stopId,
+                                routeId = etaCard.route.routeId
+                            )
+                            apiEtaResponse.data?.let { etaList ->
+                                val temp = etaList
+                                    .map { TransportEta.fromApiModel(it, etaCard.stop.seq) }
+
+                                etaCard.etaList.clear()
+                                etaCard.etaList.addAll(temp)
+
                             }
 
                             result[index] = etaCard

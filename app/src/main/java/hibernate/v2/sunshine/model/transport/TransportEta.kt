@@ -3,6 +3,7 @@ package hibernate.v2.sunshine.model.transport
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.BusEta
 import hibernate.v2.api.model.transport.gmb.GmbEta
+import hibernate.v2.api.model.transport.nlb.NLBEta
 import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
@@ -42,6 +43,20 @@ open class TransportEta(
                 rmkTc = eta.rmkTc,
                 bound = Bound.O,
                 seq = eta.seq
+            )
+        }
+
+        fun fromApiModel(eta: NLBEta, seq: Int?): TransportEta {
+            return TransportEta(
+                eta = DateUtil.getDate(
+                    eta.estimatedArrivalTime,
+                    DateFormat.YYYY_MM_DD_HH_MM_SS.value
+                ),
+                rmkEn = "",
+                rmkSc = "",
+                rmkTc = "",
+                bound = Bound.O,
+                seq = seq
             )
         }
     }

@@ -30,6 +30,10 @@ interface EtaDao {
     @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id JOIN lrt_route ON saved_eta_route_bound = lrt_route_bound AND saved_eta_service_type = lrt_route_service_type AND saved_eta_route_id = lrt_route_id JOIN lrt_stop ON saved_eta_stop_id = lrt_stop_id WHERE saved_eta_company = 'lrt'")
     suspend fun getAllLRTEtaWithOrdering(): List<EtaLRTDetails>
 
+    @Transaction
+    @Query("SELECT * FROM saved_eta JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id JOIN nlb_route ON saved_eta_route_id = nlb_route_id JOIN nlb_stop ON saved_eta_stop_id = nlb_stop_id WHERE saved_eta_company = 'nlb'")
+    suspend fun getAllNLBEtaWithOrdering(): List<EtaNLBDetails>
+
     @Query("SELECT * FROM saved_eta WHERE saved_eta_stop_id=(:stopId) AND saved_eta_route_id=(:routeId) AND saved_eta_route_bound=(:bound) AND saved_eta_service_type=(:serviceType) AND saved_eta_seq=(:seq) AND saved_eta_company=(:company) LIMIT 1")
     suspend fun getSingleEta(
         stopId: String,

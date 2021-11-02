@@ -36,11 +36,9 @@ interface NLBDao {
     @Query("SELECT * FROM nlb_route LIMIT 1")
     suspend fun getSingleRoute(): NLBRouteEntity?
 
-    @Query("SELECT * FROM nlb_route WHERE nlb_route_id = (:route) AND nlb_route_bound = (:bound) AND nlb_route_service_type = (:serviceType)")
+    @Query("SELECT * FROM nlb_route WHERE nlb_route_id = (:route)")
     suspend fun getRoute(
-        route: String,
-        bound: String,
-        serviceType: String,
+        route: String
     ): NLBRouteEntity?
 
     @Insert
@@ -90,11 +88,9 @@ interface NLBDao {
     suspend fun getRouteStopComponentList(): List<NLBRouteStopComponent>
 
     @Transaction
-    @Query("SELECT * FROM nlb_route_stop WHERE nlb_route_stop_route_id = (:route) AND nlb_route_stop_bound = (:bound) AND nlb_route_stop_service_type = (:serviceType)")
+    @Query("SELECT * FROM nlb_route_stop WHERE nlb_route_stop_route_id = (:route)")
     suspend fun getRouteStopComponentList(
-        route: String,
-        bound: String,
-        serviceType: String,
+        route: String
     ): List<NLBRouteStopComponent>
 
     @Query("SELECT * FROM nlb_route_stop LIMIT 1")

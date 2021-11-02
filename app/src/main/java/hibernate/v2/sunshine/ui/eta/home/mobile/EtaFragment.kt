@@ -109,6 +109,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
             viewBinding?.updateEtaFailedTv?.apply {
                 toggleSlideUp(true)
                 text = getString(R.string.text_eta_loading_failed, 400)
+                Logger.e(it, "Error")
             }
 
 //            Firebase.crashlytics.recordException(it)

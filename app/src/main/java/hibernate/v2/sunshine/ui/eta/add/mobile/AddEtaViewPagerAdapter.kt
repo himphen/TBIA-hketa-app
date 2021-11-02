@@ -17,6 +17,7 @@ class AddEtaViewPagerAdapter(
         EtaType.KMB,
         EtaType.NWFB,
         EtaType.CTB,
+        EtaType.NLB,
         EtaType.GMB_HKI,
         EtaType.GMB_KLN,
         EtaType.GMB_NT,
@@ -27,7 +28,7 @@ class AddEtaViewPagerAdapter(
     /**
      * Returns the number of pages
      */
-    override fun getItemCount(): Int = 8
+    override fun getItemCount(): Int = list.size
 
     /**
      * This method will be invoked when a page is requested to create
@@ -46,6 +47,7 @@ class AddEtaViewPagerAdapter(
             EtaType.KMB,
             EtaType.NWFB,
             EtaType.CTB,
+            EtaType.NLB,
             EtaType.GMB_HKI,
             EtaType.GMB_KLN,
             EtaType.GMB_NT,

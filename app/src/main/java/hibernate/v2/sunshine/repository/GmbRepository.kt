@@ -1,9 +1,7 @@
 package hibernate.v2.sunshine.repository
 
 import com.google.firebase.database.DatabaseException
-import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.api.model.transport.gmb.GmbRoute
 import hibernate.v2.api.model.transport.gmb.GmbRouteStop
@@ -64,13 +62,6 @@ class GmbRepository(
         route.routeId,
         route.bound.value
     )
-
-    suspend fun hasStopListDb() = gmbDao.getSingleStop() != null
-    suspend fun hasRouteListDb() = gmbDao.getSingleRoute() != null
-    suspend fun hasRouteStopListDb() = gmbDao.getSingleRouteStop() != null
-
-    suspend fun isDataExisted() = hasStopListDb() && hasRouteListDb() && hasRouteStopListDb()
-
     suspend fun initDatabase() {
         gmbDao.clearRouteList()
         gmbDao.clearStopList()

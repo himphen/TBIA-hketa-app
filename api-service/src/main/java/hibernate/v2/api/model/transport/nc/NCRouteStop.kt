@@ -14,6 +14,8 @@ data class NCRouteStop(
     @get:PropertyName("bound")
     @set:PropertyName("bound")
     var bound: Bound = Bound.O,
+    @get:PropertyName("seq")
+    @set:PropertyName("seq")
     var seq: Int = 0,
     @get:PropertyName("stop")
     @set:PropertyName("stop")

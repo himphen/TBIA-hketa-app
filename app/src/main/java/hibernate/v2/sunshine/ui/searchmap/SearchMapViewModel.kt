@@ -5,11 +5,7 @@ import androidx.lifecycle.viewModelScope
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.repository.GmbRepository
-import hibernate.v2.sunshine.repository.KmbRepository
-import hibernate.v2.sunshine.repository.LRTRepository
-import hibernate.v2.sunshine.repository.MTRRepository
-import hibernate.v2.sunshine.repository.NCRepository
+import hibernate.v2.sunshine.repository.*
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -22,6 +18,7 @@ class SearchMapViewModel(
     private val gmbRepository: GmbRepository,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
+    private val nlbRepository: NLBRepository,
 ) : BaseViewModel() {
 
     val selectedStop = MutableLiveData<SearchMapStop>()
@@ -40,7 +37,7 @@ class SearchMapViewModel(
                 EtaType.GMB_NT -> gmbRepository.getRouteEtaCardList(stop)
                 EtaType.MTR -> mtrRepository.getRouteEtaCardList(stop)
                 EtaType.LRT -> lrtRepository.getRouteEtaCardList(stop)
-                EtaType.NLB -> TODO()
+                EtaType.NLB -> nlbRepository.getRouteEtaCardList(stop)
             }
             routeListForBottomSheet.postValue(result)
         }
@@ -57,9 +54,9 @@ class SearchMapViewModel(
                     EtaType.GMB_KLN,
                     EtaType.GMB_NT,
                     -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
-                    EtaType.MTR -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
-                    EtaType.LRT -> TODO()
-                    EtaType.NLB -> TODO()
+                    EtaType.MTR -> mtrRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.LRT -> lrtRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.NLB -> nlbRepository.setMapRouteListIntoMapStop(stopMapList)
                 }
             }
 
@@ -83,6 +80,11 @@ class SearchMapViewModel(
                     },
                     async {
                         gmbRepository.getStopListDb().map {
+                            SearchMapStop.fromStopEntity(it)
+                        }
+                    },
+                    async {
+                        nlbRepository.getStopListDb().map {
                             SearchMapStop.fromStopEntity(it)
                         }
                     },

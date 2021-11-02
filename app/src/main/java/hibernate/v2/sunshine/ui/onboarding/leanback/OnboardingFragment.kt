@@ -49,7 +49,6 @@ class OnboardingFragment : BaseFragment<LbFragmentOnboardingBinding>() {
                     visible()
                     playAnimation()
                 }
-                viewModel.downloadTransportData()
             } else {
                 goToMainActivity()
             }
@@ -100,7 +99,11 @@ class OnboardingFragment : BaseFragment<LbFragmentOnboardingBinding>() {
                 FetchTransportDataType.LRT -> {
                     viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_lrt)
                 }
+                FetchTransportDataType.NLB -> {
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_nlb)
+                }
                 FetchTransportDataType.ALL -> {
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_all)
                 }
                 null -> {
                 }

@@ -35,7 +35,7 @@ data class KmbRouteStopEntity(
                 routeId = routeStop.routeId,
                 bound = routeStop.bound,
                 serviceType = routeStop.serviceType,
-                seq = routeStop.seq,
+                seq = routeStop.seq.toIntOrNull() ?: 0,
                 stopId = routeStop.stopId
             )
         }

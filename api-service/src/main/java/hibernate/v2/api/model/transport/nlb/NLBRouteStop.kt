@@ -1,17 +1,15 @@
 package hibernate.v2.api.model.transport.nlb
 
-import com.google.gson.annotations.SerializedName
-import hibernate.v2.api.model.transport.Bound
+import com.google.firebase.database.PropertyName
 
 data class NLBRouteStop(
-    @SerializedName("bound")
-    val bound: Bound,
-    @SerializedName("route")
-    val routeId: String,
-    @SerializedName("seq")
-    val seq: Int,
-    @SerializedName("service_type")
-    val serviceType: String,
-    @SerializedName("stop")
-    val stopId: String,
+    @get:PropertyName("route_id")
+    @set:PropertyName("route_id")
+    var routeId: String = "",
+    @get:PropertyName("seq")
+    @set:PropertyName("seq")
+    var seq: Int = 0,
+    @get:PropertyName("stop")
+    @set:PropertyName("stop")
+    var stopId: String = "",
 )

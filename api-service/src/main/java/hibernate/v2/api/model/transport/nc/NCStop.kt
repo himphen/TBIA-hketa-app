@@ -8,8 +8,8 @@ data class NCStop(
      * However, API return string instead of double
      */
     var lat: String = "",
-    @get:PropertyName("long")
-    @set:PropertyName("long")
+    @get:PropertyName("lng")
+    @set:PropertyName("lng")
     var lng: String = "",
     @get:PropertyName("name_en")
     @set:PropertyName("name_en")

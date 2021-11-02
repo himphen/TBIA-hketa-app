@@ -65,12 +65,6 @@ class LRTRepository(
         route.serviceType
     )
 
-    suspend fun hasStopListDb() = lrtDao.getSingleStop() != null
-    suspend fun hasRouteListDb() = lrtDao.getSingleRoute() != null
-    suspend fun hasRouteStopListDb() = lrtDao.getSingleRouteStop() != null
-
-    suspend fun isDataExisted() = hasStopListDb() && hasRouteListDb() && hasRouteStopListDb()
-
     suspend fun initDatabase() {
         lrtDao.clearRouteList()
         lrtDao.clearStopList()

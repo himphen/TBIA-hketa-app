@@ -2,10 +2,8 @@ package hibernate.v2.sunshine.repository
 
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.response.eta.EtaResponse
-import hibernate.v2.api.response.eta.GmbEtaResponse
-import hibernate.v2.api.response.eta.LRTEtaResponse
-import hibernate.v2.api.response.eta.MTREtaResponse
+import hibernate.v2.api.request.eta.NLBRequest
+import hibernate.v2.api.response.eta.*
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.eta.EtaDao
 import hibernate.v2.sunshine.db.eta.EtaOrderDao
@@ -23,6 +21,7 @@ class EtaRepository(
     suspend fun getSavedGmbEtaList() = etaDao.getAllGmbEtaWithOrdering()
     suspend fun getSavedMTREtaList() = etaDao.getAllMTREtaWithOrdering()
     suspend fun getSavedLRTEtaList() = etaDao.getAllLRTEtaWithOrdering()
+    suspend fun getSavedNLBEtaList() = etaDao.getAllNLBEtaWithOrdering()
 
     suspend fun hasEtaInDb(
         stopId: String,
@@ -108,6 +107,16 @@ class EtaRepository(
     ): LRTEtaResponse {
         return apiManager.transportService.getLRTStopEta(
             stopId = stopId
+        )
+    }
+
+    suspend fun getNLBStopEtaApi(stopId: String, routeId: String): NLBEtaResponse {
+        return apiManager.transportService.getNLBStopEta(
+            NLBRequest(
+                routeId = routeId,
+                stopId = stopId,
+                language = "zh"
+            )
         )
     }
 }

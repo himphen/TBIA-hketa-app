@@ -1,11 +1,8 @@
 package hibernate.v2.api.model.transport.nlb
 
 import com.google.firebase.database.PropertyName
-import com.google.gson.annotations.SerializedName
-import hibernate.v2.api.model.transport.Bound
 
 data class NLBRoute(
-    val bound: Bound = Bound.O,
     @get:PropertyName("dest_en")
     @set:PropertyName("dest_en")
     var destEn: String = "",
@@ -26,9 +23,8 @@ data class NLBRoute(
     var origTc: String = "",
     @get:PropertyName("route_id")
     @set:PropertyName("route_id")
-    var routeId: Long = 0,
+    var routeId: String = "",
     @get:PropertyName("route_no")
     @set:PropertyName("route_no")
-    var routeNo: String = "",
-    var serviceType: Long = 0,
+    var routeNo: String = ""
 )

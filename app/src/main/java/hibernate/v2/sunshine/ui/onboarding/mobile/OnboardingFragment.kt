@@ -39,6 +39,8 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // sharedPreferencesManager.etaCardType = EtaCardViewType.Classic
+
         initEvent()
         initUI()
         initData()
@@ -47,8 +49,8 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
     fun initEvent() {
         viewModel.fetchTransportDataRequired.observe(viewLifecycleOwner) {
             if (it) {
-                sharedPreferencesManager.etaCardType = EtaCardViewType.Classic
                 viewBinding?.logoIv?.gone(true)
+                viewBinding?.loadingCl?.visible(true)
                 viewBinding?.animationView?.apply {
                     visible()
                     playAnimation()
@@ -103,7 +105,12 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
                 FetchTransportDataType.LRT -> {
                     viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_lrt)
                 }
+                FetchTransportDataType.NLB -> {
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_nlb)
+                }
                 FetchTransportDataType.ALL -> {
+                    viewBinding?.loadingTv?.visible()
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_all)
                 }
                 null -> {
                 }

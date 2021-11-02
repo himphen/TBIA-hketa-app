@@ -2,9 +2,15 @@ package hibernate.v2.sunshine.repository
 
 import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.ktx.getValue
+import hibernate.v2.api.model.transport.kmb.KmbRoute
+import hibernate.v2.api.model.transport.kmb.KmbRouteStop
+import hibernate.v2.api.model.transport.kmb.KmbStop
 import hibernate.v2.api.model.transport.nlb.NLBRoute
 import hibernate.v2.api.model.transport.nlb.NLBRouteStop
 import hibernate.v2.api.model.transport.nlb.NLBStop
+import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
+import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
+import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 import hibernate.v2.sunshine.db.nlb.NLBDao
 import hibernate.v2.sunshine.db.nlb.NLBRouteEntity
 import hibernate.v2.sunshine.db.nlb.NLBRouteStopEntity
@@ -24,8 +30,8 @@ class NLBRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NLBRoute>>()?.let { list ->
-            saveRouteList(list.map { nlbRoute ->
-                NLBRouteEntity.fromApiModel(nlbRoute)
+            saveRouteList(list.map { NLBRoute ->
+                NLBRouteEntity.fromApiModel(NLBRoute)
             })
         }
     }
@@ -35,8 +41,8 @@ class NLBRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NLBRouteStop>>()?.let { list ->
-            saveRouteStopList(list.map { nlbRouteStop ->
-                NLBRouteStopEntity.fromApiModel(nlbRouteStop)
+            saveRouteStopList(list.map { NLBRouteStop ->
+                NLBRouteStopEntity.fromApiModel(NLBRouteStop)
             })
         }
     }
@@ -46,29 +52,56 @@ class NLBRepository(
         val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NLBStop>>()?.let { list ->
-            saveStopList(list.map { nlbStop ->
-                NLBStopEntity.fromApiModel(nlbStop)
+            saveStopList(list.map { NLBStop ->
+                NLBStopEntity.fromApiModel(NLBStop)
             })
         }
     }
 
-    suspend fun getRouteListByCompanyDb() = dao.getRouteList()
-    suspend fun getRouteStopComponentListDb() =
-        dao.getRouteStopComponentList()
-
+    suspend fun getStopListDb() = dao.getStopList()
+    suspend fun getRouteListDb() = dao.getRouteList()
+    suspend fun getRouteStopComponentListDb() = dao.getRouteStopComponentList()
     suspend fun getRouteStopComponentListDb(
         route: TransportRoute,
     ) = dao.getRouteStopComponentList(
-        route.company.value,
-        route.routeId,
-        route.bound.value
+        route.routeId
     )
 
-    suspend fun hasStopListDb() = dao.getSingleStop() != null
-    suspend fun hasRouteListDb() = dao.getSingleRoute() != null
-    suspend fun hasRouteStopListDb() = dao.getSingleRouteStop() != null
+    suspend fun setMapRouteListIntoMapStop(stopList: List<SearchMapStop>): List<SearchMapStop> {
+        return stopList.map {
+            if (it.mapRouteList.isEmpty()) {
+                it.mapRouteList = getRouteEtaCardList(it)
+            }
+            it
+        }
+    }
 
-    suspend fun isDataExisted() = hasStopListDb() && hasRouteListDb() && hasRouteStopListDb()
+    suspend fun getRouteEtaCardList(stop: SearchMapStop): List<Card.EtaCard> {
+        val routeStopList = dao.getRouteStopListFromStopId(stop.stopId)
+        val routeList =
+            dao.getRouteListFromRouteId(routeStopList).filter { !it.isSpecialRoute() }
+        val routeHashMap = routeList.map {
+            it.routeHashId() to it
+        }.toMap()
+
+        return routeStopList.mapNotNull {
+            val route = routeHashMap[it.routeHashId()] ?: return@mapNotNull null
+
+            Card.EtaCard(
+                route.toTransportModel(),
+                stop.toTransportModelWithSeq(it.seq),
+                position = 0
+            )
+        }
+    }
+
+    suspend fun getStopDb(stop: String): NLBStopEntity? = dao.getStop(stop).firstOrNull()
+
+    suspend fun getRouteDb(
+        route: String
+    ): NLBRouteEntity? = dao.getRoute(
+        route
+    )
 
     suspend fun initDatabase() {
         dao.clearRouteList()
@@ -86,43 +119,5 @@ class NLBRepository(
 
     suspend fun saveStopList(entityList: List<NLBStopEntity>) {
         dao.addStopList(entityList)
-    }
-
-    suspend fun getStopListDb() = dao.getStopList()
-
-    suspend fun getRouteListFromStopId(stopId: String): List<TransportRoute> {
-        val routeStopList = dao.getRouteStopListFromStopId(stopId)
-        val routeList = dao.getRouteListFromRouteId(routeStopList)
-
-        return routeList.map {
-            it.toTransportModel()
-        }
-    }
-
-    suspend fun setMapRouteListIntoMapStop(stopList: List<SearchMapStop>): List<SearchMapStop> {
-        return stopList.map {
-            if (it.mapRouteList.isEmpty()) {
-                it.mapRouteList = getRouteEtaCardList(it)
-            }
-            it
-        }
-    }
-
-    suspend fun getRouteEtaCardList(stop: SearchMapStop): List<Card.EtaCard> {
-        val routeStopList = dao.getRouteStopListFromStopId(stop.stopId)
-        val routeList = dao.getRouteListFromRouteId(routeStopList)
-        val routeHashMap = routeList.map {
-            it.routeHashId() to it
-        }.toMap()
-
-        return routeStopList.mapNotNull {
-            val route = routeHashMap[it.routeHashId()] ?: return@mapNotNull null
-
-            Card.EtaCard(
-                route.toTransportModel(),
-                stop.toTransportModelWithSeq(it.seq),
-                position = 0
-            )
-        }
     }
 }

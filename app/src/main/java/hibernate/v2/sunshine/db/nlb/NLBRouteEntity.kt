@@ -2,6 +2,7 @@ package hibernate.v2.sunshine.db.nlb
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.nlb.NLBRoute
@@ -10,15 +11,11 @@ import hibernate.v2.sunshine.model.transport.TransportRoute
 
 @Entity(
     tableName = "nlb_route",
-    primaryKeys = ["nlb_route_id", "nlb_route_bound", "nlb_route_service_type"],
+    primaryKeys = ["nlb_route_id"],
 )
 data class NLBRouteEntity(
     @ColumnInfo(name = "nlb_route_id")
     val routeId: String,
-    @ColumnInfo(name = "nlb_route_bound")
-    val bound: Bound,
-    @ColumnInfo(name = "nlb_route_service_type")
-    val serviceType: String,
     @ColumnInfo(name = "orig_en")
     val origEn: String,
     @ColumnInfo(name = "orig_tc")
@@ -32,15 +29,17 @@ data class NLBRouteEntity(
     @ColumnInfo(name = "dest_sc")
     val destSc: String,
 ) : TransportHashable {
+    @Ignore
+    val bound = Bound.UNKNOWN
+    @Ignore
+    val serviceType = "1"
 
     fun isSpecialRoute(): Boolean = false
 
     companion object {
         fun fromApiModel(route: NLBRoute): NLBRouteEntity {
             return NLBRouteEntity(
-                routeId = route.routeId.toString(),
-                bound = route.bound,
-                serviceType = route.serviceType.toString(),
+                routeId = route.routeId,
                 origEn = route.origEn,
                 origTc = route.origTc,
                 origSc = route.origSc,

@@ -34,97 +34,100 @@ class OnboardingViewModel(
 
     fun checkDbTransportData() {
         viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val checksum = coreRepository.getChecksum()
+                val existingChecksum = sharedPreferencesManager.transportDataChecksum
 
-            val checksum = coreRepository.getChecksum()
-            val existingChecksum = sharedPreferencesManager.transportDataChecksum
+                val updateCheck = UpdateCheck()
 
-            val updateCheck = UpdateCheck()
+                if (checksum != null && existingChecksum != null) {
+                    if (checksum == existingChecksum) {
+                        fetchTransportDataRequired.postValue(false)
+                        return@launch
+                    }
 
-            if (checksum == null || existingChecksum == null) {
+                    updateCheck.kmb = checksum.kmb != existingChecksum.kmb
+                    updateCheck.nc = checksum.citybusNwfb != existingChecksum.citybusNwfb
+                    updateCheck.gmb = checksum.gmb != existingChecksum.gmb
+                    updateCheck.mtr = checksum.mtr != existingChecksum.mtr
+                    updateCheck.lrt = checksum.lrt != existingChecksum.lrt
+                    updateCheck.nlb = checksum.nlb != existingChecksum.nlb
+                }
+
+                fetchTransportDataRequired.postValue(true)
+
+                if (updateCheck.kmb) {
+                    try {
+                        downloadKmbTransportData()
+                        fetchTransportDataCompleted.postValue(FetchTransportDataType.KMB)
+                    } catch (e: Exception) {
+                        Logger.e(e, "=== lifecycle downloadKmbTransportData error ===")
+                        fetchTransportDataFailed.postValue(FetchTransportDataType.KMB)
+                        return@launch
+                    }
+                }
+
+                if (updateCheck.nc) {
+                    try {
+                        downloadNCTransportData()
+                        fetchTransportDataCompleted.postValue(FetchTransportDataType.NC)
+                    } catch (e: Exception) {
+                        Logger.e(e, "=== lifecycle downloadNCTransportData error ===")
+                        fetchTransportDataFailed.postValue(FetchTransportDataType.NC)
+                        return@launch
+                    }
+                }
+
+                if (updateCheck.gmb) {
+                    try {
+                        downloadGmbTransportData()
+                        fetchTransportDataCompleted.postValue(FetchTransportDataType.GMB)
+                    } catch (e: Exception) {
+                        Logger.e(e, "=== lifecycle downloadGmbTransportData error ===")
+                        fetchTransportDataFailed.postValue(FetchTransportDataType.GMB)
+                        return@launch
+                    }
+                }
+
+                if (updateCheck.mtr) {
+                    try {
+                        downloadMTRTransportData()
+                        fetchTransportDataCompleted.postValue(FetchTransportDataType.MTR)
+                    } catch (e: Exception) {
+                        Logger.e(e, "=== lifecycle downloadMTRTransportData error ===")
+                        fetchTransportDataFailed.postValue(FetchTransportDataType.MTR)
+                        return@launch
+                    }
+                }
+
+                if (updateCheck.lrt) {
+                    try {
+                        downloadLRTTransportData()
+                        fetchTransportDataCompleted.postValue(FetchTransportDataType.LRT)
+                    } catch (e: Exception) {
+                        Logger.e(e, "=== lifecycle downloadLRTTransportData error ===")
+                        fetchTransportDataFailed.postValue(FetchTransportDataType.LRT)
+                        return@launch
+                    }
+                }
+
+                if (updateCheck.nlb) {
+                    try {
+                        downloadNLBTransportData()
+                        fetchTransportDataCompleted.postValue(FetchTransportDataType.NLB)
+                    } catch (e: Exception) {
+                        Logger.e(e, "=== lifecycle downloadNLBTransportData error ===")
+                        fetchTransportDataFailed.postValue(FetchTransportDataType.NLB)
+                        return@launch
+                    }
+                }
+
                 sharedPreferencesManager.transportDataChecksum = checksum
-            } else {
-                if (checksum == existingChecksum) {
-                    fetchTransportDataRequired.postValue(false)
-                    return@launch
-                }
-
-                updateCheck.kmb = checksum.kmb != existingChecksum.kmb
-                updateCheck.nc = checksum.citybusNwfb != existingChecksum.citybusNwfb
-                updateCheck.gmb = checksum.gmb != existingChecksum.gmb
-                updateCheck.mtr = checksum.mtr != existingChecksum.mtr
-                updateCheck.lrt = checksum.lrt != existingChecksum.lrt
-                updateCheck.nlb = checksum.nlb != existingChecksum.nlb
+                fetchTransportDataCompleted.postValue(FetchTransportDataType.ALL)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                fetchTransportDataFailed.postValue(FetchTransportDataType.ALL)
             }
-
-            fetchTransportDataRequired.postValue(true)
-
-            if (updateCheck.kmb) {
-                try {
-                    downloadKmbTransportData()
-                    fetchTransportDataCompleted.postValue(FetchTransportDataType.KMB)
-                } catch (e: Exception) {
-                    Logger.e(e, "=== lifecycle downloadKmbTransportData error ===")
-                    fetchTransportDataFailed.postValue(FetchTransportDataType.KMB)
-                    return@launch
-                }
-            }
-
-            if (updateCheck.nc) {
-                try {
-                    downloadNCTransportData()
-                    fetchTransportDataCompleted.postValue(FetchTransportDataType.NC)
-                } catch (e: Exception) {
-                    Logger.e(e, "=== lifecycle downloadNCTransportData error ===")
-                    fetchTransportDataFailed.postValue(FetchTransportDataType.NC)
-                    return@launch
-                }
-            }
-
-            if (updateCheck.gmb) {
-                try {
-                    downloadGmbTransportData()
-                    fetchTransportDataCompleted.postValue(FetchTransportDataType.GMB)
-                } catch (e: Exception) {
-                    Logger.e(e, "=== lifecycle downloadGmbTransportData error ===")
-                    fetchTransportDataFailed.postValue(FetchTransportDataType.GMB)
-                    return@launch
-                }
-            }
-
-            if (updateCheck.mtr) {
-                try {
-                    downloadMTRTransportData()
-                    fetchTransportDataCompleted.postValue(FetchTransportDataType.MTR)
-                } catch (e: Exception) {
-                    Logger.e(e, "=== lifecycle downloadMTRTransportData error ===")
-                    fetchTransportDataFailed.postValue(FetchTransportDataType.MTR)
-                    return@launch
-                }
-            }
-
-            if (updateCheck.lrt) {
-                try {
-                    downloadLRTTransportData()
-                    fetchTransportDataCompleted.postValue(FetchTransportDataType.LRT)
-                } catch (e: Exception) {
-                    Logger.e(e, "=== lifecycle downloadLRTTransportData error ===")
-                    fetchTransportDataFailed.postValue(FetchTransportDataType.LRT)
-                    return@launch
-                }
-            }
-
-            if (updateCheck.nlb) {
-                try {
-                    downloadNLBTransportData()
-                    fetchTransportDataCompleted.postValue(FetchTransportDataType.NLB)
-                } catch (e: Exception) {
-                    Logger.e(e, "=== lifecycle downloadNLBTransportData error ===")
-                    fetchTransportDataFailed.postValue(FetchTransportDataType.NLB)
-                    return@launch
-                }
-            }
-
-            fetchTransportDataCompleted.postValue(FetchTransportDataType.ALL)
         }
     }
 
@@ -261,11 +264,13 @@ class OnboardingViewModel(
     }
 
     suspend fun resetTransportData() {
+        sharedPreferencesManager.transportDataChecksum = null
         kmbRepository.initDatabase()
         ncRepository.initDatabase()
         gmbRepository.initDatabase()
         mtrRepository.initDatabase()
         lrtRepository.initDatabase()
+        nlbRepository.initDatabase()
     }
 }
 

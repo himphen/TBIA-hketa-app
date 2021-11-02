@@ -50,7 +50,7 @@ private const val DATABASE_NAME = "saved_data"
         LRTRouteEntity::class, LRTStopEntity::class, LRTRouteStopEntity::class,
         NLBRouteEntity::class, NLBStopEntity::class, NLBRouteStopEntity::class,
     ],
-    version = 16,
+    version = 19,
     exportSchema = false
 )
 @TypeConverters(DataTypeConverter::class)
@@ -81,9 +81,9 @@ abstract class LocalDatabase : RoomDatabase() {
                 DATABASE_NAME
             )
             dbBuilder.fallbackToDestructiveMigration()
-            dbBuilder.setQueryCallback({ sqlQuery, bindArgs ->
-                Log.d("SQL", "Query: $sqlQuery SQL --- Args: $bindArgs")
-            }, Executors.newSingleThreadExecutor())
+//            dbBuilder.setQueryCallback({ sqlQuery, bindArgs ->
+//                Log.d("SQL", "Query: $sqlQuery SQL --- Args: $bindArgs")
+//            }, Executors.newSingleThreadExecutor())
             return dbBuilder.build()
         }
     }

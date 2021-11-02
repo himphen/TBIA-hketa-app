@@ -30,8 +30,8 @@ data class KmbStopEntity(
                 nameEn = stop.nameEn,
                 nameTc = stop.nameTc,
                 nameSc = stop.nameSc,
-                lat = stop.lat,
-                lng = stop.lng
+                lat = stop.lat.toDoubleOrNull() ?: 0.0,
+                lng = stop.lng.toDoubleOrNull() ?: 0.0
             )
         }
     }

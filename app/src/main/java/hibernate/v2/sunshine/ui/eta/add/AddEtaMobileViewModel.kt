@@ -12,13 +12,7 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.model.transport.TransportStop
-import hibernate.v2.sunshine.repository.EtaRepository
-import hibernate.v2.sunshine.repository.GmbRepository
-import hibernate.v2.sunshine.repository.KmbRepository
-import hibernate.v2.sunshine.repository.LRTRepository
-import hibernate.v2.sunshine.repository.MTRRepository
-import hibernate.v2.sunshine.repository.NCRepository
-import hibernate.v2.sunshine.repository.RouteListDataHolder
+import hibernate.v2.sunshine.repository.*
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -34,6 +28,7 @@ class AddEtaMobileViewModel(
     private val gmbRepository: GmbRepository,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
+    private val nlbRepository: NLBRepository,
 ) : BaseViewModel() {
 
     val filteredTransportRouteList = MutableSharedFlow<Pair<EtaType, List<TransportRoute>>>()
@@ -84,6 +79,7 @@ class AddEtaMobileViewModel(
                 EtaType.GMB_NT -> getGmbRouteList(etaType)
                 EtaType.MTR -> getMTRRouteList()
                 EtaType.LRT -> getLRTRouteList()
+                EtaType.NLB -> getNLBRouteList()
             }
 
             searchRoute(etaType)
@@ -103,7 +99,7 @@ class AddEtaMobileViewModel(
                 EtaType.GMB_NT -> getGmbStopList(route)
                 EtaType.MTR -> getMTRStopList(route)
                 EtaType.LRT -> getLRTStopList(route)
-                EtaType.NLB -> TODO()
+                EtaType.NLB -> getNLBStopList(route)
             }
 
             stopList.emit(list)
@@ -208,6 +204,26 @@ class AddEtaMobileViewModel(
         }
     }
 
+    private suspend fun getNLBRouteList() {
+        val etaType = EtaType.NLB
+        if (RouteListDataHolder.hasData(etaType)) {
+            return
+        }
+
+        try {
+            val allRouteList = nlbRepository.getRouteListDb()
+                .filter { !it.isSpecialRoute() }
+                .map { it.toTransportModel() }
+            RouteListDataHolder.setData(etaType, allRouteList.toMutableList())
+
+            Logger.d("lifecycle getTransportRouteList done")
+        } catch (e: Exception) {
+            RouteListDataHolder.setData(etaType, mutableListOf())
+
+            Logger.e(e, "lifecycle getTransportRouteList error")
+        }
+    }
+
     private suspend fun getKmbStopList(route: TransportRoute): List<TransportStop> {
         return try {
             val allRouteList = kmbRepository.getRouteStopComponentListDb(route)
@@ -264,6 +280,18 @@ class AddEtaMobileViewModel(
             allRouteList
         } catch (e: Exception) {
             Logger.e(e, "lifecycle getNCStopList error")
+            mutableListOf()
+        }
+    }
+
+    private suspend fun getNLBStopList(route: TransportRoute): List<TransportStop> {
+        return try {
+            val allRouteList = nlbRepository.getRouteStopComponentListDb(route)
+                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
+            Logger.d("lifecycle getNLBStopList done")
+            allRouteList
+        } catch (e: Exception) {
+            Logger.e(e, "lifecycle getNLBStopList error")
             mutableListOf()
         }
     }

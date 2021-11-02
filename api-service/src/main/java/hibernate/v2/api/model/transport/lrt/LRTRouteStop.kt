@@ -1,7 +1,6 @@
 package hibernate.v2.api.model.transport.lrt
 
 import com.google.firebase.database.PropertyName
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.Bound
 
 data class LRTRouteStop(

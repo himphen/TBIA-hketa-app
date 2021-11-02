@@ -67,12 +67,6 @@ class MTRRepository(
         route.serviceType
     )
 
-    suspend fun hasStopListDb() = mtrDao.getSingleStop() != null
-    suspend fun hasRouteListDb() = mtrDao.getSingleRoute() != null
-    suspend fun hasRouteStopListDb() = mtrDao.getSingleRouteStop() != null
-
-    suspend fun isDataExisted() = hasStopListDb() && hasRouteListDb() && hasRouteStopListDb()
-
     suspend fun initDatabase() {
         mtrDao.clearRouteList()
         mtrDao.clearStopList()

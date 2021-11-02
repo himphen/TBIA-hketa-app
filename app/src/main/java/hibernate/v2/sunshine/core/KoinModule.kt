@@ -11,6 +11,7 @@ import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.repository.WeatherRepository
+import hibernate.v2.sunshine.ui.eta.add.AddEtaHelper
 import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.eta.edit.EditEtaViewModel
@@ -32,13 +33,13 @@ val koinServiceModule: Module = module {
 
 val koinUIModule: Module = module {
     viewModel { EtaViewModel(get()) }
-    viewModel { OnboardingViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { OnboardingViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { EditEtaViewModel(get()) }
-    viewModel { AddEtaViewModel(get(), get(), get(), get(), get(), get()) }
-    viewModel { AddEtaMobileViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { AddEtaViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { AddEtaMobileViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { WeatherViewModel(get()) }
     viewModel { TrafficViewModel(get()) }
-    viewModel { SearchMapViewModel(get(), get(), get(), get(), get()) }
+    viewModel { SearchMapViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { MainViewModel() }
 }
 
@@ -54,7 +55,7 @@ val koinRepositoryModule: Module = module {
     single { get<LocalDatabase>().nlbDao() }
     single { CoreRepository() }
     single { EtaRepository(get(), get(), get()) }
-    single { KmbRepository(get(), get()) }
+    single { KmbRepository(get()) }
     single { NCRepository(get()) }
     single { GmbRepository(get()) }
     single { MTRRepository(get()) }

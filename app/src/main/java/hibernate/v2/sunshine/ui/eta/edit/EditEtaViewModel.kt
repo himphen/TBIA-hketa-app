@@ -42,6 +42,9 @@ class EditEtaViewModel(
                     etaRepository.getSavedLRTEtaList()
                         .map { it.toSettingsEtaCard() }
 
+                }, async {
+                    etaRepository.getSavedNLBEtaList()
+                        .map { it.toSettingsEtaCard() }
                 }
             )
 

@@ -19,9 +19,6 @@ interface KmbDao {
     @Query("SELECT * FROM kmb_stop WHERE kmb_stop_id = (:stop)")
     suspend fun getStop(stop: String): List<KmbStopEntity>
 
-    @Query("SELECT * FROM kmb_stop LIMIT 1")
-    suspend fun getSingleStop(): KmbStopEntity?
-
     @Insert
     suspend fun addStopList(entityList: List<KmbStopEntity>)
 
@@ -32,9 +29,6 @@ interface KmbDao {
 
     @Query("SELECT * FROM kmb_route")
     suspend fun getRouteList(): List<KmbRouteEntity>
-
-    @Query("SELECT * FROM kmb_route LIMIT 1")
-    suspend fun getSingleRoute(): KmbRouteEntity?
 
     @Query("SELECT * FROM kmb_route WHERE kmb_route_id = (:route) AND kmb_route_bound = (:bound) AND kmb_route_service_type = (:serviceType)")
     suspend fun getRoute(
@@ -96,9 +90,6 @@ interface KmbDao {
         bound: String,
         serviceType: String,
     ): List<KmbRouteStopComponent>
-
-    @Query("SELECT * FROM kmb_route_stop LIMIT 1")
-    suspend fun getSingleRouteStop(): KmbRouteStopEntity?
 
     @Insert
     suspend fun addRouteStopList(entityList: List<KmbRouteStopEntity>)
