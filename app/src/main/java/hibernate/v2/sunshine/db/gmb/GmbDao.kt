@@ -7,6 +7,7 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
+import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 
 @Dao
 interface GmbDao {
@@ -14,7 +15,10 @@ interface GmbDao {
     //////
 
     @Query("SELECT * FROM gmb_stop")
-    suspend fun getStopList(): List<GmbStopEntity>
+    suspend fun getAllStopList(): List<GmbStopEntity>
+
+    @Query("SELECT * FROM gmb_stop WHERE geohash IN (:list)")
+    suspend fun getStopList(list: List<String>): List<GmbStopEntity>
 
     @Query("SELECT * FROM gmb_stop WHERE gmb_stop_id = (:stop)")
     suspend fun getStop(stop: String): List<GmbStopEntity>

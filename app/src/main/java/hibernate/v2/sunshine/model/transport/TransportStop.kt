@@ -25,4 +25,16 @@ data class TransportStop(
 
         return nameTc
     }
+
+    companion object {
+        fun notFoundStop() = TransportStop(
+            company = Company.UNKNOWN,
+            lat = 0.0,
+            lng = 0.0,
+            nameEn = "-", // TODO
+            nameSc = "-", // TODO
+            nameTc = "-",
+            stopId = "",
+        )
+    }
 }

@@ -22,6 +22,7 @@ data class LRTStopEntity(
     val nameSc: String,
     val lat: Double,
     val lng: Double,
+    val geohash: String,
 ) {
     companion object {
         fun fromApiModel(stop: LRTStop): LRTStopEntity {
@@ -31,7 +32,8 @@ data class LRTStopEntity(
                 nameTc = stop.nameTc,
                 nameSc = stop.nameSc,
                 lat = stop.lat,
-                lng = stop.lng
+                lng = stop.lng,
+                geohash = stop.geohash,
             )
         }
     }

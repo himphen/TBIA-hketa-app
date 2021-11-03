@@ -3,7 +3,11 @@ package hibernate.v2.api.model.transport.gmb
 import com.google.firebase.database.PropertyName
 
 data class GmbStop(
+    @get:PropertyName("lat")
+    @set:PropertyName("lat")
     var lat: Double = 0.0,
+    @get:PropertyName("long")
+    @set:PropertyName("long")
     var lng: Double = 0.0,
     @get:PropertyName("name_en")
     @set:PropertyName("name_en")
@@ -16,5 +20,8 @@ data class GmbStop(
     var nameTc: String = "",
     @get:PropertyName("stop")
     @set:PropertyName("stop")
-    var stopId: Long = 0
+    var stopId: Long = 0,
+    @get:PropertyName("geohash")
+    @set:PropertyName("geohash")
+    var geohash: String = "",
 )

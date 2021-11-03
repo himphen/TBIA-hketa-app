@@ -24,8 +24,9 @@ class CustomClusterManager(
 ) : ClusterManager<SearchMapStop>(context, map),
     GoogleMap.OnCameraMoveListener {
 
-    val onGotCurrentCircleSize = MutableSharedFlow<Pair<DistanceLevel, Int>>()
+    val onGetCurrentCircleSize = MutableSharedFlow<Pair<DistanceLevel, Int>>()
     val onCameraMoving = MutableSharedFlow<Boolean>()
+    val onRequestStopListForMarker = MutableSharedFlow<Unit>()
 
     private var isCameraMoving = false
     private val levels = arrayListOf(DistanceLevel.D10, DistanceLevel.D5)
@@ -37,7 +38,6 @@ class CustomClusterManager(
         const val MARKER_IN_ZOOM_LEVEL = 14.5
     }
 
-    val allStopList = mutableListOf<SearchMapStop>()
     private val shownStopList = mutableListOf<SearchMapStop>()
     var currentZoomLevel: Float? = null
 
@@ -60,8 +60,17 @@ class CustomClusterManager(
         isCameraMoving = false
         lifecycleScope.launch {
             onCameraMoving.emit(false)
+
+            if (currentZoomLevel == null) {
+                currentZoomLevel = map.cameraPosition.zoom
+            }
+            val currentZoomLevel = currentZoomLevel!!
+            if (currentZoomLevel >= MARKER_IN_ZOOM_LEVEL) {
+                onRequestStopListForMarker.emit(Unit)
+            } else {
+                removeMarker()
+            }
         }
-        setMarkerVisibility()
     }
 
     private fun getDestinationPoint(source: LatLng, brng: Double, dist: Double): LatLng? {
@@ -92,7 +101,7 @@ class CustomClusterManager(
 //        if (diff < 400) return false
 
         lifecycleScope.launch {
-            onGotCurrentCircleSize.emit(Pair(level, diff))
+            onGetCurrentCircleSize.emit(Pair(level, diff))
         }
 
         return true
@@ -107,48 +116,48 @@ class CustomClusterManager(
         }
 
         lifecycleScope.launch {
-            onGotCurrentCircleSize.emit(Pair(DistanceLevel.D0, -1))
+            onGetCurrentCircleSize.emit(Pair(DistanceLevel.D0, -1))
         }
     }
 
-    fun setMarkerVisibility() {
-        if (currentZoomLevel == null) {
-            currentZoomLevel = map.cameraPosition.zoom
-        }
-
-        val currentZoomLevel = currentZoomLevel!!
+    fun updateMarker(allStopList: List<SearchMapStop>) {
         val currentPosition = map.cameraPosition.target
         lifecycleScope.launch(Dispatchers.IO) {
-            if (currentZoomLevel >= MARKER_IN_ZOOM_LEVEL) {
-                val pendingToAdd = allStopList
-                    .filter {
-                        val distance = SphericalUtil.computeDistanceBetween(
-                            it.position, currentPosition
-                        )
+            val pendingToAdd = allStopList
+                .filter {
+                    val distance = SphericalUtil.computeDistanceBetween(
+                        it.position, currentPosition
+                    )
 
-                        distance < MARKER_IN_METER
-                    }
+                    distance < MARKER_IN_METER
+                }
 
-                val pendingToRemove = shownStopList
-                    .filter {
-                        val distance = SphericalUtil.computeDistanceBetween(
-                            it.position, currentPosition
-                        )
+            val pendingToRemove = shownStopList
+                .filter {
+                    val distance = SphericalUtil.computeDistanceBetween(
+                        it.position, currentPosition
+                    )
 
-                        distance > MARKER_IN_METER
-                    }
+                    distance > MARKER_IN_METER
+                }
 
-                removeItems(pendingToRemove)
-                addItems(pendingToAdd)
-                shownStopList.removeAll(pendingToRemove)
-                shownStopList.addAll(pendingToAdd)
-            } else {
-                removeItems(shownStopList)
-            }
+            removeItems(pendingToRemove)
+            addItems(pendingToAdd)
+            shownStopList.removeAll(pendingToRemove)
+            shownStopList.addAll(pendingToAdd)
 
             withContext(Dispatchers.Main) {
                 cluster()
             }
+        }
+    }
+
+    private fun removeMarker() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            removeItems(shownStopList)
+            shownStopList.clear()
+
+            cluster()
         }
     }
 }

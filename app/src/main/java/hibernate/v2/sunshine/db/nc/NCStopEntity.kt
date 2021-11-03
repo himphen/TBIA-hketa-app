@@ -22,6 +22,7 @@ data class NCStopEntity(
     val nameSc: String,
     val lat: Double,
     val lng: Double,
+    val geohash: String,
 ) {
     companion object {
         fun fromApiModel(stop: NCStop) = NCStopEntity(
@@ -30,7 +31,8 @@ data class NCStopEntity(
             nameTc = stop.nameTc,
             nameSc = stop.nameSc,
             lat = stop.lat.toDoubleOrNull() ?: 0.0,
-            lng = stop.lng.toDoubleOrNull() ?: 0.0
+            lng = stop.lng.toDoubleOrNull() ?: 0.0,
+            geohash = stop.geohash,
         )
     }
 

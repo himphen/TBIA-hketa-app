@@ -2,6 +2,7 @@ package hibernate.v2.sunshine.ui.searchmap
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.fonfon.kgeohash.GeoHash
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.EtaType
@@ -10,6 +11,8 @@ import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
 class SearchMapViewModel(
@@ -22,7 +25,7 @@ class SearchMapViewModel(
 ) : BaseViewModel() {
 
     val selectedStop = MutableLiveData<SearchMapStop>()
-    val stopList = MutableLiveData<List<SearchMapStop>>(listOf())
+    val stopList = MutableSharedFlow<List<SearchMapStop>>()
     val routeListForBottomSheet = MutableLiveData<List<Card.EtaCard>>(emptyList())
     val stopListForBottomSheet = MutableLiveData<List<SearchMapStop>>(emptyList())
 
@@ -64,35 +67,31 @@ class SearchMapViewModel(
         }
     }
 
-    fun getStopList() {
+    fun getStopList(list: List<GeoHash>) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (stopList.value.isNullOrEmpty()) {
-                val deferredList = listOf(
-                    async {
-                        kmbRepository.getStopListDb().map {
-                            SearchMapStop.fromStopEntity(it)
-                        }
-                    },
-                    async {
-                        ncRepository.getStopListDb().map {
-                            SearchMapStop.fromStopEntity(it)
-                        }
-                    },
-                    async {
-                        gmbRepository.getStopListDb().map {
-                            SearchMapStop.fromStopEntity(it)
-                        }
-                    },
-                    async {
-                        nlbRepository.getStopListDb().map {
-                            SearchMapStop.fromStopEntity(it)
-                        }
-                    },
-                )
-                stopList.postValue(deferredList.awaitAll().flatten())
-            } else {
-                stopList.postValue(stopList.value)
-            }
+            val deferredList = listOf(
+                async {
+                    kmbRepository.getStopListDb(list).map {
+                        SearchMapStop.fromStopEntity(it)
+                    }
+                },
+                async {
+                    ncRepository.getStopListDb(list).map {
+                        SearchMapStop.fromStopEntity(it)
+                    }
+                },
+                async {
+                    gmbRepository.getStopListDb(list).map {
+                        SearchMapStop.fromStopEntity(it)
+                    }
+                },
+                async {
+                    nlbRepository.getStopListDb(list).map {
+                        SearchMapStop.fromStopEntity(it)
+                    }
+                },
+            )
+            stopList.emit(deferredList.awaitAll().flatten())
         }
     }
 }

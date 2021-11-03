@@ -75,7 +75,7 @@ class EtaEditFragment : VerticalGridSupportFragment() {
                     ACTION_ID_REMOVE -> {
                         viewModel.editCard.value?.let { card ->
                             card as Card.SettingsEtaItemCard
-                            viewModel.clearData(card.entity)
+                            viewModel.removeEta(card.entity)
 
                             val currentEtaOrderList = viewModel.getEtaOrderList()
                             val updatedEtaOrderList = currentEtaOrderList.filterNot {
@@ -123,11 +123,8 @@ class EtaEditFragment : VerticalGridSupportFragment() {
     private fun initEvent() {
         viewModel.savedEtaCardList.observe(viewLifecycleOwner) {
             savedEtaCardList.clear()
-            savedEtaCardList = it
-            savedEtaCardList.add(
-                0,
-                Card.SettingsEtaAddCard()
-            )
+            savedEtaCardList.add(Card.SettingsEtaAddCard())
+            savedEtaCardList.addAll(it)
             updateRows()
         }
     }

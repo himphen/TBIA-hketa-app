@@ -22,6 +22,7 @@ data class MTRStopEntity(
     val nameSc: String,
     val lat: Double,
     val lng: Double,
+    val geohash: String,
 ) {
     companion object {
         fun fromApiModel(stop: MTRStop): MTRStopEntity {
@@ -31,7 +32,8 @@ data class MTRStopEntity(
                 nameTc = stop.nameTc,
                 nameSc = stop.nameSc,
                 lat = stop.lat,
-                lng = stop.lng
+                lng = stop.lng,
+                geohash = stop.geohash,
             )
         }
     }

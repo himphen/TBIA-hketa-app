@@ -111,6 +111,22 @@ open class TransportRoute(
                 Company.NLB -> R.color.brand_color_nlb
             }
         )
+
+    companion object {
+        fun notFoundRoute() = TransportRoute(
+            company = Company.UNKNOWN,
+            routeId = "-",
+            routeNo = "-",
+            bound = Bound.UNKNOWN,
+            serviceType = "",
+            origEn = "-", // TODO
+            origTc = "-", // TODO
+            origSc = "-", // TODO
+            destEn = "-", // TODO
+            destTc = "-", // TODO
+            destSc = "-",
+        )
+    }
 }
 
 @Parcelize

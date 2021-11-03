@@ -57,7 +57,7 @@ class EditEtaViewModel(
         }
     }
 
-    suspend fun clearData(item: SavedEtaEntity) = etaRepository.clearEta(item)
+    suspend fun removeEta(item: SavedEtaEntity) = etaRepository.clearEta(item)
 
     suspend fun clearAllEta() = etaRepository.clearAllEta()
 

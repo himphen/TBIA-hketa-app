@@ -14,7 +14,10 @@ interface KmbDao {
     //////
 
     @Query("SELECT * FROM kmb_stop")
-    suspend fun getStopList(): List<KmbStopEntity>
+    suspend fun getAllStopList(): List<KmbStopEntity>
+
+    @Query("SELECT * FROM kmb_stop WHERE geohash IN (:list)")
+    suspend fun getStopList(list: List<String>): List<KmbStopEntity>
 
     @Query("SELECT * FROM kmb_stop WHERE kmb_stop_id = (:stop)")
     suspend fun getStop(stop: String): List<KmbStopEntity>

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onCancel
+import com.fonfon.kgeohash.GeoHash
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -130,9 +131,9 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private fun initEvent() {
-        viewModel.stopList.observe(viewLifecycleOwner) {
+        viewModel.stopList.onEach {
             showStopListOnMap(it)
-        }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.routeListForBottomSheet.observe(viewLifecycleOwner) {
             showRouteListOnBottomSheet(it)
@@ -301,7 +302,6 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private fun initData() {
-        viewModel.getStopList()
     }
 
     private fun setUpClusterer(googleMap: GoogleMap) {
@@ -312,7 +312,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 viewLifecycleOwner.lifecycleScope
             )
             clusterManager?.apply {
-                onGotCurrentCircleSize.onEach {
+                onGetCurrentCircleSize.onEach {
                     viewBinding?.currentMarkerCircle?.apply {
                         if (it.second < 20) {
                             gone()
@@ -350,6 +350,14 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                         }
                         viewBinding?.currentMarkerCircle?.setBackgroundResource(R.drawable.map_marker_current_dashed)
                         viewBinding?.currentMarker?.setBackgroundResource(R.drawable.map_marker_current)
+                    }
+                }.launchIn(viewLifecycleOwner.lifecycleScope)
+                onRequestStopListForMarker.onEach {
+                    map.cameraPosition.target.run {
+                        val currentPositionGeoHash = GeoHash(latitude, longitude, 6)
+                        val list = currentPositionGeoHash.adjacent.toMutableList()
+                            .apply { add(currentPositionGeoHash) }
+                        viewModel.getStopList(list)
                     }
                 }.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -428,9 +436,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
     private fun showStopListOnMap(list: List<SearchMapStop>) {
         clusterManager?.apply {
-            allStopList.clear()
-            allStopList.addAll(list)
-            setMarkerVisibility()
+            updateMarker(list)
         }
     }
 

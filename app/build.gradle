@@ -117,4 +117,7 @@ dependencies {
 
     // https://github.com/marcoscgdev/Licenser
     implementation 'com.github.marcoscgdev:Licenser:2.0.0'
+
+    // https://github.com/drfonfon/android-kotlin-geohash
+    implementation 'com.github.drfonfon:android-kotlin-geohash:1.0'
 }

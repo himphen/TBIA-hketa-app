@@ -51,6 +51,7 @@
     <string name="dialog_add_eta_brand_selection_nlb_btn">新大嶼山巴士</string>
 
     <string name="text_eta_loading_failed">載入數據失敗，正在重新再試。（錯誤碼：%d）</string>
+    <string name="text_edit_eta_invalid_hint">已移除主頁失效的常用車站。</string>
 
     <string name="text_add_eta_hint_stop">%1$s所有車站</string>
 
@@ -71,15 +72,15 @@
     <string name="dialog_edit_eta_move_down_btn">下移</string>
     <string name="dialog_edit_eta_remove_btn">移除</string>
     <string name="dialog_edit_eta_cancel_btn">取消</string>
-    <string name="toast_eta_already_added">無法重覆選擇已加入的站位</string>
-    <string name="toast_eta_added">已成功加入站位</string>
+    <string name="toast_eta_already_added">無法重覆選擇已加入的常用車站</string>
+    <string name="toast_eta_added">已成功加入常用車站</string>
     <string name="eta_card_minute_unit">分</string>
 
-    <string name="dialog_add_eta_in_search_map_description_bus">加入%1$s號線%2$s車站至主頁？</string>
+    <string name="dialog_add_eta_in_search_map_description_bus">加入%1$s號線%2$s車站至常用車站列表？</string>
     <string name="dialog_add_eta_in_search_map_confirm_btn">確定</string>
     <string name="dialog_add_eta_in_search_map_cancel_btn">取消</string>
 
-    <string name="dialog_check_edit_eta_order_description">是否需要儲存新的車站排序？</string>
+    <string name="dialog_check_edit_eta_order_description">是否需要儲存新的常用車站排序？</string>
     <string name="dialog_check_edit_eta_order_leave_btn">離開</string>
     <string name="dialog_check_edit_eta_order_save_btn">儲存</string>
 

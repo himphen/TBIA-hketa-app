@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.repository
 
+import com.fonfon.kgeohash.GeoHash
 import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.ktx.getValue
 import hibernate.v2.api.model.transport.Company
@@ -83,7 +84,7 @@ class NCRepository(
         ncDao.addStopList(entityList)
     }
 
-    suspend fun getStopListDb() = ncDao.getStopList()
+    suspend fun getStopListDb(list: List<GeoHash>) = ncDao.getStopList(list.map { it.toString() })
 
     suspend fun getRouteListFromStopId(stopId: String): List<TransportRoute> {
         val routeStopList = ncDao.getRouteStopListFromStopId(stopId)

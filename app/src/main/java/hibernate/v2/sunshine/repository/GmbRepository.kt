@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.repository
 
+import com.fonfon.kgeohash.GeoHash
 import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.ktx.getValue
 import hibernate.v2.api.model.transport.GmbRegion
@@ -80,7 +81,7 @@ class GmbRepository(
         gmbDao.addStopList(entityList)
     }
 
-    suspend fun getStopListDb() = gmbDao.getStopList()
+    suspend fun getStopListDb(list: List<GeoHash>) = gmbDao.getStopList(list.map { it.toString() })
 
     suspend fun getRouteListFromStopId(stopId: String): List<TransportRoute> {
         val routeStopList = gmbDao.getRouteStopListFromStopId(stopId)

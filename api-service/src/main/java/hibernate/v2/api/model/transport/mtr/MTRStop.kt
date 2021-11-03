@@ -3,6 +3,8 @@ package hibernate.v2.api.model.transport.mtr
 import com.google.firebase.database.PropertyName
 
 data class MTRStop(
+    @get:PropertyName("lat")
+    @set:PropertyName("lat")
     var lat: Double = 0.0,
     @get:PropertyName("long")
     @set:PropertyName("long")
@@ -19,4 +21,7 @@ data class MTRStop(
     @get:PropertyName("stop")
     @set:PropertyName("stop")
     var stopId: String = "",
+    @get:PropertyName("geohash")
+    @set:PropertyName("geohash")
+    var geohash: String = "",
 )

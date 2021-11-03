@@ -50,7 +50,7 @@ private const val DATABASE_NAME = "saved_data"
         LRTRouteEntity::class, LRTStopEntity::class, LRTRouteStopEntity::class,
         NLBRouteEntity::class, NLBStopEntity::class, NLBRouteStopEntity::class,
     ],
-    version = 19,
+    version = 21,
     exportSchema = false
 )
 @TypeConverters(DataTypeConverter::class)

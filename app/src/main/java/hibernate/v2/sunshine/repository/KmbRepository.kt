@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.repository
 
+import com.fonfon.kgeohash.GeoHash
 import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.ktx.getValue
 import hibernate.v2.api.model.transport.kmb.KmbRoute
@@ -52,7 +53,7 @@ class KmbRepository(
         }
     }
 
-    suspend fun getStopListDb() = dao.getStopList()
+    suspend fun getStopListDb(list: List<GeoHash>) = dao.getStopList(list.map { it.toString() })
     suspend fun getRouteListDb() = dao.getRouteList()
     suspend fun getRouteStopComponentListDb() = dao.getRouteStopComponentList()
     suspend fun getRouteStopComponentListDb(

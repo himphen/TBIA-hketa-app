@@ -7,9 +7,11 @@ data class NCStop(
      * Document shows this is double type
      * However, API return string instead of double
      */
+    @get:PropertyName("lat")
+    @set:PropertyName("lat")
     var lat: String = "",
-    @get:PropertyName("lng")
-    @set:PropertyName("lng")
+    @get:PropertyName("long")
+    @set:PropertyName("long")
     var lng: String = "",
     @get:PropertyName("name_en")
     @set:PropertyName("name_en")
@@ -23,4 +25,7 @@ data class NCStop(
     @get:PropertyName("stop")
     @set:PropertyName("stop")
     var stopId: String = "",
+    @get:PropertyName("geohash")
+    @set:PropertyName("geohash")
+    var geohash: String = "",
 )

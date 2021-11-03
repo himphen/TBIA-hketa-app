@@ -30,6 +30,7 @@ sealed class Card {
         val route: TransportRoute,
         val stop: TransportStop,
         override val position: Int,
+        val isValid: Boolean = true,
     ) : SettingsEtaCard()
 
     class SettingsEtaAddCard : SettingsEtaCard(position = 0)
@@ -45,6 +46,7 @@ sealed class Card {
         val position: Int,
         val etaList: MutableList<TransportEta> = mutableListOf(),
         var platform: String? = "",
+        val isValid: Boolean = true,
     ) : Card(), Comparable<EtaCard> {
 
         override fun compareTo(other: EtaCard): Int {

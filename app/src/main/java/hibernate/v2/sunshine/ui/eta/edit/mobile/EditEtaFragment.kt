@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -26,6 +27,7 @@ import hibernate.v2.sunshine.ui.base.ItemTouchHelperCallback
 import hibernate.v2.sunshine.ui.eta.edit.EditEtaViewModel
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.swap
+import hibernate.v2.sunshine.util.toggleSlideUp
 import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,6 +66,7 @@ class EditEtaFragment : BaseFragment<FragmentEditEtaBinding>() {
     }
 
     var isEditingOrdering = false
+    var invalidCardList = mutableListOf<Card.SettingsEtaItemCard>()
 
     private fun showRemoveEtaConfirmDialog(card: Card.SettingsEtaItemCard) {
         context?.let { context ->
@@ -90,7 +93,7 @@ class EditEtaFragment : BaseFragment<FragmentEditEtaBinding>() {
                 }
                 .positiveButton(R.string.dialog_settings_eta_remove_pos_btn) {
                     lifecycleScope.launch(Dispatchers.Main) {
-                        viewModel.clearData(card.entity)
+                        viewModel.removeEta(card.entity)
                         val position = savedEtaCardList.indexOf(card)
 
                         val currentEtaOrderList = viewModel.getEtaOrderList()
@@ -132,9 +135,17 @@ class EditEtaFragment : BaseFragment<FragmentEditEtaBinding>() {
     private fun initEvent() {
         viewModel.savedEtaCardList.observe(viewLifecycleOwner) {
             savedEtaCardList.clear()
-            savedEtaCardList = it.map { card ->
-                card as Card.SettingsEtaItemCard
+
+            val cardList = it.mapNotNull { card1 ->
+                val card = card1 as Card.SettingsEtaItemCard
+                if (!card.isValid) {
+                    invalidCardList.add(card)
+                    return@mapNotNull null
+                }
+                return@mapNotNull card
             }.toMutableList()
+
+            savedEtaCardList.addAll(cardList)
             updateRows()
         }
     }
@@ -163,6 +174,17 @@ class EditEtaFragment : BaseFragment<FragmentEditEtaBinding>() {
             viewBinding?.apply {
                 emptyViewCl.root.gone()
                 recyclerView.visible()
+            }
+        }
+        if (invalidCardList.isNotEmpty()) {
+            viewBinding?.apply {
+                etaInvalidHintsTv.toggleSlideUp(true)
+            }
+
+            lifecycleScope.launch {
+                invalidCardList.forEach {
+                    viewModel.removeEta(it.entity)
+                }
             }
         }
         adapter.setData(savedEtaCardList)

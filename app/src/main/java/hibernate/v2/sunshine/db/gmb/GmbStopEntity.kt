@@ -22,6 +22,7 @@ data class GmbStopEntity(
     val nameSc: String,
     val lat: Double,
     val lng: Double,
+    val geohash: String,
 ) {
     companion object {
         fun fromApiModel(stop: GmbStop): GmbStopEntity {
@@ -31,7 +32,8 @@ data class GmbStopEntity(
                 nameTc = stop.nameTc,
                 nameSc = stop.nameSc,
                 lat = stop.lat,
-                lng = stop.lng
+                lng = stop.lng,
+                geohash = stop.geohash,
             )
         }
     }
