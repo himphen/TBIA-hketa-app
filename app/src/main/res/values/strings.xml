@@ -60,6 +60,9 @@
     <string name="dialog_settings_eta_remove_message">確定移除%1$s號線%2$s車站嗎？</string>
     <string name="dialog_settings_eta_remove_mtr_message">確定移除%1$s%2$s車站嗎？</string>
     <string name="dialog_settings_eta_remove_pos_btn">移除</string>
+    <string name="dialog_settings_reset_message">確定要重新下載所有路線數據嗎？</string>
+
+    <string name="dialog_confirm_btn">確定</string>
     <string name="dialog_cancel_btn">取消</string>
 
     <string name="text_gmb_region_hki">港島專線小巴</string>
@@ -125,6 +128,7 @@
     <string name="placeholder_search_route">搜尋路線</string>
     <string name="placeholder_search_stop">搜尋車站</string>
     <string name="empty_eta_list">沒有加入車站</string>
+    <string name="empty_route_list">找不到路線</string>
     <string name="map_marker_distance_5">5分鐘路程</string>
     <string name="map_marker_distance_10">10分鐘路程</string>
     <string name="map_marker_distance_15">15分鐘路程</string>

@@ -7,12 +7,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.ui.onboarding.mobile.OnboardingActivity
 import hibernate.v2.sunshine.ui.settings.eta.layout.mobile.EtaLayoutSelectionActivity
-import hibernate.v2.sunshine.ui.eta.edit.mobile.EditEtaActivity
 import hibernate.v2.sunshine.util.GeneralUtils
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -45,11 +45,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
         findPreference<Preference>("pref_settings_reset")?.apply {
             setOnPreferenceClickListener {
-                lifecycleScope.launch {
-                    onboardingViewModel.resetTransportData()
-                    startActivity(Intent(activity, OnboardingActivity::class.java))
-                    activity?.finish()
-                }
+                MaterialAlertDialogBuilder(it.context)
+                    .setMessage(R.string.dialog_settings_reset_message)
+                    .setPositiveButton(R.string.dialog_confirm_btn) { dialog, _ ->
+                        lifecycleScope.launch {
+                            onboardingViewModel.resetTransportData()
+                            dialog.dismiss()
+                            startActivity(Intent(activity, OnboardingActivity::class.java))
+                            activity?.finish()
+                        }
+                    }
+                    .setNegativeButton(R.string.dialog_cancel_btn) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
                 true
             }
         }

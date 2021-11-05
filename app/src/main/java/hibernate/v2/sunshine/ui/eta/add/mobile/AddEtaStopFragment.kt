@@ -8,14 +8,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.databinding.FragmentAddEtaBinding
+import hibernate.v2.sunshine.databinding.FragmentAddEtaStopBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class AddEtaStopFragment : BaseFragment<FragmentAddEtaBinding>() {
+class AddEtaStopFragment : BaseFragment<FragmentAddEtaStopBinding>() {
 
     companion object {
         fun getInstance() = AddEtaStopFragment()
@@ -32,7 +32,7 @@ class AddEtaStopFragment : BaseFragment<FragmentAddEtaBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) = FragmentAddEtaBinding.inflate(inflater, container, false)
+    ) = FragmentAddEtaStopBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

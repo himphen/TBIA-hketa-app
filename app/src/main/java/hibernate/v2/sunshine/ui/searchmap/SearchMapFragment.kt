@@ -13,8 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.callbacks.onCancel
 import com.fonfon.kgeohash.GeoHash
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -24,6 +22,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.maps.android.ktx.awaitMap
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
@@ -32,8 +31,8 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
+import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.dpToPx
@@ -78,22 +77,21 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             val context = context ?: return@launch
             val result = suspendCancellableCoroutine<Boolean> { cont ->
-                MaterialDialog(context)
-                    .message(
-                        text =
+                MaterialAlertDialogBuilder(context)
+                    .setMessage(
                         getString(
                             R.string.dialog_add_eta_in_search_map_description_bus,
                             card.route.routeNo,
                             card.stop.nameTc
                         )
                     )
-                    .positiveButton(R.string.dialog_add_eta_in_search_map_confirm_btn) {
+                    .setPositiveButton(R.string.dialog_add_eta_in_search_map_confirm_btn) { _, _ ->
                         cont.resume(true)
                     }
-                    .negativeButton(R.string.dialog_add_eta_in_search_map_cancel_btn) {
+                    .setNegativeButton(R.string.dialog_add_eta_in_search_map_cancel_btn) { _, _ ->
                         cont.resume(false)
                     }
-                    .onCancel {
+                    .setOnCancelListener {
                         cont.resume(false)
                     }
                     .show()

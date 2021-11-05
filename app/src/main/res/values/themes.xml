@@ -9,8 +9,6 @@
         <item name="android:textColor">@color/common_text_primary</item>
         <item name="android:windowBackground">@color/common_bg</item>
 
-        <item name="md_color_button_text">@color/common_text_primary</item>
-
         <item name="android:listSeparatorTextViewStyle">@style/PreferenceStyle</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>

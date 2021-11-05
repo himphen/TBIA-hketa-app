@@ -9,13 +9,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.callbacks.onCancel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentEditEtaBinding
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
@@ -70,20 +68,20 @@ class EditEtaFragment : BaseFragment<FragmentEditEtaBinding>() {
 
     private fun showRemoveEtaConfirmDialog(card: Card.SettingsEtaItemCard) {
         context?.let { context ->
-            MaterialDialog(context)
-                .title(R.string.dialog_settings_eta_remove_title)
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.dialog_settings_eta_remove_title)
                 .apply {
                     if (card.route is MTRTransportRoute) {
-                        message(
-                            text = getString(
+                        setMessage(
+                            getString(
                                 R.string.dialog_settings_eta_remove_mtr_message,
                                 card.route.routeInfo.nameTc,
                                 card.stop.nameTc
                             )
                         )
                     } else {
-                        message(
-                            text = getString(
+                        setMessage(
+                            getString(
                                 R.string.dialog_settings_eta_remove_message,
                                 card.route.routeNo,
                                 card.stop.nameTc
@@ -91,7 +89,7 @@ class EditEtaFragment : BaseFragment<FragmentEditEtaBinding>() {
                         )
                     }
                 }
-                .positiveButton(R.string.dialog_settings_eta_remove_pos_btn) {
+                .setPositiveButton(R.string.dialog_settings_eta_remove_pos_btn) { dialog, _ ->
                     lifecycleScope.launch(Dispatchers.Main) {
                         viewModel.removeEta(card.entity)
                         val position = savedEtaCardList.indexOf(card)
@@ -108,9 +106,12 @@ class EditEtaFragment : BaseFragment<FragmentEditEtaBinding>() {
                         adapter.remove(position)
 
                         activity?.setResult(Activity.RESULT_OK)
+                        dialog.dismiss()
                     }
                 }
-                .negativeButton(R.string.dialog_cancel_btn)
+                .setNegativeButton(R.string.dialog_cancel_btn) { dialog, _ ->
+                    dialog.dismiss()
+                }
                 .show()
         }
     }
@@ -221,15 +222,15 @@ class EditEtaFragment : BaseFragment<FragmentEditEtaBinding>() {
         val context = context ?: return
 
         val result = suspendCancellableCoroutine<Boolean> { cont ->
-            MaterialDialog(context)
-                .message(R.string.dialog_check_edit_eta_order_description)
-                .positiveButton(R.string.dialog_check_edit_eta_order_save_btn) {
+            MaterialAlertDialogBuilder(context)
+                .setMessage(R.string.dialog_check_edit_eta_order_description)
+                .setPositiveButton(R.string.dialog_check_edit_eta_order_save_btn) { _, _ ->
                     cont.resume(true)
                 }
-                .negativeButton(R.string.dialog_check_edit_eta_order_leave_btn) {
+                .setNegativeButton(R.string.dialog_check_edit_eta_order_leave_btn) { _, _ ->
                     cont.resume(false)
                 }
-                .onCancel {
+                .setOnCancelListener {
                     cont.resume(false)
                 }
                 .show()

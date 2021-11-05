@@ -132,18 +132,9 @@ class CustomClusterManager(
                     distance < MARKER_IN_METER
                 }
 
-            val pendingToRemove = shownStopList
-                .filter {
-                    val distance = SphericalUtil.computeDistanceBetween(
-                        it.position, currentPosition
-                    )
-
-                    distance > MARKER_IN_METER
-                }
-
-            removeItems(pendingToRemove)
+            removeItems(shownStopList)
             addItems(pendingToAdd)
-            shownStopList.removeAll(pendingToRemove)
+            shownStopList.clear()
             shownStopList.addAll(pendingToAdd)
 
             withContext(Dispatchers.Main) {
