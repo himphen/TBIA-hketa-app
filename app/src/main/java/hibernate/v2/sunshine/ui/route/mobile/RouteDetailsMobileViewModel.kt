@@ -15,6 +15,7 @@ import hibernate.v2.sunshine.model.transport.RouteDetailsStop
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.model.transport.TransportStop
+import hibernate.v2.sunshine.model.transport.filterCircularStop
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
@@ -25,7 +26,7 @@ import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -49,10 +50,9 @@ class RouteDetailsMobileViewModel(
 
     var isSavedEtaBookmark = MutableSharedFlow<Pair<Boolean, Int>>()
     val etaUpdateError = MutableSharedFlow<Throwable>()
-
     val etaRequested = MutableSharedFlow<Boolean>()
 
-    val etaExceptionHandler = CoroutineExceptionHandler { context, t ->
+    private val etaExceptionHandler = CoroutineExceptionHandler { _, t ->
         run {
             viewModelScope.launch {
                 etaUpdateError.emit(t)
@@ -93,7 +93,12 @@ class RouteDetailsMobileViewModel(
             if (routeDetailsStopList == null) {
                 val list = getTransportStopList()
                 routeDetailsStopList =
-                    list.map { RouteDetailsStop(transportStop = it, isBookmarked = false) }
+                    list.map {
+                        RouteDetailsStop(
+                            transportStop = it,
+                            isBookmarked = false
+                        )
+                    }
             }
 
             val etaList = getEtaListFromDb()
@@ -252,154 +257,124 @@ class RouteDetailsMobileViewModel(
         }
     }
 
-    suspend fun updateEtaList() {
+    fun updateEtaList(): Job {
+        return viewModelScope.launch(Dispatchers.IO + etaExceptionHandler) {
+            Logger.d("lifecycle getEtaList")
 
-        Logger.d("lifecycle getEtaList")
-        delay(3000L)
-        throw Exception()
+            val selectedStop = selectedStop.value ?: return@launch
+            var result: List<TransportEta>? = null
 
-        val selectedStop = selectedStop.value ?: return
-        var result: List<TransportEta>? = null
+            when (selectedRoute.company) {
+                Company.KMB -> {
+                    val apiEtaResponse = etaRepository.getKmbStopEtaApi(
+                        stopId = selectedStop.stopId,
+                        route = selectedRoute.routeId
+                    )
+                    apiEtaResponse.data?.let { etaList ->
+                        val allSeq = etaList.mapNotNull { it.seq }.distinct()
+                        val isCircular = allSeq.size > 1
 
-        when (selectedRoute.company) {
-            Company.KMB -> {
-                val apiEtaResponse = etaRepository.getKmbStopEtaApi(
-                    stopId = selectedStop.stopId,
-                    route = selectedRoute.routeId
-                )
-                apiEtaResponse.data?.let { etaList ->
-                    val allSeq = etaList.mapNotNull { it.seq }.distinct()
-                    val isCircular = allSeq.size > 1
-
-                    result = etaList
-                        .map { TransportEta.fromApiModel(it) }
-                        .filter { eta ->
-                            if (isCircular) {
-                                // e.g. Filter bus terminal stops in circular line
-                                if (selectedStop.seq == 1) {
-                                    eta.seq == 1
-                                } else {
-                                    eta.seq != 1
-                                }
-                            } else {
-                                true
-                            }
-                        }
+                        result = etaList
+                            .map { TransportEta.fromApiModel(it) }
+                            .filter { it.filterCircularStop(isCircular, selectedStop) }
+                    }
                 }
-            }
-            Company.NWFB,
-            Company.CTB -> {
-                val apiEtaResponse = etaRepository.getNCStopEtaApi(
-                    company = selectedRoute.company,
-                    stopId = selectedStop.stopId,
-                    route = selectedRoute.routeId
-                )
-                apiEtaResponse.data?.let { etaList ->
-                    val allSeq = etaList.mapNotNull { it.seq }.distinct()
-                    val isCircular = allSeq.size > 1
+                Company.NWFB,
+                Company.CTB -> {
+                    val apiEtaResponse = etaRepository.getNCStopEtaApi(
+                        company = selectedRoute.company,
+                        stopId = selectedStop.stopId,
+                        route = selectedRoute.routeId
+                    )
+                    apiEtaResponse.data?.let { etaList ->
+                        val allSeq = etaList.mapNotNull { it.seq }.distinct()
+                        val isCircular = allSeq.size > 1
 
-                    result = etaList
-                        .map { TransportEta.fromApiModel(it) }
-                        .filter { eta ->
-                            if (isCircular) {
-                                // e.g. Filter bus terminal stops in circular line
-                                if (selectedStop.seq == 1) {
-                                    eta.seq == 1
-                                } else {
-                                    eta.seq != 1
-                                }
-                            } else {
-                                true
-                            }
-                        }
-
-
+                        result = etaList
+                            .map { TransportEta.fromApiModel(it) }
+                            .filter { it.filterCircularStop(isCircular, selectedStop) }
+                    }
                 }
-            }
-            Company.GMB -> {
-                val apiEtaResponse = etaRepository.getGmbStopEtaApi(
-                    stopSeq = selectedStop.seq!!,
-                    route = selectedRoute.routeId,
-                    serviceType = selectedRoute.serviceType
-                )
-                apiEtaResponse.data?.let { etaRouteStop ->
-                    val allSeq = etaRouteStop.etaList?.mapNotNull { it.seq }?.distinct()
-                    val isCircular = (allSeq?.size ?: 0) > 1
+                Company.GMB -> {
+                    val apiEtaResponse = etaRepository.getGmbStopEtaApi(
+                        stopSeq = selectedStop.seq!!,
+                        route = selectedRoute.routeId,
+                        serviceType = selectedRoute.serviceType
+                    )
+                    apiEtaResponse.data?.let { etaRouteStop ->
+                        val allSeq = etaRouteStop.etaList?.mapNotNull { it.seq }?.distinct()
+                        val isCircular = (allSeq?.size ?: 0) > 1
 
-                    result = etaRouteStop.etaList
-                        ?.map { TransportEta.fromApiModel(it) }
-                        ?.filter { eta ->
-                            if (isCircular) {
-                                // e.g. Filter bus terminal stops in circular line
-                                if (selectedStop.seq == 1) {
-                                    eta.seq == 1
-                                } else {
-                                    eta.seq != 1
-                                }
-                            } else {
-                                true
-                            }
-                        } ?: emptyList()
-
-
-                }
-
-            }
-            Company.MTR -> {
-                val apiEtaResponse = etaRepository.getMTRStopEtaApi(
-                    stopId = selectedStop.stopId,
-                    route = selectedRoute.routeId
-                )
-                val matchedIndex = selectedRoute.routeId + "-" + selectedStop.stopId
-                apiEtaResponse.data?.let { etaRouteStopMap ->
-                    etaRouteStopMap.forEach { (index, etaRouteStop) ->
-                        if (index != matchedIndex) return@forEach
-
-                        result = when (selectedRoute.bound) {
-                            Bound.O -> etaRouteStop.down
-                            Bound.I -> etaRouteStop.up
-                            Bound.UNKNOWN -> null
-                        }
-                            ?.map { MTRTransportEta.fromApiModel(it) }
+                        result = etaRouteStop.etaList
+                            ?.map { TransportEta.fromApiModel(it) }
+                            ?.filter { it.filterCircularStop(isCircular, selectedStop) }
                             ?: emptyList()
-
-
                     }
                 }
-            }
-            Company.LRT -> {
-                val apiEtaResponse = etaRepository.getLRTStopEtaApi(
-                    stopId = selectedStop.stopId
-                )
+                Company.MTR -> {
+                    val apiEtaResponse = etaRepository.getMTRStopEtaApi(
+                        stopId = selectedStop.stopId,
+                        route = selectedRoute.routeId
+                    )
+                    val matchedIndex = selectedRoute.routeId + "-" + selectedStop.stopId
+                    apiEtaResponse.data?.let { etaRouteStopMap ->
+                        etaRouteStopMap.forEach { (index, etaRouteStop) ->
+                            if (index != matchedIndex) return@forEach
 
-                apiEtaResponse.platformList?.let { platformList ->
-                    val temp = mutableListOf<LRTTransportEta>()
+                            result = when (selectedRoute.bound) {
+                                Bound.O -> etaRouteStop.down
+                                Bound.I -> etaRouteStop.up
+                                Bound.UNKNOWN -> null
+                            }
+                                ?.map { MTRTransportEta.fromApiModel(it) }
+                                ?: emptyList()
 
-                    platformList.forEach platform@{ platform ->
-                        platform.etaList?.forEach eta@{ etaApi ->
-                            if (etaApi.routeNo != selectedRoute.routeNo) return@eta
-                            if (etaApi.destCh != selectedRoute.destTc) return@eta
 
-                            temp.add(
-                                LRTTransportEta.fromApiModel(
-                                    etaApi,
-                                    platform.platformId.toString(),
-                                    apiEtaResponse.systemTime
-                                )
-                            )
                         }
                     }
+                }
+                Company.LRT -> {
+                    val apiEtaResponse = etaRepository.getLRTStopEtaApi(
+                        stopId = selectedStop.stopId
+                    )
 
-                    result = temp
+                    apiEtaResponse.platformList?.let { platformList ->
+                        val temp = mutableListOf<LRTTransportEta>()
+
+                        platformList.forEach platform@{ platform ->
+                            platform.etaList?.forEach eta@{ etaApi ->
+                                if (etaApi.routeNo != selectedRoute.routeNo) return@eta
+                                if (etaApi.destCh != selectedRoute.destTc) return@eta
+
+                                temp.add(
+                                    LRTTransportEta.fromApiModel(
+                                        etaApi,
+                                        platform.platformId.toString(),
+                                        apiEtaResponse.systemTime
+                                    )
+                                )
+                            }
+                        }
+
+                        result = temp
+                    }
+                }
+                Company.NLB -> {
+                    val apiEtaResponse = etaRepository.getNLBStopEtaApi(
+                        stopId = selectedStop.stopId,
+                        routeId = selectedRoute.routeId
+                    )
+                    apiEtaResponse.data?.let { etaList ->
+                        result = etaList
+                            .map { TransportEta.fromApiModel(it, selectedStop.seq) }
+                    }
+                }
+                Company.UNKNOWN -> {
                 }
             }
-            Company.UNKNOWN -> {
-            }
-            Company.NLB -> TODO()
-        }
 
-        Logger.d("lifecycle getEtaList done")
-        etaList.emit(result ?: listOf())
-//        }
+            Logger.d("lifecycle getEtaList done")
+            etaList.emit(result ?: listOf())
+        }
     }
 }

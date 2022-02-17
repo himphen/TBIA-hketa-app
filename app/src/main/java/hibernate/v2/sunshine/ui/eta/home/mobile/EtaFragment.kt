@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -26,21 +28,20 @@ import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
-import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.GeneralUtils.REFRESH_TIME
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
-import hibernate.v2.sunshine.util.launchPeriodicAsync
+import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.toggleSlideUp
 import hibernate.v2.sunshine.util.visible
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.Date
+import kotlin.time.Duration.Companion.milliseconds
 
 class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
@@ -73,12 +74,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     )
 
     private var etaCardList: MutableList<Card.EtaCard>? = null
-    private var refreshEtaJob: Deferred<Unit>? = null
 
-    override fun onResume() {
-        super.onResume()
-        updateRouteEtaStopList()
-    }
+    private var etaRequestJob: Job? = null
 
     private fun initEvent() {
         viewModel.savedEtaCardList.observe(viewLifecycleOwner) {
@@ -93,7 +90,9 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 adapter.setData(etaCardList)
                 processEtaList()
 
-                viewModel.updateEtaList(etaCardList)
+                lifecycleScope.launch {
+                    viewModel.etaRequested.emit(true)
+                }
             }
         }
 
@@ -116,6 +115,22 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
 //            Firebase.crashlytics.recordException(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.etaRequested.onEach {
+            if (it) {
+                etaRequestJob = viewModel.updateEtaList()
+            } else {
+                etaRequestJob?.cancel()
+            }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                tickerFlow(REFRESH_TIME.milliseconds).collect {
+                    viewModel.etaRequested.emit(true)
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -140,15 +155,6 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 ?.supportsChangeAnimations = false
         }
         initAdapter()
-    }
-
-    private fun updateRouteEtaStopList() {
-        if (refreshEtaJob == null) {
-            refreshEtaJob =
-                CoroutineScope(Dispatchers.Main).launchPeriodicAsync(REFRESH_TIME) {
-                    viewModel.updateEtaList(etaCardList)
-                }
-        }
     }
 
     private fun processEtaList() {
@@ -251,9 +257,10 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     }
 
     override fun onPause() {
+        lifecycleScope.launch {
+            viewModel.etaRequested.emit(false)
+        }
         super.onPause()
-        refreshEtaJob?.cancel()
-        refreshEtaJob = null
     }
 
     override fun getViewBinding(

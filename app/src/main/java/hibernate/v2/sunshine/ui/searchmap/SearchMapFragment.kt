@@ -24,6 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.maps.android.ktx.awaitMap
+import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentSearchMapBinding
@@ -40,9 +41,8 @@ import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import hibernate.v2.sunshine.util.visible
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -73,6 +73,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
     private var routeBottomSheetEtaCardList: MutableList<Card.EtaCard> = mutableListOf()
     private var refreshEtaJob: Deferred<Unit>? = null
+    private var etaRequestJob: Job? = null
 
     private val routeListAdapter = RouteListAdapter { card: Card.EtaCard ->
         viewLifecycleOwner.lifecycleScope.launch {
@@ -186,6 +187,14 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         }
         etaViewModel.etaUpdateError.onEach {
             Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show()
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        etaViewModel.etaRequested.onEach {
+            if (it) {
+                etaRequestJob = etaViewModel.updateEtaList()
+            } else {
+                etaRequestJob?.cancel()
+            }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
@@ -485,10 +494,12 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
     private fun startRefreshEtaJob() {
         if (routeBottomSheetEtaCardList.isNotEmpty()) {
-            refreshEtaJob =
-                lifecycleScope.launchPeriodicAsync(GeneralUtils.REFRESH_TIME) {
-                    etaViewModel.updateEtaList(routeBottomSheetEtaCardList)
+            Logger.d("lifecycle startRefreshEtaJob")
+            refreshEtaJob = lifecycleScope.launchPeriodicAsync(GeneralUtils.REFRESH_TIME) {
+                lifecycleScope.launch {
+                    etaViewModel.etaRequested.emit(true)
                 }
+            }
         }
     }
 

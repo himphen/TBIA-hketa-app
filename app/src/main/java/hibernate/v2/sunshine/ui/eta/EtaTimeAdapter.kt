@@ -40,7 +40,11 @@ class EtaTimeAdapter : RecyclerView.Adapter<BaseViewHolder<ItemEtaTimeBinding>>(
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(list: List<TransportEta>?) {
-        if (list == null) return
+        if (list == null) {
+            this.list = emptyList()
+            notifyDataSetChanged()
+            return
+        }
 
         this.list = list
         notifyDataSetChanged()

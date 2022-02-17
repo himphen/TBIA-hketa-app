@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearSmoothScroller
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -25,8 +26,8 @@ import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.GoogleMapsUtils
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.launchPeriodicAsync
+import hibernate.v2.sunshine.util.smoothSnapToPosition
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -45,12 +46,12 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
             viewModel.selectedRoute,
             onItemExpanding = {
                 viewModel.selectedStop.value = it.transportStop
-                stopRefreshList()
-                startRefreshList()
+                stopRefreshEtaJob()
+                startRefreshEtaJob()
             },
             onItemCollapsing = {
                 viewModel.selectedStop.value = null
-                stopRefreshList()
+                stopRefreshEtaJob()
             },
             onSaveEtaClicked = { position, card ->
                 viewModel.saveStop(position, card)
@@ -120,6 +121,15 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         viewModel.selectedStop.observe(viewLifecycleOwner) { selectedStop ->
             selectedStop?.let {
                 zoomToStop(selectedStop)
+
+                adapter.expandedPosition.let { expandedPosition ->
+                    if (expandedPosition >= 0) {
+                        viewBinding?.recyclerView?.smoothSnapToPosition(
+                            expandedPosition,
+                            LinearSmoothScroller.SNAP_TO_ANY
+                        )
+                    }
+                }
             } ?: run {
                 zoomToDefault()
             }
@@ -140,31 +150,26 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
 
         viewModel.etaRequested.onEach {
             if (it) {
-                etaRequestJob =
-                    lifecycleScope.launch(Dispatchers.IO + viewModel.etaExceptionHandler) {
-                        viewModel.updateEtaList()
-                    }
+                etaRequestJob = viewModel.updateEtaList()
             } else {
                 etaRequestJob?.cancel()
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
-
-
 
         viewModel.etaUpdateError.onEach {
             adapter.setEtaData(emptyList())
             Logger.d("lifecycle etaUpdateError: " + it.message)
             Toast.makeText(
                 context,
-                getString(R.string.text_eta_loading_failed),
+                getString(R.string.text_eta_loading_failed, 400),
                 Toast.LENGTH_LONG
             ).show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun startRefreshList() {
+    private fun startRefreshEtaJob() {
         if (refreshEtaJob == null) {
-            Logger.d("lifecycle startRefreshList")
+            Logger.d("lifecycle startRefreshEtaJob")
             refreshEtaJob = lifecycleScope.launchPeriodicAsync(GeneralUtils.REFRESH_TIME) {
                 lifecycleScope.launch {
                     viewModel.etaRequested.emit(true)
@@ -173,8 +178,8 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         }
     }
 
-    private fun stopRefreshList() {
-        Logger.d("lifecycle stopRefreshList")
+    private fun stopRefreshEtaJob() {
+        Logger.d("lifecycle stopRefreshEtaJob")
         lifecycleScope.launch {
             viewModel.etaRequested.emit(false)
         }
@@ -243,11 +248,11 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
 
     override fun onResume() {
         super.onResume()
-        startRefreshList()
+        startRefreshEtaJob()
     }
 
     override fun onPause() {
-        stopRefreshList()
+        stopRefreshEtaJob()
         super.onPause()
     }
 

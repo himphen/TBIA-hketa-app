@@ -47,52 +47,23 @@ class AddEtaViewPagerAdapter(
             EtaType.KMB,
             EtaType.NWFB,
             EtaType.CTB,
-            EtaType.NLB,
+            EtaType.NLB -> ContextCompat.getDrawable(context, R.drawable.ic_bus_24)
             EtaType.GMB_HKI,
             EtaType.GMB_KLN,
-            EtaType.GMB_NT,
-            -> {
-                ContextCompat.getDrawable(context, R.drawable.ic_bus_24)?.let {
-                    it.mutate()
-                    viewBinding.tabTitleTv.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        it,
-                        null,
-                        null,
-                        null
-                    )
-                    viewBinding.tabTitleTv.compoundDrawablesRelative[0]?.setTint(
-                        etaType.color(context)
-                    )
-                }
-            }
-            EtaType.MTR -> {
-                ContextCompat.getDrawable(context, R.drawable.ic_train_24)?.let {
-                    it.mutate()
-                    viewBinding.tabTitleTv.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        it,
-                        null,
-                        null,
-                        null
-                    )
-                    viewBinding.tabTitleTv.compoundDrawablesRelative[0]?.setTint(
-                        etaType.color(context)
-                    )
-                }
-            }
-            EtaType.LRT -> {
-                ContextCompat.getDrawable(context, R.drawable.ic_tram_24)?.let {
-                    it.mutate()
-                    viewBinding.tabTitleTv.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        it,
-                        null,
-                        null,
-                        null
-                    )
-                    viewBinding.tabTitleTv.compoundDrawablesRelative[0]?.setTint(
-                        etaType.color(context)
-                    )
-                }
-            }
+            EtaType.GMB_NT -> ContextCompat.getDrawable(context, R.drawable.ic_bus_mini_24)
+            EtaType.MTR -> ContextCompat.getDrawable(context, R.drawable.ic_train_24)
+            EtaType.LRT -> ContextCompat.getDrawable(context, R.drawable.ic_tram_24)
+        }?.let {
+            it.mutate()
+            viewBinding.tabTitleTv.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                it,
+                null,
+                null,
+                null
+            )
+            viewBinding.tabTitleTv.compoundDrawablesRelative[0]?.setTint(
+                etaType.color(context)
+            )
         }
 
         return viewBinding.root

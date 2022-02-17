@@ -92,6 +92,7 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaRouteBinding>() {
 
     private fun initEvent() {
         viewModel.filteredTransportRouteList.onEach {
+            viewBinding?.loadingProgressIndicator?.gone(true)
             if (it.first == etaType) {
                 val list = it.second.sorted()
                 adapter.setRouteData(list)

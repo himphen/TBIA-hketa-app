@@ -9,10 +9,12 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.LRTTransportEta
 import hibernate.v2.sunshine.model.transport.MTRTransportEta
 import hibernate.v2.sunshine.model.transport.TransportEta
+import hibernate.v2.sunshine.model.transport.filterCircularStop
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,8 +27,9 @@ class EtaViewModel(
 
     val savedEtaCardList = MutableLiveData<List<Card.EtaCard>>()
     val etaUpdateError = MutableSharedFlow<Throwable>()
+    val etaRequested = MutableSharedFlow<Boolean>()
 
-    private val etaExceptionHandler = CoroutineExceptionHandler { context, t ->
+    private val etaExceptionHandler = CoroutineExceptionHandler { _, t ->
         run {
             viewModelScope.launch {
                 etaUpdateError.emit(t)
@@ -68,11 +71,13 @@ class EtaViewModel(
         }
     }
 
-    fun updateEtaList(etaCardList: MutableList<Card.EtaCard>?) {
-        if (etaCardList == null || etaCardList.isEmpty()) return
-
-        viewModelScope.launch(Dispatchers.IO + etaExceptionHandler) {
+    fun updateEtaList(): Job {
+        return viewModelScope.launch(Dispatchers.IO + etaExceptionHandler) {
             Logger.d("lifecycle getEtaList")
+
+            val etaCardList = savedEtaCardList.value
+            if (etaCardList == null || etaCardList.isEmpty()) return@launch
+
             val result = ConcurrentSkipListMap<Int, Card.EtaCard>()
 
             etaCardList.mapIndexed { index, etaCard ->
@@ -89,18 +94,7 @@ class EtaViewModel(
 
                                 val temp = etaList
                                     .map { TransportEta.fromApiModel(it) }
-                                    .filter { eta ->
-                                        if (isCircular) {
-                                            // e.g. Filter bus terminal stops in circular line
-                                            if (etaCard.stop.seq == 1) {
-                                                eta.seq == 1
-                                            } else {
-                                                eta.seq != 1
-                                            }
-                                        } else {
-                                            true
-                                        }
-                                    }
+                                    .filter { it.filterCircularStop(isCircular, etaCard.stop) }
 
                                 etaCard.etaList.clear()
                                 etaCard.etaList.addAll(temp)
@@ -122,18 +116,7 @@ class EtaViewModel(
 
                                 val temp = etaList
                                     .map { TransportEta.fromApiModel(it) }
-                                    .filter { eta ->
-                                        if (isCircular) {
-                                            // e.g. Filter bus terminal stops in circular line
-                                            if (etaCard.stop.seq == 1) {
-                                                eta.seq == 1
-                                            } else {
-                                                eta.seq != 1
-                                            }
-                                        } else {
-                                            true
-                                        }
-                                    }
+                                    .filter { it.filterCircularStop(isCircular, etaCard.stop) }
 
                                 etaCard.etaList.clear()
                                 etaCard.etaList.addAll(temp)
@@ -153,18 +136,8 @@ class EtaViewModel(
 
                                 val temp = etaRouteStop.etaList
                                     ?.map { TransportEta.fromApiModel(it) }
-                                    ?.filter { eta ->
-                                        if (isCircular) {
-                                            // e.g. Filter bus terminal stops in circular line
-                                            if (etaCard.stop.seq == 1) {
-                                                eta.seq == 1
-                                            } else {
-                                                eta.seq != 1
-                                            }
-                                        } else {
-                                            true
-                                        }
-                                    } ?: emptyList()
+                                    ?.filter { it.filterCircularStop(isCircular, etaCard.stop) }
+                                    ?: emptyList()
 
                                 etaCard.etaList.clear()
                                 etaCard.etaList.addAll(temp)

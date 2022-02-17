@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.annotation.ColorInt
 import androidx.core.widget.addTextChangedListener
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
@@ -119,4 +121,16 @@ fun View.toggleSlideUp(show: Boolean, duration: Long = 500) {
     transition.addTarget(this)
     TransitionManager.beginDelayedTransition(parent as ViewGroup, transition)
     visibility = if (show) View.VISIBLE else View.GONE
+}
+
+fun RecyclerView.smoothSnapToPosition(
+    position: Int,
+    snapMode: Int = LinearSmoothScroller.SNAP_TO_START
+) {
+    val smoothScroller = object : LinearSmoothScroller(this.context) {
+        override fun getVerticalSnapPreference(): Int = snapMode
+        override fun getHorizontalSnapPreference(): Int = snapMode
+    }
+    smoothScroller.targetPosition = position
+    layoutManager?.startSmoothScroll(smoothScroller)
 }

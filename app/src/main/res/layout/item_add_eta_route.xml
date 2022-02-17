@@ -40,18 +40,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/routeDirectionArrowIv"
+            <TextView
+                android:id="@+id/routeDirectionArrowTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_east_24"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="➔"
+                android:textColor="@color/common_text_primary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/routeDestTv"
                 app:layout_constraintStart_toEndOf="@id/routeOrigTv"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/common_text_primary"
-                tools:ignore="ContentDescription"
-                tools:tint="@color/common_text_primary" />
+                tools:ignore="ContentDescription,HardcodedText" />
 
             <TextView
                 android:id="@+id/routeOrigTv"
@@ -61,7 +62,7 @@
                 android:textColor="@color/common_text_primary"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@id/routeSpTv"
-                app:layout_constraintEnd_toStartOf="@id/routeDirectionArrowIv"
+                app:layout_constraintEnd_toStartOf="@id/routeDirectionArrowTv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/add_card_route_text" />
@@ -89,7 +90,7 @@
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/routeDirectionArrowIv"
+                app:layout_constraintStart_toEndOf="@id/routeDirectionArrowTv"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/add_card_route_text" />
 

@@ -15,6 +15,7 @@ import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.eta.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.view.setEtaTimeFlexManager
 import hibernate.v2.sunshine.util.gone
+import hibernate.v2.sunshine.util.invisible
 import hibernate.v2.sunshine.util.visible
 
 class RouteDetailsAdapter(
@@ -30,8 +31,8 @@ class RouteDetailsAdapter(
     }
 
     private var stopList = mutableListOf<RouteDetailsStop>()
-    private var etaList = mutableListOf<TransportEta>()
-    private var expandedPosition: Int = -1
+    private var etaList: List<TransportEta>? = null
+    var expandedPosition: Int = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
@@ -83,19 +84,18 @@ class RouteDetailsAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setRouteDetailsStopData(mutableList: List<RouteDetailsStop>?) {
-        if (mutableList == null) return
+    fun setRouteDetailsStopData(list: List<RouteDetailsStop>?) {
+        if (list == null) return
 
         stopList.clear()
-        stopList.addAll(mutableList)
+        stopList.addAll(list)
         notifyDataSetChanged()
     }
 
-    fun setEtaData(mutableList: List<TransportEta>?) {
-        if (mutableList == null) return
+    fun setEtaData(list: List<TransportEta>?) {
+        if (list == null) return
 
-        etaList.clear()
-        etaList.addAll(mutableList)
+        etaList = list.toList()
 
         if (expandedPosition >= 0) {
             notifyItemChanged(expandedPosition)
@@ -133,9 +133,9 @@ class RouteDetailsAdapter(
 
                 root.tag = stop
                 root.setOnClickListener {
-                    etaList.clear()
-                    onItemExpanding(item)
+                    etaList = null
                     expandedPosition = absoluteAdapterPosition
+                    onItemExpanding(item)
                     notifyItemChanged(absoluteAdapterPosition)
                 }
             }
@@ -162,7 +162,8 @@ class RouteDetailsAdapter(
 
                 contentRouteDetailsStop.stopLineTop.visibility =
                     if (isFirst) View.INVISIBLE else View.VISIBLE
-                contentRouteDetailsStop.stopLineBottom.visibility = View.VISIBLE
+                contentRouteDetailsStop.stopLineBottom.visibility =
+                    if (isLast) View.INVISIBLE else View.VISIBLE
                 stopLineExpanded.visibility =
                     if (isLast) View.INVISIBLE else View.VISIBLE
 
@@ -170,16 +171,22 @@ class RouteDetailsAdapter(
                     setData(etaList)
                 }
 
-                etaList.getOrNull(0)?.getEtaMinuteText("-")?.let {
-                    etaMinuteLl.etaMinuteTv.text = it.second
+                etaList?.let { etaList ->
+                    etaMinuteLl.etaMinuteTv.visible()
+                    etaList.getOrNull(0)?.getEtaMinuteText("-")?.let {
+                        etaMinuteLl.etaMinuteTv.text = it.second
 
-                    if (it.first) {
-                        etaMinuteLl.etaMinuteUnitTv.visible()
-                    } else {
+                        if (it.first) {
+                            etaMinuteLl.etaMinuteUnitTv.visible()
+                        } else {
+                            etaMinuteLl.etaMinuteUnitTv.gone()
+                        }
+                    } ?: run {
+                        etaMinuteLl.etaMinuteTv.text = "-"
                         etaMinuteLl.etaMinuteUnitTv.gone()
                     }
                 } ?: run {
-                    etaMinuteLl.etaMinuteTv.text = "-"
+                    etaMinuteLl.etaMinuteTv.invisible()
                     etaMinuteLl.etaMinuteUnitTv.gone()
                 }
 
@@ -201,8 +208,8 @@ class RouteDetailsAdapter(
 
                 root.tag = stop
                 root.setOnClickListener {
-                    onItemCollapsing()
                     expandedPosition = -1
+                    onItemCollapsing()
                     notifyItemChanged(absoluteAdapterPosition)
                 }
             }

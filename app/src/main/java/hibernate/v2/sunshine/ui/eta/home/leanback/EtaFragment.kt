@@ -9,7 +9,9 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.LbFragmentEtaBinding
@@ -20,12 +22,10 @@ import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.gone
-import hibernate.v2.sunshine.util.launchPeriodicAsync
+import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.toggleSlideDown
 import hibernate.v2.sunshine.util.visible
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -33,6 +33,7 @@ import org.koin.android.ext.android.inject
 import java.util.Date
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * TODO: auto scroll feature using setSelectedPosition
@@ -52,14 +53,10 @@ class EtaFragment : VerticalGridSupportFragment() {
 
     private val viewModel by inject<EtaViewModel>()
     private var etaCardList: MutableList<Card.EtaCard>? = null
-    private var refreshEtaJob: Deferred<Unit>? = null
+
+    private var etaRequestJob: Job? = null
 
     private var rootViewBinding: LbFragmentEtaBinding? = null
-
-    override fun onResume() {
-        super.onResume()
-        updateRouteEtaStopList()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +80,9 @@ class EtaFragment : VerticalGridSupportFragment() {
                 mAdapter?.addAll(0, etaCardList)
                 processEtaList()
 
-                viewModel.updateEtaList(etaCardList)
+                lifecycleScope.launch {
+                    viewModel.etaRequested.emit(true)
+                }
             }
         }
         viewModel.etaUpdateError.onEach {
@@ -94,6 +93,22 @@ class EtaFragment : VerticalGridSupportFragment() {
 
 //            Firebase.crashlytics.recordException(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.etaRequested.onEach {
+            if (it) {
+                etaRequestJob = viewModel.updateEtaList()
+            } else {
+                etaRequestJob?.cancel()
+            }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                tickerFlow(GeneralUtils.REFRESH_TIME.milliseconds).collect {
+                    viewModel.etaRequested.emit(true)
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -142,15 +157,6 @@ class EtaFragment : VerticalGridSupportFragment() {
         viewModel.getEtaListFromDb()
     }
 
-    private fun updateRouteEtaStopList() {
-        if (refreshEtaJob == null) {
-            refreshEtaJob =
-                lifecycleScope.launchPeriodicAsync(GeneralUtils.REFRESH_TIME) {
-                    viewModel.updateEtaList(etaCardList)
-                }
-        }
-    }
-
     private fun processEtaList() {
         val etaCardList = etaCardList
         if (etaCardList.isNullOrEmpty()) {
@@ -181,9 +187,10 @@ class EtaFragment : VerticalGridSupportFragment() {
     }
 
     override fun onPause() {
+        lifecycleScope.launch {
+            viewModel.etaRequested.emit(false)
+        }
         super.onPause()
-        refreshEtaJob?.cancel()
-        refreshEtaJob = null
     }
 
     private suspend fun getFragmentWidth(view: View): Int {

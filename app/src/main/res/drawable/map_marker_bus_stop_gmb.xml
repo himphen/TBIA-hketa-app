@@ -9,5 +9,5 @@
             <solid android:color="@color/brand_color_gmb" />
         </shape>
     </item>
-    <item android:drawable="@drawable/ic_bus_24" />
+    <item android:drawable="@drawable/ic_bus_mini_24" />
 </layer-list>

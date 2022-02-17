@@ -82,3 +82,18 @@ open class TransportEta(
         return false to default
     }
 }
+
+/**
+ * Filter bus terminal stops in circular line
+ */
+fun TransportEta.filterCircularStop(isCircular: Boolean, stop: TransportStop): Boolean {
+    return if (isCircular) {
+        if (stop.seq == 1) {
+            seq == 1
+        } else {
+            seq != 1
+        }
+    } else {
+        true
+    }
+}
