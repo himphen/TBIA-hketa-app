@@ -35,8 +35,10 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
 
     protected fun initActionBar(
         toolbar: Toolbar?,
-        titleString: String? = null, subtitleString: String? = null,
-        @StringRes titleId: Int? = null, @StringRes subtitleId: Int? = null
+        titleString: String? = null,
+        subtitleString: String? = null,
+        @StringRes titleId: Int? = null,
+        @StringRes subtitleId: Int? = null
     ) {
         toolbar?.let {
             setSupportActionBar(toolbar)

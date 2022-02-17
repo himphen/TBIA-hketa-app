@@ -79,7 +79,6 @@ open class TransportRoute(
                 origTc,
                 destTc
             )
-
         } else {
             context.getString(
                 R.string.text_add_eta_destination,
@@ -148,5 +147,4 @@ class RouteComponent(
 
         return 0
     }
-
 }

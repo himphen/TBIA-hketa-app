@@ -232,7 +232,8 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                             setDrawable(
                                 ContextCompat.getDrawable(context, R.drawable.space_vertical)!!
                             )
-                        })
+                        }
+                    )
                     setPadding(
                         dpToPx(0),
                         dpToPx(4),

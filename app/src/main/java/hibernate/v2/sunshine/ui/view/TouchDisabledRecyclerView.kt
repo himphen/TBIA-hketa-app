@@ -39,4 +39,3 @@ fun RecyclerView.setStopRouteBadgeFlexManager() {
         justifyContent = JustifyContent.FLEX_START
     }
 }
-

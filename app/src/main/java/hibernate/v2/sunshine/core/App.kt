@@ -2,9 +2,7 @@ package hibernate.v2.sunshine.core
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
-import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.himphen.logger.AndroidLogAdapter
 import com.himphen.logger.Logger
@@ -61,5 +59,4 @@ class App : Application() {
             }
         )
     }
-
 }

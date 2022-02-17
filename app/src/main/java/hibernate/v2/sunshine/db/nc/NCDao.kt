@@ -7,12 +7,11 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
-import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 
 @Dao
 interface NCDao {
 
-    //////
+    // ====
 
     @Query("SELECT * FROM nc_stop")
     suspend fun getAllStopList(): List<NCStopEntity>
@@ -32,7 +31,7 @@ interface NCDao {
     @Query("DELETE FROM nc_stop")
     suspend fun clearStopList()
 
-    //////
+    // ====
 
     @Query("SELECT * FROM nc_route WHERE nc_route_company = (:company)")
     suspend fun getRouteList(company: String): List<NCRouteEntity>

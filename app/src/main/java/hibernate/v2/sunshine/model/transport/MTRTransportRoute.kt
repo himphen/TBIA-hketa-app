@@ -34,7 +34,8 @@ data class MTRTransportRoute(
     destTc,
     destSc,
     company,
-), Parcelable {
+),
+    Parcelable {
 
     override fun compareTo(other: TransportRoute): Int {
         if (other is MTRTransportRoute) {

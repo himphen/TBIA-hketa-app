@@ -118,3 +118,9 @@ dependencies {
     // https://github.com/drfonfon/android-kotlin-geohash
     implementation 'com.github.drfonfon:android-kotlin-geohash:1.0'
 }
+
+ktlint {
+    reporters {
+        reporter "json"
+    }
+}

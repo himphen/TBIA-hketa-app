@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteQuery
 @Dao
 interface KmbDao {
 
-    //////
+    // ====
 
     @Query("SELECT * FROM kmb_stop")
     suspend fun getAllStopList(): List<KmbStopEntity>
@@ -28,7 +28,7 @@ interface KmbDao {
     @Query("DELETE FROM kmb_stop")
     suspend fun clearStopList()
 
-    //////
+    // ====
 
     @Query("SELECT * FROM kmb_route")
     suspend fun getRouteList(): List<KmbRouteEntity>
@@ -46,7 +46,7 @@ interface KmbDao {
     @Query("DELETE FROM kmb_route")
     suspend fun clearRouteList()
 
-    //////
+    // ====
 
     @Query("SELECT * FROM kmb_route_stop WHERE kmb_route_stop_stop_id = (:stopId)")
     suspend fun getRouteStopListFromStopId(stopId: String): List<KmbRouteStopEntity>

@@ -98,7 +98,6 @@ class EtaViewModel(
 
                                 etaCard.etaList.clear()
                                 etaCard.etaList.addAll(temp)
-
                             }
 
                             result[index] = etaCard
@@ -218,7 +217,6 @@ class EtaViewModel(
 
                                 etaCard.etaList.clear()
                                 etaCard.etaList.addAll(temp)
-
                             }
 
                             result[index] = etaCard

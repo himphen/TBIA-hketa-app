@@ -46,3 +46,9 @@ dependencies {
 
     implementation 'com.github.himphen:logger:3.0.1'
 }
+
+ktlint {
+    reporters {
+        reporter "json"
+    }
+}

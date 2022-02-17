@@ -7,12 +7,11 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
-import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 
 @Dao
 interface GmbDao {
 
-    //////
+    // ====
 
     @Query("SELECT * FROM gmb_stop")
     suspend fun getAllStopList(): List<GmbStopEntity>
@@ -32,7 +31,7 @@ interface GmbDao {
     @Query("DELETE FROM gmb_stop")
     suspend fun clearStopList()
 
-    //////
+    // ====
 
     @Query("SELECT * FROM gmb_route WHERE region = (:region)")
     suspend fun getRouteList(region: String): List<GmbRouteEntity>
@@ -55,7 +54,7 @@ interface GmbDao {
     @Query("DELETE FROM gmb_route")
     suspend fun clearRouteList()
 
-    //////
+    // ====
 
     @Query("SELECT * FROM gmb_route_stop")
     suspend fun getRouteStopList(): List<GmbRouteStopEntity>

@@ -81,18 +81,18 @@ class AddEtaViewPagerFragment : BaseFragment<FragmentAddEtaViewPagerBinding>() {
                 override fun onTabReselected(tab: TabLayout.Tab) {}
             })
         viewBinding.viewPager.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                etaType = adapter.list[position]
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    etaType = adapter.list[position]
 
 //                viewBinding.searchEt.setText("")
-                if (isFirstLoad) {
-                    isFirstLoad = false
-                } else {
-                    viewModel.searchRoute(etaType)
+                    if (isFirstLoad) {
+                        isFirstLoad = false
+                    } else {
+                        viewModel.searchRoute(etaType)
+                    }
                 }
-            }
-        })
+            })
 
         TabLayoutMediator(
             viewBinding.tabLayout,

@@ -17,7 +17,6 @@ class EtaLayoutAdapter(
         EtaCardViewType.Classic -> 2
     }
 
-
     private val list: MutableList<EtaCardViewType> = mutableListOf(
         EtaCardViewType.Standard,
         EtaCardViewType.Compact,

@@ -34,7 +34,8 @@ data class GmbTransportRoute(
     destTc,
     destSc,
     company,
-), Parcelable {
+),
+    Parcelable {
 
     override fun compareTo(other: TransportRoute): Int {
         if (other is GmbTransportRoute) {
@@ -66,5 +67,4 @@ data class GmbTransportRoute(
             destTc
         )
     }
-
 }

@@ -33,7 +33,7 @@ class EtaCardAdapter(
     private var list = mutableListOf<Card.EtaCard>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
-            BaseViewHolder<out ViewBinding> {
+        BaseViewHolder<out ViewBinding> {
         return if (viewType == VIEW_TYPE_CONTENT) {
             when (type) {
                 EtaCardViewType.Classic -> EtaViewHolderClassic(

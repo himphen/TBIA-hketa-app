@@ -11,7 +11,6 @@ class ApiLogInterceptor : Interceptor {
     }
 }
 
-
 fun RequestBody?.bodyToString(): String {
     if (this == null) return ""
     val buffer = okio.Buffer()

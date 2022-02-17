@@ -40,10 +40,10 @@ class OutlineTextView @JvmOverloads constructor(context: Context, attrs: Attribu
                     a.getColor(R.styleable.OutlineTextView_outlineColor, DEFAULT_OUTLINE_COLOR)
             }
             // shadow (the reason we take shadow from attributes is because we use API level 15 and only from 16 we have the get methods for the shadow attributes)
-            if (a.hasValue(R.styleable.OutlineTextView_android_shadowRadius)
-                || a.hasValue(R.styleable.OutlineTextView_android_shadowDx)
-                || a.hasValue(R.styleable.OutlineTextView_android_shadowDy)
-                || a.hasValue(R.styleable.OutlineTextView_android_shadowColor)
+            if (a.hasValue(R.styleable.OutlineTextView_android_shadowRadius) ||
+                a.hasValue(R.styleable.OutlineTextView_android_shadowDx) ||
+                a.hasValue(R.styleable.OutlineTextView_android_shadowDy) ||
+                a.hasValue(R.styleable.OutlineTextView_android_shadowColor)
             ) {
                 mShadowRadius = a.getFloat(R.styleable.OutlineTextView_android_shadowRadius, 0f)
                 mShadowDx = a.getFloat(R.styleable.OutlineTextView_android_shadowDx, 0f)

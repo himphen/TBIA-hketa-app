@@ -11,8 +11,8 @@ import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.AddEtaRowItem
+import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.eta.add.leanback.AddEtaActivity.Companion.ARG_ETA_TYPE
@@ -78,16 +78,21 @@ class AddEtaFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
         routeList.forEachIndexed { index, listForRowAdapter ->
             // Init Row
             val listRowAdapter =
-                ArrayObjectAdapter(AddEtaCardPresenter(requireContext()) {
-                    viewModel.saveStop(it)
-                })
-
-            listRowAdapter.addAll(0, listForRowAdapter.filteredList.map {
-                Card.RouteStopAddCard(
-                    route = listForRowAdapter.route,
-                    stop = it
+                ArrayObjectAdapter(
+                    AddEtaCardPresenter(requireContext()) {
+                        viewModel.saveStop(it)
+                    }
                 )
-            })
+
+            listRowAdapter.addAll(
+                0,
+                listForRowAdapter.filteredList.map {
+                    Card.RouteStopAddCard(
+                        route = listForRowAdapter.route,
+                        stop = it
+                    )
+                }
+            )
             val header = HeaderItem(index.toLong(), listForRowAdapter.headerTitle)
             val listRow = ListRow(header, listRowAdapter)
             mRowsAdapter.add(listRow)

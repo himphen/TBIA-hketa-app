@@ -1,7 +1,6 @@
 package hibernate.v2.sunshine.db
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -36,7 +35,6 @@ import hibernate.v2.sunshine.db.nlb.NLBDao
 import hibernate.v2.sunshine.db.nlb.NLBRouteEntity
 import hibernate.v2.sunshine.db.nlb.NLBRouteStopEntity
 import hibernate.v2.sunshine.db.nlb.NLBStopEntity
-import java.util.concurrent.Executors
 
 private const val DATABASE_NAME = "saved_data"
 

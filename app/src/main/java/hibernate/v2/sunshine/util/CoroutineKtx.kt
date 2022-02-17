@@ -55,10 +55,12 @@ fun tickerFlow(period: Duration, initialDelay: Duration = Duration.ZERO) = flow 
 suspend fun DatabaseReference.getSnapshotValue(): DataSnapshot {
     return withContext(Dispatchers.IO) {
         suspendCoroutine { continuation ->
-            addListenerForSingleValueEvent(FValueEventListener(
-                onDataChange = { continuation.resume(it) },
-                onError = { continuation.resumeWithException(it.toException()) }
-            ))
+            addListenerForSingleValueEvent(
+                FValueEventListener(
+                    onDataChange = { continuation.resume(it) },
+                    onError = { continuation.resumeWithException(it.toException()) }
+                )
+            )
         }
     }
 }

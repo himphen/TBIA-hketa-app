@@ -46,5 +46,4 @@ class CustomClusterRenderer(
             markerOptions.icon(it)
         }
     }
-
 }

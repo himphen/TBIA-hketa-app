@@ -2,14 +2,14 @@ package hibernate.v2.api.core
 
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter
-import java.io.OutputStreamWriter
-import java.nio.charset.Charset
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okio.Buffer
 import org.json.JSONObject
 import retrofit2.Converter
+import java.io.OutputStreamWriter
+import java.nio.charset.Charset
 
 class RequestConverter<T>(
     private val gson: Gson,

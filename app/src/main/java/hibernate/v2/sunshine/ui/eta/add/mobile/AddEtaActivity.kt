@@ -6,7 +6,6 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityContainerBinding
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
 import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
-import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class AddEtaActivity : BaseFragmentActivity<ActivityContainerBinding>() {

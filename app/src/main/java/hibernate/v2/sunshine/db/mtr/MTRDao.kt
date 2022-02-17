@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteQuery
 @Dao
 interface MTRDao {
 
-    //////
+    // ====
 
     @Query("SELECT * FROM mtr_stop")
     suspend fun getStopList(): List<MTRStopEntity>
@@ -28,7 +28,7 @@ interface MTRDao {
     @Query("DELETE FROM mtr_stop")
     suspend fun clearStopList()
 
-    //////
+    // ====
 
     @Query("SELECT * FROM mtr_route")
     suspend fun getRouteList(): List<MTRRouteEntity>
@@ -52,7 +52,7 @@ interface MTRDao {
     @Query("DELETE FROM mtr_route")
     suspend fun clearRouteList()
 
-    //////
+    // ====
 
     @Query("SELECT * FROM mtr_route_stop WHERE mtr_route_stop_stop_id = (:stopId)")
     suspend fun getRouteStopListFromStopId(stopId: String): List<MTRRouteStopEntity>

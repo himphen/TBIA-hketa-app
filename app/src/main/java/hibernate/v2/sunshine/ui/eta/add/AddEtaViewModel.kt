@@ -16,7 +16,14 @@ import hibernate.v2.sunshine.model.transport.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportRouteStopList
-import hibernate.v2.sunshine.repository.*
+import hibernate.v2.sunshine.repository.EtaRepository
+import hibernate.v2.sunshine.repository.GmbRepository
+import hibernate.v2.sunshine.repository.KmbRepository
+import hibernate.v2.sunshine.repository.LRTRepository
+import hibernate.v2.sunshine.repository.MTRRepository
+import hibernate.v2.sunshine.repository.NCRepository
+import hibernate.v2.sunshine.repository.NLBRepository
+import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -86,7 +93,6 @@ class AddEtaViewModel(
         }
     }
 
-
     fun saveStop(card: Card.RouteStopAddCard) {
         viewModelScope.launch(Dispatchers.IO) {
             val isExisting = hasEtaInDb(
@@ -116,9 +122,11 @@ class AddEtaViewModel(
             val currentEtaOrderList = getEtaOrderList()
             val updatedEtaOrderList = mutableListOf<EtaOrderEntity>()
             updatedEtaOrderList.add(EtaOrderEntity(id = newEta.id, position = 0))
-            updatedEtaOrderList.addAll(currentEtaOrderList.map {
-                EtaOrderEntity(id = it.id, position = it.position + 1)
-            })
+            updatedEtaOrderList.addAll(
+                currentEtaOrderList.map {
+                    EtaOrderEntity(id = it.id, position = it.position + 1)
+                }
+            )
             updateEtaOrderList(updatedEtaOrderList)
 
             isAddEtaSuccessful.emit(true)
@@ -148,9 +156,9 @@ class AddEtaViewModel(
 
         executingSearchJob = viewModelScope.launch(Dispatchers.IO) {
             val result = allTransportRouteList.filter { routeForRowAdapter ->
-                routeForRowAdapter.route.routeNo.startsWith(keyword, true)
-                        || routeForRowAdapter.route.destTc.startsWith(keyword, true)
-                        || routeForRowAdapter.route.origTc.startsWith(keyword, true)
+                routeForRowAdapter.route.routeNo.startsWith(keyword, true) ||
+                    routeForRowAdapter.route.destTc.startsWith(keyword, true) ||
+                    routeForRowAdapter.route.origTc.startsWith(keyword, true)
             }
 
             filteredTransportRouteList.emit(Pair(etaType, result))

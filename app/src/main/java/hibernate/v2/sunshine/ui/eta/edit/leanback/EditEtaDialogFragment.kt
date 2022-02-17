@@ -68,9 +68,12 @@ class EditEtaDialogFragment : GuidedStepSupportFragment() {
             ACTION_ID_MOVE_UP,
             ACTION_ID_MOVE_DOWN,
             ACTION_ID_REMOVE -> {
-                activity?.setResult(Activity.RESULT_OK, Intent().apply {
-                    putExtra(EditEtaDialogActivity.ARG_RESULT_CODE, action.id)
-                })
+                activity?.setResult(
+                    Activity.RESULT_OK,
+                    Intent().apply {
+                        putExtra(EditEtaDialogActivity.ARG_RESULT_CODE, action.id)
+                    }
+                )
             }
         }
         activity?.finish()

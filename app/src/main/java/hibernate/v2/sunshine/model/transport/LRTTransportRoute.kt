@@ -34,7 +34,8 @@ data class LRTTransportRoute(
     destTc,
     destSc,
     company,
-), Parcelable {
+),
+    Parcelable {
 
     override fun isSpecialRoute(): Boolean = false
 

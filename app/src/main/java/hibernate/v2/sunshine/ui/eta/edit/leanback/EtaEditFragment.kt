@@ -170,16 +170,20 @@ class EtaEditFragment : VerticalGridSupportFragment() {
                                     if (currentPosition > 1) {
                                         putString(
                                             EditEtaDialogActivity.ARG_BEFORE_ETA_ID,
-                                            (savedEtaCardList.getOrNull(currentPosition - 1)
-                                                    as? Card.SettingsEtaItemCard)?.entity?.id?.toString()
+                                            (
+                                                savedEtaCardList.getOrNull(currentPosition - 1)
+                                                    as? Card.SettingsEtaItemCard
+                                                )?.entity?.id?.toString()
                                         )
                                     }
 
                                     if (currentPosition < savedEtaCardList.lastIndex) {
                                         putString(
                                             EditEtaDialogActivity.ARG_AFTER_ETA_ID,
-                                            (savedEtaCardList.getOrNull(currentPosition + 1)
-                                                    as? Card.SettingsEtaItemCard)?.entity?.id?.toString()
+                                            (
+                                                savedEtaCardList.getOrNull(currentPosition + 1)
+                                                    as? Card.SettingsEtaItemCard
+                                                )?.entity?.id?.toString()
                                         )
                                     }
                                 }

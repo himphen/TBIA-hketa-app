@@ -3,7 +3,11 @@ package hibernate.v2.sunshine.repository
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.request.eta.NLBRequest
-import hibernate.v2.api.response.eta.*
+import hibernate.v2.api.response.eta.EtaResponse
+import hibernate.v2.api.response.eta.GmbEtaResponse
+import hibernate.v2.api.response.eta.LRTEtaResponse
+import hibernate.v2.api.response.eta.MTREtaResponse
+import hibernate.v2.api.response.eta.NLBEtaResponse
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.eta.EtaDao
 import hibernate.v2.sunshine.db.eta.EtaOrderDao

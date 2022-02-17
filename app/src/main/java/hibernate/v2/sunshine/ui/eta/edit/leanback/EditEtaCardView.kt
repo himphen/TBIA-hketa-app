@@ -11,11 +11,13 @@ import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
 
-class EditEtaCardView(context: Context) : BaseCardView(
-    context,
-    null,
-    R.style.FullCardStyle
-), EtaRouteView {
+class EditEtaCardView(context: Context) :
+    BaseCardView(
+        context,
+        null,
+        R.style.FullCardStyle
+    ),
+    EtaRouteView {
     var viewBinding = LbCardSettingsEtaBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun onBindItemView(card: Card.SettingsEtaItemCard) {

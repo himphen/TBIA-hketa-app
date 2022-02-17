@@ -18,8 +18,7 @@ class MainViewModel : BaseViewModel() {
     val selectedTab = MutableLiveData<MainViewPagerAdapter.TabType>()
 
     fun isBottomSheetClosed(): Boolean {
-        return onRouteBottomSheetStateChanged.value == BottomSheetBehavior.STATE_HIDDEN
-                && onStopBottomSheetStateChanged.value == BottomSheetBehavior.STATE_HIDDEN
-
+        return onRouteBottomSheetStateChanged.value == BottomSheetBehavior.STATE_HIDDEN &&
+            onStopBottomSheetStateChanged.value == BottomSheetBehavior.STATE_HIDDEN
     }
 }

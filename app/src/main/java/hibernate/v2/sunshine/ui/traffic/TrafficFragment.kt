@@ -16,9 +16,7 @@ import hibernate.v2.sunshine.databinding.LbFragmentTrafficBinding
 import hibernate.v2.sunshine.model.TrafficLocation
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.util.launchPeriodicAsync
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 

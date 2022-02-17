@@ -19,7 +19,7 @@ class EditEtaAdapter(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
-            EditEtaViewHolder {
+        EditEtaViewHolder {
         return EditEtaViewHolder(
             ItemEditEtaBinding.inflate(
                 LayoutInflater.from(parent.context),

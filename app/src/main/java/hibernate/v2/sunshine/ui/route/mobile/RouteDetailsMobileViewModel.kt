@@ -106,10 +106,12 @@ class RouteDetailsMobileViewModel(
                 it.stop.stopId
             }
 
-            this@RouteDetailsMobileViewModel.routeDetailsStopList.postValue(routeDetailsStopList.map {
-                it.isBookmarked = etaHashSet.contains(it.transportStop.stopId)
-                return@map it
-            })
+            this@RouteDetailsMobileViewModel.routeDetailsStopList.postValue(
+                routeDetailsStopList.map {
+                    it.isBookmarked = etaHashSet.contains(it.transportStop.stopId)
+                    return@map it
+                }
+            )
         }
     }
 
@@ -248,9 +250,11 @@ class RouteDetailsMobileViewModel(
             val currentEtaOrderList = getEtaOrderList()
             val updatedEtaOrderList = mutableListOf<EtaOrderEntity>()
             updatedEtaOrderList.add(EtaOrderEntity(id = newEta.id, position = 0))
-            updatedEtaOrderList.addAll(currentEtaOrderList.map {
-                EtaOrderEntity(id = it.id, position = it.position + 1)
-            })
+            updatedEtaOrderList.addAll(
+                currentEtaOrderList.map {
+                    EtaOrderEntity(id = it.id, position = it.position + 1)
+                }
+            )
             updateEtaOrderList(updatedEtaOrderList)
 
             isSavedEtaBookmark.emit(Pair(true, position))
@@ -328,8 +332,6 @@ class RouteDetailsMobileViewModel(
                             }
                                 ?.map { MTRTransportEta.fromApiModel(it) }
                                 ?: emptyList()
-
-
                         }
                     }
                 }

@@ -7,12 +7,11 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
-import hibernate.v2.sunshine.db.mtr.MTRRouteEntity
 
 @Dao
 interface LRTDao {
 
-    //////
+    // ====
 
     @Query("SELECT * FROM lrt_stop")
     suspend fun getStopList(): List<LRTStopEntity>
@@ -29,9 +28,9 @@ interface LRTDao {
     @Query("DELETE FROM lrt_stop")
     suspend fun clearStopList()
 
-    //////
+    // ====
 
-    //////
+    // ====
 
     @Query("SELECT * FROM lrt_route")
     suspend fun getRouteList(): List<LRTRouteEntity>
@@ -55,7 +54,7 @@ interface LRTDao {
     @Query("DELETE FROM lrt_route")
     suspend fun clearRouteList()
 
-    //////
+    // ====
 
     @Query("SELECT * FROM lrt_route_stop WHERE lrt_route_stop_stop_id = (:stopId)")
     suspend fun getRouteStopListFromStopId(stopId: String): List<LRTRouteStopEntity>

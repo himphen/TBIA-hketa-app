@@ -12,7 +12,14 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.model.transport.TransportStop
-import hibernate.v2.sunshine.repository.*
+import hibernate.v2.sunshine.repository.EtaRepository
+import hibernate.v2.sunshine.repository.GmbRepository
+import hibernate.v2.sunshine.repository.KmbRepository
+import hibernate.v2.sunshine.repository.LRTRepository
+import hibernate.v2.sunshine.repository.MTRRepository
+import hibernate.v2.sunshine.repository.NCRepository
+import hibernate.v2.sunshine.repository.NLBRepository
+import hibernate.v2.sunshine.repository.RouteListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -325,9 +332,11 @@ class AddEtaMobileViewModel(
             val currentEtaOrderList = getEtaOrderList()
             val updatedEtaOrderList = mutableListOf<EtaOrderEntity>()
             updatedEtaOrderList.add(EtaOrderEntity(id = newEta.id, position = 0))
-            updatedEtaOrderList.addAll(currentEtaOrderList.map {
-                EtaOrderEntity(id = it.id, position = it.position + 1)
-            })
+            updatedEtaOrderList.addAll(
+                currentEtaOrderList.map {
+                    EtaOrderEntity(id = it.id, position = it.position + 1)
+                }
+            )
             updateEtaOrderList(updatedEtaOrderList)
 
             isAddEtaSuccessful.emit(true)
@@ -358,9 +367,9 @@ class AddEtaMobileViewModel(
 
         executingSearchJob[etaType] = viewModelScope.launch(Dispatchers.IO) {
             val result = allTransportRouteList.filter { transportRoute ->
-                transportRoute.routeNo.startsWith(keyword, true)
-                        || transportRoute.destTc.startsWith(keyword, true)
-                        || transportRoute.origTc.startsWith(keyword, true)
+                transportRoute.routeNo.startsWith(keyword, true) ||
+                    transportRoute.destTc.startsWith(keyword, true) ||
+                    transportRoute.origTc.startsWith(keyword, true)
             }
 
             filteredTransportRouteList.emit(Pair(etaType, result))

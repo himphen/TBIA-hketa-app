@@ -153,8 +153,8 @@ class CustomDividerItemDecoration(context: Context, orientation: Int, isShowInLa
         if (mDivider == null) {
             Log.w(
                 TAG,
-                "@android:attr/listDivider was not set in the theme used for this "
-                        + "DividerItemDecoration. Please set that attribute all call setDrawable()"
+                "@android:attr/listDivider was not set in the theme used for this " +
+                    "DividerItemDecoration. Please set that attribute all call setDrawable()"
             )
         }
         a.recycle()

@@ -15,7 +15,8 @@ class NoFragmentTitleView @JvmOverloads constructor(
     context,
     attrs,
     defStyle
-), TitleViewAdapter.Provider {
+),
+    TitleViewAdapter.Provider {
 
     private val mTitleViewAdapter = object : TitleViewAdapter() {
         override fun getSearchAffordanceView(): View? = null

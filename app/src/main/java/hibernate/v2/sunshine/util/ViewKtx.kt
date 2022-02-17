@@ -21,7 +21,6 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-
 fun EditText.afterTextChanged(): Flow<String> = callbackFlow {
     val textWatcher = addTextChangedListener(
         afterTextChanged = {

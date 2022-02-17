@@ -121,7 +121,6 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
     }
 
     fun initUI() {
-
     }
 
     fun initData() {

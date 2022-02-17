@@ -27,8 +27,10 @@ internal class MyGuidanceStylingRelativeLayout @JvmOverloads constructor(
         if (mTitleView != null && mTitleView.parent === this) {
             val titleViewBaseline = mTitleView.baseline
             val mBreadcrumbViewHeight = mBreadcrumbView?.measuredHeight ?: 0
-            val guidanceTextContainerTop = (mTitleKeylinePixels
-                    - titleViewBaseline - mBreadcrumbViewHeight - mTitleView.paddingTop)
+            val guidanceTextContainerTop = (
+                mTitleKeylinePixels -
+                    titleViewBaseline - mBreadcrumbViewHeight - mTitleView.paddingTop
+                )
             val offset = guidanceTextContainerTop - mBreadcrumbView.top
             if (mBreadcrumbView != null && mBreadcrumbView.parent === this) {
                 mBreadcrumbView.offsetTopAndBottom(offset)
@@ -61,5 +63,4 @@ internal class MyGuidanceStylingRelativeLayout @JvmOverloads constructor(
             return percent
         }
     }
-
 }

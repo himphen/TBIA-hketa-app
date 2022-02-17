@@ -82,5 +82,4 @@ data class KmbRouteEntity(
 
         return bound.compareTo(other.bound)
     }
-
 }

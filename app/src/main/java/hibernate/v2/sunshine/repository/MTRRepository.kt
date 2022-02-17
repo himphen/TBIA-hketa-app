@@ -3,7 +3,6 @@ package hibernate.v2.sunshine.repository
 import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import hibernate.v2.api.model.transport.mtr.MTRRoute
 import hibernate.v2.api.model.transport.mtr.MTRRouteStop
 import hibernate.v2.api.model.transport.mtr.MTRStop
@@ -40,9 +39,11 @@ class MTRRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<MTRRouteStop>>()?.let { list ->
-            saveRouteStopList(list.map { routeStop ->
-                MTRRouteStopEntity.fromApiModel(routeStop)
-            })
+            saveRouteStopList(
+                list.map { routeStop ->
+                    MTRRouteStopEntity.fromApiModel(routeStop)
+                }
+            )
         }
     }
 
@@ -51,9 +52,11 @@ class MTRRepository(
         val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<MTRStop>>()?.let { list ->
-            saveStopList(list.map { stop ->
-                MTRStopEntity.fromApiModel(stop)
-            })
+            saveStopList(
+                list.map { stop ->
+                    MTRStopEntity.fromApiModel(stop)
+                }
+            )
         }
     }
 

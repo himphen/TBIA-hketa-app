@@ -3,9 +3,9 @@ package hibernate.v2.sunshine.db.kmb
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
-import hibernate.v2.api.model.transport.kmb.KmbRouteStop
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.api.model.transport.kmb.KmbRouteStop
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Entity(

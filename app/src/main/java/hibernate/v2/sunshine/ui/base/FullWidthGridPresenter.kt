@@ -24,5 +24,4 @@ class FullWidthGridPresenter : VerticalGridPresenter {
         )
         return ViewHolder(root.findViewById<View>(R.id.browse_grid) as VerticalGridView)
     }
-
 }

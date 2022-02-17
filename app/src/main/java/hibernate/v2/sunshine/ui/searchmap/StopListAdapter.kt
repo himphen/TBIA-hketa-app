@@ -5,11 +5,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import hibernate.v2.sunshine.databinding.ItemBottomSheetStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteBadgeBinding
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop

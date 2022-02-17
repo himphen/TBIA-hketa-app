@@ -63,5 +63,4 @@ enum class GmbRegion(val value: String, val ordering: Int) {
     companion object {
         fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
     }
-
 }

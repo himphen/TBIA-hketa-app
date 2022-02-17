@@ -3,15 +3,9 @@ package hibernate.v2.sunshine.repository
 import com.fonfon.kgeohash.GeoHash
 import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.ktx.getValue
-import hibernate.v2.api.model.transport.kmb.KmbRoute
-import hibernate.v2.api.model.transport.kmb.KmbRouteStop
-import hibernate.v2.api.model.transport.kmb.KmbStop
 import hibernate.v2.api.model.transport.nlb.NLBRoute
 import hibernate.v2.api.model.transport.nlb.NLBRouteStop
 import hibernate.v2.api.model.transport.nlb.NLBStop
-import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
-import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
-import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 import hibernate.v2.sunshine.db.nlb.NLBDao
 import hibernate.v2.sunshine.db.nlb.NLBRouteEntity
 import hibernate.v2.sunshine.db.nlb.NLBRouteStopEntity
@@ -31,9 +25,11 @@ class NLBRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NLBRoute>>()?.let { list ->
-            saveRouteList(list.map { NLBRoute ->
-                NLBRouteEntity.fromApiModel(NLBRoute)
-            })
+            saveRouteList(
+                list.map { NLBRoute ->
+                    NLBRouteEntity.fromApiModel(NLBRoute)
+                }
+            )
         }
     }
 
@@ -42,9 +38,11 @@ class NLBRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NLBRouteStop>>()?.let { list ->
-            saveRouteStopList(list.map { NLBRouteStop ->
-                NLBRouteStopEntity.fromApiModel(NLBRouteStop)
-            })
+            saveRouteStopList(
+                list.map { NLBRouteStop ->
+                    NLBRouteStopEntity.fromApiModel(NLBRouteStop)
+                }
+            )
         }
     }
 
@@ -53,9 +51,11 @@ class NLBRepository(
         val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NLBStop>>()?.let { list ->
-            saveStopList(list.map { NLBStop ->
-                NLBStopEntity.fromApiModel(NLBStop)
-            })
+            saveStopList(
+                list.map { NLBStop ->
+                    NLBStopEntity.fromApiModel(NLBStop)
+                }
+            )
         }
     }
 

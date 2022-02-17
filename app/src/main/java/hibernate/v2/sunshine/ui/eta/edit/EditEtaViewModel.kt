@@ -25,24 +25,24 @@ class EditEtaViewModel(
                 async {
                     etaRepository.getSavedKmbEtaList()
                         .map { it.toSettingsEtaCard() }
-
-                }, async {
+                },
+                async {
                     etaRepository.getSavedNCEtaList()
                         .map { it.toSettingsEtaCard() }
-
-                }, async {
+                },
+                async {
                     etaRepository.getSavedGmbEtaList()
                         .map { it.toSettingsEtaCard() }
-
-                }, async {
+                },
+                async {
                     etaRepository.getSavedMTREtaList()
                         .map { it.toSettingsEtaCard() }
-
-                }, async {
+                },
+                async {
                     etaRepository.getSavedLRTEtaList()
                         .map { it.toSettingsEtaCard() }
-
-                }, async {
+                },
+                async {
                     etaRepository.getSavedNLBEtaList()
                         .map { it.toSettingsEtaCard() }
                 }

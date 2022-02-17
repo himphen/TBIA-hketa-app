@@ -4,9 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.Index
-import hibernate.v2.api.model.transport.nlb.NLBRouteStop
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.api.model.transport.nlb.NLBRouteStop
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Entity(

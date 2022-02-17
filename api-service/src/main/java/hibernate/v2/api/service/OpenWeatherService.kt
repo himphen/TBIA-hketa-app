@@ -2,7 +2,6 @@ package hibernate.v2.api.service
 
 import hibernate.v2.api.model.openweather.OneCall
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface OpenWeatherService {

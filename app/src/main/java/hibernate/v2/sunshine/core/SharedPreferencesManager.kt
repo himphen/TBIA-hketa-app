@@ -9,7 +9,6 @@ import hibernate.v2.api.model.transport.Checksum
 import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import hibernate.v2.sunshine.util.PreferenceUtils
 
-
 class SharedPreferencesManager(val context: Context) {
 
     companion object {

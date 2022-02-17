@@ -40,9 +40,11 @@ class NCRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NCRouteStop>>()?.let { list ->
-            saveRouteStopList(list.map { ncRouteStop ->
-                NCRouteStopEntity.fromApiModel(ncRouteStop)
-            })
+            saveRouteStopList(
+                list.map { ncRouteStop ->
+                    NCRouteStopEntity.fromApiModel(ncRouteStop)
+                }
+            )
         }
     }
 
@@ -51,9 +53,11 @@ class NCRepository(
         val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NCStop>>()?.let { list ->
-            saveStopList(list.map { ncStop ->
-                NCStopEntity.fromApiModel(ncStop)
-            })
+            saveStopList(
+                list.map { ncStop ->
+                    NCStopEntity.fromApiModel(ncStop)
+                }
+            )
         }
     }
 

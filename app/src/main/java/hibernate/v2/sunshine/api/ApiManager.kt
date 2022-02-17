@@ -5,11 +5,10 @@ import com.google.gson.Gson
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiConverterFactory
 import hibernate.v2.api.service.GmbService
-import hibernate.v2.api.service.KmbService
 import hibernate.v2.api.service.HkoWeatherService
-import hibernate.v2.api.service.MTRService
-import hibernate.v2.api.service.TransportService
+import hibernate.v2.api.service.KmbService
 import hibernate.v2.api.service.OpenWeatherService
+import hibernate.v2.api.service.TransportService
 import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.sunshine.util.JsonUtils
 import okhttp3.OkHttpClient
@@ -35,10 +34,12 @@ open class ApiManager(val context: Context) {
             .connectTimeout(connectTimeout, TimeUnit.SECONDS)
             .readTimeout(readTimeout, TimeUnit.SECONDS)
             .writeTimeout(writeTimeout, TimeUnit.SECONDS)
-            .addNetworkInterceptor(HttpLoggingInterceptor(HttpLogger()).apply {
-                level =
-                    if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.HEADERS else HttpLoggingInterceptor.Level.NONE
-            })
+            .addNetworkInterceptor(
+                HttpLoggingInterceptor(HttpLogger()).apply {
+                    level =
+                        if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.HEADERS else HttpLoggingInterceptor.Level.NONE
+                }
+            )
             .addInterceptor(ApiLogInterceptor())
             .build()
 
@@ -89,7 +90,6 @@ open class ApiManager(val context: Context) {
         initClient()
     }
 }
-
 
 class HttpLogger : HttpLoggingInterceptor.Logger {
     private var mMessage: StringBuffer = StringBuffer("")

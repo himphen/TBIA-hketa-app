@@ -5,7 +5,11 @@ import hibernate.v2.api.response.eta.EtaResponse
 import hibernate.v2.api.response.eta.LRTEtaResponse
 import hibernate.v2.api.response.eta.MTREtaResponse
 import hibernate.v2.api.response.eta.NLBEtaResponse
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TransportService {
     @GET("v1/transport/citybus-nwfb/eta/{company}/{stop_id}/{route}")

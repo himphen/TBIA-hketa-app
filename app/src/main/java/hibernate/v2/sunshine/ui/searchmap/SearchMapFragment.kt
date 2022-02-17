@@ -379,8 +379,8 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 setOnClusterClickListener {
                     // group click
 
-                    if (it.items.size > 30
-                        && googleMap.cameraPosition.zoom < googleMap.maxZoomLevel - 1f
+                    if (it.items.size > 30 &&
+                        googleMap.cameraPosition.zoom < googleMap.maxZoomLevel - 1f
                     ) {
                         googleMap.animateCamera(
                             CameraUpdateFactory.newLatLngZoom(

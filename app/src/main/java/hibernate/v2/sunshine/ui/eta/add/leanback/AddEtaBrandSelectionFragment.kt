@@ -48,9 +48,11 @@ class AddEtaBrandSelectionFragment : GuidedStepSupportFragment() {
         activity?.supportFragmentManager?.beginTransaction()?.apply {
             replace(
                 R.id.container,
-                AddEtaFragment.getInstance(Bundle().apply {
-                    putEnum(ARG_ETA_TYPE, etaType)
-                })
+                AddEtaFragment.getInstance(
+                    Bundle().apply {
+                        putEnum(ARG_ETA_TYPE, etaType)
+                    }
+                )
             )
             commit()
         }

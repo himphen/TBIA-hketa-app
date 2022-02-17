@@ -39,9 +39,11 @@ class KmbRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<KmbRouteStop>>()?.let { list ->
-            saveRouteStopList(list.map { kmbRouteStop ->
-                KmbRouteStopEntity.fromApiModel(kmbRouteStop)
-            })
+            saveRouteStopList(
+                list.map { kmbRouteStop ->
+                    KmbRouteStopEntity.fromApiModel(kmbRouteStop)
+                }
+            )
         }
     }
 
@@ -50,9 +52,11 @@ class KmbRepository(
         val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<KmbStop>>()?.let { list ->
-            saveStopList(list.map { kmbStop ->
-                KmbStopEntity.fromApiModel(kmbStop)
-            })
+            saveStopList(
+                list.map { kmbStop ->
+                    KmbStopEntity.fromApiModel(kmbStop)
+                }
+            )
         }
     }
 

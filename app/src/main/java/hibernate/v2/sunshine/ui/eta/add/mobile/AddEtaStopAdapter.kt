@@ -64,10 +64,12 @@ class AddEtaStopAdapter(
 
                 root.tag = stop
                 root.setOnClickListener {
-                    onStopSelected(Card.RouteStopAddCard(
-                        route = route,
-                        stop = stop
-                    ))
+                    onStopSelected(
+                        Card.RouteStopAddCard(
+                            route = route,
+                            stop = stop
+                        )
+                    )
                 }
             }
         }

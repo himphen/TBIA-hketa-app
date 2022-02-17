@@ -255,5 +255,4 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         stopRefreshEtaJob()
         super.onPause()
     }
-
 }
