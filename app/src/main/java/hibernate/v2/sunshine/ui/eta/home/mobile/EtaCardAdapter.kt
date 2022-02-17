@@ -43,7 +43,7 @@ class EtaCardAdapter(
                         false
                     )
                 ).apply {
-                    viewBinding.content.etaTimeRv.apply {
+                    viewBinding.content.etaMinuteLl.etaTimeRv.apply {
                         setEtaTimeFlexManager()
                         adapter = EtaTimeAdapter()
                     }

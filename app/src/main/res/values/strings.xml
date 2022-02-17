@@ -6,8 +6,10 @@
     <string name="title_settings_version">版本</string>
     <string name="title_settings_reset">重設數據</string>
     <string name="title_activity_add_eta">加入車站</string>
-    <string name="settings_acknowledgement_title">Acknowledgement</string>
-    <string name="settings_acknowledgement_summary">Some icons are from Material Icons and www.flaticon.com</string>
+    <string name="settings_acknowledgement_title1">Acknowledgement 1</string>
+    <string name="settings_acknowledgement_summary1">Some icons are from Material Icons and www.flaticon.com</string>
+    <string name="settings_acknowledgement_title2">Acknowledgement 2</string>
+    <string name="settings_acknowledgement_summary2">Transport and real time Arrival Data are provided by DATA.GOV.HK</string>
 
     <string name="test_onboarding_loading_start">正在載入路線數據</string>
 
@@ -28,14 +30,14 @@
 
     <string name="text_eta_card_classic_mtr_station">%1$s站</string>
 
-    <string name="text_settings_eta_destination">往 %1$s</string>
-    <string name="text_settings_eta_destination_with_sp">往 %1$s (%2$s)</string>
+    <string name="text_settings_eta_destination">➔ %1$s</string>
+    <string name="text_settings_eta_destination_with_sp">➔ %1$s (%2$s)</string>
 
-    <string name="text_add_eta_destination">%1$s號線 - %2$s往%3$s</string>
-    <string name="text_add_eta_destination_with_sp">%1$s號線 (特別線 %2$s) - %3$s往%4$s</string>
-    <string name="text_add_eta_destination_train">%1$s - %2$s往%3$s</string>
+    <string name="text_add_eta_destination">%1$s號線 - %2$s ➔ %3$s</string>
+    <string name="text_add_eta_destination_with_sp">%1$s號線 (特別線 %2$s) - %3$s ➔ %4$s</string>
+    <string name="text_add_eta_destination_train">%1$s - %2$s ➔ %3$s</string>
 
-    <string name="text_add_eta_destination_mobile">%1$s 往 %2$s</string>
+    <string name="text_add_eta_destination_mobile">%1$s ➔ %2$s</string>
     <string name="text_add_eta_destination_sp_mobile">特別線 %1$s</string>
 
     <string name="dialog_add_eta_brand_selection_title">選擇公共運輸類別</string>
@@ -53,7 +55,7 @@
     <string name="text_eta_loading_failed">載入數據失敗，正在重新再試。（錯誤碼：%d）</string>
     <string name="text_edit_eta_invalid_hint">已移除主頁失效的常用車站。</string>
 
-    <string name="text_add_eta_hint_stop">%1$s所有車站</string>
+    <string name="text_add_eta_hint_stop">%1$s</string>
 
     <string name="menu_edit_eta_action_save_order">儲存</string>
     <string name="dialog_settings_eta_remove_title">注意</string>
@@ -75,8 +77,8 @@
     <string name="dialog_edit_eta_move_down_btn">下移</string>
     <string name="dialog_edit_eta_remove_btn">移除</string>
     <string name="dialog_edit_eta_cancel_btn">取消</string>
-    <string name="toast_eta_already_added">無法重覆選擇已加入的常用車站</string>
-    <string name="toast_eta_added">已成功加入常用車站</string>
+    <string name="toast_eta_already_added">已加入至主頁</string>
+    <string name="toast_eta_added">已加入至主頁</string>
     <string name="eta_card_minute_unit">分</string>
 
     <string name="dialog_add_eta_in_search_map_description_bus">加入%1$s號線%2$s車站至常用車站列表？</string>
@@ -105,6 +107,7 @@
     <string name="demo_card_eta_minute_classic">3</string>
     <string name="demo_card_eta_minute_classic_unit">分鐘</string>
     <string name="demo_card_eta_minute_classic_time">07:30</string>
+    <string name="demo_card_eta_minute_na">不適用</string>
 
     <string name="stop_list_bottom_sheet_title">請選擇車站</string>
     <string name="route_list_bottom_sheet_title">觀塘市中心 (T4)</string>

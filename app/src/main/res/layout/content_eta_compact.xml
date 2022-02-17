@@ -187,11 +187,11 @@
         <include
             android:id="@+id/routeNumberContainer"
             layout="@layout/content_eta_compact_route_number"
-            android:layout_width="80dp"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/eta1Ll"
-            app:layout_constraintHorizontal_weight="1.5"
+            app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

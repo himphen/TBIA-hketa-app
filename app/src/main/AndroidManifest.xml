@@ -35,6 +35,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
+            android:name="hibernate.v2.sunshine.ui.route.mobile.RouteDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Mobile" />
+        <activity
             android:name=".ui.settings.eta.layout.mobile.EtaLayoutSelectionActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />

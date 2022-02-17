@@ -13,9 +13,10 @@ import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 
 class OnboardingViewModel(
     private val sharedPreferencesManager: SharedPreferencesManager,
@@ -135,21 +136,21 @@ class OnboardingViewModel(
         Logger.d("=== lifecycle downloadKmbTransportData start ===")
         kmbRepository.initDatabase()
 
-        coroutineScope {
+        supervisorScope {
             listOf(
-                launch {
+                async(Dispatchers.IO) {
                     kmbRepository.saveStopListFromFirebase()
                     Logger.d("lifecycle downloadKmbTransportData saveStopListApi done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     kmbRepository.saveRouteListFromFirebase()
                     Logger.d("lifecycle downloadKmbTransportData saveRouteListApi done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     kmbRepository.saveRouteStopListFromFirebase()
                     Logger.d("lifecycle downloadKmbTransportData saveRouteStopListApi done")
                 }
-            ).joinAll()
+            ).awaitAll()
         }
     }
 
@@ -157,21 +158,21 @@ class OnboardingViewModel(
         Logger.d("=== lifecycle downloadNCTransportData start ===")
         ncRepository.initDatabase()
 
-        coroutineScope {
+        supervisorScope {
             listOf(
-                launch {
+                async(Dispatchers.IO) {
                     ncRepository.saveRouteListFromFirebase()
                     Logger.d("lifecycle downloadNCTransportData saveRouteListFromFirebase done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     ncRepository.saveRouteStopListFromFirebase()
                     Logger.d("lifecycle downloadNCTransportData saveRouteStopListFromFirebase done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     ncRepository.saveStopListFromFirebase()
                     Logger.d("lifecycle downloadNCTransportData saveStopListFromFirebase done")
                 }
-            ).joinAll()
+            ).awaitAll()
         }
     }
 
@@ -179,21 +180,21 @@ class OnboardingViewModel(
         Logger.d("=== lifecycle downloadGmbTransportData start ===")
         gmbRepository.initDatabase()
 
-        coroutineScope {
+        supervisorScope {
             listOf(
-                launch {
+                async(Dispatchers.IO) {
                     gmbRepository.saveRouteListFromFirebase()
                     Logger.d("lifecycle downloadGmbTransportData saveRouteListFromFirebase done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     gmbRepository.saveRouteStopListFromFirebase()
                     Logger.d("lifecycle downloadGmbTransportData saveRouteStopListFromFirebase done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     gmbRepository.saveStopListFromFirebase()
                     Logger.d("lifecycle downloadGmbTransportData saveStopListFromFirebase done")
                 }
-            ).joinAll()
+            ).awaitAll()
         }
     }
 
@@ -201,21 +202,21 @@ class OnboardingViewModel(
         Logger.d("=== lifecycle downloadMTRTransportData start ===")
         mtrRepository.initDatabase()
 
-        coroutineScope {
+        supervisorScope {
             listOf(
-                launch {
+                async(Dispatchers.IO) {
                     mtrRepository.saveRouteListFromFirebase()
                     Logger.d("lifecycle downloadMTRTransportData saveRouteListFromFirebase done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     mtrRepository.saveRouteStopListFromFirebase()
                     Logger.d("lifecycle downloadMTRTransportData saveRouteStopListFromFirebase done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     mtrRepository.saveStopListFromFirebase()
                     Logger.d("lifecycle downloadMTRTransportData saveStopListFromFirebase done")
                 }
-            ).joinAll()
+            ).awaitAll()
         }
     }
 
@@ -223,21 +224,21 @@ class OnboardingViewModel(
         Logger.d("=== lifecycle downloadLRTTransportData start ===")
         lrtRepository.initDatabase()
 
-        coroutineScope {
+        supervisorScope {
             listOf(
-                launch {
+                async(Dispatchers.IO) {
                     lrtRepository.saveRouteListFromFirebase()
                     Logger.d("lifecycle downloadLRTTransportData saveRouteListFromFirebase done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     lrtRepository.saveRouteStopListFromFirebase()
                     Logger.d("lifecycle downloadLRTTransportData saveRouteStopListFromFirebase done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     lrtRepository.saveStopListFromFirebase()
                     Logger.d("lifecycle downloadLRTTransportData saveStopListFromFirebase done")
                 }
-            ).joinAll()
+            ).awaitAll()
         }
     }
 
@@ -245,21 +246,21 @@ class OnboardingViewModel(
         Logger.d("=== lifecycle downloadNLBTransportData start ===")
         nlbRepository.initDatabase()
 
-        coroutineScope {
+        supervisorScope {
             listOf(
-                launch {
+                async(Dispatchers.IO) {
                     nlbRepository.saveRouteListFromFirebase()
                     Logger.d("lifecycle downloadNLBTransportData saveRouteListFromFirebase done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     nlbRepository.saveRouteStopListFromFirebase()
                     Logger.d("lifecycle downloadNLBTransportData saveRouteStopListFromFirebase done")
                 },
-                launch {
+                async(Dispatchers.IO) {
                     nlbRepository.saveStopListFromFirebase()
                     Logger.d("lifecycle downloadNLBTransportData saveStopListFromFirebase done")
                 }
-            ).joinAll()
+            ).awaitAll()
         }
     }
 

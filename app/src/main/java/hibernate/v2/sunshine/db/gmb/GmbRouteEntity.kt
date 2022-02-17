@@ -6,6 +6,7 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.api.model.transport.gmb.GmbRoute
+import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
@@ -36,7 +37,7 @@ data class GmbRouteEntity(
     val serviceType: String,
     @ColumnInfo(name = "region")
     val region: GmbRegion,
-)  : TransportHashable {
+) : TransportHashable, Comparable<GmbRouteEntity>, BaseRouteEntity() {
 
     companion object {
         fun fromApiModel(route: GmbRoute): GmbRouteEntity {
@@ -74,4 +75,17 @@ data class GmbRouteEntity(
     }
 
     fun routeHashId() = routeHashId(Company.GMB, routeId, bound, serviceType)
+
+    override fun compareTo(other: GmbRouteEntity): Int {
+        parseRouteNumber(routeNo)
+        other.parseRouteNumber(routeNo)
+
+        val routeCompare = routeComponent.compareTo(other.routeComponent)
+        if (routeCompare != 0) return routeCompare
+
+        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
+        if (serviceTypeCompare != 0) return serviceTypeCompare
+
+        return bound.compareTo(other.bound)
+    }
 }

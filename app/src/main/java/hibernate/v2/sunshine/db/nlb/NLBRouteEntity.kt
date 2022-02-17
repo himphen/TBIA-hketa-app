@@ -6,6 +6,7 @@ import androidx.room.Ignore
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.nlb.NLBRoute
+import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.TransportHashable
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
@@ -28,9 +29,10 @@ data class NLBRouteEntity(
     val destTc: String,
     @ColumnInfo(name = "dest_sc")
     val destSc: String,
-) : TransportHashable {
+) : TransportHashable, Comparable<NLBRouteEntity>, BaseRouteEntity() {
     @Ignore
     val bound = Bound.UNKNOWN
+
     @Ignore
     val serviceType = "1"
 
@@ -67,4 +69,17 @@ data class NLBRouteEntity(
     }
 
     fun routeHashId() = routeHashId(Company.NLB, routeId, bound, serviceType)
+
+    override fun compareTo(other: NLBRouteEntity): Int {
+        parseRouteNumber(routeId)
+        other.parseRouteNumber(routeId)
+
+        val routeCompare = routeComponent.compareTo(other.routeComponent)
+        if (routeCompare != 0) return routeCompare
+
+        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
+        if (serviceTypeCompare != 0) return serviceTypeCompare
+
+        return bound.compareTo(other.bound)
+    }
 }

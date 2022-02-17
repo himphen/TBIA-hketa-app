@@ -9,11 +9,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import kotlin.time.Duration
 
 suspend fun <T> retry(numOfRetries: Int, block: suspend () -> T): T {
     var throwable: Throwable? = null
@@ -39,6 +41,14 @@ fun CoroutineScope.launchPeriodicAsync(
         }
     } else {
         action()
+    }
+}
+
+fun tickerFlow(period: Duration, initialDelay: Duration = Duration.ZERO) = flow {
+    delay(initialDelay)
+    while (true) {
+        emit(Unit)
+        delay(period)
     }
 }
 

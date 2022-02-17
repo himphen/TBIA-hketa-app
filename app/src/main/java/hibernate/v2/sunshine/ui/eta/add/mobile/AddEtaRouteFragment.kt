@@ -12,6 +12,7 @@ import hibernate.v2.sunshine.databinding.FragmentAddEtaRouteBinding
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
+import hibernate.v2.sunshine.ui.route.mobile.RouteDetailsActivity
 import hibernate.v2.sunshine.util.getEnum
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.putEnum
@@ -39,19 +40,23 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaRouteBinding>() {
     private val adapter: AddEtaRouteAdapter by lazy {
         AddEtaRouteAdapter(etaType) { route ->
             viewModel.selectedEtaType.value = etaType
-            viewModel.selectedRoute.value = route
 
-            activity?.supportFragmentManager?.beginTransaction()?.apply {
-                setCustomAnimations(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left,
-                    R.anim.slide_in_left,
-                    R.anim.slide_out_right
-                )
-                add(R.id.container, AddEtaStopFragment.getInstance())
-                addToBackStack(null)
-                commit()
-            }
+            RouteDetailsActivity.launch(context, route, etaType)
+
+//            viewModel.selectedEtaType.value = etaType
+//            viewModel.selectedRoute.value = route
+//
+//            activity?.supportFragmentManager?.beginTransaction()?.apply {
+//                setCustomAnimations(
+//                    R.anim.slide_in_right,
+//                    R.anim.slide_out_left,
+//                    R.anim.slide_in_left,
+//                    R.anim.slide_out_right
+//                )
+//                add(R.id.container, AddEtaStopFragment.getInstance())
+//                addToBackStack(null)
+//                commit()
+//            }
         }
     }
 
@@ -88,9 +93,10 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaRouteBinding>() {
     private fun initEvent() {
         viewModel.filteredTransportRouteList.onEach {
             if (it.first == etaType) {
-                adapter.setRouteData(it.second)
+                val list = it.second.sorted()
+                adapter.setRouteData(list)
 
-                if (it.second.isEmpty()) {
+                if (list.isEmpty()) {
                     viewBinding?.emptyViewCl?.root?.visible()
                     viewBinding?.recyclerView?.gone()
                 } else {

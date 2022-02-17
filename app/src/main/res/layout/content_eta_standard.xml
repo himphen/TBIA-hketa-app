@@ -81,7 +81,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:text="@string/demo_card_eta_minute_compact_2" />
+                android:text="@string/demo_card_eta_minute_compact_2"
+                android:textColor="@color/eta_card_minutes_text" />
 
             <TextView
                 android:id="@+id/eta2UnitTv"
@@ -110,12 +111,9 @@
                 style="@style/Eta.Card.Minute.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="end"
                 android:text="@string/demo_card_eta_minute_compact_1"
-                android:textColor="@color/eta_card_minutes_text"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/eta1UnitTv"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textColor="@color/eta_card_minutes_text" />
 
             <TextView
                 android:id="@+id/eta1UnitTv"
@@ -151,10 +149,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:text="@string/demo_card_eta_minute_compact_3"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/eta3UnitTv"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textColor="@color/eta_card_minutes_text" />
 
             <TextView
                 android:id="@+id/eta3UnitTv"
@@ -184,7 +179,7 @@
         <include
             android:id="@+id/routeNumberContainer"
             layout="@layout/content_eta_standard_route_number"
-            android:layout_width="80dp"
+            android:layout_width="120dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -14,15 +14,21 @@
         tools:summary="Dark Mode" />
 
     <Preference
-        android:icon="@drawable/ic_settings_version_24"
+        android:icon="@drawable/ic_settings_reset_24"
         android:key="pref_settings_reset"
         android:title="@string/title_settings_reset" />
 
     <Preference
         android:icon="@drawable/ic_integration_instructions_24"
         android:key="pref_settings_acknowledgement"
-        android:summary="@string/settings_acknowledgement_summary"
-        android:title="@string/settings_acknowledgement_title" />
+        android:summary="@string/settings_acknowledgement_summary1"
+        android:title="@string/settings_acknowledgement_title1" />
+
+    <Preference
+        android:icon="@drawable/ic_integration_instructions_24"
+        android:key="pref_settings_acknowledgement2"
+        android:summary="@string/settings_acknowledgement_summary2"
+        android:title="@string/settings_acknowledgement_title2" />
 
 
 </PreferenceScreen>

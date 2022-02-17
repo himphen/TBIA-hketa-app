@@ -16,7 +16,7 @@ import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.util.getSnapshotValue
 
 class KmbRepository(
-    private val dao: KmbDao,
+    private val kmbDao: KmbDao,
 ) : BaseRepository() {
     private val dbName = FIREBASE_DB_KMB
 
@@ -25,9 +25,12 @@ class KmbRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<KmbRoute>>()?.let { list ->
-            saveRouteList(list.map { kmbRoute ->
-                KmbRouteEntity.fromApiModel(kmbRoute)
-            })
+            val temp = list
+                .map(KmbRouteEntity.Companion::fromApiModel)
+                .toMutableList()
+                .apply { sortWith(KmbRouteEntity::compareTo) }
+
+            saveRouteList(temp)
         }
     }
 
@@ -53,12 +56,12 @@ class KmbRepository(
         }
     }
 
-    suspend fun getStopListDb(list: List<GeoHash>) = dao.getStopList(list.map { it.toString() })
-    suspend fun getRouteListDb() = dao.getRouteList()
-    suspend fun getRouteStopComponentListDb() = dao.getRouteStopComponentList()
+    suspend fun getStopListDb(list: List<GeoHash>) = kmbDao.getStopList(list.map { it.toString() })
+    suspend fun getRouteListDb() = kmbDao.getRouteList()
+    suspend fun getRouteStopComponentListDb() = kmbDao.getRouteStopComponentList()
     suspend fun getRouteStopComponentListDb(
         route: TransportRoute,
-    ) = dao.getRouteStopComponentList(
+    ) = kmbDao.getRouteStopComponentList(
         route.routeId,
         route.bound.value,
         route.serviceType
@@ -74,9 +77,9 @@ class KmbRepository(
     }
 
     suspend fun getRouteEtaCardList(stop: SearchMapStop): List<Card.EtaCard> {
-        val routeStopList = dao.getRouteStopListFromStopId(stop.stopId)
+        val routeStopList = kmbDao.getRouteStopListFromStopId(stop.stopId)
         val routeList =
-            dao.getRouteListFromRouteId(routeStopList).filter { !it.isSpecialRoute() }
+            kmbDao.getRouteListFromRouteId(routeStopList).filter { !it.isSpecialRoute() }
         val routeHashMap = routeList.map {
             it.routeHashId() to it
         }.toMap()
@@ -92,33 +95,33 @@ class KmbRepository(
         }
     }
 
-    suspend fun getStopDb(stop: String): KmbStopEntity? = dao.getStop(stop).firstOrNull()
+    suspend fun getStopDb(stop: String): KmbStopEntity? = kmbDao.getStop(stop).firstOrNull()
 
     suspend fun getRouteDb(
         route: String,
         bound: String,
         serviceType: String,
-    ): KmbRouteEntity? = dao.getRoute(
+    ): KmbRouteEntity? = kmbDao.getRoute(
         route,
         bound,
         serviceType,
     )
 
     suspend fun initDatabase() {
-        dao.clearRouteList()
-        dao.clearStopList()
-        dao.clearRouteStopList()
+        kmbDao.clearRouteList()
+        kmbDao.clearStopList()
+        kmbDao.clearRouteStopList()
     }
 
     suspend fun saveRouteList(entityList: List<KmbRouteEntity>) {
-        dao.addRouteList(entityList)
+        kmbDao.addRouteList(entityList)
     }
 
     suspend fun saveRouteStopList(entityList: List<KmbRouteStopEntity>) {
-        dao.addRouteStopList(entityList)
+        kmbDao.addRouteStopList(entityList)
     }
 
     suspend fun saveStopList(entityList: List<KmbStopEntity>) {
-        dao.addStopList(entityList)
+        kmbDao.addStopList(entityList)
     }
 }

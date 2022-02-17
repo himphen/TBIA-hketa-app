@@ -2,6 +2,7 @@ package hibernate.v2.sunshine.ui.eta.home.leanback.view
 
 import android.content.Context
 import android.view.LayoutInflater
+import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaClassicBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.eta.EtaTimeAdapter
@@ -23,21 +24,22 @@ class EtaCardViewClassic(context: Context) :
             stopNameTv.text = card.stop.getName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)
 
-            (etaTimeRv.adapter as EtaTimeAdapter).apply {
+            (etaMinuteLl.etaTimeRv.adapter as EtaTimeAdapter).apply {
                 setData(card.etaList)
             }
 
             card.etaList.getOrNull(0)?.getEtaMinuteText("-")?.let {
-                etaMinuteTv.text = it.second
+                etaMinuteLl.etaMinuteTv.text = it.second
 
                 if (it.first) {
-                    etaMinuteUnitTv.visible()
+                    etaMinuteLl.etaMinuteUnitTv.visible()
                 } else {
-                    etaMinuteUnitTv.gone()
+                    etaMinuteLl.etaMinuteUnitTv.gone()
                 }
             } ?: run {
-                etaMinuteTv.text = "-"
-                etaMinuteUnitTv.gone()
+                etaMinuteLl.etaMinuteTv.text =
+                    context.getString(R.string.demo_card_eta_minute_na)
+                etaMinuteLl.etaMinuteUnitTv.gone()
             }
         }
     }

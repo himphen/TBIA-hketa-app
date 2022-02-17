@@ -105,7 +105,7 @@ class TrafficFragment : BaseFragment<LbFragmentTrafficBinding>() {
 
     @Suppress("DeferredIsResult")
     private fun initRefreshMapJob() =
-        CoroutineScope(Dispatchers.Main).launchPeriodicAsync(REFRESH_TIME) {
+        lifecycleScope.launchPeriodicAsync(REFRESH_TIME) {
             if (locationList.isEmpty()) return@launchPeriodicAsync
 
             var nextLocation = locationList.getOrNull(++index)

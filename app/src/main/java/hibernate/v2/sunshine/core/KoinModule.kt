@@ -11,13 +11,13 @@ import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.repository.WeatherRepository
-import hibernate.v2.sunshine.ui.eta.add.AddEtaHelper
 import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
 import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.eta.edit.EditEtaViewModel
 import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
+import hibernate.v2.sunshine.ui.route.mobile.RouteDetailsMobileViewModel
 import hibernate.v2.sunshine.ui.searchmap.SearchMapViewModel
 import hibernate.v2.sunshine.ui.traffic.TrafficViewModel
 import hibernate.v2.sunshine.ui.weather.WeatherViewModel
@@ -41,6 +41,19 @@ val koinUIModule: Module = module {
     viewModel { TrafficViewModel(get()) }
     viewModel { SearchMapViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { MainViewModel() }
+    viewModel { params ->
+        RouteDetailsMobileViewModel(
+            params.get(),
+            params.get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
 }
 
 val koinRepositoryModule: Module = module {

@@ -28,7 +28,7 @@
             android:hint="@string/placeholder_search_route"
             android:imeOptions="actionSearch"
             android:importantForAutofill="no"
-            android:inputType="text"
+            android:inputType="textCapCharacters"
             android:paddingHorizontal="12dp"
             android:paddingVertical="8dp"
             android:singleLine="true"

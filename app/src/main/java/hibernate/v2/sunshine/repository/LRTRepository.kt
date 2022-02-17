@@ -5,6 +5,7 @@ import com.google.firebase.database.ktx.getValue
 import hibernate.v2.api.model.transport.lrt.LRTRoute
 import hibernate.v2.api.model.transport.lrt.LRTRouteStop
 import hibernate.v2.api.model.transport.lrt.LRTStop
+import hibernate.v2.sunshine.db.gmb.GmbRouteEntity
 import hibernate.v2.sunshine.db.lrt.LRTDao
 import hibernate.v2.sunshine.db.lrt.LRTRouteEntity
 import hibernate.v2.sunshine.db.lrt.LRTRouteStopEntity
@@ -24,9 +25,12 @@ class LRTRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<LRTRoute>>()?.let { list ->
-            saveRouteList(list.map { route ->
-                LRTRouteEntity.fromApiModel(route)
-            })
+            val temp = list
+                .map(LRTRouteEntity.Companion::fromApiModel)
+                .toMutableList()
+                .apply { sortWith(LRTRouteEntity::compareTo) }
+
+            saveRouteList(temp)
         }
     }
 

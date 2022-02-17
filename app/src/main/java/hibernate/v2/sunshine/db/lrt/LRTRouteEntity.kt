@@ -6,6 +6,7 @@ import androidx.room.Entity
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.lrt.LRTRoute
+import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.LRTRouteInfo
 import hibernate.v2.sunshine.model.transport.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportHashable
@@ -37,7 +38,7 @@ data class LRTRouteEntity(
     val routeInfoColor: String,
     @ColumnInfo(name = "route_info_is_enabled")
     val routeInfoIsEnabled: Boolean,
-) : TransportHashable {
+) : TransportHashable, Comparable<LRTRouteEntity>, BaseRouteEntity() {
     companion object {
         fun fromApiModel(route: LRTRoute): LRTRouteEntity {
             return LRTRouteEntity(
@@ -80,4 +81,17 @@ data class LRTRouteEntity(
     }
 
     fun routeHashId() = routeHashId(Company.LRT, routeId, bound, serviceType)
+
+    override fun compareTo(other: LRTRouteEntity): Int {
+        parseRouteNumber(routeId)
+        other.parseRouteNumber(routeId)
+
+        val routeCompare = routeComponent.compareTo(other.routeComponent)
+        if (routeCompare != 0) return routeCompare
+
+        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
+        if (serviceTypeCompare != 0) return serviceTypeCompare
+
+        return bound.compareTo(other.bound)
+    }
 }

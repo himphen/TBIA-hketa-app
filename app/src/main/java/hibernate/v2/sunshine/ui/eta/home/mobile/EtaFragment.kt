@@ -26,6 +26,8 @@ import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
+import hibernate.v2.sunshine.util.GeneralUtils
+import hibernate.v2.sunshine.util.GeneralUtils.REFRESH_TIME
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
@@ -143,7 +145,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     private fun updateRouteEtaStopList() {
         if (refreshEtaJob == null) {
             refreshEtaJob =
-                CoroutineScope(Dispatchers.Main).launchPeriodicAsync(EtaViewModel.REFRESH_TIME) {
+                CoroutineScope(Dispatchers.Main).launchPeriodicAsync(REFRESH_TIME) {
                     viewModel.updateEtaList(etaCardList)
                 }
         }

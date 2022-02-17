@@ -26,9 +26,12 @@ class NCRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NCRoute>>()?.let { list ->
-            saveRouteList(list.map { ncRoute ->
-                NCRouteEntity.fromApiModel(ncRoute)
-            })
+            val temp = list
+                .map(NCRouteEntity.Companion::fromApiModel)
+                .toMutableList()
+                .apply { sortWith(NCRouteEntity::compareTo) }
+
+            saveRouteList(temp)
         }
     }
 

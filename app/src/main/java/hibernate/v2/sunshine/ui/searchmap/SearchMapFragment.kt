@@ -35,6 +35,7 @@ import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
 import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
+import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
@@ -485,7 +486,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private fun startRefreshEtaJob() {
         if (routeBottomSheetEtaCardList.isNotEmpty()) {
             refreshEtaJob =
-                CoroutineScope(Dispatchers.Main).launchPeriodicAsync(EtaViewModel.REFRESH_TIME) {
+                lifecycleScope.launchPeriodicAsync(GeneralUtils.REFRESH_TIME) {
                     etaViewModel.updateEtaList(routeBottomSheetEtaCardList)
                 }
         }

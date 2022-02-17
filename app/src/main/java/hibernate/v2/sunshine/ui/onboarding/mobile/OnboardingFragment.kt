@@ -10,7 +10,6 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentOnboardingBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.EtaCardViewType
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.onboarding.FetchTransportDataType
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
@@ -82,6 +81,9 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
                 }
                 FetchTransportDataType.LRT -> {
                     viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_lrt)
+                }
+                FetchTransportDataType.NLB -> {
+                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_nlb)
                 }
                 null -> {
                 }

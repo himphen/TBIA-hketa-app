@@ -26,9 +26,12 @@ class MTRRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<MTRRoute>>()?.let { list ->
-            saveRouteList(list.map { route ->
-                MTRRouteEntity.fromApiModel(route)
-            })
+            val temp = list
+                .map(MTRRouteEntity.Companion::fromApiModel)
+                .toMutableList()
+                .apply { sortWith(MTRRouteEntity::compareTo) }
+
+            saveRouteList(temp)
         }
     }
 

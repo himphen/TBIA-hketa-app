@@ -34,23 +34,39 @@ class EtaViewHolderCompact(viewBinding: ItemEtaCardCompactBinding) :
             stopNameTv.text = card.stop.getName(context)
             routeDirectionTv.text = route.getDestDirectionText(context)
 
-            card.etaList.getOrNull(0)?.getEtaMinuteText()?.let {
+            val first = card.etaList.getOrNull(0)?.getEtaMinuteText()
+            val second = card.etaList.getOrNull(1)?.getEtaMinuteText()
+            val third = card.etaList.getOrNull(2)?.getEtaMinuteText()
+
+            var etaMinuteList = mutableListOf(first, second, third)
+            when (listOfNotNull(first, second, third).size) {
+                1 -> {
+                    etaMinuteList.add(0, null)
+                    etaMinuteList.add(1, null)
+                }
+                2 -> {
+                    etaMinuteList.add(0, null)
+                }
+            }
+            etaMinuteList = etaMinuteList.slice(0..2).toMutableList()
+
+            etaMinuteList.getOrNull(0)?.let {
                 eta1MinuteTv.text = it.second
                 eta1UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
-                eta1MinuteTv.text = "-"
+                eta1MinuteTv.text = ""
                 eta1UnitTv.gone()
             }
 
-            card.etaList.getOrNull(1)?.getEtaMinuteText()?.let {
+            etaMinuteList.getOrNull(1)?.let {
                 eta2MinuteTv.text = it.second
                 eta2UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {
-                eta2MinuteTv.text = "-"
+                eta2MinuteTv.text = ""
                 eta2UnitTv.gone()
             }
 
-            card.etaList.getOrNull(2)?.getEtaMinuteText()?.let {
+            etaMinuteList.getOrNull(2)?.let {
                 eta3MinuteTv.text = it.second
                 eta3UnitTv.visibility = if (it.first) View.VISIBLE else View.GONE
             } ?: run {

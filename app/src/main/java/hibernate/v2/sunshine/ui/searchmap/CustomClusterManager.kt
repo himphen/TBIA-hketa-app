@@ -38,7 +38,6 @@ class CustomClusterManager(
         const val MARKER_IN_ZOOM_LEVEL = 14.5
     }
 
-    private val shownStopList = mutableListOf<SearchMapStop>()
     var currentZoomLevel: Float? = null
 
     override fun onCameraMove() {
@@ -131,12 +130,8 @@ class CustomClusterManager(
 
                     distance < MARKER_IN_METER
                 }
-
-            removeItems(shownStopList)
+            clearItems()
             addItems(pendingToAdd)
-            shownStopList.clear()
-            shownStopList.addAll(pendingToAdd)
-
             withContext(Dispatchers.Main) {
                 cluster()
             }
@@ -145,9 +140,7 @@ class CustomClusterManager(
 
     private fun removeMarker() {
         lifecycleScope.launch(Dispatchers.Main) {
-            removeItems(shownStopList)
-            shownStopList.clear()
-
+            clearItems()
             cluster()
         }
     }

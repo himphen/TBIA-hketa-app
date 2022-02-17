@@ -6,7 +6,9 @@ import hibernate.v2.api.model.transport.gmb.GmbEta
 import hibernate.v2.api.model.transport.nlb.NLBEta
 import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil
+import java.util.Calendar
 import java.util.Date
+import java.util.GregorianCalendar
 
 open class TransportEta(
     val eta: Date?,
@@ -63,10 +65,17 @@ open class TransportEta(
 
     open fun getEtaMinuteText(default: String = ""): Pair<Boolean, String> {
         eta?.let { etaDate ->
-            val minutes = DateUtil.getTimeDiffInMin(
-                etaDate,
-                Date()
-            )
+            // Ignore second and millisecond
+            val gc = GregorianCalendar()
+            gc.time = etaDate
+            gc.set(Calendar.SECOND, 0)
+            gc.set(Calendar.MILLISECOND, 0)
+
+            val minutes = DateUtil.getTimeDiffInMin(gc.time, Date())
+            if (minutes < 0) {
+                return false to default
+            }
+
             return true to (minutes + 1).toString()
         }
 

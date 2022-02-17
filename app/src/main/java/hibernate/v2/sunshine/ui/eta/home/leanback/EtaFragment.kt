@@ -18,6 +18,7 @@ import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.FullWidthGridPresenter
 import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
 import hibernate.v2.sunshine.util.DateUtil
+import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import hibernate.v2.sunshine.util.toggleSlideDown
@@ -144,7 +145,7 @@ class EtaFragment : VerticalGridSupportFragment() {
     private fun updateRouteEtaStopList() {
         if (refreshEtaJob == null) {
             refreshEtaJob =
-                CoroutineScope(Dispatchers.Main).launchPeriodicAsync(EtaViewModel.REFRESH_TIME) {
+                lifecycleScope.launchPeriodicAsync(GeneralUtils.REFRESH_TIME) {
                     viewModel.updateEtaList(etaCardList)
                 }
         }

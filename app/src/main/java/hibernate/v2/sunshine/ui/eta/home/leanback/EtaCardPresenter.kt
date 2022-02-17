@@ -44,7 +44,7 @@ class EtaCardPresenter(
                     R.style.FullCardStyle
                 )
             ).apply {
-                viewBinding.etaTimeRv.apply {
+                viewBinding.etaMinuteLl.etaTimeRv.apply {
                     setEtaTimeFlexManager()
                     adapter = EtaTimeAdapter()
                 }

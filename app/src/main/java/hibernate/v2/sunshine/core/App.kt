@@ -2,7 +2,9 @@ package hibernate.v2.sunshine.core
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.himphen.logger.AndroidLogAdapter
 import com.himphen.logger.Logger
@@ -19,9 +21,9 @@ class App : Application() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate()
 
+        initFirebaseAppCheck()
         initLogger()
         initKoin()
-        initFirebaseAppCheck()
     }
 
     // init logger
@@ -38,7 +40,7 @@ class App : Application() {
 
     private fun initKoin() {
         startKoin {
-            androidLogger(level = if (BuildConfig.DEBUG) Level.INFO else Level.NONE)
+            androidLogger(level = if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
             androidContext(this@App)
             modules(
                 koinServiceModule,
@@ -51,7 +53,12 @@ class App : Application() {
     private fun initFirebaseAppCheck() {
         val firebaseAppCheck = FirebaseAppCheck.getInstance()
         firebaseAppCheck.installAppCheckProviderFactory(
-            SafetyNetAppCheckProviderFactory.getInstance()
+            if (BuildConfig.DEBUG) {
+//                DebugAppCheckProviderFactory.getInstance()
+                SafetyNetAppCheckProviderFactory.getInstance()
+            } else {
+                SafetyNetAppCheckProviderFactory.getInstance()
+            }
         )
     }
 

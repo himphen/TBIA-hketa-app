@@ -11,6 +11,7 @@ import hibernate.v2.sunshine.db.gmb.GmbDao
 import hibernate.v2.sunshine.db.gmb.GmbRouteEntity
 import hibernate.v2.sunshine.db.gmb.GmbRouteStopEntity
 import hibernate.v2.sunshine.db.gmb.GmbStopEntity
+import hibernate.v2.sunshine.db.nc.NCRouteEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportRoute
@@ -26,9 +27,12 @@ class GmbRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<GmbRoute>>()?.let { list ->
-            saveRouteList(list.map { gmbRoute ->
-                GmbRouteEntity.fromApiModel(gmbRoute)
-            })
+            val temp = list
+                .map(GmbRouteEntity.Companion::fromApiModel)
+                .toMutableList()
+                .apply { sortWith(GmbRouteEntity::compareTo) }
+
+            saveRouteList(temp)
         }
     }
 

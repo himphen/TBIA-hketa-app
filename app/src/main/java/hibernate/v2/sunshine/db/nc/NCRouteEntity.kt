@@ -7,6 +7,7 @@ import androidx.room.Index
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.nc.NCRoute
+import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.TransportHashable
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
@@ -34,7 +35,7 @@ data class NCRouteEntity(
     val destTc: String,
     @ColumnInfo(name = "dest_sc")
     val destSc: String,
-) : TransportHashable {
+) : TransportHashable, Comparable<NCRouteEntity>, BaseRouteEntity() {
     @Ignore
     val serviceType = "1"
 
@@ -71,4 +72,17 @@ data class NCRouteEntity(
     }
 
     fun routeHashId() = routeHashId(company, routeId, bound, serviceType)
+
+    override fun compareTo(other: NCRouteEntity): Int {
+        parseRouteNumber(routeId)
+        other.parseRouteNumber(routeId)
+
+        val routeCompare = routeComponent.compareTo(other.routeComponent)
+        if (routeCompare != 0) return routeCompare
+
+        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
+        if (serviceTypeCompare != 0) return serviceTypeCompare
+
+        return bound.compareTo(other.bound)
+    }
 }
