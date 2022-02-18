@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemBottomSheetRouteBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.ui.eta.EtaTimeAdapter
-import hibernate.v2.sunshine.ui.eta.home.mobile.view.BaseEtaViewHolder
-import hibernate.v2.sunshine.ui.eta.view.EtaRouteView
+import hibernate.v2.sunshine.ui.bookmark.EtaTimeAdapter
+import hibernate.v2.sunshine.ui.bookmark.home.mobile.view.BaseEtaViewHolder
+import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView
 import hibernate.v2.sunshine.ui.view.setEtaTimeFlexManager
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible

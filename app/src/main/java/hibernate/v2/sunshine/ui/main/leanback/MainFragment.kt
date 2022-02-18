@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import hibernate.v2.sunshine.databinding.LbFragmentMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.home.leanback.EtaFragment
+import hibernate.v2.sunshine.ui.bookmark.home.leanback.BookmarkHomeFragment
 
 class MainFragment : BaseFragment<LbFragmentMainBinding>() {
 
@@ -24,7 +24,7 @@ class MainFragment : BaseFragment<LbFragmentMainBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         childFragmentManager.beginTransaction()
-            .replace(viewBinding!!.containerTopLeft.id, EtaFragment.getInstance())
+            .replace(viewBinding!!.containerTopLeft.id, BookmarkHomeFragment.getInstance())
             .commit()
 //        childFragmentManager.beginTransaction()
 //            .replace(viewBinding!!.containerTopRight.id, TrafficFragment.getInstance())

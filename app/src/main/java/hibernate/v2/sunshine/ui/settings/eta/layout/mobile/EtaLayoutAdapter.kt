@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemEtaLayoutSelectionBinding
-import hibernate.v2.sunshine.ui.eta.EtaCardViewType
+import hibernate.v2.sunshine.ui.bookmark.EtaCardViewType
 
 class EtaLayoutAdapter(
     defaultType: EtaCardViewType,

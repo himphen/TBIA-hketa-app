@@ -27,15 +27,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile.MainActivity" />
         <activity
-            android:name=".ui.eta.edit.mobile.EditEtaActivity"
+            android:name=".ui.bookmark.edit.mobile.BookmarkEditActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
-            android:name="hibernate.v2.sunshine.ui.eta.add.mobile.AddEtaActivity"
+            android:name="hibernate.v2.sunshine.ui.route.list.mobile.RouteListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
-            android:name="hibernate.v2.sunshine.ui.route.mobile.RouteDetailsActivity"
+            android:name="hibernate.v2.sunshine.ui.route.details.mobile.RouteDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
@@ -61,13 +61,13 @@
             android:name=".ui.main.leanback.MainActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
-            android:name="hibernate.v2.sunshine.ui.eta.edit.leanback.EditEtaActivity"
+            android:name="hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
-            android:name="hibernate.v2.sunshine.ui.eta.add.leanback.AddEtaActivity"
+            android:name="hibernate.v2.sunshine.ui.route.list.leanback.RouteListActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
-            android:name=".ui.eta.edit.leanback.EditEtaDialogActivity"
+            android:name=".ui.bookmark.edit.leanback.BookmarkEditConfirmDialogActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
             android:name=".ui.settings.eta.layout.leanback.EtaLayoutSelectionActivity"

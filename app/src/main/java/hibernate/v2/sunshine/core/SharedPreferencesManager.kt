@@ -6,7 +6,7 @@ import androidx.core.content.edit
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import hibernate.v2.api.model.transport.Checksum
-import hibernate.v2.sunshine.ui.eta.EtaCardViewType
+import hibernate.v2.sunshine.ui.bookmark.EtaCardViewType
 import hibernate.v2.sunshine.util.PreferenceUtils
 
 class SharedPreferencesManager(val context: Context) {

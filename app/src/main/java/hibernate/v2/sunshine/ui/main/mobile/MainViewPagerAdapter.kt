@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.ui.main.mobile
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.ui.eta.home.mobile.EtaFragment
+import hibernate.v2.sunshine.ui.bookmark.home.mobile.BookmarkHomeFragment
 import hibernate.v2.sunshine.ui.searchmap.SearchMapFragment
 import hibernate.v2.sunshine.ui.settings.mobile.SettingsFragment
 
@@ -32,7 +32,7 @@ class MainViewPagerAdapter(
      */
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> EtaFragment()
+            0 -> BookmarkHomeFragment()
             1 -> SearchMapFragment()
             else -> SettingsFragment()
         }

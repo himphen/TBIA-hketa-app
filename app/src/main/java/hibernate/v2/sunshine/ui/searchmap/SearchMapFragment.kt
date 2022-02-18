@@ -32,9 +32,11 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.eta.add.AddEtaViewModel
-import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
+import hibernate.v2.sunshine.ui.bookmark.home.BookmarkHomeViewModel
+import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
+import hibernate.v2.sunshine.ui.route.list.RouteListViewModel
+import hibernate.v2.sunshine.ui.route.list.mobile.RouteListActivity
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.dpToPx
@@ -65,8 +67,8 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
     private val preferences: SharedPreferencesManager by inject()
     private val viewModel: SearchMapViewModel by inject()
-    private val addEtaViewModel: AddEtaViewModel by inject()
-    private val etaViewModel: EtaViewModel by inject()
+    private val routeListViewModel: RouteListViewModel by inject()
+    private val bookmarkHomeViewModel: BookmarkHomeViewModel by inject()
     private val mainViewModel: MainViewModel by sharedViewModel()
 
     private var clusterManager: CustomClusterManager? = null
@@ -104,7 +106,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                     card.route,
                     card.stop
                 )
-                addEtaViewModel.saveStop(addCard)
+                routeListViewModel.saveStop(addCard)
             }
         }
     }
@@ -143,7 +145,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             showStopListOnBottomSheet(it)
         }
 
-        addEtaViewModel.isAddEtaSuccessful.onEach {
+        routeListViewModel.isAddEtaSuccessful.onEach {
             if (it) {
                 lifecycleScope.launchWhenResumed {
                     mainViewModel.onUpdatedEtaList.emit(Unit)
@@ -180,18 +182,18 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             }
         }
 
-        etaViewModel.savedEtaCardList.observe(viewLifecycleOwner) {
+        bookmarkHomeViewModel.savedEtaCardList.observe(viewLifecycleOwner) {
             routeBottomSheetEtaCardList.clear()
             routeBottomSheetEtaCardList.addAll(it)
             processEtaList()
         }
-        etaViewModel.etaUpdateError.onEach {
+        bookmarkHomeViewModel.etaUpdateError.onEach {
             Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        etaViewModel.etaRequested.onEach {
+        bookmarkHomeViewModel.etaRequested.onEach {
             if (it) {
-                etaRequestJob = etaViewModel.updateEtaList()
+                etaRequestJob = bookmarkHomeViewModel.updateEtaList()
             } else {
                 etaRequestJob?.cancel()
             }
@@ -228,6 +230,15 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             }
         }
 
+        viewBinding.searchEt.setOnClickListener {
+            (activity as? MainActivity)?.etaUpdatedLauncher?.launch(
+                Intent(
+                    context,
+                    RouteListActivity::class.java
+                )
+            )
+        }
+
         initStopListBottomSheet(viewBinding)
         initRouteListBottomSheet(viewBinding)
         initMap(viewBinding)
@@ -239,6 +250,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 state = BottomSheetBehavior.STATE_HIDDEN
                 addBottomSheetCallback(object : BottomSheetCallback() {
                     override fun onStateChanged(bottomSheet: View, newState: Int) {
+                        Logger.d("onStateChanged stopListBottomSheetBehavior newState: $newState")
                         when (newState) {
                             BottomSheetBehavior.STATE_HIDDEN,
                             BottomSheetBehavior.STATE_HALF_EXPANDED,
@@ -264,6 +276,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 state = BottomSheetBehavior.STATE_HIDDEN
                 addBottomSheetCallback(object : BottomSheetCallback() {
                     override fun onStateChanged(bottomSheet: View, newState: Int) {
+                        Logger.d("onStateChanged routeListBottomSheetBehavior newState: $newState")
                         when (newState) {
                             BottomSheetBehavior.STATE_HIDDEN,
                             BottomSheetBehavior.STATE_HALF_EXPANDED,
@@ -435,7 +448,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
     private fun showRouteListOnBottomSheet(list: List<Card.EtaCard>) {
         routeListAdapter.setData(list.toMutableList())
-        etaViewModel.savedEtaCardList.value = list
+        bookmarkHomeViewModel.savedEtaCardList.value = list
 
         restartRefreshEtaJob()
     }
@@ -495,7 +508,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             Logger.d("lifecycle startRefreshEtaJob")
             refreshEtaJob = lifecycleScope.launchPeriodicAsync(GeneralUtils.REFRESH_TIME) {
                 lifecycleScope.launch {
-                    etaViewModel.etaRequested.emit(true)
+                    bookmarkHomeViewModel.etaRequested.emit(true)
                 }
             }
         }

@@ -9,7 +9,7 @@ import androidx.leanback.widget.VerticalGridPresenter
 import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.ui.eta.edit.leanback.EditEtaActivity
+import hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditActivity
 import hibernate.v2.sunshine.ui.settings.eta.layout.leanback.EtaLayoutSelectionActivity
 
 class SettingsFragment : VerticalGridSupportFragment() {
@@ -37,7 +37,7 @@ class SettingsFragment : VerticalGridSupportFragment() {
             when (card.type) {
                 Card.SettingsCard.Type.ETA -> {
                     startActivity(
-                        Intent(context, EditEtaActivity::class.java)
+                        Intent(context, BookmarkEditActivity::class.java)
                     )
                 }
                 Card.SettingsCard.Type.TRAFFIC -> {

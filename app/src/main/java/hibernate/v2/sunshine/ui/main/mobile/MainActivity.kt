@@ -6,7 +6,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import hibernate.v2.sunshine.databinding.ActivityMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
-import hibernate.v2.sunshine.ui.eta.add.mobile.AddEtaActivity
 import hibernate.v2.sunshine.util.slideToBottomAnimate
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
