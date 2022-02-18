@@ -51,6 +51,7 @@ class RouteDetailsMobileViewModel(
     var isSavedEtaBookmark = MutableSharedFlow<Pair<Boolean, Int>>()
     val etaUpdateError = MutableSharedFlow<Throwable>()
     val etaRequested = MutableSharedFlow<Boolean>()
+    val mapMarkerClicked = MutableSharedFlow<Int>()
 
     private val etaExceptionHandler = CoroutineExceptionHandler { _, t ->
         run {

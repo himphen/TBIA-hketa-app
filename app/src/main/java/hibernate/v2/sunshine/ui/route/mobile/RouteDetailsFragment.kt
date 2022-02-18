@@ -1,11 +1,13 @@
 package hibernate.v2.sunshine.ui.route.mobile
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -18,6 +20,7 @@ import com.google.maps.android.ktx.awaitMap
 import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentRouteDetailsBinding
+import hibernate.v2.sunshine.model.RouteDetailsMarkerItem
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.RouteDetailsStop
 import hibernate.v2.sunshine.model.transport.TransportStop
@@ -122,12 +125,23 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
             selectedStop?.let {
                 zoomToStop(selectedStop)
 
-                adapter.expandedPosition.let { expandedPosition ->
+                adapter.expandedPosition.let temp@{ expandedPosition ->
                     if (expandedPosition >= 0) {
-                        viewBinding?.recyclerView?.smoothSnapToPosition(
-                            expandedPosition,
-                            LinearSmoothScroller.SNAP_TO_ANY
-                        )
+                        val layoutManager =
+                            (viewBinding?.recyclerView?.layoutManager as? LinearLayoutManager)
+                                ?: return@temp
+
+                        val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
+                        val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
+
+                        if (expandedPosition < firstVisiblePosition || expandedPosition > lastVisiblePosition) {
+                            viewBinding?.recyclerView?.scrollToPosition(expandedPosition)
+                        } else if (expandedPosition == firstVisiblePosition || expandedPosition == lastVisiblePosition) {
+                            viewBinding?.recyclerView?.smoothSnapToPosition(
+                                expandedPosition,
+                                LinearSmoothScroller.SNAP_TO_ANY
+                            )
+                        }
                     }
                 }
             } ?: run {
@@ -153,6 +167,13 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
                 etaRequestJob = viewModel.updateEtaList()
             } else {
                 etaRequestJob?.cancel()
+            }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.mapMarkerClicked.onEach {
+            val selectedStop = viewModel.routeDetailsStopList.value?.getOrNull(it)
+            if (selectedStop != null) {
+                adapter.normalItemOnClickListener(selectedStop, it)
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -187,18 +208,19 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         refreshEtaJob = null
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     private fun showStopListInMap(routeDetailsStopList: List<RouteDetailsStop>) {
         val googleMap = googleMap ?: return
 
         val bld = LatLngBounds.Builder()
-        routeDetailsStopList.forEach { routeDetailsStop ->
+        routeDetailsStopList.forEachIndexed { index, routeDetailsStop ->
             val latLng = LatLng(
                 routeDetailsStop.transportStop.lat,
                 routeDetailsStop.transportStop.lng
             )
             bld.include(latLng)
 
-            val marker = MarkerOptions()
+            val markerOptions = MarkerOptions()
                 .position(latLng)
                 .also { markerOptions ->
                     GoogleMapsUtils.drawMarker(
@@ -219,7 +241,19 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
                     }
                 }
 
-            googleMap.addMarker(marker)
+            val marker = googleMap.addMarker(markerOptions)
+            marker?.tag = RouteDetailsMarkerItem(index)
+        }
+
+        googleMap.setOnMarkerClickListener {
+            val tag = it.tag
+            if (tag is RouteDetailsMarkerItem) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.mapMarkerClicked.emit(tag.position)
+                }
+            }
+
+            return@setOnMarkerClickListener true
         }
 
         defaultBounds = bld.build().also {

@@ -34,6 +34,13 @@ class RouteDetailsAdapter(
     private var etaList: List<TransportEta>? = null
     var expandedPosition: Int = -1
 
+    fun normalItemOnClickListener(item: RouteDetailsStop, position: Int) {
+        etaList = null
+        expandedPosition = position
+        onItemExpanding(item)
+        notifyItemChanged(position)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
             VIEW_TYPE_NORMAL -> {
@@ -132,12 +139,7 @@ class RouteDetailsAdapter(
                     if (isLast) View.INVISIBLE else View.VISIBLE
 
                 root.tag = stop
-                root.setOnClickListener {
-                    etaList = null
-                    expandedPosition = absoluteAdapterPosition
-                    onItemExpanding(item)
-                    notifyItemChanged(absoluteAdapterPosition)
-                }
+                root.setOnClickListener { normalItemOnClickListener(item, absoluteAdapterPosition) }
             }
         }
     }
