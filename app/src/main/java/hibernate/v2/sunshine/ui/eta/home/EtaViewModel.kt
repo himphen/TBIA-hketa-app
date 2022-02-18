@@ -74,7 +74,6 @@ class EtaViewModel(
     fun updateEtaList(): Job {
         return viewModelScope.launch(Dispatchers.IO + etaExceptionHandler) {
             Logger.d("lifecycle getEtaList")
-
             val etaCardList = savedEtaCardList.value
             if (etaCardList == null || etaCardList.isEmpty()) return@launch
 

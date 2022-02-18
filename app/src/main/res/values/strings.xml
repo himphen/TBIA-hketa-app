@@ -107,7 +107,7 @@
     <string name="demo_card_eta_minute_classic">3</string>
     <string name="demo_card_eta_minute_classic_unit">分鐘</string>
     <string name="demo_card_eta_minute_classic_time">07:30</string>
-    <string name="demo_card_eta_minute_na">不適用</string>
+    <string name="demo_card_eta_minute_na">-</string>
 
     <string name="stop_list_bottom_sheet_title">請選擇車站</string>
     <string name="route_list_bottom_sheet_title">觀塘市中心 (T4)</string>
@@ -128,7 +128,7 @@
         <item>@string/main_tab_title_3</item>
     </string-array>
 
-    <string name="placeholder_search_route">搜尋路線</string>
+    <string name="placeholder_search_route">搜尋編號</string>
     <string name="placeholder_search_stop">搜尋車站</string>
     <string name="empty_eta_list">沒有加入車站</string>
     <string name="empty_route_list">找不到路線</string>

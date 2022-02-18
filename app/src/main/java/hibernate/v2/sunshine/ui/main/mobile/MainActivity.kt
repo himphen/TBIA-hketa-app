@@ -1,10 +1,12 @@
 package hibernate.v2.sunshine.ui.main.mobile
 
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import hibernate.v2.sunshine.databinding.ActivityMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
+import hibernate.v2.sunshine.ui.eta.add.mobile.AddEtaActivity
 import hibernate.v2.sunshine.util.slideToBottomAnimate
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -13,10 +15,22 @@ class MainActivity : BaseFragmentActivity<ActivityMainBinding>() {
 
     companion object {
         const val bottomBarHeight = 120
+        const val ACTIVITY_RESULT_SAVED_BOOKMARK = 10
     }
 
     override fun getActivityViewBinding() = ActivityMainBinding.inflate(layoutInflater)
 
+    var etaUpdatedLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == ACTIVITY_RESULT_SAVED_BOOKMARK) {
+                isResetLoadingBookmarkList = true
+                lifecycleScope.launch {
+                    mainViewModel.onUpdatedEtaList.emit(Unit)
+                }
+            }
+        }
+
+    var isResetLoadingBookmarkList = false
     private val mainViewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -19,6 +19,7 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.FullWidthGridPresenter
 import hibernate.v2.sunshine.ui.eta.home.EtaViewModel
+import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.gone
@@ -81,6 +82,7 @@ class EtaFragment : VerticalGridSupportFragment() {
                 processEtaList()
 
                 lifecycleScope.launch {
+                    (activity as? MainActivity)?.isResetLoadingBookmarkList = false
                     viewModel.etaRequested.emit(true)
                 }
             }
@@ -95,7 +97,7 @@ class EtaFragment : VerticalGridSupportFragment() {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.etaRequested.onEach {
-            if (it) {
+            if (it && (activity as? MainActivity)?.isResetLoadingBookmarkList == false) {
                 etaRequestJob = viewModel.updateEtaList()
             } else {
                 etaRequestJob?.cancel()

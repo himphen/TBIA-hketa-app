@@ -1,12 +1,10 @@
 package hibernate.v2.sunshine.ui.eta.home.mobile
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -49,15 +47,6 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         fun getInstance() = EtaFragment()
     }
 
-    private var etaUpdatedLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                lifecycleScope.launchWhenResumed {
-                    mainViewModel.onUpdatedEtaList.emit(Unit)
-                }
-            }
-        }
-
     private val sharedPreferencesManager: SharedPreferencesManager by inject()
 
     private val viewModel by inject<EtaViewModel>()
@@ -66,10 +55,20 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
     private val adapter = EtaCardAdapter(
         sharedPreferencesManager.etaCardType,
         onAddButtonClick = {
-            etaUpdatedLauncher.launch(Intent(context, AddEtaActivity::class.java))
+            (activity as? MainActivity)?.etaUpdatedLauncher?.launch(
+                Intent(
+                    context,
+                    AddEtaActivity::class.java
+                )
+            )
         },
         onEditButtonClick = {
-            etaUpdatedLauncher.launch(Intent(context, EditEtaActivity::class.java))
+            (activity as? MainActivity)?.etaUpdatedLauncher?.launch(
+                Intent(
+                    context,
+                    EditEtaActivity::class.java
+                )
+            )
         }
     )
 
@@ -91,6 +90,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
                 processEtaList()
 
                 lifecycleScope.launch {
+                    (activity as? MainActivity)?.isResetLoadingBookmarkList = false
                     viewModel.etaRequested.emit(true)
                 }
             }
@@ -117,7 +117,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.etaRequested.onEach {
-            if (it) {
+            if (it && (activity as? MainActivity)?.isResetLoadingBookmarkList == false) {
                 etaRequestJob = viewModel.updateEtaList()
             } else {
                 etaRequestJob?.cancel()
@@ -126,6 +126,7 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                Logger.d("lifecycle repeatOnLifecycle")
                 tickerFlow(REFRESH_TIME.milliseconds).collect {
                     viewModel.etaRequested.emit(true)
                 }
@@ -149,7 +150,12 @@ class EtaFragment : BaseFragment<FragmentEtaBinding>() {
             emptyViewCl.emptyDescTv.text = getString(R.string.empty_eta_list)
             emptyViewCl.addStopButton.visible()
             emptyViewCl.addStopButton.setOnClickListener {
-                etaUpdatedLauncher.launch(Intent(context, AddEtaActivity::class.java))
+                (activity as? MainActivity)?.etaUpdatedLauncher?.launch(
+                    Intent(
+                        context,
+                        AddEtaActivity::class.java
+                    )
+                )
             }
             (recyclerView.itemAnimator as? SimpleItemAnimator)
                 ?.supportsChangeAnimations = false

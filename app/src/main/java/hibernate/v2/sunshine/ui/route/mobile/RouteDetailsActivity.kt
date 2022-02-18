@@ -56,11 +56,17 @@ class RouteDetailsActivity : BaseFragmentActivity<ActivityContainerBinding>() {
             selectedRoute: TransportRoute,
             selectedEtaType: EtaType
         ) {
-            val intent = Intent(context, RouteDetailsActivity::class.java).apply {
-                putExtra(ARG_SELECTED_ROUTE, selectedRoute)
-                putExtra(ARG_SELECTED_ETA_TYPE, selectedEtaType)
-            }
+            val intent = getLaunchIntent(context, selectedRoute, selectedEtaType)
             context?.startActivity(intent)
+        }
+
+        fun getLaunchIntent(
+            context: Context?,
+            selectedRoute: TransportRoute,
+            selectedEtaType: EtaType
+        ) = Intent(context, RouteDetailsActivity::class.java).apply {
+            putExtra(ARG_SELECTED_ROUTE, selectedRoute)
+            putExtra(ARG_SELECTED_ETA_TYPE, selectedEtaType)
         }
     }
 }

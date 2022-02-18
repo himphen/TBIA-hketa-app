@@ -25,6 +25,8 @@ import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.RouteDetailsStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.ui.base.BaseFragment
+import hibernate.v2.sunshine.ui.eta.add.mobile.AddEtaActivity
+import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.GoogleMapsUtils
 import hibernate.v2.sunshine.util.dpToPx
@@ -154,6 +156,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         viewModel.isSavedEtaBookmark.onEach {
             adapter.setSavedBookmark(it.second)
             if (it.first) {
+                activity?.setResult(MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK)
                 Toast.makeText(
                     context,
                     getString(R.string.toast_eta_added),

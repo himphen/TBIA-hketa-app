@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import hibernate.v2.sunshine.databinding.FragmentAddEtaRouteBinding
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.eta.add.AddEtaMobileViewModel
+import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.route.mobile.RouteDetailsActivity
 import hibernate.v2.sunshine.util.getEnum
 import hibernate.v2.sunshine.util.gone
@@ -33,6 +35,13 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaRouteBinding>() {
             }
     }
 
+    private var etaAddedLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK) {
+                activity?.setResult(MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK)
+            }
+        }
+
     private val etaType by lazy {
         arguments?.getEnum(ARG_ETA_TYPE, EtaType.KMB) ?: EtaType.KMB
     }
@@ -41,22 +50,7 @@ class AddEtaRouteFragment : BaseFragment<FragmentAddEtaRouteBinding>() {
         AddEtaRouteAdapter(etaType) { route ->
             viewModel.selectedEtaType.value = etaType
 
-            RouteDetailsActivity.launch(context, route, etaType)
-
-//            viewModel.selectedEtaType.value = etaType
-//            viewModel.selectedRoute.value = route
-//
-//            activity?.supportFragmentManager?.beginTransaction()?.apply {
-//                setCustomAnimations(
-//                    R.anim.slide_in_right,
-//                    R.anim.slide_out_left,
-//                    R.anim.slide_in_left,
-//                    R.anim.slide_out_right
-//                )
-//                add(R.id.container, AddEtaStopFragment.getInstance())
-//                addToBackStack(null)
-//                commit()
-//            }
+            etaAddedLauncher.launch(RouteDetailsActivity.getLaunchIntent(context, route, etaType))
         }
     }
 

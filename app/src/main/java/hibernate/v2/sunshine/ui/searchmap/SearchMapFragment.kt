@@ -434,10 +434,8 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private fun showRouteListOnBottomSheet(list: List<Card.EtaCard>) {
-        routeBottomSheetEtaCardList.clear()
-        routeBottomSheetEtaCardList.addAll(list)
-        routeListAdapter.setData(routeBottomSheetEtaCardList)
-        processEtaList()
+        routeListAdapter.setData(list.toMutableList())
+        etaViewModel.savedEtaCardList.value = list
 
         restartRefreshEtaJob()
     }
