@@ -3,6 +3,7 @@ package hibernate.v2.sunshine.ui.searchmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.fonfon.kgeohash.GeoHash
+import com.himphen.logger.Logger
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.EtaType
@@ -30,10 +31,11 @@ class SearchMapViewModel(
 
     val selectedStop = MutableLiveData<SearchMapStop>()
     val stopList = MutableSharedFlow<List<SearchMapStop>>()
-    val routeListForBottomSheet = MutableLiveData<List<Card.EtaCard>>(emptyList())
-    val stopListForBottomSheet = MutableLiveData<List<SearchMapStop>>(emptyList())
+    val routeListForBottomSheet = MutableLiveData<List<Card.EtaCard>>()
+    val stopListForBottomSheet = MutableLiveData<List<SearchMapStop>>()
 
     fun getRouteListFromStop(etaType: EtaType, stop: SearchMapStop) {
+        Logger.d("lifecycle getRouteListFromStop")
         viewModelScope.launch(Dispatchers.IO) {
             val result = when (etaType) {
                 EtaType.KMB -> kmbRepository.getRouteEtaCardList(stop)

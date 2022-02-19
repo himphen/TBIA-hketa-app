@@ -443,10 +443,12 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private fun showStopListOnBottomSheet(list: List<SearchMapStop>?) {
+        Logger.d("lifecycle showStopListOnBottomSheet")
         stopListAdapter.setData(list?.toMutableList())
     }
 
     private fun showRouteListOnBottomSheet(list: List<Card.EtaCard>) {
+        Logger.d("lifecycle showRouteListOnBottomSheet")
         routeListAdapter.setData(list.toMutableList())
         bookmarkHomeViewModel.savedEtaCardList.value = list
 

@@ -90,8 +90,18 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         viewBinding.recyclerView.itemAnimator = null
 
         val selectedRoute = viewModel.selectedRoute
-        viewBinding.hintTv.text = selectedRoute.getDirectionWithRouteText(requireContext())
-        viewBinding.hintCl.setBackgroundColor(selectedRoute.getColor(requireContext()))
+
+        (activity as? RouteDetailsActivity)?.let { activity ->
+            val color = selectedRoute.getColor(requireContext())
+            activity.window?.statusBarColor = color
+
+            activity.supportActionBar?.let {
+                it.title = selectedRoute.routeNo
+                it.subtitle = selectedRoute.getDirectionSubtitleText(requireContext())
+            }
+
+            activity.viewBinding.toolbar.root.setBackgroundColor(color)
+        }
 
         initMap(viewBinding)
     }

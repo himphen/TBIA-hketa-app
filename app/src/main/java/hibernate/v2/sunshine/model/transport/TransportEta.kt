@@ -6,6 +6,7 @@ import hibernate.v2.api.model.transport.gmb.GmbEta
 import hibernate.v2.api.model.transport.nlb.NLBEta
 import hibernate.v2.sunshine.util.DateFormat
 import hibernate.v2.sunshine.util.DateUtil
+import hibernate.v2.sunshine.util.DateUtil.formatString
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -18,6 +19,20 @@ open class TransportEta(
     val bound: Bound?,
     val seq: Int?,
 ) {
+    private val etaWithoutSecond by lazy {
+        eta?.let {
+            // Ignore second and millisecond
+            GregorianCalendar().apply {
+                time = eta
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+        }
+    }
+
+    val etaFormattedInHHMM by lazy {
+        eta.formatString(DateFormat.HH_MM.value)
+    }
 
     companion object {
         fun fromApiModel(eta: BusEta): TransportEta {
@@ -64,14 +79,8 @@ open class TransportEta(
     }
 
     open fun getEtaMinuteText(default: String = ""): Pair<Boolean, String> {
-        eta?.let { etaDate ->
-            // Ignore second and millisecond
-            val gc = GregorianCalendar()
-            gc.time = etaDate
-            gc.set(Calendar.SECOND, 0)
-            gc.set(Calendar.MILLISECOND, 0)
-
-            val minutes = DateUtil.getTimeDiffInMin(gc.time, Date())
+        etaWithoutSecond?.let { etaWithoutSecond ->
+            val minutes = DateUtil.getTimeDiffInMin(etaWithoutSecond.time, Date())
             if (minutes < 0) {
                 return false to default
             }

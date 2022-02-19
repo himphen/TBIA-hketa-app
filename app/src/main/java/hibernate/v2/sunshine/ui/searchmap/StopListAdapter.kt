@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemBottomSheetStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteBadgeBinding
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
-import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
+import hibernate.v2.sunshine.ui.searchmap.item.RouteBadge
 import hibernate.v2.sunshine.ui.view.setStopRouteBadgeFlexManager
 import hibernate.v2.sunshine.util.updateBackgroundColor
 
@@ -41,11 +41,10 @@ class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
             stopNameTv.text = item.nameTc
 
             (routeNumberRecyclerView.adapter as RouteBadgeAdapter).apply {
-                setType(item.etaType)
                 setData(
                     item.mapRouteList
                         .sortedBy { it.route }
-                        .map { it.route.routeNo }
+                        .map { RouteBadge(it.route.routeNo, item.etaType.color(holder.context)) }
                         .distinct()
                 )
             }
@@ -80,35 +79,30 @@ class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
 
     inner class RouteBadgeAdapter : RecyclerView.Adapter<RouteBadgeAdapter.ItemStopBadgeVH>() {
 
-        private var list = listOf<String>()
-        private var etaType: EtaType = EtaType.KMB
+        private var list = listOf<RouteBadge>()
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemStopBadgeVH {
-            return ItemStopBadgeVH(
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            ItemStopBadgeVH(
                 ItemRouteBadgeBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
             )
-        }
 
         override fun onBindViewHolder(holder: ItemStopBadgeVH, position: Int) {
-            holder.viewBinding.routeNumberTv.text = list[position]
+            val item = list[position]
+            holder.viewBinding.routeNumberTv.text = item.text
 
             holder.viewBinding.root.apply {
-                updateBackgroundColor(etaType.color(context))
+                updateBackgroundColor(item.color)
             }
         }
 
         override fun getItemCount() = list.size
 
-        fun setType(etaType: EtaType) {
-            this.etaType = etaType
-        }
-
         @SuppressLint("NotifyDataSetChanged")
-        fun setData(list: List<String>?) {
+        fun setData(list: List<RouteBadge>?) {
             if (list == null) return
 
             this.list = list

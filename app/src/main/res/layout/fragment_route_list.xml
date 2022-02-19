@@ -27,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:layout_gravity="center"
+        android:elevation="1dp"
         android:indeterminate="true"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

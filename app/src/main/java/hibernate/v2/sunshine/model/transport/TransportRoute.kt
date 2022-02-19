@@ -6,6 +6,7 @@ import androidx.annotation.ColorInt
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
 // TODO change to data class
@@ -25,6 +26,15 @@ open class TransportRoute(
 
     var routeComponent: RouteComponent = RouteComponent(),
 ) : TransportHashable, Comparable<TransportRoute>, Parcelable {
+
+    @IgnoredOnParcel
+    private var _getDestDirectionText: String? = null
+
+    @IgnoredOnParcel
+    private var _getDirectionWithRouteText: String? = null
+
+    @IgnoredOnParcel
+    private var _getDirectionSubtitleText: String? = null
 
     fun routeHashId() = routeHashId(company, routeId, bound, serviceType)
 
@@ -56,37 +66,66 @@ open class TransportRoute(
     open fun isSpecialRoute(): Boolean = serviceType != "1"
 
     fun getDestDirectionText(context: Context): String {
-        return if (isSpecialRoute()) {
-            context.getString(
-                R.string.text_settings_eta_destination_with_sp,
-                destTc,
-                serviceType
-            )
-        } else {
-            context.getString(
-                R.string.text_settings_eta_destination,
-                destTc
-            )
+        if (_getDestDirectionText == null) {
+            _getDestDirectionText = if (isSpecialRoute()) {
+                context.getString(
+                    R.string.text_settings_eta_destination_with_sp,
+                    destTc,
+                    serviceType
+                )
+            } else {
+                context.getString(
+                    R.string.text_settings_eta_destination,
+                    destTc
+                )
+            }
         }
+
+        return _getDestDirectionText!!
     }
 
     open fun getDirectionWithRouteText(context: Context): String {
-        return if (isSpecialRoute()) {
-            context.getString(
-                R.string.text_add_eta_destination_with_sp,
-                routeNo,
-                serviceType,
-                origTc,
-                destTc
-            )
-        } else {
-            context.getString(
-                R.string.text_add_eta_destination,
-                routeNo,
-                origTc,
-                destTc
-            )
+        if (_getDirectionWithRouteText == null) {
+            _getDirectionWithRouteText = if (isSpecialRoute()) {
+                context.getString(
+                    R.string.text_add_eta_destination_with_sp,
+                    routeNo,
+                    serviceType,
+                    origTc,
+                    destTc
+                )
+            } else {
+                context.getString(
+                    R.string.text_add_eta_destination,
+                    routeNo,
+                    origTc,
+                    destTc
+                )
+            }
         }
+
+        return _getDirectionWithRouteText!!
+    }
+
+    open fun getDirectionSubtitleText(context: Context): String {
+        if (_getDirectionSubtitleText == null) {
+            _getDirectionSubtitleText = if (isSpecialRoute()) {
+                context.getString(
+                    R.string.text_add_eta_destination_subtitle_with_sp,
+                    serviceType,
+                    origTc,
+                    destTc
+                )
+            } else {
+                context.getString(
+                    R.string.text_add_eta_destination_subtitle,
+                    origTc,
+                    destTc
+                )
+            }
+        }
+
+        return _getDirectionSubtitleText!!
     }
 
     open fun getCardRouteText(): String = routeNo

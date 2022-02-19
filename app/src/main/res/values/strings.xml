@@ -5,7 +5,7 @@
     <string name="title_settings_version_leanback">版本 %1$s</string>
     <string name="title_settings_version">版本</string>
     <string name="title_settings_reset">重設數據</string>
-    <string name="title_activity_add_eta">加入車站</string>
+    <string name="title_activity_add_eta">路線列表</string>
     <string name="settings_acknowledgement_title1">Acknowledgement 1</string>
     <string name="settings_acknowledgement_summary1">Some icons are from Material Icons and www.flaticon.com</string>
     <string name="settings_acknowledgement_title2">Acknowledgement 2</string>
@@ -36,6 +36,9 @@
     <string name="text_add_eta_destination">%1$s號線 - %2$s ➔ %3$s</string>
     <string name="text_add_eta_destination_with_sp">%1$s號線 (特別線 %2$s) - %3$s ➔ %4$s</string>
     <string name="text_add_eta_destination_train">%1$s - %2$s ➔ %3$s</string>
+    <string name="text_add_eta_destination_subtitle">%1$s ➔ %2$s</string>
+    <string name="text_add_eta_destination_subtitle_with_sp">(特別線 %1$s) - %2$s ➔ %3$s</string>
+    <string name="text_add_eta_destination_subtitle_train">%1$s ➔ %2$s</string>
 
     <string name="text_add_eta_destination_mobile">%1$s ➔ %2$s</string>
     <string name="text_add_eta_destination_sp_mobile">特別線 %1$s</string>

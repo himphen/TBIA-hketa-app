@@ -66,10 +66,8 @@ interface NLBDao {
 
         routeStopList.forEachIndexed { index, it ->
             bindArgs.add(it.routeId)
-            bindArgs.add(it.bound.value)
-            bindArgs.add(it.serviceType)
 
-            var where = "(nlb_route_id = ? AND nlb_route_bound = ? AND nlb_route_service_type = ?)"
+            var where = "(nlb_route_id = ?)"
 
             if (routeStopList.lastIndex != index) {
                 where += " OR "

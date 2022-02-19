@@ -33,8 +33,6 @@ fun RecyclerView.setEtaTimeFlexManager() {
 
 fun RecyclerView.setStopRouteBadgeFlexManager() {
     layoutManager = FlexboxLayoutManager(context).apply {
-        flexWrap = FlexWrap.WRAP
-        alignItems = AlignItems.CENTER
         flexDirection = FlexDirection.ROW
         justifyContent = JustifyContent.FLEX_START
     }

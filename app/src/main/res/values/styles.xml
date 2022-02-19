@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ThemeOverlay.MyApp.ActionBar" parent="ThemeOverlay.MaterialComponents.ActionBar">
-        <item name="android:textColorPrimary">@color/actionbar_title_text</item>
-        <item name="android:background">@color/actionbar_color</item>
+    <style name="ActionBar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="titleTextColor">@color/actionbar_title_text</item>
+        <item name="subtitleTextColor">@color/actionbar_title_text</item>
     </style>
 
     <style name="PreferenceStyle" parent="@android:style/Widget.TextView">

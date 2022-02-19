@@ -17,22 +17,20 @@ class EtaTimeAdapter : RecyclerView.Adapter<BaseViewHolder<ItemEtaTimeBinding>>(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BaseViewHolder<ItemEtaTimeBinding> {
-        return BaseViewHolder(
-            ItemEtaTimeBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+    ) = BaseViewHolder(
+        ItemEtaTimeBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
-    }
+    )
 
     override fun onBindViewHolder(
         holder: BaseViewHolder<ItemEtaTimeBinding>,
         position: Int
     ) {
         val item = list[position]
-        val etaTime = item.eta.formatString(DateFormat.HH_MM.value)
+        val etaTime = item.etaFormattedInHHMM
         holder.viewBinding.etaTimeTv.text = etaTime.trim()
     }
 

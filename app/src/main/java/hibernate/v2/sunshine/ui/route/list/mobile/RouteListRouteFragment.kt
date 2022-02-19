@@ -86,11 +86,11 @@ class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
 
     private fun initEvent() {
         viewModel.filteredTransportRouteList.onEach {
-            viewBinding?.loadingProgressIndicator?.gone(true)
             if (it.first == etaType) {
                 val list = it.second.sorted()
                 adapter.setRouteData(list)
 
+                viewBinding?.loadingProgressIndicator?.gone(true)
                 if (list.isEmpty()) {
                     viewBinding?.emptyViewCl?.root?.visible()
                     viewBinding?.recyclerView?.gone()
