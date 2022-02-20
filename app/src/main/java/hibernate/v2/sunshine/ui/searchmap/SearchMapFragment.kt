@@ -178,7 +178,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         mainViewModel.onStopBottomSheetStateChanged.observe(viewLifecycleOwner) {
             if (it == BottomSheetBehavior.STATE_HIDDEN) {
                 stopRefreshEtaJob()
-                stopListAdapter.setData(mutableListOf())
+                stopListAdapter.submitList(null)
             }
         }
 
@@ -444,7 +444,8 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
     private fun showStopListOnBottomSheet(list: List<SearchMapStop>?) {
         Logger.d("lifecycle showStopListOnBottomSheet")
-        stopListAdapter.setData(list?.toMutableList())
+        stopListAdapter.submitList(null)
+        stopListAdapter.submitList(list)
     }
 
     private fun showRouteListOnBottomSheet(list: List<Card.EtaCard>) {

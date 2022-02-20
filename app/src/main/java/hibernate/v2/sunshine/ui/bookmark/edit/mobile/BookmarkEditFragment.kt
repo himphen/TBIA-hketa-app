@@ -250,7 +250,7 @@ class BookmarkEditFragment : BaseFragment<FragmentBookmarkEditBinding>() {
                 EtaOrderEntity(id = card.entity.id, position = index)
             }
         viewModel.updateEtaOrderList(updatedEtaOrderList)
-        activity?.setResult(Activity.RESULT_OK)
+        activity?.setResult(MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK)
     }
 
     @SuppressLint("NotifyDataSetChanged")

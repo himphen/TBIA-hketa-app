@@ -31,50 +31,14 @@
         app:layout_constraintStart_toEndOf="@id/routeNumberContainer"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/routeDirectionLl"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/routeOrigTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/common_text_primary"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toTopOf="@id/routeSpTv"
-                    app:layout_constraintEnd_toStartOf="@id/routeDirectionArrowTv"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@string/add_card_route_text" />
-
-                <TextView
-                    android:id="@+id/routeSpTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="@color/common_text_secondary"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/routeDirectionArrowTv"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/routeOrigTv"
-                    tools:text="@string/text_add_eta_destination_sp_mobile" />
-            </LinearLayout>
 
             <TextView
                 android:id="@+id/routeDirectionArrowTv"
@@ -91,16 +55,46 @@
                 tools:ignore="ContentDescription,HardcodedText" />
 
             <TextView
+                android:id="@+id/routeOrigTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textColor="@color/common_text_primary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/routeSpTv"
+                app:layout_constraintEnd_toStartOf="@id/routeDirectionArrowTv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/add_card_route_text" />
+
+            <TextView
+                android:id="@+id/routeSpTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/common_text_secondary"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/routeDirectionArrowTv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/routeOrigTv"
+                tools:text="@string/text_add_eta_destination_sp_mobile" />
+
+            <TextView
                 android:id="@+id/routeDestTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center_vertical|end"
                 android:textColor="@color/common_text_primary"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/routeDirectionArrowTv"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/add_card_route_text" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

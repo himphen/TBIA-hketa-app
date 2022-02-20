@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemBottomSheetStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteBadgeBinding
@@ -14,9 +16,17 @@ import hibernate.v2.sunshine.ui.view.setStopRouteBadgeFlexManager
 import hibernate.v2.sunshine.util.updateBackgroundColor
 
 class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
-    RecyclerView.Adapter<StopListAdapter.ItemVH>() {
+    ListAdapter<SearchMapStop, StopListAdapter.ItemVH>(DiffCallback()) {
 
-    private var list = mutableListOf<SearchMapStop>()
+    class DiffCallback : DiffUtil.ItemCallback<SearchMapStop>() {
+        override fun areItemsTheSame(oldItem: SearchMapStop, newItem: SearchMapStop): Boolean {
+            return oldItem.stopId == newItem.stopId
+        }
+
+        override fun areContentsTheSame(oldItem: SearchMapStop, newItem: SearchMapStop): Boolean {
+            return oldItem == newItem
+        }
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemVH {
@@ -35,7 +45,7 @@ class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ItemVH, position: Int) {
-        val item = list[position]
+        val item = getItem(position)
         holder.viewBinding.apply {
             stopCompanyColor.setBackgroundColor(item.etaType.color(holder.context))
             stopNameTv.text = item.nameTc
@@ -43,30 +53,13 @@ class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
             (routeNumberRecyclerView.adapter as RouteBadgeAdapter).apply {
                 setData(
                     item.mapRouteList
-                        .sortedBy { it.route }
-                        .map { RouteBadge(it.route.routeNo, item.etaType.color(holder.context)) }
-                        .distinct()
+                        .map { RouteBadge(it.route.routeNo, it.route.getColor(holder.context)) }
                 )
             }
 
             root.tag = item
             root.setOnClickListener { onStopSelected(it.tag as SearchMapStop) }
         }
-    }
-
-    override fun getItemCount(): Int = list.size
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun setData(list: MutableList<SearchMapStop>?) {
-        if (list == null) return
-
-        this.list = list
-        notifyDataSetChanged()
-    }
-
-    fun replace(position: Int, item: SearchMapStop) {
-        list[position] = item
-        notifyItemChanged(position)
     }
 
     inner class ItemVH(val viewBinding: ItemBottomSheetStopBinding) :

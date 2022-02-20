@@ -42,6 +42,9 @@ open class TransportRoute(
         parseRouteNumber()
         other.parseRouteNumber()
 
+        val companyCompare = company.compareTo(company)
+        if (companyCompare != 0) return companyCompare
+
         val routeCompare = routeComponent.compareTo(other.routeComponent)
         if (routeCompare != 0) return routeCompare
 
