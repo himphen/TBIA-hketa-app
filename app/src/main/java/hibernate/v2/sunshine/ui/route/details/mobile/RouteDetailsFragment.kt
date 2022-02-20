@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.ktx.awaitMap
 import com.himphen.logger.Logger
+import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentRouteDetailsBinding
 import hibernate.v2.sunshine.model.RouteDetailsMarkerItem
@@ -29,8 +30,10 @@ import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.GoogleMapsUtils
 import hibernate.v2.sunshine.util.dpToPx
+import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import hibernate.v2.sunshine.util.smoothSnapToPosition
+import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -107,6 +110,17 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
     }
 
     private suspend fun initMap(viewBinding: FragmentRouteDetailsBinding) {
+        when (viewModel.selectedRoute.company) {
+            Company.LRT,
+            Company.MTR -> {
+                viewBinding.map.gone()
+                return
+            }
+            else -> {
+                viewBinding.map.visible()
+            }
+        }
+
         val mapFragment =
             childFragmentManager.findFragmentById(viewBinding.map.id) as SupportMapFragment
         googleMap = mapFragment.awaitMap().apply {

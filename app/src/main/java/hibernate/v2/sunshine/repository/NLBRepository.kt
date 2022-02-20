@@ -6,6 +6,7 @@ import com.google.firebase.database.ktx.getValue
 import hibernate.v2.api.model.transport.nlb.NLBRoute
 import hibernate.v2.api.model.transport.nlb.NLBRouteStop
 import hibernate.v2.api.model.transport.nlb.NLBStop
+import hibernate.v2.sunshine.db.nc.NCRouteEntity
 import hibernate.v2.sunshine.db.nlb.NLBDao
 import hibernate.v2.sunshine.db.nlb.NLBRouteEntity
 import hibernate.v2.sunshine.db.nlb.NLBRouteStopEntity
@@ -25,11 +26,12 @@ class NLBRepository(
         val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
         val snapshot = routeRef.getSnapshotValue()
         snapshot.getValue<List<NLBRoute>>()?.let { list ->
-            saveRouteList(
-                list.map { NLBRoute ->
-                    NLBRouteEntity.fromApiModel(NLBRoute)
-                }
-            )
+            val temp = list
+                .map(NLBRouteEntity.Companion::fromApiModel)
+                .toMutableList()
+                .apply { sortWith(NLBRouteEntity::compareTo) }
+
+            saveRouteList(temp)
         }
     }
 

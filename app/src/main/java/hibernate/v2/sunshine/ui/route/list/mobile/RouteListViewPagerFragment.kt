@@ -17,7 +17,6 @@ import hibernate.v2.sunshine.databinding.FragmentRouteListViewPagerBinding
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseActivity
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.route.list.RouteListMobileViewModel
 import hibernate.v2.sunshine.util.afterTextChanged
 import hibernate.v2.sunshine.util.onTextChanged
 import kotlinx.coroutines.flow.debounce

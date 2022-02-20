@@ -14,7 +14,6 @@ import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.route.details.mobile.RouteDetailsActivity
-import hibernate.v2.sunshine.ui.route.list.RouteListMobileViewModel
 import hibernate.v2.sunshine.util.getEnum
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.putEnum
@@ -70,6 +69,9 @@ class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
 
     private fun initUi() {
         val viewBinding = viewBinding!!
+        viewBinding.emptyViewCl.root.gone()
+        viewBinding.recyclerView.gone()
+
         viewBinding.recyclerView.adapter = adapter
         viewBinding.emptyViewCl.emptyDescTv.setText(R.string.empty_route_list)
 
@@ -79,18 +81,13 @@ class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
     }
 
     private fun initData() {
-        viewModel.getTransportRouteList(
-            etaType
-        )
+        viewModel.getTransportRouteList(etaType)
     }
 
     private fun initEvent() {
         viewModel.filteredTransportRouteList.onEach {
             if (it.first == etaType) {
-                val list = it.second.sorted()
-                adapter.setRouteData(list)
-
-                viewBinding?.loadingProgressIndicator?.gone(true)
+                val list = it.second
                 if (list.isEmpty()) {
                     viewBinding?.emptyViewCl?.root?.visible()
                     viewBinding?.recyclerView?.gone()
@@ -98,6 +95,7 @@ class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
                     viewBinding?.emptyViewCl?.root?.gone()
                     viewBinding?.recyclerView?.visible()
                 }
+                adapter.submitList(list)
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }

@@ -32,10 +32,10 @@ import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
+import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.bookmark.home.BookmarkHomeViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
-import hibernate.v2.sunshine.ui.route.list.RouteListViewModel
 import hibernate.v2.sunshine.ui.route.list.mobile.RouteListActivity
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.GeneralUtils
@@ -67,8 +67,8 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
     private val preferences: SharedPreferencesManager by inject()
     private val viewModel: SearchMapViewModel by inject()
-    private val routeListViewModel: RouteListViewModel by inject()
     private val bookmarkHomeViewModel: BookmarkHomeViewModel by inject()
+    private val bookmarkSaveViewModel: BookmarkSaveViewModel by inject()
     private val mainViewModel: MainViewModel by sharedViewModel()
 
     private var clusterManager: CustomClusterManager? = null
@@ -106,7 +106,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                     card.route,
                     card.stop
                 )
-                routeListViewModel.saveStop(addCard)
+                bookmarkSaveViewModel.saveStop(addCard)
             }
         }
     }
@@ -145,7 +145,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             showStopListOnBottomSheet(it)
         }
 
-        routeListViewModel.isAddEtaSuccessful.onEach {
+        bookmarkSaveViewModel.isAddEtaSuccessful.onEach {
             if (it) {
                 lifecycleScope.launchWhenResumed {
                     mainViewModel.onUpdatedEtaList.emit(Unit)

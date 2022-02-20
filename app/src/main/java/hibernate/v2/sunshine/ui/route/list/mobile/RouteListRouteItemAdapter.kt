@@ -1,13 +1,13 @@
 package hibernate.v2.sunshine.ui.route.list.mobile
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemRouteListBinding
 import hibernate.v2.sunshine.model.transport.EtaType
@@ -22,9 +22,17 @@ import hibernate.v2.sunshine.util.visible
 class RouteListRouteItemAdapter(
     val etaType: EtaType,
     private val onRouteSelected: (TransportRoute) -> Unit,
-) : RecyclerView.Adapter<RouteItemViewHolder>() {
+) : ListAdapter<TransportRoute, RouteItemViewHolder>(DiffCallback()) {
 
-    private var list = mutableListOf<TransportRoute>()
+    class DiffCallback : DiffUtil.ItemCallback<TransportRoute>() {
+        override fun areItemsTheSame(oldItem: TransportRoute, newItem: TransportRoute): Boolean {
+            return oldItem.routeHashId() == newItem.routeHashId()
+        }
+
+        override fun areContentsTheSame(oldItem: TransportRoute, newItem: TransportRoute): Boolean {
+            return oldItem == newItem
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         RouteItemViewHolder(
@@ -61,18 +69,7 @@ class RouteListRouteItemAdapter(
         }
 
     override fun onBindViewHolder(holderItemViewHolder: RouteItemViewHolder, position: Int) {
-        holderItemViewHolder.onBind(list[position])
-    }
-
-    override fun getItemCount(): Int = list.size
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun setRouteData(mutableList: List<TransportRoute>?) {
-        if (mutableList == null) return
-
-        list.clear()
-        list.addAll(mutableList)
-        notifyDataSetChanged()
+        holderItemViewHolder.onBind(getItem(position))
     }
 
     inner class RouteItemViewHolder(
@@ -81,11 +78,10 @@ class RouteListRouteItemAdapter(
 
         fun onBind(route: TransportRoute) {
             viewBinding.apply {
-                val color = route.getColor(context, false)
-
                 routeNumberContainer.apply {
                     when (route) {
                         is LRTTransportRoute -> {
+                            val color = route.getColor(context, false)
                             routeLRTNumberTv.apply {
                                 text = route.routeNo
                                 visible()
@@ -103,7 +99,6 @@ class RouteListRouteItemAdapter(
                                 text = route.getCardRouteText()
                                 visible()
                             }
-                            routeCompanyColor.setBackgroundColor(color)
                         }
                     }
                 }

@@ -76,7 +76,7 @@
                 android:textColor="@color/common_text_secondary"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/routeDirectionArrowTv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/routeOrigTv"
                 tools:text="@string/text_add_eta_destination_sp_mobile" />

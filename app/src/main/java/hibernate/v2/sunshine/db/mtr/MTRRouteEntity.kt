@@ -95,7 +95,7 @@ data class MTRRouteEntity(
 
     override fun compareTo(other: MTRRouteEntity): Int {
         parseRouteNumber(routeId)
-        other.parseRouteNumber(routeId)
+        other.parseRouteNumber(other.routeId)
 
         val routeCompare = routeComponent.compareTo(other.routeComponent)
         if (routeCompare != 0) return routeCompare

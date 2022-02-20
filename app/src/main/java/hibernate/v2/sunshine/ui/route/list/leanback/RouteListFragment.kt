@@ -14,7 +14,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.AddEtaRowItem
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.ui.route.list.RouteListViewModel
+import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.route.list.leanback.RouteListActivity.Companion.ARG_ETA_TYPE
 import hibernate.v2.sunshine.util.getEnum
 import kotlinx.coroutines.Job
@@ -27,7 +27,9 @@ import org.koin.androidx.viewmodel.ext.android.stateViewModel
 class RouteListFragment : SearchSupportFragment(), SearchSupportFragment.SearchResultProvider {
 
     private lateinit var mRowsAdapter: ArrayObjectAdapter
-    private val viewModel by stateViewModel<RouteListViewModel>()
+    private val viewModel by stateViewModel<RouteListLeanbackViewModel>()
+    private val bookmarkSaveViewModel by stateViewModel<BookmarkSaveViewModel>()
+
 
     private val etaType: EtaType by lazy {
         arguments?.getEnum(ARG_ETA_TYPE, EtaType.KMB) ?: EtaType.KMB
@@ -80,7 +82,7 @@ class RouteListFragment : SearchSupportFragment(), SearchSupportFragment.SearchR
             val listRowAdapter =
                 ArrayObjectAdapter(
                     RouteListCardPresenter(requireContext()) {
-                        viewModel.saveStop(it)
+                        bookmarkSaveViewModel.saveStop(it)
                     }
                 )
 

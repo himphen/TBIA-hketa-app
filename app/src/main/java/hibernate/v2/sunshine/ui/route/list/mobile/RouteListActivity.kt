@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityContainerBinding
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
-import hibernate.v2.sunshine.ui.route.list.RouteListMobileViewModel
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class RouteListActivity : BaseFragmentActivity<ActivityContainerBinding>() {

@@ -75,13 +75,13 @@ data class NCRouteEntity(
 
     override fun compareTo(other: NCRouteEntity): Int {
         parseRouteNumber(routeId)
-        other.parseRouteNumber(routeId)
+        other.parseRouteNumber(other.routeId)
+
+        val companyCompare = company.compareTo(other.company)
+        if (companyCompare != 0) return companyCompare
 
         val routeCompare = routeComponent.compareTo(other.routeComponent)
         if (routeCompare != 0) return routeCompare
-
-        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
-        if (serviceTypeCompare != 0) return serviceTypeCompare
 
         return bound.compareTo(other.bound)
     }

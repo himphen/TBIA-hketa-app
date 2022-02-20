@@ -1,18 +1,12 @@
-package hibernate.v2.sunshine.ui.route.list
+package hibernate.v2.sunshine.ui.route.list.mobile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
-import hibernate.v2.api.model.transport.Bound
-import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.GmbRegion
-import hibernate.v2.sunshine.db.eta.EtaOrderEntity
-import hibernate.v2.sunshine.db.eta.SavedEtaEntity
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.model.transport.TransportStop
-import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
@@ -25,11 +19,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.EnumMap
 
 class RouteListMobileViewModel(
-    private val etaRepository: EtaRepository,
     private val kmbRepository: KmbRepository,
     private val ncRepository: NCRepository,
     private val gmbRepository: GmbRepository,
@@ -41,39 +33,10 @@ class RouteListMobileViewModel(
     val filteredTransportRouteList = MutableSharedFlow<Pair<EtaType, List<TransportRoute>>>()
     val stopList = MutableSharedFlow<List<TransportStop>>()
     var selectedEtaType = MutableLiveData(EtaType.KMB)
-    var selectedRoute = MutableLiveData<TransportRoute?>()
-    var isAddEtaSuccessful = MutableSharedFlow<Boolean>()
 
     val searchRouteKeyword = MutableLiveData<String>()
 
     private var executingSearchJob: EnumMap<EtaType, Job?> = EnumMap(EtaType::class.java)
-
-    private suspend fun hasEtaInDb(
-        stopId: String,
-        routeId: String,
-        bound: Bound,
-        serviceType: String,
-        seq: Int,
-        company: Company,
-    ) = withContext(Dispatchers.IO) {
-        etaRepository.hasEtaInDb(
-            stopId,
-            routeId,
-            bound,
-            serviceType,
-            seq,
-            company
-        )
-    }
-
-    private suspend fun addEta(item: SavedEtaEntity) =
-        withContext(Dispatchers.IO) { etaRepository.addEta(item) }
-
-    private suspend fun getEtaOrderList() =
-        withContext(Dispatchers.IO) { etaRepository.getEtaOrderList() }
-
-    private suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
-        withContext(Dispatchers.IO) { etaRepository.updateEtaOrderList(entityList) }
 
     fun getTransportRouteList(etaType: EtaType) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -90,26 +53,6 @@ class RouteListMobileViewModel(
             }
 
             searchRoute(etaType)
-        }
-    }
-
-    fun getTransportStopList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val route = selectedRoute.value ?: return@launch
-
-            val list = when (selectedEtaType.value!!) {
-                EtaType.KMB -> getKmbStopList(route)
-                EtaType.NWFB,
-                EtaType.CTB -> getNCStopList(route)
-                EtaType.GMB_HKI,
-                EtaType.GMB_KLN,
-                EtaType.GMB_NT -> getGmbStopList(route)
-                EtaType.MTR -> getMTRStopList(route)
-                EtaType.LRT -> getLRTStopList(route)
-                EtaType.NLB -> getNLBStopList(route)
-            }
-
-            stopList.emit(list)
         }
     }
 
@@ -228,118 +171,6 @@ class RouteListMobileViewModel(
             RouteListDataHolder.setData(etaType, mutableListOf())
 
             Logger.e(e, "lifecycle getTransportRouteList error")
-        }
-    }
-
-    private suspend fun getKmbStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = kmbRepository.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getKmbStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getKmbStopList error")
-            mutableListOf()
-        }
-    }
-
-    private suspend fun getNCStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = ncRepository.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getNCStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getNCStopList error")
-            mutableListOf()
-        }
-    }
-
-    private suspend fun getGmbStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = gmbRepository.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getNCStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getNCStopList error")
-            mutableListOf()
-        }
-    }
-
-    private suspend fun getMTRStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = mtrRepository.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getNCStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getNCStopList error")
-            mutableListOf()
-        }
-    }
-
-    private suspend fun getLRTStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = lrtRepository.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getNCStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getNCStopList error")
-            mutableListOf()
-        }
-    }
-
-    private suspend fun getNLBStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = nlbRepository.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getNLBStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getNLBStopList error")
-            mutableListOf()
-        }
-    }
-
-    fun saveStop(card: Card.RouteStopAddCard) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val isExisting = hasEtaInDb(
-                stopId = card.stop.stopId,
-                routeId = card.route.routeId,
-                bound = card.route.bound,
-                serviceType = card.route.serviceType,
-                seq = card.stop.seq!!,
-                company = card.route.company
-            )
-
-            if (isExisting) {
-                isAddEtaSuccessful.emit(false)
-                return@launch
-            }
-
-            val newEta = SavedEtaEntity(
-                stopId = card.stop.stopId,
-                routeId = card.route.routeId,
-                bound = card.route.bound,
-                serviceType = card.route.serviceType,
-                seq = card.stop.seq!!,
-                company = card.route.company
-            )
-            addEta(newEta)
-
-            val currentEtaOrderList = getEtaOrderList()
-            val updatedEtaOrderList = mutableListOf<EtaOrderEntity>()
-            updatedEtaOrderList.add(EtaOrderEntity(id = newEta.id, position = 0))
-            updatedEtaOrderList.addAll(
-                currentEtaOrderList.map {
-                    EtaOrderEntity(id = it.id, position = it.position + 1)
-                }
-            )
-            updateEtaOrderList(updatedEtaOrderList)
-
-            isAddEtaSuccessful.emit(true)
         }
     }
 

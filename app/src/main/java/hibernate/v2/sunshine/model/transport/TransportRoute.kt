@@ -150,6 +150,45 @@ open class TransportRoute(
             }
         )
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as TransportRoute
+
+        if (routeId != other.routeId) return false
+        if (routeNo != other.routeNo) return false
+        if (bound != other.bound) return false
+        if (serviceType != other.serviceType) return false
+        if (origEn != other.origEn) return false
+        if (origTc != other.origTc) return false
+        if (origSc != other.origSc) return false
+        if (destEn != other.destEn) return false
+        if (destTc != other.destTc) return false
+        if (destSc != other.destSc) return false
+        if (company != other.company) return false
+        if (routeComponent != other.routeComponent) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = routeId.hashCode()
+        result = 31 * result + routeNo.hashCode()
+        result = 31 * result + bound.hashCode()
+        result = 31 * result + serviceType.hashCode()
+        result = 31 * result + origEn.hashCode()
+        result = 31 * result + origTc.hashCode()
+        result = 31 * result + origSc.hashCode()
+        result = 31 * result + destEn.hashCode()
+        result = 31 * result + destTc.hashCode()
+        result = 31 * result + destSc.hashCode()
+        result = 31 * result + company.hashCode()
+        result = 31 * result + routeComponent.hashCode()
+        return result
+    }
+
+
     companion object {
         fun notFoundRoute() = TransportRoute(
             company = Company.UNKNOWN,
@@ -168,7 +207,7 @@ open class TransportRoute(
 }
 
 @Parcelize
-class RouteComponent(
+data class RouteComponent(
     var routePrefix: String = "",
     var routeNumber: Int = 0,
     var routeSuffix: String = "",

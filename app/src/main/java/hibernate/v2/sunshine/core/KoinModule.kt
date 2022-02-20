@@ -11,13 +11,14 @@ import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.repository.WeatherRepository
-import hibernate.v2.sunshine.ui.route.list.RouteListMobileViewModel
-import hibernate.v2.sunshine.ui.route.list.RouteListViewModel
+import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel
 import hibernate.v2.sunshine.ui.bookmark.home.BookmarkHomeViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.ui.route.details.mobile.RouteDetailsMobileViewModel
+import hibernate.v2.sunshine.ui.route.list.leanback.RouteListLeanbackViewModel
+import hibernate.v2.sunshine.ui.route.list.mobile.RouteListMobileViewModel
 import hibernate.v2.sunshine.ui.searchmap.SearchMapViewModel
 import hibernate.v2.sunshine.ui.traffic.TrafficViewModel
 import hibernate.v2.sunshine.ui.weather.WeatherViewModel
@@ -35,8 +36,9 @@ val koinUIModule: Module = module {
     viewModel { BookmarkHomeViewModel(get()) }
     viewModel { OnboardingViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { BookmarkEditViewModel(get()) }
-    viewModel { RouteListViewModel(get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { RouteListMobileViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { RouteListLeanbackViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { RouteListMobileViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { BookmarkSaveViewModel(get()) }
     viewModel { WeatherViewModel(get()) }
     viewModel { TrafficViewModel(get()) }
     viewModel { SearchMapViewModel(get(), get(), get(), get(), get(), get()) }

@@ -84,7 +84,7 @@ data class LRTRouteEntity(
 
     override fun compareTo(other: LRTRouteEntity): Int {
         parseRouteNumber(routeId)
-        other.parseRouteNumber(routeId)
+        other.parseRouteNumber(other.routeId)
 
         val routeCompare = routeComponent.compareTo(other.routeComponent)
         if (routeCompare != 0) return routeCompare

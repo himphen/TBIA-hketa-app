@@ -4,7 +4,7 @@ buildscript {
         kotlin_version = '1.6.10'
         lifecycle_version = '2.4.1'
         retrofit_version = '2.9.0'
-        okhttp_version = '4.9.0'
+        okhttp_version = '4.9.3'
         koin_version = '3.1.5'
         room_version = '2.4.1'
         leanback_version = '1.2.0-alpha02'

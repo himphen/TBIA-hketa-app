@@ -72,7 +72,7 @@ data class KmbRouteEntity(
 
     override fun compareTo(other: KmbRouteEntity): Int {
         parseRouteNumber(routeId)
-        other.parseRouteNumber(routeId)
+        other.parseRouteNumber(other.routeId)
 
         val routeCompare = routeComponent.compareTo(other.routeComponent)
         if (routeCompare != 0) return routeCompare

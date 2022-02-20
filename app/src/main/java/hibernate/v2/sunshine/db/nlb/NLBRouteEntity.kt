@@ -72,7 +72,7 @@ data class NLBRouteEntity(
 
     override fun compareTo(other: NLBRouteEntity): Int {
         parseRouteNumber(routeId)
-        other.parseRouteNumber(routeId)
+        other.parseRouteNumber(other.routeId)
 
         val routeCompare = routeComponent.compareTo(other.routeComponent)
         if (routeCompare != 0) return routeCompare
