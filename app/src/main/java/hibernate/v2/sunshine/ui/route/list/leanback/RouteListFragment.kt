@@ -1,6 +1,5 @@
 package hibernate.v2.sunshine.ui.route.list.leanback
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -29,7 +28,6 @@ class RouteListFragment : SearchSupportFragment(), SearchSupportFragment.SearchR
     private lateinit var mRowsAdapter: ArrayObjectAdapter
     private val viewModel by stateViewModel<RouteListLeanbackViewModel>()
     private val bookmarkSaveViewModel by stateViewModel<BookmarkSaveViewModel>()
-
 
     private val etaType: EtaType by lazy {
         arguments?.getEnum(ARG_ETA_TYPE, EtaType.KMB) ?: EtaType.KMB
@@ -61,10 +59,13 @@ class RouteListFragment : SearchSupportFragment(), SearchSupportFragment.SearchR
             loadRows(it.second)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.isAddEtaSuccessful.onEach {
+        bookmarkSaveViewModel.isAddEtaSuccessful.onEach {
             if (it) {
-                activity?.setResult(Activity.RESULT_OK)
-                activity?.finish()
+                Toast.makeText(
+                    context,
+                    getString(R.string.toast_eta_added),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 Toast.makeText(
                     context,

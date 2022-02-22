@@ -11,7 +11,6 @@ import hibernate.v2.sunshine.model.transport.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportRouteStopList
-import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
@@ -26,7 +25,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 class RouteListLeanbackViewModel(
-    private val etaRepository: EtaRepository,
     private val kmbRepository: KmbRepository,
     private val ncRepository: NCRepository,
     private val gmbRepository: GmbRepository,
@@ -36,7 +34,6 @@ class RouteListLeanbackViewModel(
 ) : BaseViewModel() {
 
     val filteredTransportRouteList = MutableSharedFlow<Pair<EtaType, List<AddEtaRowItem>>>()
-    var isAddEtaSuccessful = MutableSharedFlow<Boolean>()
 
     val searchRouteKeyword = MutableLiveData<String>()
 

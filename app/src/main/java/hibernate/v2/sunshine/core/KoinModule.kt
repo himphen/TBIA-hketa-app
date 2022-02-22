@@ -36,7 +36,7 @@ val koinUIModule: Module = module {
     viewModel { BookmarkHomeViewModel(get()) }
     viewModel { OnboardingViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { BookmarkEditViewModel(get()) }
-    viewModel { RouteListLeanbackViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { RouteListLeanbackViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { RouteListMobileViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { BookmarkSaveViewModel(get()) }
     viewModel { WeatherViewModel(get()) }

@@ -2,7 +2,7 @@ package hibernate.v2.sunshine.model.transport
 
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.response.eta.MTREta
-import hibernate.v2.sunshine.util.DateFormat
+import hibernate.v2.sunshine.util.DateFormatPattern
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Date
 
@@ -19,7 +19,7 @@ class MTRTransportEta(
             return MTRTransportEta(
                 eta = DateUtil.getDate(
                     eta.time,
-                    DateFormat.YYYY_MM_DD_HH_MM_SS.value
+                    DateFormatPattern.YYYY_MM_DD_HH_MM_SS.value
                 ),
                 rmkEn = "",
                 rmkSc = "",

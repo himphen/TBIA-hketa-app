@@ -45,6 +45,7 @@ class OnboardingFragment : BaseFragment<LbFragmentOnboardingBinding>() {
         viewModel.fetchTransportDataRequired.observe(viewLifecycleOwner) {
             if (it) {
                 viewBinding?.logoIv?.gone(true)
+                viewBinding?.loadingCl?.visible(true)
                 viewBinding?.animationView?.apply {
                     visible()
                     playAnimation()

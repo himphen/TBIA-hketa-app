@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 object DateUtil {
     fun getDate(
         dateStr: String?,
-        fromPattern: String = DateFormat.ISO.value,
+        fromPattern: String = DateFormatPattern.ISO.value,
         timeZone: String = "GMT+8"
     ): Date? {
         try {
@@ -28,7 +28,7 @@ object DateUtil {
     fun formatString(
         dateStr: String?,
         toPattern: String,
-        fromPattern: String = DateFormat.ISO.value,
+        fromPattern: String = DateFormatPattern.ISO.value,
         default: String = "",
         timeZone: String = "GMT+8"
     ): String {
@@ -66,8 +66,9 @@ object DateUtil {
     }
 }
 
-enum class DateFormat(val value: String) {
+enum class DateFormatPattern(val value: String) {
     HH_MM("HH:mm"),
+    HH_MM_12("h:mm a"),
     DD_MM_YY_HH_MM("dd-MM-yy HH:mm"),
     YYYY_MM_DD("yyyy-MM-dd"),
     ISO("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),

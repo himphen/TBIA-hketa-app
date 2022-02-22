@@ -108,7 +108,7 @@
     <string name="demo_card_eta_minute_compact_2">13</string>
     <string name="demo_card_eta_minute_compact_3">23</string>
     <string name="demo_card_eta_minute_classic">3</string>
-    <string name="demo_card_eta_minute_classic_unit">分鐘</string>
+    <string name="demo_card_eta_minute_classic_unit">分</string>
     <string name="demo_card_eta_minute_classic_time">07:30</string>
     <string name="demo_card_eta_minute_na">-</string>
 

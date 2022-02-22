@@ -82,7 +82,6 @@ class BookmarkHomeFragment : VerticalGridSupportFragment() {
                 processEtaList()
 
                 lifecycleScope.launch {
-                    (activity as? MainActivity)?.isResetLoadingBookmarkList = false
                     viewModel.etaRequested.emit(true)
                 }
             }
@@ -97,7 +96,7 @@ class BookmarkHomeFragment : VerticalGridSupportFragment() {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.etaRequested.onEach {
-            if (it && (activity as? MainActivity)?.isResetLoadingBookmarkList == false) {
+            if (it) {
                 etaRequestJob = viewModel.updateEtaList()
             } else {
                 etaRequestJob?.cancel()
