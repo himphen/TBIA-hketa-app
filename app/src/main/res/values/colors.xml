@@ -36,9 +36,9 @@
     <color name="map_marker">@color/primary</color>
     <color name="map_marker_moving">#990D47A1</color>
 
-    <color name="map_clustering_small">@color/primary_light</color>
-    <color name="map_clustering_medium">@color/primary</color>
-    <color name="map_clustering_large">@color/primary</color>
+    <color name="map_clustering_small">@color/primary</color>
+    <color name="map_clustering_medium">@color/md_light_blue_900</color>
+    <color name="map_clustering_large">@color/md_deep_purple_800</color>
 
     <!-- action bar-->
     <color name="actionbar_color">@color/primary</color>

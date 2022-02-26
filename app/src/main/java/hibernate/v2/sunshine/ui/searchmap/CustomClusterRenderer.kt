@@ -13,11 +13,27 @@ import hibernate.v2.sunshine.util.GoogleMapsUtils
 class CustomClusterRenderer(
     val context: Context,
     val map: GoogleMap,
-    val clusterManager: CustomClusterManager,
+    private val clusterManager: CustomClusterManager,
 ) : DefaultClusterRenderer<SearchMapStop>(context, map, clusterManager) {
+
+    private val smallColor: Int
+    private val mediumColor: Int
+    private val largeColor: Int
 
     init {
         minClusterSize = 3
+
+        smallColor = context.getColor(R.color.map_clustering_small)
+        mediumColor = context.getColor(R.color.map_clustering_medium)
+        largeColor = context.getColor(R.color.map_clustering_large)
+    }
+
+    override fun getColor(clusterSize: Int): Int {
+        return when {
+            clusterSize >= 50 -> largeColor
+            clusterSize >= 20 -> mediumColor
+            else -> smallColor
+        }
     }
 
     override fun shouldRenderAsCluster(cluster: Cluster<SearchMapStop>): Boolean {
