@@ -59,43 +59,45 @@ class RouteListMobileViewModel(
     private suspend fun getKmbRouteList() {
         val etaType = EtaType.KMB
         if (RouteListDataHolder.hasData(etaType)) {
+            Logger.d("lifecycle getKmbRouteList hasData")
             return
         }
 
         try {
             val allRouteList = kmbRepository.getRouteListDb()
-                .filter { !it.isSpecialRoute() }
                 .map { it.toTransportModel() }
-            RouteListDataHolder.setData(etaType, allRouteList.toMutableList())
+            RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.d("lifecycle getKmbRouteList done")
         } catch (e: Exception) {
-            RouteListDataHolder.setData(etaType, mutableListOf())
+            RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getTransportRouteList error")
+            Logger.e(e, "lifecycle getKmbRouteList error")
         }
     }
 
     private suspend fun getNCRouteList(etaType: EtaType) {
         if (RouteListDataHolder.hasData(etaType)) {
+            Logger.d("lifecycle getNCRouteList hasData")
             return
         }
 
         try {
             val allRouteList = ncRepository.getRouteListByCompanyDb(etaType.company())
                 .map { it.toTransportModel() }
-            RouteListDataHolder.setData(etaType, allRouteList.toMutableList())
+            RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.d("lifecycle getNCRouteList done")
         } catch (e: Exception) {
-            RouteListDataHolder.setData(etaType, mutableListOf())
+            RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getTransportRouteList error")
+            Logger.e(e, "lifecycle getNCRouteList error")
         }
     }
 
     private suspend fun getGmbRouteList(etaType: EtaType) {
         if (RouteListDataHolder.hasData(etaType)) {
+            Logger.d("lifecycle getGmbRouteList hasData")
             return
         }
 
@@ -108,69 +110,71 @@ class RouteListMobileViewModel(
 
         try {
             val allRouteList = gmbRepository.getRouteListDb(region).map { it.toTransportModel() }
-            RouteListDataHolder.setData(etaType, allRouteList.toMutableList())
+            RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.d("lifecycle getGmbRouteList done")
         } catch (e: Exception) {
-            RouteListDataHolder.setData(etaType, mutableListOf())
+            RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getTransportRouteList error")
+            Logger.e(e, "lifecycle getGmbRouteList error")
         }
     }
 
     private suspend fun getMTRRouteList() {
         val etaType = EtaType.MTR
         if (RouteListDataHolder.hasData(etaType)) {
+            Logger.d("lifecycle getMTRRouteList hasData")
             return
         }
 
         try {
             val allRouteList = mtrRepository.getRouteEnabledListDb().map { it.toTransportModel() }
-            RouteListDataHolder.setData(etaType, allRouteList.toMutableList())
+            RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.d("lifecycle getMTRRouteList done")
         } catch (e: Exception) {
-            RouteListDataHolder.setData(etaType, mutableListOf())
+            RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getTransportRouteList error")
+            Logger.e(e, "lifecycle getMTRRouteList error")
         }
     }
 
     private suspend fun getLRTRouteList() {
         val etaType = EtaType.LRT
         if (RouteListDataHolder.hasData(etaType)) {
+            Logger.d("lifecycle getLRTRouteList hasData")
             return
         }
 
         try {
             val allRouteList = lrtRepository.getRouteEnabledListDb().map { it.toTransportModel() }
-            RouteListDataHolder.setData(etaType, allRouteList.toMutableList())
+            RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.d("lifecycle getLRTRouteList done")
         } catch (e: Exception) {
-            RouteListDataHolder.setData(etaType, mutableListOf())
+            RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getTransportRouteList error")
+            Logger.e(e, "lifecycle getLRTRouteList error")
         }
     }
 
     private suspend fun getNLBRouteList() {
         val etaType = EtaType.NLB
         if (RouteListDataHolder.hasData(etaType)) {
+            Logger.d("lifecycle getNLBRouteList hasData")
             return
         }
 
         try {
             val allRouteList = nlbRepository.getRouteListDb()
-                .filter { !it.isSpecialRoute() }
                 .map { it.toTransportModel() }
-            RouteListDataHolder.setData(etaType, allRouteList.toMutableList())
+            RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.d("lifecycle getNLBRouteList done")
         } catch (e: Exception) {
-            RouteListDataHolder.setData(etaType, mutableListOf())
+            RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getTransportRouteList error")
+            Logger.e(e, "lifecycle getNLBRouteList error")
         }
     }
 

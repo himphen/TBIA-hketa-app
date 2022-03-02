@@ -7,17 +7,17 @@ import java.util.EnumMap
 enum class RouteListDataHolder {
     INSTANCE;
 
-    private var hashMap: EnumMap<EtaType, MutableList<TransportRoute>> =
+    private var hashMap: EnumMap<EtaType, List<TransportRoute>> =
         EnumMap(EtaType::class.java)
 
     companion object {
         fun hasData(etaType: EtaType) = !getData(etaType).isNullOrEmpty()
 
-        fun setData(etaType: EtaType, list: MutableList<TransportRoute>) {
+        fun setData(etaType: EtaType, list: List<TransportRoute>) {
             INSTANCE.hashMap[etaType] = list
         }
 
-        fun getData(etaType: EtaType): MutableList<TransportRoute>? {
+        fun getData(etaType: EtaType): List<TransportRoute>? {
             return INSTANCE.hashMap[etaType]
         }
 

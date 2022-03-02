@@ -4,6 +4,11 @@
     <style name="ActionBar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="titleTextColor">@color/actionbar_title_text</item>
         <item name="subtitleTextColor">@color/actionbar_title_text</item>
+        <item name="subtitleTextAppearance">@style/ActionBar.SubtitleTextAppearance</item>
+    </style>
+
+    <style name="ActionBar.SubtitleTextAppearance">
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="PreferenceStyle" parent="@android:style/Widget.TextView">

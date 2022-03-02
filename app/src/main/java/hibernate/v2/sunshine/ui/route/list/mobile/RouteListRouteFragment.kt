@@ -4,10 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EdgeEffect
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityOptionsCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentRouteListBinding
 import hibernate.v2.sunshine.model.transport.EtaType
@@ -20,6 +27,7 @@ import hibernate.v2.sunshine.util.putEnum
 import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
@@ -78,14 +86,19 @@ class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
         val dividerItemDecoration =
             DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
         viewBinding.recyclerView.addItemDecoration(dividerItemDecoration)
+
+        viewBinding.recyclerView.edgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
+            override fun createEdgeEffect(view: RecyclerView, direction: Int) =
+                EdgeEffect(view.context).apply { color = etaType.color(context!!) }
+        }
     }
 
     private fun initData() {
-        viewModel.getTransportRouteList(etaType)
     }
 
     private fun initEvent() {
         viewModel.filteredTransportRouteList.onEach {
+            Logger.d("ac1 filteredTransportRouteList: ${it.first} - ${it.second.isEmpty()} - $etaType")
             if (it.first == etaType) {
                 val list = it.second
                 if (list.isEmpty()) {
@@ -97,6 +110,15 @@ class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
                 }
                 adapter.submitList(list)
             }
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        }
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.RESUMED)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                Logger.d("ac1 repeatOnLifecycle: $etaType")
+                viewModel.getTransportRouteList(etaType)
+            }
+        }
     }
 }

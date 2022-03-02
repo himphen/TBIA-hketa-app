@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EdgeEffect
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -94,6 +96,13 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         val viewBinding = viewBinding!!
         viewBinding.recyclerView.adapter = adapter
         viewBinding.recyclerView.itemAnimator = null
+
+        viewBinding.recyclerView.edgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
+            override fun createEdgeEffect(view: RecyclerView, direction: Int) =
+                EdgeEffect(view.context).apply {
+                    color = viewModel.selectedEtaType.color(context!!)
+                }
+        }
 
         val selectedRoute = viewModel.selectedRoute
 

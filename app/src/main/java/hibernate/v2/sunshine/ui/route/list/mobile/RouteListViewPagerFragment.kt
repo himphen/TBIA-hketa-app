@@ -62,7 +62,7 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
         val viewBinding = viewBinding!!
         val adapter = RouteListViewPagerAdapter(this)
         viewBinding.viewPager.adapter = adapter
-        viewBinding.viewPager.offscreenPageLimit = 1
+        viewBinding.viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
         viewBinding.viewPager.isUserInputEnabled = false
         viewBinding.tabLayout.addOnTabSelectedListener(
             object : TabLayout.OnTabSelectedListener {
@@ -83,13 +83,6 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 etaType = adapter.list[position]
-
-//                viewBinding.searchEt.setText("")
-                if (isFirstLoad) {
-                    isFirstLoad = false
-                } else {
-                    viewModel.searchRoute(etaType)
-                }
             }
         })
 
