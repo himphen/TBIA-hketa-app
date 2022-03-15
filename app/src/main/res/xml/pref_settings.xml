@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <CheckBoxPreference
+        android:icon="@drawable/ic_traffic_24"
+        android:key="pref_settings_map_traffic_toggle"
+        android:title="@string/title_settings_maps_traffic_toggle" />
+
     <Preference
         android:icon="@drawable/ic_settings_eta_layout_24"
         android:key="pref_settings_eta_layout"
-        android:title="@string/title_activity_eta_layout"
-        tools:summary="Dark Mode" />
+        android:title="@string/title_activity_eta_layout" />
 
     <Preference
         android:icon="@drawable/ic_settings_version_24"
         android:key="pref_settings_version"
         android:title="@string/title_settings_version"
-        tools:summary="Dark Mode" />
+        tools:summary="1.0.0" />
 
     <Preference
         android:icon="@drawable/ic_settings_reset_24"

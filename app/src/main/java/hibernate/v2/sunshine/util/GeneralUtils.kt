@@ -15,7 +15,7 @@ object GeneralUtils {
         }
     }
 
-    const val REFRESH_TIME = 60 * 1000L
+    const val REFRESH_TIME = 5 * 1000L
 }
 
 fun <T> MutableList<T>.moveAt(oldIndex: Int, newIndex: Int) {

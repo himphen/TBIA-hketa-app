@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:text="@string/eta_button_add"
         android:textSize="18sp"
-        app:icon="@drawable/ic_add_24"
+        app:icon="@drawable/ic_search_24"
         app:iconGravity="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/editStopButton"

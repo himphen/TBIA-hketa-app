@@ -20,6 +20,7 @@ import com.google.maps.android.ktx.awaitMap
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentRouteDetailsBinding
 import hibernate.v2.sunshine.model.RouteDetailsMarkerItem
 import hibernate.v2.sunshine.model.transport.EtaType
@@ -39,6 +40,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
 
 class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
@@ -47,6 +49,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         fun getInstance() = RouteDetailsFragment()
     }
 
+    private val preferences by inject<SharedPreferencesManager>()
     private val viewModel: RouteDetailsMobileViewModel by sharedStateViewModel()
     private val adapter: RouteDetailsAdapter by lazy {
         RouteDetailsAdapter(
@@ -127,7 +130,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
             setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.style_stop_map)
             )
-            isTrafficEnabled = true
+            isTrafficEnabled = preferences.trafficLayerToggle
             uiSettings.apply {
                 isMapToolbarEnabled = false
                 isIndoorLevelPickerEnabled = false

@@ -41,7 +41,7 @@ val koinUIModule: Module = module {
     viewModel { BookmarkSaveViewModel(get()) }
     viewModel { WeatherViewModel(get()) }
     viewModel { TrafficViewModel(get()) }
-    viewModel { SearchMapViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { SearchMapViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { MainViewModel() }
     viewModel { params ->
         RouteDetailsMobileViewModel(

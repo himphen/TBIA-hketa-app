@@ -18,18 +18,10 @@ class RouteListActivity : BaseFragmentActivity<ActivityContainerBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                if (!popBackStack()) {
-                    finish()
-                }
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onBackPressed() {
-        if (!popBackStack()) {
-            super.onBackPressed()
         }
     }
 }

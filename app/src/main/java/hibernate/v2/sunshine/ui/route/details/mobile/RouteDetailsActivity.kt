@@ -22,9 +22,11 @@ class RouteDetailsActivity : BaseFragmentActivity<ActivityContainerBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val route = intent.getParcelableExtra<TransportRoute>(ARG_SELECTED_ROUTE)
         viewModel = getStateViewModel {
             parametersOf(
-                intent.getParcelableExtra(ARG_SELECTED_ROUTE),
+                route,
                 intent.getSerializableExtra(ARG_SELECTED_ETA_TYPE) as EtaType
             )
         }
@@ -33,18 +35,10 @@ class RouteDetailsActivity : BaseFragmentActivity<ActivityContainerBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                if (!popBackStack()) {
-                    finish()
-                }
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onBackPressed() {
-        if (!popBackStack()) {
-            super.onBackPressed()
         }
     }
 

@@ -4,6 +4,7 @@
     <string name="title_activity_eta_layout">更改到站卡片樣式</string>
     <string name="title_settings_version_leanback">版本 %1$s</string>
     <string name="title_settings_version">版本</string>
+    <string name="title_settings_maps_traffic_toggle">地圖上顯示交通圖層</string>
     <string name="title_settings_reset">重設數據</string>
     <string name="title_activity_add_eta">路線列表</string>
     <string name="settings_acknowledgement_title1">Acknowledgement 1</string>

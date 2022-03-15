@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.ui.onboarding.mobile.OnboardingActivity
@@ -21,6 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private val onboardingViewModel by inject<OnboardingViewModel>()
+    private val preferences by inject<SharedPreferencesManager>()
 
     private var etaLayoutLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -40,6 +43,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
             etaLayoutLauncher.launch(Intent(context, EtaLayoutSelectionActivity::class.java))
             true
         }
+
+        findPreference<CheckBoxPreference>("pref_settings_map_traffic_toggle")?.apply {
+            isChecked = preferences.trafficLayerToggle
+
+            setOnPreferenceChangeListener { _, newValue ->
+                val value = newValue as Boolean
+                preferences.trafficLayerToggle = value
+                viewLifecycleOwner.lifecycleScope.launch{
+                    mainViewModel.onChangedTrafficLayerToggle.emit(value)
+                }
+                true
+            }
+        }
+
         findPreference<Preference>("pref_settings_version")?.apply {
             summary = GeneralUtils.getAppVersionName(context)
         }

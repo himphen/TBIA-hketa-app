@@ -2,6 +2,7 @@ package hibernate.v2.sunshine.ui.main.mobile
 
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import hibernate.v2.sunshine.databinding.ActivityMainBinding
@@ -75,11 +76,13 @@ class MainActivity : BaseFragmentActivity<ActivityMainBinding>() {
     }
 
     private fun initEvent() {
-        mainViewModel.onStopBottomSheetStateChanged.observe(this) {
-            viewBinding.bottomBar.slideToBottomAnimate(mainViewModel.isBottomSheetClosed())
+        mainViewModel.onStopBottomSheetStateChanged.distinctUntilChanged().observe(this) {
+            val show = mainViewModel.isBottomSheetClosed()
+            viewBinding.bottomBar.slideToBottomAnimate(show)
         }
-        mainViewModel.onRouteBottomSheetStateChanged.observe(this) {
-            viewBinding.bottomBar.slideToBottomAnimate(mainViewModel.isBottomSheetClosed())
+        mainViewModel.onRouteBottomSheetStateChanged.distinctUntilChanged().observe(this) {
+            val show = mainViewModel.isBottomSheetClosed()
+            viewBinding.bottomBar.slideToBottomAnimate(show)
         }
     }
 

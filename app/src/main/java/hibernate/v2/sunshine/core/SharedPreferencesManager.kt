@@ -17,6 +17,7 @@ class SharedPreferencesManager(val context: Context) {
         const val PREF_ETA_CARD_TYPE = "PREF_ETA_CARD_TYPE"
         const val PREF_LAST_POSITION_LAT = "PREF_LAST_POSITION_LAT"
         const val PREF_LAST_POSITION_LNG = "PREF_LAST_POSITION_LNG"
+        const val PREF_TRAFFIC_LAYER_TOGGLE = "PREF_TRAFFIC_LAYER_TOGGLE"
     }
 
     private val preferences: SharedPreferences = PreferenceUtils.sharedPrefs(context)
@@ -53,5 +54,12 @@ class SharedPreferencesManager(val context: Context) {
                 putString(PREF_TRANSPORT_DATA_CHECKSUM, json)
                 apply()
             }
+        }
+
+    var trafficLayerToggle: Boolean
+        get() = preferences.getBoolean(PREF_TRAFFIC_LAYER_TOGGLE, false)
+        set(value) = preferences.edit {
+            putBoolean(PREF_TRAFFIC_LAYER_TOGGLE, value)
+            apply()
         }
 }

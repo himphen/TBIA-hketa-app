@@ -9,6 +9,7 @@ class MainViewModel : BaseViewModel() {
 
     val onUpdatedEtaList = MutableSharedFlow<Unit>()
     val onUpdatedEtaLayout = MutableSharedFlow<Unit>()
+    val onChangedTrafficLayerToggle = MutableSharedFlow<Boolean>()
 
     val onRequestedCloseBottomSheet = MutableSharedFlow<Unit>()
 

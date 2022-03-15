@@ -9,7 +9,7 @@
 
     <item
         android:id="@+id/searchMap"
-        android:icon="@drawable/ic_map_24"
+        android:icon="@drawable/ic_search_24"
         android:title="@string/main_tab_title_3"
         app:exb_color="@color/primary" />
 

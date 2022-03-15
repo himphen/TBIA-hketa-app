@@ -16,7 +16,7 @@ import hibernate.v2.sunshine.util.visible
 class RouteListAdapter(val onRouteSelected: (Card.EtaCard) -> Unit) :
     RecyclerView.Adapter<RouteListAdapter.ItemVH>() {
 
-    private var list = mutableListOf<Card.EtaCard>()
+    var list = mutableListOf<Card.EtaCard>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ItemVH(
