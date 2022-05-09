@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.ui.widget
+package hibernate.v2.sunshine.ui.view
 
 import android.animation.ValueAnimator
 import android.content.Context

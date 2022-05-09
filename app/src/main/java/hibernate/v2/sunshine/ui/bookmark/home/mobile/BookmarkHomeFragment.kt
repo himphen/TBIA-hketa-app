@@ -54,6 +54,7 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
 
     private val adapter = BookmarkHomeEtaCardAdapter(
         sharedPreferencesManager.etaCardType,
+        sharedPreferencesManager.hideAdBanner > System.currentTimeMillis(),
         onAddButtonClick = {
             (activity as? MainActivity)?.etaUpdatedLauncher?.launch(
                 Intent(

@@ -12,8 +12,13 @@
     <uses-feature
         android:name="android.hardware.microphone"
         android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".core.App"
@@ -42,19 +47,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
-            android:name="hibernate.v2.sunshine.ui.route.list.mobile.RouteListActivity"
+            android:name=".ui.route.list.mobile.RouteListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
-            android:name="hibernate.v2.sunshine.ui.route.details.mobile.RouteDetailsActivity"
+            android:name=".ui.route.details.mobile.RouteDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
             android:name=".ui.settings.eta.layout.mobile.EtaLayoutSelectionActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Mobile" />
-
-        <!-- Leanback -->
+            android:theme="@style/AppTheme.Mobile" /> <!-- Leanback -->
         <activity
             android:name=".ui.onboarding.leanback.OnboardingActivity"
             android:banner="@drawable/app_tv_banner"
@@ -71,10 +74,10 @@
             android:name=".ui.main.leanback.MainActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
-            android:name="hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditActivity"
+            android:name=".ui.bookmark.edit.leanback.BookmarkEditActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
-            android:name="hibernate.v2.sunshine.ui.route.list.leanback.RouteListActivity"
+            android:name=".ui.route.list.leanback.RouteListActivity"
             android:theme="@style/AppTheme.Leanback" />
         <activity
             android:name=".ui.bookmark.edit.leanback.BookmarkEditConfirmDialogActivity"
@@ -89,6 +92,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/GOOGLE_MAP_API_KEY" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/ADMOB_APP_ID" />
     </application>
 
 </manifest>

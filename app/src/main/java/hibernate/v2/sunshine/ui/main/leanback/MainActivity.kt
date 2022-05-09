@@ -11,7 +11,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.LbActivityMainBinding
 import hibernate.v2.sunshine.ui.base.BaseLeanbackActivity
 import hibernate.v2.sunshine.ui.settings.leanback.SettingsFragment
-import hibernate.v2.sunshine.ui.widget.SideMenuView
+import hibernate.v2.sunshine.ui.view.SideMenuView
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible

@@ -70,7 +70,7 @@
                     style="@style/PrimaryButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="添加至主頁"
+                    android:text="添加至主頁書籤"
                     android:textSize="14sp" />
             </LinearLayout>
 

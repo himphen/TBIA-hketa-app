@@ -5,6 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import hibernate.v2.sunshine.BuildConfig
+import hibernate.v2.sunshine.databinding.ItemEtaAdBannerBinding
 import hibernate.v2.sunshine.databinding.ItemEtaButtonGroupBinding
 import hibernate.v2.sunshine.databinding.ItemEtaCardClassicBinding
 import hibernate.v2.sunshine.databinding.ItemEtaCardCompactBinding
@@ -21,11 +26,13 @@ import hibernate.v2.sunshine.ui.view.setEtaTimeFlexManager
 
 class BookmarkHomeEtaCardAdapter(
     var type: EtaCardViewType,
+    var hideAdBanner: Boolean,
     val onAddButtonClick: () -> Unit,
     val onEditButtonClick: () -> Unit,
 ) : RecyclerView.Adapter<BaseViewHolder<out ViewBinding>>() {
 
     companion object {
+        const val VIEW_TYPE_AD_BANNER = 0
         const val VIEW_TYPE_CONTENT = 1
         const val VIEW_TYPE_BUTTON_GROUP = 2
     }
@@ -34,49 +41,67 @@ class BookmarkHomeEtaCardAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
         BaseViewHolder<out ViewBinding> {
-        return if (viewType == VIEW_TYPE_CONTENT) {
-            when (type) {
-                EtaCardViewType.Classic -> EtaViewHolderClassic(
-                    ItemEtaCardClassicBinding.inflate(
+        return when (viewType) {
+            VIEW_TYPE_AD_BANNER -> {
+                EtaViewHolderAdBanner(
+                    ItemEtaAdBannerBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
                     )
                 ).apply {
-                    viewBinding.content.etaMinuteLl.etaTimeRv.apply {
-                        setEtaTimeFlexManager()
-                        adapter = EtaTimeAdapter()
-                    }
+                    val adView = AdView(context)
+                    adView.adUnitId = BuildConfig.ADMOB_BANNER_ID
+                    adView.adSize = AdSize.BANNER
+                    adView.loadAd(AdRequest.Builder().build())
+                    viewBinding.root.addView(adView)
                 }
-                EtaCardViewType.Compact -> EtaViewHolderCompact(
-                    ItemEtaCardCompactBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                )
-                EtaCardViewType.Standard -> EtaViewHolderStandard(
-                    ItemEtaCardStandardBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    )
-                )
             }
-        } else {
-            EtaViewHolderButtonGroup(
-                ItemEtaButtonGroupBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            ).apply {
-                viewBinding.apply {
-                    addStopButton.setOnClickListener {
-                        onAddButtonClick()
+            VIEW_TYPE_CONTENT -> {
+                when (type) {
+                    EtaCardViewType.Classic -> EtaViewHolderClassic(
+                        ItemEtaCardClassicBinding.inflate(
+                            LayoutInflater.from(parent.context),
+                            parent,
+                            false
+                        )
+                    ).apply {
+                        viewBinding.content.etaMinuteLl.etaTimeRv.apply {
+                            setEtaTimeFlexManager()
+                            adapter = EtaTimeAdapter()
+                        }
                     }
-                    editStopButton.setOnClickListener {
-                        onEditButtonClick()
+                    EtaCardViewType.Compact -> EtaViewHolderCompact(
+                        ItemEtaCardCompactBinding.inflate(
+                            LayoutInflater.from(parent.context),
+                            parent,
+                            false
+                        )
+                    )
+                    EtaCardViewType.Standard -> EtaViewHolderStandard(
+                        ItemEtaCardStandardBinding.inflate(
+                            LayoutInflater.from(parent.context),
+                            parent,
+                            false
+                        )
+                    )
+                }
+            }
+            else -> {
+                EtaViewHolderButtonGroup(
+                    ItemEtaButtonGroupBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                ).apply {
+                    viewBinding.apply {
+                        addStopButton.setOnClickListener {
+                            onAddButtonClick()
+                        }
+                        editStopButton.setOnClickListener {
+                            onEditButtonClick()
+                        }
                     }
                 }
             }
@@ -85,13 +110,28 @@ class BookmarkHomeEtaCardAdapter(
 
     override fun onBindViewHolder(holder: BaseViewHolder<out ViewBinding>, position: Int) {
         if (holder is BaseEtaViewHolder)
-            holder.onBind(list[position])
+            if (hideAdBanner) {
+                holder.onBind(list[position])
+            } else {
+                holder.onBind(list[position - 1])
+            }
     }
 
-    override fun getItemCount(): Int = list.size + 1
+    override fun getItemCount(): Int = if (hideAdBanner) list.size + 1 else list.size + 2
 
     override fun getItemViewType(position: Int): Int =
-        if (list.lastIndex + 1 == position) VIEW_TYPE_BUTTON_GROUP else VIEW_TYPE_CONTENT
+        if (hideAdBanner) {
+            when (position) {
+                list.lastIndex + 1 -> VIEW_TYPE_BUTTON_GROUP
+                else -> VIEW_TYPE_CONTENT
+            }
+        } else {
+            when (position) {
+                0 -> VIEW_TYPE_AD_BANNER
+                list.lastIndex + 2 -> VIEW_TYPE_BUTTON_GROUP
+                else -> VIEW_TYPE_CONTENT
+            }
+        }
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(etaCardList: MutableList<Card.EtaCard>?) {
@@ -108,4 +148,7 @@ class BookmarkHomeEtaCardAdapter(
 
     inner class EtaViewHolderButtonGroup(viewBinding: ItemEtaButtonGroupBinding) :
         BaseViewHolder<ItemEtaButtonGroupBinding>(viewBinding)
+
+    inner class EtaViewHolderAdBanner(viewBinding: ItemEtaAdBannerBinding) :
+        BaseViewHolder<ItemEtaAdBannerBinding>(viewBinding)
 }

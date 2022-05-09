@@ -1,16 +1,16 @@
 <resources>
-    <string name="app_name">巴士到站時間</string>
-    <string name="title_activity_settings_eta">更改到站提示</string>
-    <string name="title_activity_eta_layout">更改到站卡片樣式</string>
+    <string name="app_name">下班車幾時到</string>
+    <string name="title_activity_settings_eta">更改書籤</string>
+    <string name="title_activity_eta_layout">更改書籤卡片樣式</string>
     <string name="title_settings_version_leanback">版本 %1$s</string>
     <string name="title_settings_version">版本</string>
     <string name="title_settings_maps_traffic_toggle">地圖上顯示交通圖層</string>
     <string name="title_settings_reset">重設數據</string>
     <string name="title_activity_add_eta">路線列表</string>
     <string name="settings_acknowledgement_title1">Acknowledgement 1</string>
-    <string name="settings_acknowledgement_summary1">Some icons are from Material Icons and www.flaticon.com</string>
+    <string name="settings_acknowledgement_summary1">大部份圖示來自 Material Icons 及 Flaticon。</string>
     <string name="settings_acknowledgement_title2">Acknowledgement 2</string>
-    <string name="settings_acknowledgement_summary2">Transport and real time Arrival Data are provided by DATA.GOV.HK</string>
+    <string name="settings_acknowledgement_summary2">交通及實時到站數據由 DATA.GOV.HK 提供，如有資料不準確或脫班情況，實屬不幸，請向政府或交通營運商投訴，謝謝。</string>
 
     <string name="test_onboarding_loading_start">正在載入路線數據</string>
 
@@ -57,7 +57,7 @@
     <string name="dialog_add_eta_brand_selection_nlb_btn">新大嶼山巴士</string>
 
     <string name="text_eta_loading_failed">載入數據失敗，正在重新再試。（錯誤碼：%d）</string>
-    <string name="text_edit_eta_invalid_hint">已移除主頁失效的常用車站。</string>
+    <string name="text_edit_eta_invalid_hint">已移除主頁書籤無效的車站。</string>
 
     <string name="text_add_eta_hint_stop">%1$s</string>
 
@@ -85,11 +85,11 @@
     <string name="toast_eta_added">已加入至主頁</string>
     <string name="eta_card_minute_unit">分</string>
 
-    <string name="dialog_add_eta_in_search_map_description_bus">加入%1$s號線%2$s車站至常用車站列表？</string>
+    <string name="dialog_add_eta_in_search_map_description_bus">加入%1$s號線%2$s車站至書籤列表？</string>
     <string name="dialog_add_eta_in_search_map_confirm_btn">確定</string>
     <string name="dialog_add_eta_in_search_map_cancel_btn">取消</string>
 
-    <string name="dialog_check_edit_eta_order_description">是否需要儲存新的常用車站排序？</string>
+    <string name="dialog_check_edit_eta_order_description">是否需要儲存新的書籤排序？</string>
     <string name="dialog_check_edit_eta_order_leave_btn">離開</string>
     <string name="dialog_check_edit_eta_order_save_btn">儲存</string>
 
@@ -123,14 +123,9 @@
         <item>@string/leanback_main_tab_title_settings</item>
     </string-array>
 
-    <string name="main_tab_title_1">預計到達時間</string>
+    <string name="main_tab_title_1">書籤</string>
     <string name="main_tab_title_2">設定</string>
     <string name="main_tab_title_3">地圖</string>
-    <string-array name="main_tab_title" translatable="false">
-        <item>@string/main_tab_title_1</item>
-        <item>@string/main_tab_title_2</item>
-        <item>@string/main_tab_title_3</item>
-    </string-array>
 
     <string name="placeholder_search_route">搜尋編號</string>
     <string name="placeholder_search_stop">搜尋車站</string>
@@ -141,7 +136,17 @@
     <string name="map_marker_distance_15">15分鐘路程</string>
     <string name="button_street_view_text">街景</string>
     <string name="button_navigation_text">前往</string>
-    <string name="eta_button_edit">編輯車站</string>
-    <string name="eta_button_add">瀏覽所有車站</string>
+    <string name="eta_button_edit">編輯書籤</string>
+    <string name="eta_button_add">添加車站至書籤</string>
+
+    <string name="dialog_location_permission_title">注意</string>
+    <string name="dialog_location_permission_message">需要定位權限才能繼續使用。</string>
+    <string name="dialog_location_permission_pos_btn">前往設定</string>
+
+    <string name="settings_category_ad_title">廣告設定</string>
+
+    <string name="settings_hide_ad_toast_message">重新開啟程式來套用設定。</string>
+    <string name="settings_hide_ad_title">隱藏橫額廣告</string>
+    <string name="settings_hide_ad_summary">%s 前不會顯示廣告</string>
 
 </resources>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <CheckBoxPreference
-        android:icon="@drawable/ic_traffic_24"
-        android:key="pref_settings_map_traffic_toggle"
-        android:title="@string/title_settings_maps_traffic_toggle" />
+    <!--    <CheckBoxPreference-->
+    <!--        android:icon="@drawable/ic_traffic_24"-->
+    <!--        android:key="pref_settings_map_traffic_toggle"-->
+    <!--        android:title="@string/title_settings_maps_traffic_toggle" />-->
 
     <Preference
         android:icon="@drawable/ic_settings_eta_layout_24"
@@ -34,5 +34,13 @@
         android:summary="@string/settings_acknowledgement_summary2"
         android:title="@string/settings_acknowledgement_title2" />
 
+    <PreferenceCategory android:title="@string/settings_category_ad_title">
+
+        <CheckBoxPreference
+            android:icon="@drawable/ic_ad_hide_24"
+            android:key="pref_settings_hide_ad_banner"
+            android:title="@string/settings_hide_ad_title" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

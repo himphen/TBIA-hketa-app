@@ -32,8 +32,8 @@ class MainViewPagerAdapter(
      */
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> BookmarkHomeFragment()
-            1 -> SearchMapFragment()
+            0 -> BookmarkHomeFragment.getInstance()
+            1 -> SearchMapFragment.getInstance()
             else -> SettingsFragment()
         }
     }

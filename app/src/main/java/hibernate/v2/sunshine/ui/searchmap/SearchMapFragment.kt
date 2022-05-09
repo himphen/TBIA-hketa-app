@@ -1,19 +1,31 @@
 package hibernate.v2.sunshine.ui.searchmap
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.net.Uri
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.fonfon.kgeohash.GeoHash
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -51,6 +63,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.Date
+import java.util.function.Consumer
 import kotlin.coroutines.resume
 
 class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
@@ -114,6 +127,44 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private var googleMap: GoogleMap? = null
+    private var fusedLocationClient: FusedLocationProviderClient? = null
+    private val locationCallback = Consumer<Location> { location ->
+        Logger.d("lifecycle locationCallback")
+        zoomToMyLocation(location)
+    }
+    private val locationListener = LocationListener { location ->
+        Logger.d("lifecycle locationListener")
+        zoomToMyLocation(location)
+    }
+
+    private val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val context = context ?: return@registerForActivityResult
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                getCurrentLocationInMap()
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                getCurrentLocationInMap()
+            }
+            else -> {
+                MaterialAlertDialogBuilder(context)
+                    .setTitle(R.string.dialog_location_permission_title)
+                    .setMessage(R.string.dialog_location_permission_message)
+                    .setPositiveButton(R.string.dialog_location_permission_pos_btn) { dialog, _ ->
+                        startActivity(Intent().apply {
+                            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                            data = Uri.fromParts("package", activity?.packageName, null)
+                        })
+                    }
+                    .setNegativeButton(R.string.dialog_cancel_btn) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
+        }
+    }
 
     companion object {
         fun getInstance() = SearchMapFragment()
@@ -183,6 +234,10 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             }
         }
 
+        mainViewModel.onChangedTrafficLayerToggle.onEach {
+            googleMap?.isTrafficEnabled = it
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+
         viewModel.etaUpdateError.onEach {
             Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
@@ -194,6 +249,78 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 etaRequestJob?.cancel()
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun checkMapToggleButton() {
+        val value = preferences.trafficLayerToggle
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.onChangedTrafficLayerToggle.emit(value)
+        }
+
+        viewBinding?.trafficLayerBtn?.isSelected = value
+    }
+
+    private fun getCurrentLocationInMap() {
+        Logger.d("lifecycle getCurrentLocationInMap")
+        val activity = activity ?: return
+        val locationManager =
+            activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        val fineLocationPermissionGranted = ActivityCompat.checkSelfPermission(
+            activity,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val coarseLocationPermissionGranted = ActivityCompat.checkSelfPermission(
+            activity,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (!fineLocationPermissionGranted && !coarseLocationPermissionGranted) {
+            locationPermissionRequest.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+            return
+        }
+
+        Logger.d("lifecycle getCurrentLocationInMap has permission")
+        val provider = if (fineLocationPermissionGranted)
+            LocationManager.GPS_PROVIDER
+        else
+            LocationManager.NETWORK_PROVIDER
+
+        fusedLocationClient?.lastLocation?.addOnSuccessListener(activity) {
+            Logger.d("lifecycle lastLocation?.addOnSuccessListener")
+            zoomToMyLocation(it)
+        }
+
+        if (SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            locationManager.getCurrentLocation(
+                provider,
+                null,
+                activity.mainExecutor,
+                locationCallback
+            )
+        } else {
+            // Keep using the legacy code, such as LocationManager.requestSingleUpdate()
+            locationManager.requestSingleUpdate(
+                provider,
+                locationListener,
+                null
+            )
+        }
+    }
+
+    private fun toggleTrafficLayerInMap(value: Boolean) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.onChangedTrafficLayerToggle.emit(value)
+        }
+
+        viewBinding?.trafficLayerBtn?.isSelected = value
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -233,6 +360,16 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                     RouteListActivity::class.java
                 )
             )
+        }
+
+        viewBinding.trafficLayerBtn.setOnClickListener {
+            val newValue = !preferences.trafficLayerToggle
+            preferences.trafficLayerToggle = newValue
+            toggleTrafficLayerInMap(newValue)
+        }
+
+        viewBinding.myLocationBtn.setOnClickListener {
+            getCurrentLocationInMap()
         }
 
         initStopListBottomSheet(viewBinding)
@@ -294,11 +431,13 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private suspend fun initMap(viewBinding: FragmentSearchMapBinding) {
         val mapFragment =
             childFragmentManager.findFragmentById(viewBinding.map.id) as SupportMapFragment
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
         googleMap = mapFragment.awaitMap().apply {
             setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.style_stop_map)
             )
-//            isTrafficEnabled = true
             uiSettings.apply {
                 isMapToolbarEnabled = false
                 isIndoorLevelPickerEnabled = false
@@ -483,6 +622,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     override fun onResume() {
         super.onResume()
         startRefreshEtaJob()
+        checkMapToggleButton()
     }
 
     override fun onPause() {
@@ -526,5 +666,15 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 startActivity(mapIntent)
             }
         }
+    }
+
+    private fun zoomToMyLocation(location: Location?) {
+        Logger.d("lifecycle zoomToMyLocation location: $location")
+        if (location == null) return
+        googleMap?.animateCamera(
+            CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)),
+            500,
+            null
+        )
     }
 }

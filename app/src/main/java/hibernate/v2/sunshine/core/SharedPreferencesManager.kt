@@ -18,6 +18,7 @@ class SharedPreferencesManager(val context: Context) {
         const val PREF_LAST_POSITION_LAT = "PREF_LAST_POSITION_LAT"
         const val PREF_LAST_POSITION_LNG = "PREF_LAST_POSITION_LNG"
         const val PREF_TRAFFIC_LAYER_TOGGLE = "PREF_TRAFFIC_LAYER_TOGGLE"
+        const val PREF_HIDE_AD_BANNER = "PREF_HIDE_AD_BANNER"
     }
 
     private val preferences: SharedPreferences = PreferenceUtils.sharedPrefs(context)
@@ -61,5 +62,12 @@ class SharedPreferencesManager(val context: Context) {
         set(value) = preferences.edit {
             putBoolean(PREF_TRAFFIC_LAYER_TOGGLE, value)
             apply()
+        }
+
+    var hideAdBanner: Long
+        get() = preferences.getLong(PREF_HIDE_AD_BANNER, 0)
+        set(value) = preferences.edit {
+            putLong(PREF_HIDE_AD_BANNER, value)
+            commit()
         }
 }
