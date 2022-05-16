@@ -217,7 +217,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
 
         viewModel.etaUpdateError.onEach {
             adapter.setEtaData(emptyList())
-            Logger.d("lifecycle etaUpdateError: " + it.message)
+            Logger.t("lifecycle").d("etaUpdateError: " + it.message)
             Toast.makeText(
                 context,
                 getString(R.string.text_eta_loading_failed, 400),
@@ -228,7 +228,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
 
     private fun startRefreshEtaJob() {
         if (refreshEtaJob == null) {
-            Logger.d("lifecycle startRefreshEtaJob")
+            Logger.t("lifecycle").d("startRefreshEtaJob")
             refreshEtaJob = lifecycleScope.launchPeriodicAsync(GeneralUtils.REFRESH_TIME) {
                 lifecycleScope.launch {
                     viewModel.etaRequested.emit(true)
@@ -238,7 +238,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
     }
 
     private fun stopRefreshEtaJob() {
-        Logger.d("lifecycle stopRefreshEtaJob")
+        Logger.t("lifecycle").d("stopRefreshEtaJob")
         lifecycleScope.launch {
             viewModel.etaRequested.emit(false)
         }

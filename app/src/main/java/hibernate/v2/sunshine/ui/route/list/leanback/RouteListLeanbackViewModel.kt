@@ -133,7 +133,7 @@ class RouteListLeanbackViewModel(
 
             RouteAndStopListDataHolder.setData(etaType, transportRouteList)
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.t("lifecycle").d("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 
@@ -187,7 +187,7 @@ class RouteListLeanbackViewModel(
                 transportRouteList
             )
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.t("lifecycle").d("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 
@@ -251,7 +251,7 @@ class RouteListLeanbackViewModel(
                 transportRouteList
             )
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.t("lifecycle").d("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 
@@ -312,7 +312,7 @@ class RouteListLeanbackViewModel(
                 transportRouteList
             )
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.t("lifecycle").d("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 
@@ -373,7 +373,7 @@ class RouteListLeanbackViewModel(
                 transportRouteList
             )
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.t("lifecycle").d("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 
@@ -428,7 +428,7 @@ class RouteListLeanbackViewModel(
 
             RouteAndStopListDataHolder.setData(etaType, transportRouteList)
 
-            Logger.d("lifecycle getTransportRouteList done")
+            Logger.t("lifecycle").d("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 

@@ -20,7 +20,7 @@ class WeatherViewModel(private val repo: WeatherRepository) : BaseViewModel() {
     val oneCallData = MutableLiveData<OneCall>()
 
     fun getWeatherInfo() {
-        Logger.d("lifecycle getWeatherInfo")
+        Logger.t("lifecycle").d("getWeatherInfo")
         viewModelScope.launch {
             val database =
                 Firebase.database("https://android-tv-c733a-default-rtdb.asia-southeast1.firebasedatabase.app/")
@@ -40,7 +40,7 @@ class WeatherViewModel(private val repo: WeatherRepository) : BaseViewModel() {
     }
 
     fun getWeatherInfoFromApi() {
-        Logger.d("lifecycle getWeatherInfo")
+        Logger.t("lifecycle").d("getWeatherInfo")
         viewModelScope.launch {
             try {
                 launch {

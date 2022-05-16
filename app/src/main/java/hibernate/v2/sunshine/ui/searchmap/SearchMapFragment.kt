@@ -129,11 +129,11 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private var googleMap: GoogleMap? = null
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private val locationCallback = Consumer<Location> { location ->
-        Logger.d("lifecycle locationCallback")
+        Logger.t("lifecycle").d("locationCallback")
         zoomToMyLocation(location)
     }
     private val locationListener = LocationListener { location ->
-        Logger.d("lifecycle locationListener")
+        Logger.t("lifecycle").d("locationListener")
         zoomToMyLocation(location)
     }
 
@@ -182,7 +182,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
     private fun initEvent() {
         viewModel.startRefreshEtaJob.onEach {
-            Logger.d("lifecycle startRefreshEtaJob onEach")
+            Logger.t("lifecycle").d("startRefreshEtaJob onEach")
             startRefreshEtaJob()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -262,7 +262,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private fun getCurrentLocationInMap() {
-        Logger.d("lifecycle getCurrentLocationInMap")
+        Logger.t("lifecycle").d("getCurrentLocationInMap")
         val activity = activity ?: return
         val locationManager =
             activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -287,14 +287,14 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             return
         }
 
-        Logger.d("lifecycle getCurrentLocationInMap has permission")
+        Logger.t("lifecycle").d("getCurrentLocationInMap has permission")
         val provider = if (fineLocationPermissionGranted)
             LocationManager.GPS_PROVIDER
         else
             LocationManager.NETWORK_PROVIDER
 
         fusedLocationClient?.lastLocation?.addOnSuccessListener(activity) {
-            Logger.d("lifecycle lastLocation?.addOnSuccessListener")
+            Logger.t("lifecycle").d("lastLocation?.addOnSuccessListener")
             zoomToMyLocation(it)
         }
 
@@ -351,15 +351,6 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             viewModel.selectedStop.value?.let {
                 goToNavigationActivity(it)
             }
-        }
-
-        viewBinding.searchEt.setOnClickListener {
-            (activity as? MainActivity)?.etaUpdatedLauncher?.launch(
-                Intent(
-                    context,
-                    RouteListActivity::class.java
-                )
-            )
         }
 
         viewBinding.trafficLayerBtn.setOnClickListener {
@@ -579,13 +570,13 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private fun showStopListOnBottomSheet(list: List<SearchMapStop>?) {
-        Logger.d("lifecycle showStopListOnBottomSheet")
+        Logger.t("lifecycle").d("showStopListOnBottomSheet")
         stopListAdapter.submitList(null)
         stopListAdapter.submitList(list)
     }
 
     private fun showRouteListOnBottomSheet(list: List<Card.EtaCard>) {
-        Logger.d("lifecycle showRouteListOnBottomSheet")
+        Logger.t("lifecycle").d("showRouteListOnBottomSheet")
         val temp = list.map { etaCard ->
             val temp = etaCard.etaList.filter { eta: TransportEta ->
                 eta.eta?.let { etaDate ->
@@ -632,7 +623,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
     private fun startRefreshEtaJob() {
         if (routeListAdapter.list.isNotEmpty()) {
-            Logger.d("lifecycle startRefreshEtaJob")
+            Logger.t("lifecycle").d("startRefreshEtaJob")
             refreshEtaJob = lifecycleScope.launchPeriodicAsync(GeneralUtils.REFRESH_TIME) {
                 lifecycleScope.launch {
                     viewModel.etaRequested.emit(true)
@@ -669,7 +660,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private fun zoomToMyLocation(location: Location?) {
-        Logger.d("lifecycle zoomToMyLocation location: $location")
+        Logger.t("lifecycle").d("zoomToMyLocation location: $location")
         if (location == null) return
         googleMap?.animateCamera(
             CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)),

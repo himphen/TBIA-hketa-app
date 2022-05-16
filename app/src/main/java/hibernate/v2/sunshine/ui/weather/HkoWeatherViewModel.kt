@@ -16,7 +16,7 @@ class HkoWeatherViewModel(private val repo: WeatherRepository) : BaseViewModel()
     val todayForecast = MutableLiveData<TodayForecast>()
 
     fun getWeatherInfo() {
-        Logger.d("lifecycle getWeatherInfo")
+        Logger.t("lifecycle").d("getWeatherInfo")
         viewModelScope.launch {
             try {
                 launch {

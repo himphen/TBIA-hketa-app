@@ -73,7 +73,7 @@ class BookmarkHomeViewModel(
 
     fun updateEtaList(): Job {
         return viewModelScope.launch(Dispatchers.IO + etaExceptionHandler) {
-            Logger.d("lifecycle getEtaList")
+            Logger.t("lifecycle").d("getEtaList")
             val etaCardList = savedEtaCardList.value
             if (etaCardList == null || etaCardList.isEmpty()) return@launch
 
@@ -226,7 +226,7 @@ class BookmarkHomeViewModel(
                 }
             }.awaitAll()
 
-            Logger.d("lifecycle getEtaList done")
+            Logger.t("lifecycle").d("getEtaList done")
             savedEtaCardList.postValue(result.values.toList())
         }
     }

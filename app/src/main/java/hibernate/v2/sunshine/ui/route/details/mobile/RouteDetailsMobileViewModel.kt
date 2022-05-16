@@ -154,7 +154,7 @@ class RouteDetailsMobileViewModel(
         return try {
             val allRouteList = kmbRepository.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getKmbStopList done")
+            Logger.t("lifecycle").d("getKmbStopList done")
             allRouteList
         } catch (e: Exception) {
             Logger.e(e, "lifecycle getKmbStopList error")
@@ -166,7 +166,7 @@ class RouteDetailsMobileViewModel(
         return try {
             val allRouteList = ncRepository.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getNCStopList done")
+            Logger.t("lifecycle").d("getNCStopList done")
             allRouteList
         } catch (e: Exception) {
             Logger.e(e, "lifecycle getNCStopList error")
@@ -178,7 +178,7 @@ class RouteDetailsMobileViewModel(
         return try {
             val allRouteList = gmbRepository.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getGmbStopList done")
+            Logger.t("lifecycle").d("getGmbStopList done")
             allRouteList
         } catch (e: Exception) {
             Logger.e(e, "lifecycle getGmbStopList error")
@@ -190,7 +190,7 @@ class RouteDetailsMobileViewModel(
         return try {
             val allRouteList = mtrRepository.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getMTRStopList done")
+            Logger.t("lifecycle").d("getMTRStopList done")
             allRouteList
         } catch (e: Exception) {
             Logger.e(e, "lifecycle getMTRStopList error")
@@ -202,7 +202,7 @@ class RouteDetailsMobileViewModel(
         return try {
             val allRouteList = lrtRepository.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getLRTStopList done")
+            Logger.t("lifecycle").d("getLRTStopList done")
             allRouteList
         } catch (e: Exception) {
             Logger.e(e, "lifecycle getLRTStopList error")
@@ -214,7 +214,7 @@ class RouteDetailsMobileViewModel(
         return try {
             val allRouteList = nlbRepository.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.d("lifecycle getNLBStopList done")
+            Logger.t("lifecycle").d("getNLBStopList done")
             allRouteList
         } catch (e: Exception) {
             Logger.e(e, "lifecycle getNLBStopList error")
@@ -264,7 +264,7 @@ class RouteDetailsMobileViewModel(
 
     fun updateEtaList(): Job {
         return viewModelScope.launch(Dispatchers.IO + etaExceptionHandler) {
-            Logger.d("lifecycle getEtaList")
+            Logger.t("lifecycle").d("getEtaList")
 
             val selectedStop = selectedStop.value ?: return@launch
             var result: List<TransportEta>? = null
@@ -376,7 +376,7 @@ class RouteDetailsMobileViewModel(
                 }
             }
 
-            Logger.d("lifecycle getEtaList done")
+            Logger.t("lifecycle").d("getEtaList done")
             etaList.emit(result ?: listOf())
         }
     }

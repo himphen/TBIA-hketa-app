@@ -12,14 +12,7 @@
     <string name="settings_acknowledgement_title2">Acknowledgement 2</string>
     <string name="settings_acknowledgement_summary2">交通及實時到站數據由 DATA.GOV.HK 提供，如有資料不準確或脫班情況，實屬不幸，請向政府或交通營運商投訴，謝謝。</string>
 
-    <string name="test_onboarding_loading_start">正在載入路線數據</string>
-
-    <string name="test_onboarding_loading_kmb">已載入九巴／龍運路線數據</string>
-    <string name="test_onboarding_loading_ctb">已載入新巴／城巴路線數據</string>
-    <string name="test_onboarding_loading_gmb">已載入專線小巴路線數據</string>
-    <string name="test_onboarding_loading_mtr">已載入港鐵路線數據</string>
-    <string name="test_onboarding_loading_lrt">已載入輕鐵路線數據</string>
-    <string name="test_onboarding_loading_nlb">已載入新大嶼山巴士路線數據</string>
+    <string name="test_onboarding_loading">正載入路線數據 （%1$d/%2$d)</string>
 
     <string name="test_onboarding_loading_failed_kmb">載入九巴／龍運路線數據失敗，請重新再試。</string>
     <string name="test_onboarding_loading_failed_ctb">載入新巴／城巴路線數據失敗，請重新再試。</string>
@@ -123,9 +116,10 @@
         <item>@string/leanback_main_tab_title_settings</item>
     </string-array>
 
-    <string name="main_tab_title_1">書籤</string>
-    <string name="main_tab_title_2">設定</string>
-    <string name="main_tab_title_3">地圖</string>
+    <string name="main_tab_title_bookmark">書籤</string>
+    <string name="main_tab_title_settings">設定</string>
+    <string name="main_tab_title_search">搜尋</string>
+    <string name="main_tab_title_map">地圖</string>
 
     <string name="placeholder_search_route">搜尋編號</string>
     <string name="placeholder_search_stop">搜尋車站</string>

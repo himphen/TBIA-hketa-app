@@ -47,7 +47,9 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
 
     fun initEvent() {
         viewModel.fetchTransportDataRequired.observe(viewLifecycleOwner) {
-            if (it) {
+            if (it < 0) return@observe
+
+            if (it > 0) {
                 viewBinding?.logoIv?.gone(true)
                 viewBinding?.loadingCl?.visible(true)
                 viewBinding?.animationView?.apply {
@@ -59,62 +61,45 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
             }
         }
 
-        viewModel.fetchTransportDataCompleted.observe(viewLifecycleOwner) {
-            when (it) {
-                FetchTransportDataType.KMB -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_kmb)
-                }
-                FetchTransportDataType.NC -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_ctb)
-                }
-                FetchTransportDataType.GMB -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_gmb)
-                }
-                FetchTransportDataType.ALL -> {
-                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                        delay(1000)
-                        goToMainActivity()
-                    }
-                }
-                FetchTransportDataType.MTR -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_mtr)
-                }
-                FetchTransportDataType.LRT -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_lrt)
-                }
-                FetchTransportDataType.NLB -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_nlb)
-                }
-                null -> {
-                }
-            }
+        viewModel.fetchTransportDataCompletedCount.observe(viewLifecycleOwner) {
+            val total = viewModel.fetchTransportDataRequired.value ?: 0
+
+            viewBinding?.loadingTv?.text = getString(
+                R.string.test_onboarding_loading,
+                it,
+                total
+            )
         }
 
-        viewModel.fetchTransportDataFailed.observe(viewLifecycleOwner) {
-            when (it) {
-                FetchTransportDataType.KMB -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_kmb)
+        viewModel.fetchTransportDataCompleted.observe(viewLifecycleOwner) {
+            if (viewModel.fetchTransportDataFailedList.isNotEmpty()) {
+                when (viewModel.fetchTransportDataFailedList.first()) {
+                    FetchTransportDataType.KMB -> {
+                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_kmb)
+                    }
+                    FetchTransportDataType.NC -> {
+                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_ctb)
+                    }
+                    FetchTransportDataType.GMB -> {
+                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_gmb)
+                    }
+                    FetchTransportDataType.MTR -> {
+                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_mtr)
+                    }
+                    FetchTransportDataType.LRT -> {
+                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_lrt)
+                    }
+                    FetchTransportDataType.NLB -> {
+                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_nlb)
+                    }
+                    FetchTransportDataType.ALL -> {
+                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_all)
+                    }
                 }
-                FetchTransportDataType.NC -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_ctb)
-                }
-                FetchTransportDataType.GMB -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_gmb)
-                }
-                FetchTransportDataType.MTR -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_mtr)
-                }
-                FetchTransportDataType.LRT -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_lrt)
-                }
-                FetchTransportDataType.NLB -> {
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_nlb)
-                }
-                FetchTransportDataType.ALL -> {
-                    viewBinding?.loadingTv?.visible()
-                    viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_all)
-                }
-                null -> {
+            } else {
+                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+                    delay(1000)
+                    goToMainActivity()
                 }
             }
         }

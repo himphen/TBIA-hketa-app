@@ -127,7 +127,7 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                Logger.d("lifecycle repeatOnLifecycle")
+                Logger.t("lifecycle").d("repeatOnLifecycle")
                 tickerFlow(REFRESH_TIME.milliseconds).collect {
                     viewModel.etaRequested.emit(true)
                 }

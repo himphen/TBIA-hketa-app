@@ -12,9 +12,9 @@ class MainViewPagerAdapter(
 ) : FragmentStateAdapter(activity) {
 
     enum class TabType(val position: Int, val menuItemId: Int) {
-        Eta(0, R.id.home),
-        SearchMap(1, R.id.searchMap),
-        Settings(2, R.id.settings);
+        Eta(0, R.id.menu_home),
+        SearchMap(1, R.id.menu_search_map),
+        Settings(2, R.id.menu_settings);
 
         companion object {
             fun fromMenuItemId(menuItemId: Int?) = values().find { it.menuItemId == menuItemId }

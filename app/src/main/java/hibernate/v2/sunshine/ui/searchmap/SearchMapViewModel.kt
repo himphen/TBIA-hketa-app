@@ -58,7 +58,7 @@ class SearchMapViewModel(
     }
 
     fun getRouteListFromStop() {
-        Logger.d("lifecycle getRouteListFromStop")
+        Logger.t("lifecycle").d("getRouteListFromStop")
         viewModelScope.launch(Dispatchers.IO) {
             val stop = selectedStop.value ?: return@launch
             val result = when (stop.etaType) {
@@ -129,7 +129,7 @@ class SearchMapViewModel(
 
     fun updateEtaList(): Job {
         return viewModelScope.launch(Dispatchers.IO + etaExceptionHandler) {
-            Logger.d("lifecycle getEtaList")
+            Logger.t("lifecycle").d("getEtaList")
             val etaCardList = routeListForBottomSheet.value
             if (etaCardList == null || etaCardList.isEmpty()) return@launch
 
@@ -282,7 +282,7 @@ class SearchMapViewModel(
                 }
             }.awaitAll()
 
-            Logger.d("lifecycle getEtaList done")
+            Logger.t("lifecycle").d("getEtaList done")
             routeListForBottomSheet.postValue(result.values.toList())
         }
     }
