@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">下班車幾時到</string>
+    <string name="app_name">下班車</string>
     <string name="title_activity_settings_eta">更改書籤</string>
     <string name="title_activity_eta_layout">更改書籤卡片樣式</string>
     <string name="title_settings_version_leanback">版本 %1$s</string>
