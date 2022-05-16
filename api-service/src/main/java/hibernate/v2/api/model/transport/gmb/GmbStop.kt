@@ -1,7 +1,9 @@
 package hibernate.v2.api.model.transport.gmb
 
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 
+@Keep
 data class GmbStop(
     @get:PropertyName("lat")
     @set:PropertyName("lat")

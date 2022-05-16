@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.db.nc
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -9,6 +10,7 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.nc.NCRouteStop
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
+@Keep
 @Entity(
     tableName = "nc_route_stop",
     indices = [

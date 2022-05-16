@@ -1,6 +1,7 @@
 package hibernate.v2.sunshine.db.mtr
 
 import android.graphics.Color
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import hibernate.v2.api.model.transport.Bound
@@ -11,6 +12,7 @@ import hibernate.v2.sunshine.model.transport.MTRRouteInfo
 import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
+@Keep
 @Entity(
     tableName = "mtr_route",
     primaryKeys = ["mtr_route_id", "mtr_route_bound", "mtr_route_service_type"],

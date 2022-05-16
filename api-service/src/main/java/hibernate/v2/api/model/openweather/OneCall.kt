@@ -1,7 +1,9 @@
 package hibernate.v2.api.model.openweather
 
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 
+@Keep
 data class OneCall(
     var current: Current? = null,
     var daily: List<Daily>? = null,

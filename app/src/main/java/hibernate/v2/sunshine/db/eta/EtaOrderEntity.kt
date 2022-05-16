@@ -1,9 +1,11 @@
 package hibernate.v2.sunshine.db.eta
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+@Keep
 @Entity(tableName = "saved_eta_order")
 data class EtaOrderEntity(
     @PrimaryKey(autoGenerate = true)

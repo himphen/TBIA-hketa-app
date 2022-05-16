@@ -1,9 +1,11 @@
 package hibernate.v2.api.model.transport.gmb
 
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.GmbRegion
 
+@Keep
 data class GmbRoute(
     val bound: Bound = Bound.O,
     @get:PropertyName("dest_en")

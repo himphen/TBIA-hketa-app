@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.db.nlb
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -10,6 +11,7 @@ import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.TransportHashable
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
+@Keep
 @Entity(
     tableName = "nlb_route",
     primaryKeys = ["nlb_route_id"],

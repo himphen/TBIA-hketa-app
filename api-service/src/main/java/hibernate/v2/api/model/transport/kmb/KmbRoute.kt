@@ -1,8 +1,10 @@
 package hibernate.v2.api.model.transport.kmb
 
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 import hibernate.v2.api.model.transport.Bound
 
+@Keep
 data class KmbRoute(
     @get:PropertyName("bound")
     @set:PropertyName("bound")

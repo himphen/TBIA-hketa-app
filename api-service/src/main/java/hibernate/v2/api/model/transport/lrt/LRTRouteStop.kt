@@ -1,8 +1,10 @@
 package hibernate.v2.api.model.transport.lrt
 
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 import hibernate.v2.api.model.transport.Bound
 
+@Keep
 data class LRTRouteStop(
     @get:PropertyName("bound")
     @set:PropertyName("bound")

@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.db.gmb
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
@@ -8,6 +9,7 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.gmb.GmbRouteStop
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
+@Keep
 @Entity(
     tableName = "gmb_route_stop",
     indices = [

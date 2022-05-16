@@ -1,7 +1,9 @@
 package hibernate.v2.api.model.transport.kmb
 
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 
+@Keep
 data class KmbStop(
     @get:PropertyName("lat")
     @set:PropertyName("lat")

@@ -1,9 +1,11 @@
 package hibernate.v2.api.model.openweather
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 import kotlinx.parcelize.Parcelize
 
+@Keep
 @Parcelize
 data class Current(
     var clouds: Int? = null,

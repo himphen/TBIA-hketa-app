@@ -1,9 +1,11 @@
 package hibernate.v2.api.model.transport.nc
 
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 
+@Keep
 data class NCRouteStop(
     @get:PropertyName("co")
     @set:PropertyName("co")

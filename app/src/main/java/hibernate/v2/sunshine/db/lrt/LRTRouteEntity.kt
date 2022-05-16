@@ -1,6 +1,7 @@
 package hibernate.v2.sunshine.db.lrt
 
 import android.graphics.Color
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import hibernate.v2.api.model.transport.Bound
@@ -11,6 +12,7 @@ import hibernate.v2.sunshine.model.transport.LRTRouteInfo
 import hibernate.v2.sunshine.model.transport.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
+@Keep
 @Entity(
     tableName = "lrt_route",
     primaryKeys = ["lrt_route_id", "lrt_route_bound", "lrt_route_service_type"],

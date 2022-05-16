@@ -1,7 +1,9 @@
 package hibernate.v2.api.model.transport.gmb
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class GmbEta(
     @SerializedName("eta_seq")
     val seq: Int? = null,

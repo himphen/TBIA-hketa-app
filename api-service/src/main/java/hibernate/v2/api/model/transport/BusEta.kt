@@ -1,7 +1,9 @@
 package hibernate.v2.api.model.transport
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class BusEta(
     @SerializedName("co")
     val company: String? = null,

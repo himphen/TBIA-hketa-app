@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.db.nc
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -11,6 +12,7 @@ import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.TransportHashable
 import hibernate.v2.sunshine.model.transport.TransportRoute
 
+@Keep
 @Entity(
     tableName = "nc_route",
     primaryKeys = ["nc_route_id", "nc_route_bound"],

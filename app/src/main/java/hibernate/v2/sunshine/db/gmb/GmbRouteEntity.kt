@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.db.gmb
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import hibernate.v2.api.model.transport.Bound
@@ -10,6 +11,7 @@ import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
+@Keep
 @Entity(
     tableName = "gmb_route",
     primaryKeys = ["gmb_route_id", "gmb_route_bound", "gmb_route_service_type"]

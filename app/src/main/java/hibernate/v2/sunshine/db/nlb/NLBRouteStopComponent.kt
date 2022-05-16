@@ -1,8 +1,10 @@
 package hibernate.v2.sunshine.db.nlb
 
+import androidx.annotation.Keep
 import androidx.room.Embedded
 import androidx.room.Relation
 
+@Keep
 data class NLBRouteStopComponent(
     @Embedded
     val routeStopEntity: NLBRouteStopEntity,

@@ -1,7 +1,9 @@
 package hibernate.v2.api.model.transport.nc
 
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 
+@Keep
 data class NCStop(
     /**
      * Document shows this is double type

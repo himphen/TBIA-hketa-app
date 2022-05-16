@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.db.nc
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,6 +8,7 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.nc.NCStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
+@Keep
 @Entity(
     tableName = "nc_stop"
 )

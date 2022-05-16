@@ -1,6 +1,7 @@
 package hibernate.v2.sunshine.db.eta
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,6 +10,7 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.model.transport.TransportHashable
 import kotlinx.parcelize.Parcelize
 
+@Keep
 @Parcelize
 @Entity(tableName = "saved_eta")
 data class SavedEtaEntity(

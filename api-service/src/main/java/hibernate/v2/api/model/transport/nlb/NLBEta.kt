@@ -1,7 +1,9 @@
 package hibernate.v2.api.model.transport.nlb
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class NLBEta(
     @SerializedName("estimatedArrivalTime")
     val estimatedArrivalTime: String? = null,

@@ -1,8 +1,10 @@
 package hibernate.v2.sunshine.db.kmb
 
+import androidx.annotation.Keep
 import androidx.room.Embedded
 import androidx.room.Relation
 
+@Keep
 data class KmbRouteStopComponent(
     @Embedded
     val routeStopEntity: KmbRouteStopEntity,

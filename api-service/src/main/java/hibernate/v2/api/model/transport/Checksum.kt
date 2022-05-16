@@ -1,7 +1,9 @@
 package hibernate.v2.api.model.transport
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class Checksum(
     @SerializedName("kmb")
     val kmb: CheckSumDetail? = null,
@@ -17,6 +19,7 @@ data class Checksum(
     val gmb: CheckSumDetail? = null,
 )
 
+@Keep
 data class CheckSumDetail(
     @SerializedName("route")
     val route: String? = null,

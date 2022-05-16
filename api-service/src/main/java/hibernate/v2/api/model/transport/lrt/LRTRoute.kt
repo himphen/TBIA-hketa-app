@@ -1,10 +1,12 @@
 package hibernate.v2.api.model.transport.lrt
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 import hibernate.v2.api.model.transport.Bound
 import kotlinx.parcelize.Parcelize
 
+@Keep
 data class LRTRoute(
     var bound: Bound = Bound.UNKNOWN,
     @get:PropertyName("dest_en")

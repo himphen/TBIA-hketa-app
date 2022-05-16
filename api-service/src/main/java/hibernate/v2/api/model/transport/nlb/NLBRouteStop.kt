@@ -1,7 +1,9 @@
 package hibernate.v2.api.model.transport.nlb
 
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 
+@Keep
 data class NLBRouteStop(
     @get:PropertyName("route_id")
     @set:PropertyName("route_id")

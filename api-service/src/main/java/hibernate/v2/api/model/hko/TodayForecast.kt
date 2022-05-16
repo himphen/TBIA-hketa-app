@@ -1,9 +1,11 @@
 package hibernate.v2.api.model.hko
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
+@Keep
 @Parcelize
 data class TodayForecast(
     @SerializedName("fireDangerWarning")

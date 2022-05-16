@@ -1,7 +1,9 @@
 package hibernate.v2.api.model.transport.nlb
 
+import androidx.annotation.Keep
 import com.google.firebase.database.PropertyName
 
+@Keep
 data class NLBRoute(
     @get:PropertyName("dest_en")
     @set:PropertyName("dest_en")
