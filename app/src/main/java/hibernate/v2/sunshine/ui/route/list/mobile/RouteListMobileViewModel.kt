@@ -31,6 +31,7 @@ class RouteListMobileViewModel(
 ) : BaseViewModel() {
 
     val filteredTransportRouteList = MutableSharedFlow<Pair<EtaType, List<TransportRoute>>>()
+    val tabItemSelectedLiveData = MutableLiveData<EtaType>()
     val stopList = MutableSharedFlow<List<TransportStop>>()
     var selectedEtaType = MutableLiveData(EtaType.KMB)
 

@@ -1,11 +1,12 @@
 package hibernate.v2.sunshine.ui.route.list.mobile
 
+import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityContainerBinding
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RouteListActivity : BaseFragmentActivity<ActivityContainerBinding>() {
 
@@ -13,7 +14,31 @@ class RouteListActivity : BaseFragmentActivity<ActivityContainerBinding>() {
     override var fragment: Fragment? = RouteListViewPagerFragment()
     override var titleId: Int? = R.string.title_activity_add_eta
 
-    val viewModel by stateViewModel<RouteListMobileViewModel>()
+    private val viewModel by viewModel<RouteListMobileViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        initEvent()
+    }
+
+    private fun initEvent() {
+        viewModel.tabItemSelectedLiveData.observe(this) { item ->
+            val color = item.color(this)
+
+            window?.statusBarColor = color
+
+            supportActionBar?.let {
+                it.title = getString(
+                    R.string.title_activity_add_eta_with_company_name,
+                    item.name(this)
+                )
+            }
+
+            viewBinding.appBarLayout.elevation = 0f
+            viewBinding.toolbar.root.setBackgroundColor(color)
+        }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

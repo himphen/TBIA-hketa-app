@@ -16,8 +16,6 @@
             android:key="pref_settings_default_company"
             android:title="@string/title_settings_default_company" />
 
-        title_settings_default_company
-
         <Preference
             android:icon="@drawable/ic_settings_version_24"
             android:key="pref_settings_version"
@@ -29,11 +27,6 @@
             android:key="pref_settings_version"
             android:title="@string/title_settings_version"
             tools:summary="1.0.0" />
-
-        <Preference
-            android:icon="@drawable/ic_settings_reset_24"
-            android:key="pref_settings_reset"
-            android:title="@string/title_settings_reset" />
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_category_notices_title">
@@ -56,11 +49,17 @@
             android:title="@string/settings_acknowledgement_title3" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_category_ad_title">
-
         <CheckBoxPreference
             android:icon="@drawable/ic_ad_hide_24"
             android:key="pref_settings_hide_ad_banner"
             android:title="@string/settings_hide_ad_title" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_category_debug_title">
+        <Preference
+            android:icon="@drawable/ic_settings_reset_24"
+            android:key="pref_settings_reset"
+            android:title="@string/title_settings_reset" />
 
     </PreferenceCategory>
 

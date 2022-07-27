@@ -36,6 +36,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val preferences by inject<SharedPreferencesManager>()
     private val adManager by inject<AdManager>()
 
+    private val defaultCompanyArray: Array<String> by lazy { resources.getStringArray(R.array.add_eta_brand_selections) }
+
     private var etaLayoutLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -55,32 +57,24 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        findPreference<Preference>("pref_settings_default_company")?.setOnPreferenceClickListener {
-            MaterialAlertDialogBuilder(it.context)
-                .setItems(R.array.add_eta_brand_selections) { dialog, which ->
-                    preferences.defaultCompany = which
-                    dialog.dismiss()
-                }
-                .setNegativeButton(R.string.dialog_cancel_btn) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
-            true
+        findPreference<Preference>("pref_settings_default_company")?.apply {
+            updateDefaultCompany()
+
+            setOnPreferenceClickListener {
+                MaterialAlertDialogBuilder(it.context)
+                    .setTitle(R.string.title_settings_default_company)
+                    .setItems(defaultCompanyArray) { dialog, which ->
+                        preferences.defaultCompany = which
+                        updateDefaultCompany()
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(R.string.dialog_cancel_btn) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+                true
+            }
         }
-
-
-//        findPreference<CheckBoxPreference>("pref_settings_map_traffic_toggle")?.apply {
-//            isChecked = preferences.trafficLayerToggle
-//
-//            setOnPreferenceChangeListener { _, newValue ->
-//                val value = newValue as Boolean
-//                preferences.trafficLayerToggle = value
-//                viewLifecycleOwner.lifecycleScope.launch{
-//                    mainViewModel.onChangedTrafficLayerToggle.emit(value)
-//                }
-//                true
-//            }
-//        }
 
         findPreference<CheckBoxPreference>("pref_settings_hide_ad_banner")?.apply {
             setOnPreferenceChangeListener { _, newValue ->
@@ -150,5 +144,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
             time = value
             SimpleDateFormat("yyyy-MM-dd HH:mm").format(this)
         })
+    }
+
+    private fun Preference.updateDefaultCompany() {
+        val index = preferences.defaultCompany
+
+        summary = defaultCompanyArray.getOrNull(index)
     }
 }

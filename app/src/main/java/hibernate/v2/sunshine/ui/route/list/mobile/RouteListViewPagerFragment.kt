@@ -14,6 +14,7 @@ import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentRouteListViewPagerBinding
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.ui.base.BaseActivity
@@ -23,6 +24,8 @@ import hibernate.v2.sunshine.util.onTextChanged
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBinding>() {
@@ -45,6 +48,8 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
     private val viewModel: RouteListMobileViewModel by sharedViewModel()
     private var etaType: EtaType = EtaType.KMB
 
+    private val preferences by inject<SharedPreferencesManager>()
+
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +60,7 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
         super.onViewCreated(view, savedInstanceState)
 
         initUi()
+        initEvent()
     }
 
     private fun initUi() {
@@ -68,9 +74,8 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     val item = adapter.list[tab.position]
 
-                    context?.let { context ->
-                        viewBinding.tabLayout.setSelectedTabIndicatorColor(item.color(context))
-                        viewBinding.searchCl.setBackgroundColor(item.color(context))
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        viewModel.tabItemSelectedLiveData.postValue(item)
                     }
                 }
 
@@ -142,6 +147,25 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
 
             if (requestFocus()) {
                 activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+            }
+        }
+
+        viewBinding.viewPager.post {
+            var position = preferences.defaultCompany
+            if (position >= adapter.list.size) {
+                preferences.defaultCompany = 0
+                position = 0
+            }
+            viewBinding.viewPager.setCurrentItem(position, false)
+        }
+    }
+
+    private fun initEvent() {
+        viewModel.tabItemSelectedLiveData.observe(viewLifecycleOwner) {
+            context?.let { context ->
+                val color = it.color(context)
+                viewBinding?.tabLayout?.setSelectedTabIndicatorColor(color)
+                viewBinding?.searchCl?.setBackgroundColor(color)
             }
         }
     }

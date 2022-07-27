@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityContainerBinding
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.TransportRoute
@@ -16,7 +15,6 @@ import org.koin.core.parameter.parametersOf
 class RouteDetailsActivity : BaseFragmentActivity<ActivityContainerBinding>() {
     override fun getActivityViewBinding() = ActivityContainerBinding.inflate(layoutInflater)
     override var fragment: Fragment? = RouteDetailsFragment()
-    override var titleId: Int? = R.string.title_activity_add_eta
 
     lateinit var viewModel: RouteDetailsMobileViewModel
 

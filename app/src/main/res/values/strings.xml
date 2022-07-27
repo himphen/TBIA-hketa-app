@@ -8,6 +8,7 @@
     <string name="title_settings_maps_traffic_toggle">地圖上顯示交通圖層</string>
     <string name="title_settings_reset">重設數據</string>
     <string name="title_activity_add_eta">路線列表</string>
+    <string name="title_activity_add_eta_with_company_name">%s路線列表</string>
     <string name="settings_acknowledgement_title1">聲明 1</string>
     <string name="settings_acknowledgement_summary1">大部份圖示來自 Material Icons 及 Flaticon。</string>
     <string name="settings_acknowledgement_title2">聲明 2</string>
@@ -157,6 +158,7 @@
     <string name="dialog_location_permission_message">需要定位權限才能繼續使用。</string>
     <string name="dialog_location_permission_pos_btn">前往設定</string>
 
+    <string name="settings_category_debug_title">除錯</string>
     <string name="settings_category_ad_title">廣告</string>
     <string name="settings_category_notices_title">聲明</string>
     <string name="settings_category_settings_title">設定</string>
