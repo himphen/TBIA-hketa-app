@@ -2,8 +2,10 @@ package hibernate.v2.sunshine.ui.route.details.mobile
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
 import android.view.LayoutInflater
@@ -81,6 +83,12 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
             },
             onRemoveButtonClicked = { position, entityId ->
                 viewModel.removeBookmark(position, entityId)
+            },
+            onNavigationButtonClicked = {
+                goToNavigationActivity(it)
+            },
+            onStreetViewButtonClicked = {
+                goToStreetMapsActivity(it)
             }
         )
     }
@@ -469,7 +477,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
 
         var shortestDistance = 500.0
         var nearestRouteDetailsStop = viewModel.routeDetailsStopList.value?.getOrNull(0) ?: return
-        var index = 0
+        var index = -1
 
         viewModel.routeDetailsStopList.value?.forEachIndexed { _index, it ->
             val targetDistance = SphericalUtil.computeDistanceBetween(
@@ -483,7 +491,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
             }
         }
 
-        if (shortestDistance >= 500) {
+        if (shortestDistance <= 500 && index >= 0) {
             viewBinding?.recyclerView?.scrollToPosition(index)
             adapter.normalItemOnClickListener(nearestRouteDetailsStop, index)
 
@@ -498,6 +506,30 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
                 500,
                 null
             )
+        }
+    }
+
+    private fun goToStreetMapsActivity(stop: RouteDetailsStop) {
+        activity?.let { activity ->
+            val gmmIntentUri =
+                Uri.parse("google.streetview:cbll=${stop.transportStop.lat},${stop.transportStop.lng}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            if (mapIntent.resolveActivity(activity.packageManager) != null) {
+                startActivity(mapIntent)
+            }
+        }
+    }
+
+    private fun goToNavigationActivity(stop: RouteDetailsStop) {
+        activity?.let { activity ->
+            val gmmIntentUri =
+                Uri.parse("google.navigation:q=${stop.transportStop.lat},${stop.transportStop.lng}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            if (mapIntent.resolveActivity(activity.packageManager) != null) {
+                startActivity(mapIntent)
+            }
         }
     }
 }

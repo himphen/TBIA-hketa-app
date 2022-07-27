@@ -2,6 +2,7 @@ package hibernate.v2.sunshine.ui.route.list.mobile
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -99,7 +100,16 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
             tab.customView = adapter.getTabView(position)
         }.attach()
 
+        // Default tab
+        var position = preferences.defaultCompany
+        if (position >= adapter.list.size) {
+            preferences.defaultCompany = 0
+            position = 0
+        }
+        viewBinding.viewPager.setCurrentItem(position, false)
+
         viewBinding.searchEt.apply {
+            filters += InputFilter.AllCaps()
             isLongClickable = false
             setOnTouchListener(
                 View.OnTouchListener { _, event ->
@@ -148,15 +158,6 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
             if (requestFocus()) {
                 activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
             }
-        }
-
-        viewBinding.viewPager.post {
-            var position = preferences.defaultCompany
-            if (position >= adapter.list.size) {
-                preferences.defaultCompany = 0
-                position = 0
-            }
-            viewBinding.viewPager.setCurrentItem(position, false)
         }
     }
 

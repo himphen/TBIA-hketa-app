@@ -25,6 +25,8 @@ class RouteDetailsAdapter(
     private val onItemCollapsing: () -> Unit,
     private val onAddButtonClicked: (Int, Card.RouteStopAddCard) -> Unit,
     private val onRemoveButtonClicked: (Int, Long) -> Unit,
+    private val onNavigationButtonClicked: (RouteDetailsStop) -> Unit,
+    private val onStreetViewButtonClicked: (RouteDetailsStop) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -222,6 +224,14 @@ class RouteDetailsAdapter(
                             savedEtaId
                         )
                     }
+                }
+
+                streetViewBtn.setOnClickListener {
+                    onStreetViewButtonClicked(item)
+                }
+
+                navigationBtn.setOnClickListener {
+                    onNavigationButtonClicked(item)
                 }
 
                 if (item.savedEtaId != null) {
