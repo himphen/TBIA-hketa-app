@@ -20,6 +20,7 @@ class SharedPreferencesManager(val context: Context) {
         const val PREF_TRAFFIC_LAYER_TOGGLE = "PREF_TRAFFIC_LAYER_TOGGLE"
         const val PREF_HIDE_AD_BANNER_UNTIL = "PREF_HIDE_AD_BANNER_UNTIL"
         const val PREF_DEFAULT_COMPANY = "PREF_DEFAULT_COMPANY"
+        const val PREF_LANGUAGE = "PREF_LANGUAGE"
     }
 
     private val preferences: SharedPreferences = PreferenceUtils.sharedPrefs(context)
@@ -77,5 +78,14 @@ class SharedPreferencesManager(val context: Context) {
         set(value) = preferences.edit {
             putInt(PREF_DEFAULT_COMPANY, value)
             commit()
+        }
+
+    var language: String
+        get() = preferences.getString(PREF_LANGUAGE, "") ?: ""
+        set(value) {
+            preferences.edit {
+                putString(PREF_LANGUAGE, value)
+                apply()
+            }
         }
 }

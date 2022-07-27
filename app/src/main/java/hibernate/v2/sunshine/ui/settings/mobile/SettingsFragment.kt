@@ -92,6 +92,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
+        findPreference<Preference>("pref_settings_lang")?.apply {
+            setOnPreferenceClickListener {
+                openDialogLanguage()
+
+                true
+            }
+        }
+
         findPreference<Preference>("pref_settings_version")?.apply {
             summary = GeneralUtils.getAppVersionName(context)
         }
@@ -150,5 +158,27 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val index = preferences.defaultCompany
 
         summary = defaultCompanyArray.getOrNull(index)
+    }
+
+    private fun openDialogLanguage() {
+        val activity = activity ?: return
+        MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.title_settings_language)
+            .setItems(R.array.language_choose) { dialog, index ->
+                dialog.dismiss()
+                val languageLocaleCodeArray = resources.getStringArray(R.array.language_locale_code)
+                preferences.language = languageLocaleCodeArray[index]
+
+                val intent = activity.packageManager.getLaunchIntentForPackage(activity.packageName)
+                intent?.let {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    intent.addCategory(Intent.CATEGORY_HOME)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                }
+            }
+            .setNegativeButton(R.string.dialog_cancel_btn, null)
+            .show()
     }
 }

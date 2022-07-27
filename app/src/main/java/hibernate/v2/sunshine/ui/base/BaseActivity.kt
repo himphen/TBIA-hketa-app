@@ -1,6 +1,7 @@
 package hibernate.v2.sunshine.ui.base
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
@@ -11,11 +12,16 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityContainerBinding
+import hibernate.v2.sunshine.util.GeneralUtils.updateLanguage
 
 abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     lateinit var viewBinding: T
 
     abstract fun getActivityViewBinding(): T
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(updateLanguage(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

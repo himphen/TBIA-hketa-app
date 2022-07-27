@@ -3,8 +3,9 @@
     <string name="title_activity_settings_eta">更改主頁書籤</string>
     <string name="title_activity_eta_layout">更改主頁卡片樣式</string>
     <string name="title_settings_version_leanback">版本 %1$s</string>
-    <string name="title_settings_default_company">更改預設公共交通機構</string>
+    <string name="title_settings_default_company">更改預設公共運輸機構</string>
     <string name="title_settings_version">版本</string>
+    <string name="title_settings_language" translatable="false">語言 Language</string>
     <string name="title_settings_maps_traffic_toggle">地圖上顯示交通圖層</string>
     <string name="title_settings_reset">重設數據</string>
     <string name="title_activity_add_eta">路線列表</string>
@@ -106,7 +107,7 @@
     <string name="dialog_check_edit_eta_order_leave_btn">離開</string>
     <string name="dialog_check_edit_eta_order_save_btn">儲存</string>
 
-    <string name="dialog_eta_layout_title">選擇到站時間卡片樣式</string>
+    <string name="dialog_eta_layout_title">更改主頁卡片樣式</string>
     <string name="dialog_eta_layout_standard_btn">標準</string>
     <string name="dialog_eta_layout_compact_btn">緊湊</string>
     <string name="dialog_eta_layout_classic_btn">經典</string>
@@ -150,8 +151,8 @@
     <string name="map_marker_distance_15">15分鐘路程</string>
     <string name="button_street_view_text">街景</string>
     <string name="button_navigation_text">前往</string>
-    <string name="eta_button_edit">編輯書籤</string>
-    <string name="eta_button_add">加入車站</string>
+    <string name="eta_button_edit">編輯</string>
+    <string name="eta_button_add">加入</string>
     <string name="eta_button_remove">從主頁移除</string>
 
     <string name="dialog_location_permission_title">注意</string>
@@ -166,5 +167,18 @@
     <string name="settings_hide_ad_toast_message">重新開啟程式來套用設定。</string>
     <string name="settings_hide_ad_title">隱藏橫額廣告</string>
     <string name="settings_hide_ad_summary">%s 前不會顯示廣告</string>
+
+    <string-array name="language_choose" translatable="false">
+        <item>System Default</item>
+        <item>English</item>
+        <item>中文（正體）</item>
+    </string-array>
+
+
+    <string-array name="language_locale_code" translatable="false">
+        <item />
+        <item>en</item>
+        <item>zh</item>
+    </string-array>
 
 </resources>

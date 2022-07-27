@@ -3,13 +3,20 @@ package hibernate.v2.sunshine.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.provider.Settings
+import hibernate.v2.sunshine.core.SharedPreferencesManager
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.util.Collections
 import java.util.Locale
 
-object GeneralUtils {
+object GeneralUtils : KoinComponent {
+
+    private val sharedPreferencesManager: SharedPreferencesManager by inject()
+
     fun getAppVersionName(context: Context?): String {
         val packageName = context?.packageName
         if (packageName.isNullOrEmpty()) return ""
@@ -17,6 +24,31 @@ object GeneralUtils {
             context.packageManager.getPackageInfo(packageName, 0)?.versionName ?: ""
         } catch (e: PackageManager.NameNotFoundException) {
             ""
+        }
+    }
+
+    fun updateLanguage(context: Context): Context {
+        val language = sharedPreferencesManager.language
+        if (language.isNotEmpty()) {
+            val config = context.resources.configuration
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                config.setLocale(Locale(language))
+            } else {
+                @Suppress("DEPRECATION")
+                config.locale = Locale(language)
+            }
+
+            return context.createConfigurationContext(config)
+        } else {
+            val config = context.resources.configuration
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                config.setLocale(Locale.getDefault())
+            } else {
+                @Suppress("DEPRECATION")
+                config.locale = Locale.getDefault()
+            }
+
+            return context.createConfigurationContext(config)
         }
     }
 
