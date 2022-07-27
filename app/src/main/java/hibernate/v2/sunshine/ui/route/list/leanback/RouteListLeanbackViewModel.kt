@@ -11,11 +11,11 @@ import hibernate.v2.sunshine.model.transport.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportRouteStopList
+import hibernate.v2.sunshine.repository.CtbRepository
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
-import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class RouteListLeanbackViewModel(
     private val kmbRepository: KmbRepository,
-    private val ncRepository: NCRepository,
+    private val ctbRepository: CtbRepository,
     private val gmbRepository: GmbRepository,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
@@ -44,7 +44,7 @@ class RouteListLeanbackViewModel(
             when (etaType) {
                 EtaType.KMB -> getKmbRouteList(context)
                 EtaType.NWFB,
-                EtaType.CTB -> getNCRouteList(context, etaType)
+                EtaType.CTB -> getCtbouteList(context, etaType)
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
                 EtaType.GMB_NT -> getGmbRouteList(context, etaType)
@@ -141,14 +141,14 @@ class RouteListLeanbackViewModel(
         }
     }
 
-    private suspend fun getNCRouteList(context: Context, etaType: EtaType) {
+    private suspend fun getCtbouteList(context: Context, etaType: EtaType) {
         if (RouteAndStopListDataHolder.hasData(etaType)) {
             return
         }
 
         try {
-            val allRouteList = ncRepository.getRouteListByCompanyDb(etaType.company())
-            val allRouteStopList = ncRepository.getRouteStopComponentListDb(etaType.company())
+            val allRouteList = ctbRepository.getRouteListByCompanyDb(etaType.company())
+            val allRouteStopList = ctbRepository.getRouteStopComponentListDb(etaType.company())
 
             val transportRouteStopHashMap = allRouteList.associate { entity ->
                 val route = entity.toTransportModel()

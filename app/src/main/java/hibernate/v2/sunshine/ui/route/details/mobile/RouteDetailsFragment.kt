@@ -1,16 +1,26 @@
 package hibernate.v2.sunshine.ui.route.details.mobile
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EdgeEffect
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -18,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.SphericalUtil
 import com.google.maps.android.ktx.awaitMap
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Company
@@ -65,16 +76,36 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
                 viewModel.selectedStop.value = null
                 stopRefreshEtaJob()
             },
-            onSaveEtaClicked = { position, card ->
-                viewModel.saveStop(position, card)
+            onAddButtonClicked = { position, card ->
+                viewModel.saveBookmark(position, card)
+            },
+            onRemoveButtonClicked = { position, entityId ->
+                viewModel.removeBookmark(position, entityId)
             }
         )
     }
 
     private var googleMap: GoogleMap? = null
+    private var fusedLocationClient: FusedLocationProviderClient? = null
     private var refreshEtaJob: Deferred<Unit>? = null
     private var etaRequestJob: Job? = null
     private var defaultBounds: LatLngBounds? = null
+
+    private val locationPermissionRequest =
+        locationPermissionRequest { getCurrentLocationInMap(false) }
+    private val locationRequest = LocationRequest.create().apply {
+        fastestInterval = 5000L
+        interval = 10000L
+        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    }
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            Logger.t("lifecycle").d("locationCallback")
+            zoomToNearestStop(locationResult.lastLocation)
+
+            stopRequestLocation()
+        }
+    }
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -118,6 +149,16 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
             activity.viewBinding.toolbar.root.setBackgroundColor(color)
         }
 
+        viewBinding.trafficLayerBtn.setOnClickListener {
+            val newValue = !preferences.trafficLayerToggle
+            preferences.trafficLayerToggle = newValue
+            toggleTrafficLayerInMap(newValue)
+        }
+
+        viewBinding.myLocationBtn.setOnClickListener {
+            getCurrentLocationInMap(false)
+        }
+
         initMap(viewBinding)
     }
 
@@ -125,16 +166,19 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         when (viewModel.selectedRoute.company) {
             Company.LRT,
             Company.MTR -> {
-                viewBinding.map.gone()
+                viewBinding.mapContainer.gone()
                 return
             }
             else -> {
-                viewBinding.map.visible()
+                viewBinding.mapContainer.visible()
             }
         }
 
         val mapFragment =
             childFragmentManager.findFragmentById(viewBinding.map.id) as SupportMapFragment
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
         googleMap = mapFragment.awaitMap().apply {
             setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.style_stop_map)
@@ -146,6 +190,15 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
                 isBuildingsEnabled = false
             }
             setPadding(dpToPx(16), dpToPx(16), dpToPx(16), dpToPx(16))
+
+            getCurrentLocationInMap(true)
+
+            // If moved camera, stop location request
+            setOnCameraMoveStartedListener {
+                if (it == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
+                    stopRequestLocation()
+                }
+            }
         }
     }
 
@@ -158,6 +211,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
             showStopListInMap(routeDetailsStopList)
             adapter.setRouteDetailsStopData(routeDetailsStopList)
         }
+
         viewModel.selectedStop.observe(viewLifecycleOwner) { selectedStop ->
             selectedStop?.let {
                 zoomToStop(selectedStop)
@@ -185,19 +239,32 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
                 zoomToDefault()
             }
         }
+
         viewModel.etaList.onEach { etaList ->
             adapter.setEtaData(etaList)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
         viewModel.isSavedEtaBookmark.onEach {
-            adapter.setSavedBookmark(it.second)
-            if (it.first) {
+            adapter.setSavedBookmark(it.first, it.second)
+            if (it.second > 0) {
                 activity?.setResult(MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK)
                 Toast.makeText(
                     context,
                     getString(R.string.toast_eta_added),
                     Toast.LENGTH_SHORT
                 ).show()
+            } else {
+                activity?.setResult(MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK)
+                Toast.makeText(
+                    context,
+                    getString(R.string.toast_eta_removed),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.isRemovedEtaBookmark.onEach {
+            adapter.setRemovedBookmark(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.etaRequested.onEach {
@@ -224,6 +291,19 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
                 Toast.LENGTH_LONG
             ).show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.onChangedTrafficLayerToggle.onEach {
+            googleMap?.isTrafficEnabled = it
+            viewBinding?.trafficLayerBtn?.isSelected = it
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.requestedLocationUpdates.observe(viewLifecycleOwner) {
+            viewBinding?.myLocationBtn?.apply {
+                if (it) {
+                    setImageDrawable(context.getDrawable(R.drawable.ic_location_24))
+                }
+            }
+        }
     }
 
     private fun startRefreshEtaJob() {
@@ -251,6 +331,10 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         val googleMap = googleMap ?: return
 
         val bld = LatLngBounds.Builder()
+
+        // prevent no included points
+        if (routeDetailsStopList.isEmpty()) return
+
         routeDetailsStopList.forEachIndexed { index, routeDetailsStop ->
             val latLng = LatLng(
                 routeDetailsStop.transportStop.lat,
@@ -325,6 +409,95 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
 
     override fun onPause() {
         stopRefreshEtaJob()
+        stopRequestLocation()
         super.onPause()
+    }
+
+    private fun stopRequestLocation() {
+        if (viewModel.requestedLocationUpdates.value == true) {
+            fusedLocationClient?.removeLocationUpdates(locationCallback)
+
+            viewModel.requestedLocationUpdates.postValue(false)
+        }
+    }
+
+    private fun toggleTrafficLayerInMap(value: Boolean) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.onChangedTrafficLayerToggle.emit(value)
+        }
+    }
+
+    private fun getCurrentLocationInMap(isTry: Boolean) {
+        Logger.t("lifecycle").d("getCurrentLocationInMap")
+        val activity = activity ?: return
+
+        val fineLocationPermissionGranted = ActivityCompat.checkSelfPermission(
+            activity,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val coarseLocationPermissionGranted = ActivityCompat.checkSelfPermission(
+            activity,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (!fineLocationPermissionGranted && !coarseLocationPermissionGranted) {
+            if (isTry) return
+
+            locationPermissionRequest.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+            return
+        }
+
+        Logger.t("lifecycle").d("getCurrentLocationInMap has permission")
+        fusedLocationClient?.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+
+        viewModel.requestedLocationUpdates.postValue(true)
+    }
+
+    private fun zoomToNearestStop(location: Location?) {
+        Logger.t("lifecycle").d("zoomToMyLocation location: $location")
+        if (location == null) return
+
+        var shortestDistance = 500.0
+        var nearestRouteDetailsStop = viewModel.routeDetailsStopList.value?.getOrNull(0) ?: return
+        var index = 0
+
+        viewModel.routeDetailsStopList.value?.forEachIndexed { _index, it ->
+            val targetDistance = SphericalUtil.computeDistanceBetween(
+                LatLng(location.latitude, location.longitude),
+                LatLng(it.transportStop.lat, it.transportStop.lng)
+            )
+            if (targetDistance < shortestDistance) {
+                shortestDistance = targetDistance
+                nearestRouteDetailsStop = it
+                index = _index
+            }
+        }
+
+        if (shortestDistance >= 500) {
+            viewBinding?.recyclerView?.scrollToPosition(index)
+            adapter.normalItemOnClickListener(nearestRouteDetailsStop, index)
+
+            googleMap?.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        nearestRouteDetailsStop.transportStop.lat,
+                        nearestRouteDetailsStop.transportStop.lng
+                    ),
+                    15f
+                ),
+                500,
+                null
+            )
+        }
     }
 }

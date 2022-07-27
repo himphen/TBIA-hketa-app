@@ -1,29 +1,22 @@
 package hibernate.v2.api.model.transport.gmb
 
 import androidx.annotation.Keep
-import com.google.firebase.database.PropertyName
+import com.google.gson.annotations.SerializedName
 
 @Keep
 data class GmbStop(
-    @get:PropertyName("lat")
-    @set:PropertyName("lat")
+    @SerializedName("lat")
     var lat: Double = 0.0,
-    @get:PropertyName("long")
-    @set:PropertyName("long")
+    @SerializedName("long")
     var lng: Double = 0.0,
-    @get:PropertyName("name_en")
-    @set:PropertyName("name_en")
+    @SerializedName("name_en")
     var nameEn: String = "",
-    @get:PropertyName("name_sc")
-    @set:PropertyName("name_sc")
+    @SerializedName("name_sc")
     var nameSc: String = "",
-    @get:PropertyName("name_tc")
-    @set:PropertyName("name_tc")
+    @SerializedName("name_tc")
     var nameTc: String = "",
-    @get:PropertyName("stop")
-    @set:PropertyName("stop")
+    @SerializedName("stop")
     var stopId: Long = 0,
-    @get:PropertyName("geohash")
-    @set:PropertyName("geohash")
+    @SerializedName("geohash")
     var geohash: String = "",
 )

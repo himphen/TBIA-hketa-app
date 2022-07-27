@@ -16,7 +16,8 @@ import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
 
-class MainActivity : BaseLeanbackActivity<LbActivityMainBinding>(), SideMenuView.MenuItemClickListener {
+class MainActivity : BaseLeanbackActivity<LbActivityMainBinding>(),
+    SideMenuView.MenuItemClickListener {
 
     override fun getActivityViewBinding() = LbActivityMainBinding.inflate(layoutInflater)
 

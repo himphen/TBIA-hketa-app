@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.core.AdManager
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentBookmarkHomeBinding
 import hibernate.v2.sunshine.model.Card
@@ -47,14 +48,15 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
         fun getInstance() = BookmarkHomeFragment()
     }
 
-    private val sharedPreferencesManager: SharedPreferencesManager by inject()
+    private val sharedPreferencesManager by inject<SharedPreferencesManager>()
+    private val adManager by inject<AdManager>()
 
     private val viewModel by inject<BookmarkHomeViewModel>()
     private val mainViewModel: MainViewModel by sharedViewModel()
 
     private val adapter = BookmarkHomeEtaCardAdapter(
         sharedPreferencesManager.etaCardType,
-        sharedPreferencesManager.hideAdBanner > System.currentTimeMillis(),
+        adManager.shouldShowBannerAd(),
         onAddButtonClick = {
             (activity as? MainActivity)?.etaUpdatedLauncher?.launch(
                 Intent(
@@ -160,6 +162,14 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
             }
             (recyclerView.itemAnimator as? SimpleItemAnimator)
                 ?.supportsChangeAnimations = false
+
+            viewBinding?.updateEtaFailedTv?.setOnClickListener{
+                lifecycleScope.launch {
+                    viewModel.etaRequested.emit(true)
+                }
+
+                hideUpdateEtaFailedText()
+            }
         }
         initAdapter()
     }
@@ -269,6 +279,13 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
             viewModel.etaRequested.emit(false)
         }
         super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        adapter.showAdBanner = adManager.shouldShowBannerAd()
+        adapter.notifyDataSetChanged()
     }
 
     override fun getViewBinding(

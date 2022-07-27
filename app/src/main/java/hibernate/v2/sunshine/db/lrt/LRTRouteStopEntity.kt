@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.lrt.LRTRouteStop
+import hibernate.v2.api.model.transport.lrt.LrtRouteStop
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Keep
@@ -32,7 +32,7 @@ data class LRTRouteStopEntity(
 ) : TransportHashable {
 
     companion object {
-        fun fromApiModel(routeStop: LRTRouteStop): LRTRouteStopEntity {
+        fun fromApiModel(routeStop: LrtRouteStop): LRTRouteStopEntity {
             return LRTRouteStopEntity(
                 routeId = routeStop.routeId,
                 bound = routeStop.bound,

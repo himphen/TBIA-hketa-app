@@ -103,7 +103,7 @@ class BookmarkHomeViewModel(
                         }
                         Company.NWFB,
                         Company.CTB -> {
-                            val apiEtaResponse = etaRepository.getNCStopEtaApi(
+                            val apiEtaResponse = etaRepository.getCtbStopEtaApi(
                                 company = etaCard.route.company,
                                 stopId = etaCard.stop.stopId,
                                 route = etaCard.route.routeId

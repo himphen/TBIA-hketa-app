@@ -6,7 +6,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.mtr.MTRRoute
+import hibernate.v2.api.model.transport.mtr.MtrRoute
 import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.MTRRouteInfo
 import hibernate.v2.sunshine.model.transport.MTRTransportRoute
@@ -48,7 +48,7 @@ data class MTRRouteEntity(
     val routeInfoIsEnabled: Boolean,
 ) : TransportHashable, Comparable<MTRRouteEntity>, BaseRouteEntity() {
     companion object {
-        fun fromApiModel(route: MTRRoute): MTRRouteEntity {
+        fun fromApiModel(route: MtrRoute): MTRRouteEntity {
             return MTRRouteEntity(
                 routeId = route.routeId,
                 bound = route.bound,
@@ -96,15 +96,12 @@ data class MTRRouteEntity(
     fun routeHashId() = routeHashId(Company.MTR, routeId, bound, serviceType)
 
     override fun compareTo(other: MTRRouteEntity): Int {
-        parseRouteNumber(routeId)
-        other.parseRouteNumber(other.routeId)
+        val routeIdCompare = routeId.compareTo(other.routeId)
+        if (routeIdCompare != 0) return routeIdCompare
 
-        val routeCompare = routeComponent.compareTo(other.routeComponent)
-        if (routeCompare != 0) return routeCompare
+        val boundCompare = bound.compareTo(other.bound)
+        if (boundCompare != 0) return boundCompare
 
-        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
-        if (serviceTypeCompare != 0) return serviceTypeCompare
-
-        return bound.compareTo(other.bound)
+        return serviceType.compareTo(other.serviceType)
     }
 }

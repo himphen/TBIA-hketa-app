@@ -1,10 +1,9 @@
 package hibernate.v2.sunshine.repository
 
-import com.google.firebase.database.DatabaseException
-import com.google.firebase.database.ktx.getValue
-import hibernate.v2.api.model.transport.lrt.LRTRoute
-import hibernate.v2.api.model.transport.lrt.LRTRouteStop
-import hibernate.v2.api.model.transport.lrt.LRTStop
+import com.himphen.logger.Logger
+import hibernate.v2.api.core.ApiSafeCall
+import hibernate.v2.api.core.Resource
+import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.lrt.LRTDao
 import hibernate.v2.sunshine.db.lrt.LRTRouteEntity
 import hibernate.v2.sunshine.db.lrt.LRTRouteStopEntity
@@ -12,50 +11,59 @@ import hibernate.v2.sunshine.db.lrt.LRTStopEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportRoute
-import hibernate.v2.sunshine.util.getSnapshotValue
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.supervisorScope
 
 class LRTRepository(
     private val lrtDao: LRTDao,
+    private val apiManager: ApiManager
 ) : BaseRepository() {
-    private val dbName = FIREBASE_DB_LRT
 
-    @Throws(DatabaseException::class)
-    suspend fun saveRouteListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<LRTRoute>>()?.let { list ->
-            val temp = list
-                .map(LRTRouteEntity.Companion::fromApiModel)
-                .toMutableList()
-                .apply { sortWith(LRTRouteEntity::compareTo) }
+    suspend fun saveData() {
+        val result = ApiSafeCall { apiManager.dataService.getLrtData() }
 
-            saveRouteList(temp)
+        val data = when (result) {
+            is Resource.Success -> result.getData()
+            is Resource.HttpError -> throw result.getThrowable()
+            is Resource.OtherError -> throw result.getThrowable()
         }
-    }
 
-    @Throws(DatabaseException::class)
-    suspend fun saveRouteStopListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<LRTRouteStop>>()?.let { list ->
-            saveRouteStopList(
-                list.map { routeStop ->
-                    LRTRouteStopEntity.fromApiModel(routeStop)
-                }
-            )
-        }
-    }
+        supervisorScope {
+            listOf(
+                async(Dispatchers.IO) {
+                    data.route?.let { list ->
+                        val temp = list
+                            .map(LRTRouteEntity.Companion::fromApiModel)
+                            .toMutableList()
+                            .apply { sortWith(LRTRouteEntity::compareTo) }
 
-    @Throws(DatabaseException::class)
-    suspend fun saveStopListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<LRTStop>>()?.let { list ->
-            saveStopList(
-                list.map { stop ->
-                    LRTStopEntity.fromApiModel(stop)
+                        saveRouteList(temp)
+                    }
+                    Logger.t("lifecycle").d("LRTRepository saveRouteList done")
+                },
+                async(Dispatchers.IO) {
+                    data.routeStop?.let { list ->
+                        saveRouteStopList(
+                            list.map { routeStop ->
+                                LRTRouteStopEntity.fromApiModel(routeStop)
+                            }
+                        )
+                    }
+                    Logger.t("lifecycle").d("LRTRepository saveRouteStopList done")
+                },
+                async(Dispatchers.IO) {
+                    data.stop?.let { list ->
+                        saveStopList(
+                            list.map { stop ->
+                                LRTStopEntity.fromApiModel(stop)
+                            }
+                        )
+                    }
+                    Logger.t("lifecycle").d("LRTRepository saveStopList done")
                 }
-            )
+            ).awaitAll()
         }
     }
 

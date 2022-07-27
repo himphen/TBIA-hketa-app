@@ -7,11 +7,11 @@ import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.model.transport.TransportStop
+import hibernate.v2.sunshine.repository.CtbRepository
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
-import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.repository.RouteListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
@@ -23,7 +23,7 @@ import java.util.EnumMap
 
 class RouteListMobileViewModel(
     private val kmbRepository: KmbRepository,
-    private val ncRepository: NCRepository,
+    private val ctbRepository: CtbRepository,
     private val gmbRepository: GmbRepository,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
@@ -43,7 +43,7 @@ class RouteListMobileViewModel(
             when (etaType) {
                 EtaType.KMB -> getKmbRouteList()
                 EtaType.NWFB,
-                EtaType.CTB -> getNCRouteList(etaType)
+                EtaType.CTB -> getCtbRouteList(etaType)
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
                 EtaType.GMB_NT -> getGmbRouteList(etaType)
@@ -76,22 +76,22 @@ class RouteListMobileViewModel(
         }
     }
 
-    private suspend fun getNCRouteList(etaType: EtaType) {
+    private suspend fun getCtbRouteList(etaType: EtaType) {
         if (RouteListDataHolder.hasData(etaType)) {
-            Logger.t("lifecycle").d("getNCRouteList hasData")
+            Logger.t("lifecycle").d("getCtbRouteList hasData")
             return
         }
 
         try {
-            val allRouteList = ncRepository.getRouteListByCompanyDb(etaType.company())
+            val allRouteList = ctbRepository.getRouteListByCompanyDb(etaType.company())
                 .map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.t("lifecycle").d("getNCRouteList done")
+            Logger.t("lifecycle").d("getCtbRouteList done")
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getNCRouteList error")
+            Logger.e(e, "lifecycle getCtbRouteList error")
         }
     }
 

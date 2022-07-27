@@ -18,7 +18,8 @@ class SharedPreferencesManager(val context: Context) {
         const val PREF_LAST_POSITION_LAT = "PREF_LAST_POSITION_LAT"
         const val PREF_LAST_POSITION_LNG = "PREF_LAST_POSITION_LNG"
         const val PREF_TRAFFIC_LAYER_TOGGLE = "PREF_TRAFFIC_LAYER_TOGGLE"
-        const val PREF_HIDE_AD_BANNER = "PREF_HIDE_AD_BANNER"
+        const val PREF_HIDE_AD_BANNER_UNTIL = "PREF_HIDE_AD_BANNER_UNTIL"
+        const val PREF_DEFAULT_COMPANY = "PREF_DEFAULT_COMPANY"
     }
 
     private val preferences: SharedPreferences = PreferenceUtils.sharedPrefs(context)
@@ -64,10 +65,17 @@ class SharedPreferencesManager(val context: Context) {
             apply()
         }
 
-    var hideAdBanner: Long
-        get() = preferences.getLong(PREF_HIDE_AD_BANNER, 0)
+    var hideAdBannerUntil: Long
+        get() = preferences.getLong(PREF_HIDE_AD_BANNER_UNTIL, 0)
         set(value) = preferences.edit {
-            putLong(PREF_HIDE_AD_BANNER, value)
+            putLong(PREF_HIDE_AD_BANNER_UNTIL, value)
+            commit()
+        }
+
+    var defaultCompany: Int
+        get() = preferences.getInt(PREF_DEFAULT_COMPANY, 0)
+        set(value) = preferences.edit {
+            putInt(PREF_DEFAULT_COMPANY, value)
             commit()
         }
 }

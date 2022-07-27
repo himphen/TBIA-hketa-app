@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import hibernate.v2.sunshine.databinding.ItemRouteDetailsStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteDetailsStopExpandedBinding
 import hibernate.v2.sunshine.model.Card
@@ -22,7 +23,8 @@ class RouteDetailsAdapter(
     val route: TransportRoute,
     private val onItemExpanding: (RouteDetailsStop) -> Unit,
     private val onItemCollapsing: () -> Unit,
-    private val onSaveEtaClicked: (Int, Card.RouteStopAddCard) -> Unit,
+    private val onAddButtonClicked: (Int, Card.RouteStopAddCard) -> Unit,
+    private val onRemoveButtonClicked: (Int, Long) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -61,6 +63,7 @@ class RouteDetailsAdapter(
                     )
                 ).apply {
                     viewBinding.etaMinuteLl.etaTimeRv.apply {
+                        (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
                         setEtaTimeFlexManager()
                         adapter = EtaTimeAdapter()
                     }
@@ -109,9 +112,16 @@ class RouteDetailsAdapter(
         }
     }
 
-    fun setSavedBookmark(position: Int) {
+    fun setSavedBookmark(position: Int, savedEtaId: Long) {
         stopList.getOrNull(position)?.let {
-            it.isBookmarked = true
+            it.savedEtaId = savedEtaId
+            notifyItemChanged(position)
+        }
+    }
+
+    fun setRemovedBookmark(position: Int) {
+        stopList.getOrNull(position)?.let {
+            it.savedEtaId = null
             notifyItemChanged(position)
         }
     }
@@ -170,7 +180,10 @@ class RouteDetailsAdapter(
                     if (isLast) View.INVISIBLE else View.VISIBLE
 
                 (etaMinuteLl.etaTimeRv.adapter as EtaTimeAdapter).apply {
-                    setData(etaList)
+                    val etaListWithoutFirstItem = etaList?.toMutableList()?.apply {
+                        if (size > 0) removeAt(0)
+                    }
+                    setData(etaListWithoutFirstItem)
                 }
 
                 etaList?.let { etaList ->
@@ -192,8 +205,8 @@ class RouteDetailsAdapter(
                     etaMinuteLl.etaMinuteUnitTv.gone()
                 }
 
-                bookmarkBtn.setOnClickListener {
-                    onSaveEtaClicked(
+                bookmarkAddBtn.setOnClickListener {
+                    onAddButtonClicked(
                         absoluteAdapterPosition,
                         Card.RouteStopAddCard(
                             route = route,
@@ -202,10 +215,21 @@ class RouteDetailsAdapter(
                     )
                 }
 
-                if (item.isBookmarked) {
-                    bookmarkBtn.gone()
+                bookmarkRemoveBtn.setOnClickListener {
+                    item.savedEtaId?.let { savedEtaId ->
+                        onRemoveButtonClicked(
+                            absoluteAdapterPosition,
+                            savedEtaId
+                        )
+                    }
+                }
+
+                if (item.savedEtaId != null) {
+                    bookmarkAddBtn.gone()
+                    bookmarkRemoveBtn.visible()
                 } else {
-                    bookmarkBtn.visible()
+                    bookmarkAddBtn.visible()
+                    bookmarkRemoveBtn.gone()
                 }
 
                 root.tag = stop

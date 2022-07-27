@@ -61,11 +61,11 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="120dp"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <ImageButton
                 android:id="@+id/traffic_layer_btn"
@@ -85,7 +85,7 @@
                 android:background="@drawable/bg_button_selector"
                 android:clickable="true"
                 android:focusable="true"
-                android:src="@drawable/ic_location_24"
+                android:src="@drawable/ic_location_searching_24"
                 app:tint="@color/white" />
         </LinearLayout>
 
@@ -94,10 +94,12 @@
     <include
         android:id="@+id/layout_stop_list"
         layout="@layout/content_bottom_sheet_stop_list"
-        android:elevation="10dp" />
+        android:elevation="10dp"
+        tools:visibility="gone" />
 
     <include
         android:id="@+id/layout_route_list"
         layout="@layout/content_bottom_sheet_route_list"
-        android:elevation="10dp" />
+        android:elevation="10dp"
+        tools:visibility="gone" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

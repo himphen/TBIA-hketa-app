@@ -2,4 +2,6 @@
     <color name="eta_card_background">#424242</color>
     <color name="eta_card_background_selected">#525252</color>
     <color name="eta_card_minutes_text">@color/primary_light</color>
+
+    <color name="common_text_primary">@color/md_grey_50</color>
 </resources>

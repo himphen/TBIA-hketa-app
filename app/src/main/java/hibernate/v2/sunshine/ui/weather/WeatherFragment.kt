@@ -31,9 +31,9 @@ class WeatherFragment : BaseFragment<LbFragmentWeatherBinding>() {
     init {
         lifecycleScope.launchWhenCreated {
             launch {
-                viewModel.oneCallData.observe(this@WeatherFragment, {
+                viewModel.oneCallData.observe(this@WeatherFragment) {
                     processData(it)
-                })
+                }
             }
         }
     }

@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.lrt.LRTStop
+import hibernate.v2.api.model.transport.lrt.LrtStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
 @Keep
@@ -27,7 +27,7 @@ data class LRTStopEntity(
     val geohash: String,
 ) {
     companion object {
-        fun fromApiModel(stop: LRTStop): LRTStopEntity {
+        fun fromApiModel(stop: LrtStop): LRTStopEntity {
             return LRTStopEntity(
                 stopId = stop.stopId,
                 nameEn = stop.nameEn,

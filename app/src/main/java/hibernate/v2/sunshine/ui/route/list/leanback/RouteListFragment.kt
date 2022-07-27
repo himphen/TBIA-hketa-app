@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.ui.route.list.leanback
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -61,6 +62,7 @@ class RouteListFragment : SearchSupportFragment(), SearchSupportFragment.SearchR
 
         bookmarkSaveViewModel.isAddEtaSuccessful.onEach {
             if (it) {
+                activity?.setResult(Activity.RESULT_OK)
                 Toast.makeText(
                     context,
                     getString(R.string.toast_eta_added),

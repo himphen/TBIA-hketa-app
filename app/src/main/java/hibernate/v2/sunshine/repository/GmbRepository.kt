@@ -1,12 +1,11 @@
 package hibernate.v2.sunshine.repository
 
 import com.fonfon.kgeohash.GeoHash
-import com.google.firebase.database.DatabaseException
-import com.google.firebase.database.ktx.getValue
+import com.himphen.logger.Logger
+import hibernate.v2.api.core.ApiSafeCall
+import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.GmbRegion
-import hibernate.v2.api.model.transport.gmb.GmbRoute
-import hibernate.v2.api.model.transport.gmb.GmbRouteStop
-import hibernate.v2.api.model.transport.gmb.GmbStop
+import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.gmb.GmbDao
 import hibernate.v2.sunshine.db.gmb.GmbRouteEntity
 import hibernate.v2.sunshine.db.gmb.GmbRouteStopEntity
@@ -14,62 +13,73 @@ import hibernate.v2.sunshine.db.gmb.GmbStopEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportRoute
-import hibernate.v2.sunshine.util.getSnapshotValue
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.supervisorScope
 
 class GmbRepository(
     private val gmbDao: GmbDao,
+    private val apiManager: ApiManager
 ) : BaseRepository() {
-    private val dbName = FIREBASE_DB_GMB
 
-    @Throws(DatabaseException::class)
-    suspend fun saveRouteListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<GmbRoute>>()?.let { list ->
-            val temp = list
-                .map(GmbRouteEntity.Companion::fromApiModel)
-                .toMutableList()
-                .apply { sortWith(GmbRouteEntity::compareTo) }
+    suspend fun saveData() {
+        val result = ApiSafeCall { apiManager.dataService.getGmbData() }
 
-            saveRouteList(temp)
+        val data = when (result) {
+            is Resource.Success -> result.getData()
+            is Resource.HttpError -> throw result.getThrowable()
+            is Resource.OtherError -> throw result.getThrowable()
         }
-    }
 
-    @Throws(DatabaseException::class)
-    suspend fun saveRouteStopListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<GmbRouteStop>>()?.let { list ->
-            saveRouteStopList(
-                list.map { gmbRouteStop ->
-                    GmbRouteStopEntity.fromApiModel(gmbRouteStop)
-                }
-            )
-        }
-    }
+        supervisorScope {
+            listOf(
+                async(Dispatchers.IO) {
+                    data.route?.let { list ->
+                        val temp = list
+                            .map(GmbRouteEntity.Companion::fromApiModel)
+                            .toMutableList()
+                            .apply { sortWith(GmbRouteEntity::compareTo) }
 
-    @Throws(DatabaseException::class)
-    suspend fun saveStopListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<GmbStop>>()?.let { list ->
-            saveStopList(
-                list.map { gmbStop ->
-                    GmbStopEntity.fromApiModel(gmbStop)
+                        saveRouteList(temp)
+                    }
+                    Logger.t("lifecycle").d("GmbRepository saveRouteList done")
+                },
+                async(Dispatchers.IO) {
+                    data.routeStop?.let { list ->
+                        saveRouteStopList(
+                            list.map { gmbRouteStop ->
+                                GmbRouteStopEntity.fromApiModel(gmbRouteStop)
+                            }
+                        )
+                    }
+                    Logger.t("lifecycle").d("GmbRepository saveRouteStopList done")
+                },
+                async(Dispatchers.IO) {
+                    data.stop?.let { list ->
+                        saveStopList(
+                            list.map { gmbStop ->
+                                GmbStopEntity.fromApiModel(gmbStop)
+                            }
+                        )
+                    }
+                    Logger.t("lifecycle").d("GmbRepository saveStopList done")
                 }
-            )
+            ).awaitAll()
         }
     }
 
     suspend fun getRouteListDb(region: GmbRegion) = gmbDao.getRouteList(region.value)
     suspend fun getRouteStopComponentListDb(routeIdList: List<String>) =
         gmbDao.getRouteStopComponentList(routeIdList)
+
     suspend fun getRouteStopComponentListDb(
         route: TransportRoute,
     ) = gmbDao.getRouteStopComponentList(
         route.routeId,
         route.bound.value
     )
+
     suspend fun initDatabase() {
         gmbDao.clearRouteList()
         gmbDao.clearStopList()

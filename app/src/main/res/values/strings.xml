@@ -1,16 +1,19 @@
 <resources>
     <string name="app_name">下班車</string>
-    <string name="title_activity_settings_eta">更改書籤</string>
-    <string name="title_activity_eta_layout">更改書籤卡片樣式</string>
+    <string name="title_activity_settings_eta">更改主頁書籤</string>
+    <string name="title_activity_eta_layout">更改主頁卡片樣式</string>
     <string name="title_settings_version_leanback">版本 %1$s</string>
+    <string name="title_settings_default_company">更改預設公共交通機構</string>
     <string name="title_settings_version">版本</string>
     <string name="title_settings_maps_traffic_toggle">地圖上顯示交通圖層</string>
     <string name="title_settings_reset">重設數據</string>
     <string name="title_activity_add_eta">路線列表</string>
-    <string name="settings_acknowledgement_title1">Acknowledgement 1</string>
+    <string name="settings_acknowledgement_title1">聲明 1</string>
     <string name="settings_acknowledgement_summary1">大部份圖示來自 Material Icons 及 Flaticon。</string>
-    <string name="settings_acknowledgement_title2">Acknowledgement 2</string>
-    <string name="settings_acknowledgement_summary2">交通及實時到站數據由 DATA.GOV.HK 提供，如有資料不準確或脫班情況，實屬不幸，請向政府或交通營運商投訴，謝謝。</string>
+    <string name="settings_acknowledgement_title2">聲明 2</string>
+    <string name="settings_acknowledgement_summary2">交通及實時到站數據由 DATA.GOV.HK 提供，如有資料不準確或脫班情況，請向政府或交通營運商投訴，謝謝。</string>
+    <string name="settings_acknowledgement_title3">聲明 3</string>
+    <string name="settings_acknowledgement_summary3">由於各交通營運商數據格式並不一致，現時無法自動合併聯營路線資訊。</string>
 
     <string name="test_onboarding_loading">正載入路線數據 （%1$d/%2$d)</string>
 
@@ -20,7 +23,9 @@
     <string name="test_onboarding_loading_failed_mtr">載入港鐵路線數據失敗，請重新再試。</string>
     <string name="test_onboarding_loading_failed_lrt">載入輕鐵路線數據失敗，請重新再試。</string>
     <string name="test_onboarding_loading_failed_nlb">載入新大嶼山巴士路線數據失敗，請重新再試。</string>
-    <string name="test_onboarding_loading_failed_all">載入數據失敗，請重新再試。</string>
+    <string name="test_onboarding_loading_failed_checksum">檢查數據失敗，請重新再試。（錯誤碼：120）</string>
+    <string name="test_onboarding_loading_failed_other">載入數據失敗，請重新再試。（錯誤碼：110）</string>
+    <string name="test_onboarding_loading_failed_app_token">無法連接至伺服器，請重新再試。</string>
 
     <string name="text_eta_card_classic_mtr_station">%1$s站</string>
 
@@ -37,20 +42,33 @@
     <string name="text_add_eta_destination_mobile">%1$s ➔ %2$s</string>
     <string name="text_add_eta_destination_sp_mobile">特別線 %1$s</string>
 
-    <string name="dialog_add_eta_brand_selection_title">選擇公共運輸類別</string>
-    <string name="dialog_add_eta_brand_selection_kmb_btn">九巴／龍運</string>
-    <string name="dialog_add_eta_brand_selection_nwfb_btn">新巴</string>
-    <string name="dialog_add_eta_brand_selection_ctb_btn">城巴</string>
-    <string name="dialog_add_eta_brand_selection_gmb_btn">專線小巴</string>
-    <string name="dialog_add_eta_brand_selection_gmb_hki_btn">港島專線小巴</string>
-    <string name="dialog_add_eta_brand_selection_gmb_kln_btn">九龍專線小巴</string>
-    <string name="dialog_add_eta_brand_selection_gmb_nt_btn">新界專線小巴</string>
-    <string name="dialog_add_eta_brand_selection_mtr_btn">港鐵</string>
-    <string name="dialog_add_eta_brand_selection_lrt_btn">輕鐵</string>
-    <string name="dialog_add_eta_brand_selection_nlb_btn">新大嶼山巴士</string>
+    <string name="add_eta_brand_selection_title">選擇公共運輸類別</string>
+    <string name="add_eta_brand_selection_kmb_btn">九巴／龍運</string>
+    <string name="add_eta_brand_selection_nwfb_btn">新巴</string>
+    <string name="add_eta_brand_selection_ctb_btn">城巴</string>
+    <string name="add_eta_brand_selection_gmb_btn">專線小巴</string>
+    <string name="add_eta_brand_selection_gmb_hki_btn">港島專線小巴</string>
+    <string name="add_eta_brand_selection_gmb_kln_btn">九龍專線小巴</string>
+    <string name="add_eta_brand_selection_gmb_nt_btn">新界專線小巴</string>
+    <string name="add_eta_brand_selection_mtr_btn">港鐵</string>
+    <string name="add_eta_brand_selection_lrt_btn">輕鐵</string>
+    <string name="add_eta_brand_selection_nlb_btn">新大嶼山巴士</string>
 
-    <string name="text_eta_loading_failed">載入數據失敗，正在重新再試。（錯誤碼：%d）</string>
-    <string name="text_edit_eta_invalid_hint">已移除主頁書籤無效的車站。</string>
+    <string-array name="add_eta_brand_selections">
+        <item>@string/add_eta_brand_selection_kmb_btn</item>
+        <item>@string/add_eta_brand_selection_nwfb_btn</item>
+        <item>@string/add_eta_brand_selection_ctb_btn</item>
+        <item>@string/add_eta_brand_selection_nlb_btn</item>
+        <item>@string/add_eta_brand_selection_gmb_hki_btn</item>
+        <item>@string/add_eta_brand_selection_gmb_kln_btn</item>
+        <item>@string/add_eta_brand_selection_gmb_nt_btn</item>
+        <item>@string/add_eta_brand_selection_mtr_btn</item>
+        <item>@string/add_eta_brand_selection_lrt_btn</item>
+    </string-array>
+
+    <string name="text_eta_loading_failed_retry">載入數據失敗，按此重新再試。（錯誤碼：%d）</string>
+    <string name="text_eta_loading_failed">載入數據失敗，請重新再試。（錯誤碼：%d）</string>
+    <string name="text_edit_eta_invalid_hint">已移除主頁無效的車站。</string>
 
     <string name="text_add_eta_hint_stop">%1$s</string>
 
@@ -76,13 +94,14 @@
     <string name="dialog_edit_eta_cancel_btn">取消</string>
     <string name="toast_eta_already_added">已加入至主頁</string>
     <string name="toast_eta_added">已加入至主頁</string>
+    <string name="toast_eta_removed">已從主頁移除</string>
     <string name="eta_card_minute_unit">分</string>
 
-    <string name="dialog_add_eta_in_search_map_description_bus">加入%1$s號線%2$s車站至書籤列表？</string>
+    <string name="dialog_add_eta_in_search_map_description_bus">加入%1$s號線%2$s車站至主頁書籤？</string>
     <string name="dialog_add_eta_in_search_map_confirm_btn">確定</string>
     <string name="dialog_add_eta_in_search_map_cancel_btn">取消</string>
 
-    <string name="dialog_check_edit_eta_order_description">是否需要儲存新的書籤排序？</string>
+    <string name="dialog_check_edit_eta_order_description">是否需要儲存新的主頁書籤排序？</string>
     <string name="dialog_check_edit_eta_order_leave_btn">離開</string>
     <string name="dialog_check_edit_eta_order_save_btn">儲存</string>
 
@@ -116,7 +135,7 @@
         <item>@string/leanback_main_tab_title_settings</item>
     </string-array>
 
-    <string name="main_tab_title_bookmark">書籤</string>
+    <string name="main_tab_title_bookmark">主頁書籤</string>
     <string name="main_tab_title_settings">設定</string>
     <string name="main_tab_title_search">搜尋</string>
     <string name="main_tab_title_map">地圖</string>
@@ -131,13 +150,16 @@
     <string name="button_street_view_text">街景</string>
     <string name="button_navigation_text">前往</string>
     <string name="eta_button_edit">編輯書籤</string>
-    <string name="eta_button_add">添加車站至書籤</string>
+    <string name="eta_button_add">加入車站</string>
+    <string name="eta_button_remove">從主頁移除</string>
 
     <string name="dialog_location_permission_title">注意</string>
     <string name="dialog_location_permission_message">需要定位權限才能繼續使用。</string>
     <string name="dialog_location_permission_pos_btn">前往設定</string>
 
-    <string name="settings_category_ad_title">廣告設定</string>
+    <string name="settings_category_ad_title">廣告</string>
+    <string name="settings_category_notices_title">聲明</string>
+    <string name="settings_category_settings_title">設定</string>
 
     <string name="settings_hide_ad_toast_message">重新開啟程式來套用設定。</string>
     <string name="settings_hide_ad_title">隱藏橫額廣告</string>

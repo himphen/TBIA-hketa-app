@@ -16,12 +16,12 @@ import hibernate.v2.sunshine.model.transport.TransportEta
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.model.transport.filterCircularStop
+import hibernate.v2.sunshine.repository.CtbRepository
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
-import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -36,7 +36,7 @@ class RouteDetailsMobileViewModel(
     val selectedEtaType: EtaType,
     private val etaRepository: EtaRepository,
     private val kmbRepository: KmbRepository,
-    private val ncRepository: NCRepository,
+    private val ctbRepository: CtbRepository,
     private val gmbRepository: GmbRepository,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
@@ -48,10 +48,14 @@ class RouteDetailsMobileViewModel(
 
     var selectedStop = MutableLiveData<TransportStop?>()
 
-    var isSavedEtaBookmark = MutableSharedFlow<Pair<Boolean, Int>>()
+    var isSavedEtaBookmark = MutableSharedFlow<Pair<Int, Long>>()
+    var isRemovedEtaBookmark = MutableSharedFlow<Int>()
     val etaUpdateError = MutableSharedFlow<Throwable>()
     val etaRequested = MutableSharedFlow<Boolean>()
     val mapMarkerClicked = MutableSharedFlow<Int>()
+    val onChangedTrafficLayerToggle = MutableSharedFlow<Boolean>()
+
+    val requestedLocationUpdates = MutableLiveData(false)
 
     private val etaExceptionHandler = CoroutineExceptionHandler { _, t ->
         run {
@@ -80,7 +84,7 @@ class RouteDetailsMobileViewModel(
     }
 
     private suspend fun addEta(item: SavedEtaEntity) =
-        withContext(Dispatchers.IO) { etaRepository.addEta(item) }
+        withContext(Dispatchers.IO) { return@withContext etaRepository.addEta(item) }
 
     private suspend fun getEtaOrderList() =
         withContext(Dispatchers.IO) { etaRepository.getEtaOrderList() }
@@ -97,19 +101,19 @@ class RouteDetailsMobileViewModel(
                     list.map {
                         RouteDetailsStop(
                             transportStop = it,
-                            isBookmarked = false
+                            savedEtaId = null
                         )
                     }
             }
 
-            val etaList = getEtaListFromDb()
-            val etaHashSet = etaList.map {
-                it.stop.stopId
+            val etaList = getSavedEtaListFromDb()
+            val etaHashMap = etaList.associate {
+                it.stopId to it.id
             }
 
             this@RouteDetailsMobileViewModel.routeDetailsStopList.postValue(
                 routeDetailsStopList.map {
-                    it.isBookmarked = etaHashSet.contains(it.transportStop.stopId)
+                    it.savedEtaId = etaHashMap[it.transportStop.stopId]
                     return@map it
                 }
             )
@@ -123,7 +127,7 @@ class RouteDetailsMobileViewModel(
             return@withContext when (selectedEtaType) {
                 EtaType.KMB -> getKmbStopList(route)
                 EtaType.NWFB,
-                EtaType.CTB -> getNCStopList(route)
+                EtaType.CTB -> getCtbStopList(route)
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
                 EtaType.GMB_NT -> getGmbStopList(route)
@@ -134,18 +138,18 @@ class RouteDetailsMobileViewModel(
         }
     }
 
-    private suspend fun getEtaListFromDb(): List<Card.EtaCard> {
+    private suspend fun getSavedEtaListFromDb(): List<SavedEtaEntity> {
         return withContext(Dispatchers.IO) {
             return@withContext when (selectedEtaType) {
-                EtaType.KMB -> etaRepository.getSavedKmbEtaList().map { it.toEtaCard() }
+                EtaType.KMB -> etaRepository.getSavedKmbEtaList().map { it.savedEta }
                 EtaType.NWFB,
-                EtaType.CTB -> etaRepository.getSavedNCEtaList().map { it.toEtaCard() }
+                EtaType.CTB -> etaRepository.getSavedNCEtaList().map { it.savedEta }
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
-                EtaType.GMB_NT -> etaRepository.getSavedGmbEtaList().map { it.toEtaCard() }
-                EtaType.MTR -> etaRepository.getSavedMTREtaList().map { it.toEtaCard() }
-                EtaType.LRT -> etaRepository.getSavedLRTEtaList().map { it.toEtaCard() }
-                EtaType.NLB -> etaRepository.getSavedNLBEtaList().map { it.toEtaCard() }
+                EtaType.GMB_NT -> etaRepository.getSavedGmbEtaList().map { it.savedEta }
+                EtaType.MTR -> etaRepository.getSavedMTREtaList().map { it.savedEta }
+                EtaType.LRT -> etaRepository.getSavedLRTEtaList().map { it.savedEta }
+                EtaType.NLB -> etaRepository.getSavedNLBEtaList().map { it.savedEta }
             }
         }
     }
@@ -162,14 +166,14 @@ class RouteDetailsMobileViewModel(
         }
     }
 
-    private suspend fun getNCStopList(route: TransportRoute): List<TransportStop> {
+    private suspend fun getCtbStopList(route: TransportRoute): List<TransportStop> {
         return try {
-            val allRouteList = ncRepository.getRouteStopComponentListDb(route)
+            val allRouteList = ctbRepository.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.t("lifecycle").d("getNCStopList done")
+            Logger.t("lifecycle").d("getCtbStopList done")
             allRouteList
         } catch (e: Exception) {
-            Logger.e(e, "lifecycle getNCStopList error")
+            Logger.e(e, "lifecycle getCtbStopList error")
             mutableListOf()
         }
     }
@@ -222,7 +226,7 @@ class RouteDetailsMobileViewModel(
         }
     }
 
-    fun saveStop(position: Int, card: Card.RouteStopAddCard) {
+    fun saveBookmark(position: Int, card: Card.RouteStopAddCard) {
         viewModelScope.launch(Dispatchers.IO) {
             val isExisting = hasEtaInDb(
                 stopId = card.stop.stopId,
@@ -234,7 +238,7 @@ class RouteDetailsMobileViewModel(
             )
 
             if (isExisting) {
-                isSavedEtaBookmark.emit(Pair(false, position))
+                isSavedEtaBookmark.emit(Pair(position, 0))
                 return@launch
             }
 
@@ -246,7 +250,7 @@ class RouteDetailsMobileViewModel(
                 seq = card.stop.seq!!,
                 company = card.route.company
             )
-            addEta(newEta)
+            val insertId = addEta(newEta)
 
             val currentEtaOrderList = getEtaOrderList()
             val updatedEtaOrderList = mutableListOf<EtaOrderEntity>()
@@ -258,7 +262,15 @@ class RouteDetailsMobileViewModel(
             )
             updateEtaOrderList(updatedEtaOrderList)
 
-            isSavedEtaBookmark.emit(Pair(true, position))
+            isSavedEtaBookmark.emit(Pair(position, insertId))
+        }
+    }
+
+    fun removeBookmark(position: Int, entityId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            etaRepository.clearEta(entityId)
+
+            isRemovedEtaBookmark.emit(position)
         }
     }
 
@@ -286,7 +298,7 @@ class RouteDetailsMobileViewModel(
                 }
                 Company.NWFB,
                 Company.CTB -> {
-                    val apiEtaResponse = etaRepository.getNCStopEtaApi(
+                    val apiEtaResponse = etaRepository.getCtbStopEtaApi(
                         company = selectedRoute.company,
                         stopId = selectedStop.stopId,
                         route = selectedRoute.routeId

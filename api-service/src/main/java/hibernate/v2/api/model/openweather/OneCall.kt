@@ -1,7 +1,7 @@
 package hibernate.v2.api.model.openweather
 
 import androidx.annotation.Keep
-import com.google.firebase.database.PropertyName
+import com.google.gson.annotations.SerializedName
 
 @Keep
 data class OneCall(
@@ -12,7 +12,6 @@ data class OneCall(
     var lon: Double? = null,
     var minutely: List<Minutely>? = null,
     var timezone: String? = null,
-    @get:PropertyName("timezone_offset")
-    @set:PropertyName("timezone_offset")
+    @SerializedName("timezone_offset")
     var timezoneOffset: Int? = null
 )

@@ -26,7 +26,7 @@ import hibernate.v2.sunshine.ui.view.setEtaTimeFlexManager
 
 class BookmarkHomeEtaCardAdapter(
     var type: EtaCardViewType,
-    var hideAdBanner: Boolean,
+    var showAdBanner: Boolean,
     val onAddButtonClick: () -> Unit,
     val onEditButtonClick: () -> Unit,
 ) : RecyclerView.Adapter<BaseViewHolder<out ViewBinding>>() {
@@ -109,26 +109,28 @@ class BookmarkHomeEtaCardAdapter(
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<out ViewBinding>, position: Int) {
-        if (holder is BaseEtaViewHolder)
-            if (hideAdBanner) {
-                holder.onBind(list[position])
+        if (holder is BaseEtaViewHolder) {
+            val item = if (showAdBanner) {
+                list[position - 1]
             } else {
-                holder.onBind(list[position - 1])
+                list[position]
             }
+            holder.onBind(item)
+        }
     }
 
-    override fun getItemCount(): Int = if (hideAdBanner) list.size + 1 else list.size + 2
+    override fun getItemCount(): Int = if (showAdBanner) list.size + 2 else list.size + 1
 
     override fun getItemViewType(position: Int): Int =
-        if (hideAdBanner) {
+        if (showAdBanner) {
             when (position) {
-                list.lastIndex + 1 -> VIEW_TYPE_BUTTON_GROUP
+                0 -> VIEW_TYPE_AD_BANNER
+                list.lastIndex + 2 -> VIEW_TYPE_BUTTON_GROUP
                 else -> VIEW_TYPE_CONTENT
             }
         } else {
             when (position) {
-                0 -> VIEW_TYPE_AD_BANNER
-                list.lastIndex + 2 -> VIEW_TYPE_BUTTON_GROUP
+                list.lastIndex + 1 -> VIEW_TYPE_BUTTON_GROUP
                 else -> VIEW_TYPE_CONTENT
             }
         }
@@ -143,7 +145,11 @@ class BookmarkHomeEtaCardAdapter(
 
     fun replace(position: Int, etaCard: Card.EtaCard) {
         list[position] = etaCard
-        notifyItemChanged(position)
+        if (showAdBanner) {
+            notifyItemChanged(position + 1)
+        } else {
+            notifyItemChanged(position)
+        }
     }
 
     inner class EtaViewHolderButtonGroup(viewBinding: ItemEtaButtonGroupBinding) :

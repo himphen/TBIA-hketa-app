@@ -2,23 +2,20 @@ package hibernate.v2.api.model.openweather
 
 import android.os.Parcelable
 import androidx.annotation.Keep
-import com.google.firebase.database.PropertyName
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Keep
 @Parcelize
 data class Daily(
     var clouds: Int? = null,
-    @get:PropertyName("dew_point")
-    @set:PropertyName("dew_point")
+    @SerializedName("dew_point")
     var dewPoint: Double? = null,
     var dt: Int? = null,
-    @get:PropertyName("feels_like")
-    @set:PropertyName("feels_like")
+    @SerializedName("feels_like")
     var feelsLike: FeelsLike? = null,
     var humidity: Int? = null,
-    @get:PropertyName("moon_phase")
-    @set:PropertyName("moon_phase")
+    @SerializedName("moon_phase")
     var moonPhase: Double? = null,
     var moonrise: Int? = null,
     var moonset: Int? = null,
@@ -30,13 +27,10 @@ data class Daily(
     var temp: Temp? = null,
     var uvi: Double? = null,
     var weather: List<Weather>? = null,
-    @get:PropertyName("wind_deg")
-    @set:PropertyName("wind_deg")
+    @SerializedName("wind_deg")
     var windDeg: Int? = null,
-    @get:PropertyName("wind_gust")
-    @set:PropertyName("wind_gust")
+    @SerializedName("wind_gust")
     var windGust: Double? = null,
-    @get:PropertyName("wind_speed")
-    @set:PropertyName("wind_speed")
+    @SerializedName("wind_speed")
     var windSpeed: Double? = null
 ) : Parcelable

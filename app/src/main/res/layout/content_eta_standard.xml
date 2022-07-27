@@ -182,8 +182,8 @@
             android:layout_width="120dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/stopNameLl"
+            app:layout_constraintEnd_toStartOf="@id/stopNameLl"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
@@ -191,22 +191,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/routeNumberContainer"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/routeNumberContainer"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/stopNameTv"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="start|center_vertical"
+                android:gravity="end|center_vertical"
                 android:letterSpacing="0.05"
                 android:maxLines="1"
-                android:padding="8dp"
+                android:padding="4dp"
                 android:text="@string/demo_card_stop_name"
-                android:textSize="32sp"
+                android:textColor="@color/common_text_primary"
+                android:textSize="28sp"
                 android:textStyle="bold"
-                app:autoSizeMaxTextSize="32sp"
+                app:autoSizeMaxTextSize="28sp"
                 app:autoSizeMinTextSize="20sp"
                 app:autoSizeTextType="uniform" />
         </LinearLayout>

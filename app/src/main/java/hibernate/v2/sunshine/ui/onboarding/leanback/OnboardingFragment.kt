@@ -10,7 +10,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.LbFragmentOnboardingBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.leanback.MainActivity
-import hibernate.v2.sunshine.ui.onboarding.FetchTransportDataType
+import hibernate.v2.sunshine.ui.onboarding.FailedCheckType
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
@@ -42,6 +42,16 @@ class OnboardingFragment : BaseFragment<LbFragmentOnboardingBinding>() {
     }
 
     fun initEvent() {
+        viewModel.fetchTransportDataCannotInit.observe(viewLifecycleOwner) {
+            viewBinding?.logoIv?.gone(true)
+            viewBinding?.loadingCl?.visible(true)
+            viewBinding?.animationView?.apply {
+                visible()
+                playAnimation()
+            }
+            viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_app_token)
+        }
+
         viewModel.fetchTransportDataRequired.observe(viewLifecycleOwner) {
             if (it < 0) return@observe
 
@@ -70,26 +80,29 @@ class OnboardingFragment : BaseFragment<LbFragmentOnboardingBinding>() {
         viewModel.fetchTransportDataCompleted.observe(viewLifecycleOwner) {
             if (viewModel.fetchTransportDataFailedList.isNotEmpty()) {
                 when (viewModel.fetchTransportDataFailedList.first()) {
-                    FetchTransportDataType.KMB -> {
+                    FailedCheckType.KMB -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_kmb)
                     }
-                    FetchTransportDataType.NC -> {
+                    FailedCheckType.CTB -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_ctb)
                     }
-                    FetchTransportDataType.GMB -> {
+                    FailedCheckType.GMB -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_gmb)
                     }
-                    FetchTransportDataType.MTR -> {
+                    FailedCheckType.MTR -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_mtr)
                     }
-                    FetchTransportDataType.LRT -> {
+                    FailedCheckType.LRT -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_lrt)
                     }
-                    FetchTransportDataType.NLB -> {
+                    FailedCheckType.NLB -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_nlb)
                     }
-                    FetchTransportDataType.ALL -> {
-                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_all)
+                    FailedCheckType.OTHER -> {
+                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_other)
+                    }
+                    FailedCheckType.CHECKSUM -> {
+                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_checksum)
                     }
                 }
             } else {

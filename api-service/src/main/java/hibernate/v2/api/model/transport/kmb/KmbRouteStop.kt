@@ -1,24 +1,19 @@
 package hibernate.v2.api.model.transport.kmb
 
 import androidx.annotation.Keep
-import com.google.firebase.database.PropertyName
+import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.Bound
 
 @Keep
 data class KmbRouteStop(
-    @get:PropertyName("bound")
-    @set:PropertyName("bound")
+    @SerializedName("bound")
     var bound: Bound = Bound.O,
-    @get:PropertyName("route")
-    @set:PropertyName("route")
+    @SerializedName("route")
     var routeId: String = "",
-    @get:PropertyName("seq")
-    @set:PropertyName("seq")
+    @SerializedName("seq")
     var seq: String = "",
-    @get:PropertyName("service_type")
-    @set:PropertyName("service_type")
+    @SerializedName("service_type")
     var serviceType: String = "",
-    @get:PropertyName("stop")
-    @set:PropertyName("stop")
+    @SerializedName("stop")
     var stopId: String = "",
 )

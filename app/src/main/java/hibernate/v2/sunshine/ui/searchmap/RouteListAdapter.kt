@@ -64,7 +64,10 @@ class RouteListAdapter(val onRouteSelected: (Card.EtaCard) -> Unit) :
                 routeDirectionTv.text = card.route.getDestDirectionText(context)
 
                 (etaTimeRv.adapter as EtaTimeAdapter).apply {
-                    setData(card.etaList)
+                    val etaListWithoutFirstItem = card.etaList.toMutableList().apply {
+                        if (size > 0) removeAt(0)
+                    }
+                    setData(etaListWithoutFirstItem)
                 }
 
                 root.tag = card

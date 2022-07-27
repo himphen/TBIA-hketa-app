@@ -31,8 +31,7 @@ interface EtaRouteView {
                     routeLRTNumberLl.gone()
 
                     routeMTRNumberLl.visible()
-                    routeMTRNumberTv.apply {
-                        text = card.platform
+                    routeMTRNumberIv.apply {
                         (background as? GradientDrawable)?.apply {
                             mutate()
                             setColor(color)
@@ -42,7 +41,7 @@ interface EtaRouteView {
                 is LRTTransportRoute -> {
                     routeBusNumberLl.gone()
                     routeCompanyColor.gone()
-                    routeMTRNumberTv.gone()
+                    routeMTRNumberLl.gone()
 
                     routeLRTNumberLl.visible()
                     routeLRTNumberTv.apply {
@@ -56,7 +55,7 @@ interface EtaRouteView {
                     }
                 }
                 else -> {
-                    routeMTRNumberTv.gone()
+                    routeMTRNumberLl.gone()
                     routeLRTNumberTv.gone()
 
                     routeBusNumberLl.visible()
@@ -86,8 +85,7 @@ interface EtaRouteView {
                     routeLRTNumberLl.gone()
 
                     routeMTRNumberLl.visible()
-                    routeMTRNumberTv.apply {
-                        text = card.platform
+                    routeMTRNumberIv.apply {
                         (background as? GradientDrawable)?.apply {
                             mutate()
                             setColor(color)
@@ -96,7 +94,7 @@ interface EtaRouteView {
                 }
                 is LRTTransportRoute -> {
                     routeBusNumberLl.gone()
-                    routeMTRNumberTv.gone()
+                    routeMTRNumberLl.gone()
 
                     routeLRTNumberLl.visible()
                     routeLRTNumberTv.apply {
@@ -110,7 +108,7 @@ interface EtaRouteView {
                     }
                 }
                 else -> {
-                    routeMTRNumberTv.gone()
+                    routeMTRNumberLl.gone()
                     routeLRTNumberTv.gone()
 
                     routeBusNumberLl.visible()
@@ -138,8 +136,7 @@ interface EtaRouteView {
                     routeLRTNumberLl.gone()
 
                     routeMTRNumberLl.visible()
-                    routeMTRNumberTv.apply {
-                        text = card.platform
+                    routeMTRNumberIv.apply {
                         (background as? GradientDrawable)?.apply {
                             mutate()
                             setColor(color)
@@ -148,7 +145,7 @@ interface EtaRouteView {
                 }
                 is LRTTransportRoute -> {
                     routeBusNumberLl.gone()
-                    routeMTRNumberTv.gone()
+                    routeMTRNumberLl.gone()
 
                     routeLRTNumberLl.visible()
                     routeLRTNumberTv.apply {
@@ -162,7 +159,7 @@ interface EtaRouteView {
                     }
                 }
                 else -> {
-                    routeMTRNumberTv.gone()
+                    routeMTRNumberLl.gone()
                     routeLRTNumberTv.gone()
 
                     routeBusNumberLl.visible()
@@ -191,8 +188,7 @@ interface EtaRouteView {
                     routeLRTNumberLl.gone()
 
                     routeMTRNumberLl.visible()
-                    routeMTRNumberTv.apply {
-                        text = "M"
+                    routeMTRNumberIv.apply {
                         (background as? GradientDrawable)?.apply {
                             mutate()
                             setColor(color)
@@ -202,7 +198,7 @@ interface EtaRouteView {
                 is LRTTransportRoute -> {
                     routeBusNumberLl.gone()
                     routeCompanyColor.gone()
-                    routeMTRNumberTv.gone()
+                    routeMTRNumberLl.gone()
 
                     routeLRTNumberLl.visible()
                     routeLRTNumberTv.apply {
@@ -216,7 +212,7 @@ interface EtaRouteView {
                     }
                 }
                 else -> {
-                    routeMTRNumberTv.gone()
+                    routeMTRNumberLl.gone()
                     routeLRTNumberTv.gone()
 
                     routeBusNumberLl.visible()

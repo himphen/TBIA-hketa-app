@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EdgeEffect
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -97,20 +96,21 @@ class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
     }
 
     private fun initEvent() {
-        viewModel.filteredTransportRouteList.onEach {
-            Logger.d("ac1 filteredTransportRouteList: ${it.first} - ${it.second.isEmpty()} - $etaType")
-            if (it.first == etaType) {
-                val list = it.second
-                if (list.isEmpty()) {
-                    viewBinding?.emptyViewCl?.root?.visible()
-                    viewBinding?.recyclerView?.gone()
-                } else {
-                    viewBinding?.emptyViewCl?.root?.gone()
-                    viewBinding?.recyclerView?.visible()
+        viewModel.filteredTransportRouteList
+            .onEach {
+                Logger.d("ac1 filteredTransportRouteList: ${it.first} - ${it.second.isEmpty()} - $etaType")
+                if (it.first == etaType) {
+                    val list = it.second
+                    if (list.isEmpty()) {
+                        viewBinding?.emptyViewCl?.root?.visible()
+                        viewBinding?.recyclerView?.gone()
+                    } else {
+                        viewBinding?.emptyViewCl?.root?.gone()
+                        viewBinding?.recyclerView?.visible()
+                    }
+                    adapter.submitList(list)
                 }
-                adapter.submitList(list)
             }
-        }
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.RESUMED)
             .launchIn(viewLifecycleOwner.lifecycleScope)
 

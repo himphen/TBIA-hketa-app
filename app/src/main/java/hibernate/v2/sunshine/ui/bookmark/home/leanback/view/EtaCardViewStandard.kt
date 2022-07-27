@@ -23,12 +23,10 @@ class EtaCardViewStandard(context: Context) :
         viewBinding.apply {
             val color = card.route.getColor(context)
 
-            (
-                ContextCompat.getDrawable(
-                    context,
-                    R.drawable.eta_card_line_arrow
-                ) as? RotateDrawable?
-                ).let { arrowDrawable ->
+            (ContextCompat.getDrawable(
+                context,
+                R.drawable.eta_card_line_arrow
+            ) as? RotateDrawable?).let { arrowDrawable ->
                 arrowDrawable?.mutate()
                 (arrowDrawable?.drawable as? GradientDrawable)?.setColor(color)
                 lineArrowBgView.background = arrowDrawable

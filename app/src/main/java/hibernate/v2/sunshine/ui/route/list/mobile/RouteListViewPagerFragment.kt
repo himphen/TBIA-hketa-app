@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.doOnLayout
 import androidx.lifecycle.lifecycleScope
@@ -43,8 +44,6 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
 
     private val viewModel: RouteListMobileViewModel by sharedViewModel()
     private var etaType: EtaType = EtaType.KMB
-
-    private var isFirstLoad = true
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -139,6 +138,10 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
             doOnLayout {
                 // initial hide close button
                 updateCloseButton()
+            }
+
+            if (requestFocus()) {
+                activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
             }
         }
     }

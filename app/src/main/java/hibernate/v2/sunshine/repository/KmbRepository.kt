@@ -1,11 +1,10 @@
 package hibernate.v2.sunshine.repository
 
 import com.fonfon.kgeohash.GeoHash
-import com.google.firebase.database.DatabaseException
-import com.google.firebase.database.ktx.getValue
-import hibernate.v2.api.model.transport.kmb.KmbRoute
-import hibernate.v2.api.model.transport.kmb.KmbRouteStop
-import hibernate.v2.api.model.transport.kmb.KmbStop
+import com.himphen.logger.Logger
+import hibernate.v2.api.core.ApiSafeCall
+import hibernate.v2.api.core.Resource
+import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
@@ -13,50 +12,59 @@ import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportRoute
-import hibernate.v2.sunshine.util.getSnapshotValue
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.supervisorScope
 
 class KmbRepository(
     private val kmbDao: KmbDao,
+    private val apiManager: ApiManager
 ) : BaseRepository() {
-    private val dbName = FIREBASE_DB_KMB
 
-    @Throws(DatabaseException::class)
-    suspend fun saveRouteListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<KmbRoute>>()?.let { list ->
-            val temp = list
-                .map(KmbRouteEntity.Companion::fromApiModel)
-                .toMutableList()
-                .apply { sortWith(KmbRouteEntity::compareTo) }
+    suspend fun saveData() {
+        val result = ApiSafeCall { apiManager.dataService.getKmbData() }
 
-            saveRouteList(temp)
+        val data = when (result) {
+            is Resource.Success -> result.getData()
+            is Resource.HttpError -> throw result.getThrowable()
+            is Resource.OtherError -> throw result.getThrowable()
         }
-    }
 
-    @Throws(DatabaseException::class)
-    suspend fun saveRouteStopListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<KmbRouteStop>>()?.let { list ->
-            saveRouteStopList(
-                list.map { kmbRouteStop ->
-                    KmbRouteStopEntity.fromApiModel(kmbRouteStop)
-                }
-            )
-        }
-    }
+        supervisorScope {
+            listOf(
+                async(Dispatchers.IO) {
+                    data.route?.let { list ->
+                        val temp = list
+                            .map(KmbRouteEntity.Companion::fromApiModel)
+                            .toMutableList()
+                            .apply { sortWith(KmbRouteEntity::compareTo) }
 
-    @Throws(DatabaseException::class)
-    suspend fun saveStopListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<KmbStop>>()?.let { list ->
-            saveStopList(
-                list.map { kmbStop ->
-                    KmbStopEntity.fromApiModel(kmbStop)
+                        saveRouteList(temp)
+                    }
+                    Logger.t("lifecycle").d("KmbRepository saveRouteList done")
+                },
+                async(Dispatchers.IO) {
+                    data.routeStop?.let { list ->
+                        saveRouteStopList(
+                            list.map { kmbRouteStop ->
+                                KmbRouteStopEntity.fromApiModel(kmbRouteStop)
+                            }
+                        )
+                    }
+                    Logger.t("lifecycle").d("KmbRepository saveRouteStopList done")
+                },
+                async(Dispatchers.IO) {
+                    data.stop?.let { list ->
+                        saveStopList(
+                            list.map { kmbStop ->
+                                KmbStopEntity.fromApiModel(kmbStop)
+                            }
+                        )
+                    }
+                    Logger.t("lifecycle").d("KmbRepository saveStopList done")
                 }
-            )
+            ).awaitAll()
         }
     }
 

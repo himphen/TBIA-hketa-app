@@ -25,7 +25,10 @@ class EtaCardViewClassic(context: Context) :
             routeDirectionTv.text = card.route.getDestDirectionText(context)
 
             (etaMinuteLl.etaTimeRv.adapter as EtaTimeAdapter).apply {
-                setData(card.etaList)
+                val etaListWithoutFirstItem = card.etaList.toMutableList().apply {
+                    if (size > 0) removeAt(0)
+                }
+                setData(etaListWithoutFirstItem)
             }
 
             card.etaList.getOrNull(0)?.getEtaMinuteText("-")?.let {

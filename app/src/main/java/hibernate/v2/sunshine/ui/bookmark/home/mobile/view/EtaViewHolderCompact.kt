@@ -25,11 +25,11 @@ class EtaViewHolderCompact(viewBinding: ItemEtaCardCompactBinding) :
                     R.drawable.eta_card_line_arrow
                 ) as? RotateDrawable?
                 ).let { arrowDrawable ->
-                arrowDrawable?.mutate()
-                (arrowDrawable?.drawable as? GradientDrawable)?.setColor(color)
-                lineArrowBgView.background = arrowDrawable
-                lineBgView.setBackgroundColor(color)
-            }
+                    arrowDrawable?.mutate()
+                    (arrowDrawable?.drawable as? GradientDrawable)?.setColor(color)
+                    lineArrowBgView.background = arrowDrawable
+                    lineBgView.setBackgroundColor(color)
+                }
 
             applyRouteNumberContainer(card, routeNumberContainer)
 

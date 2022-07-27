@@ -146,5 +146,6 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/androidstudio
 
 secrets.properties
+signing.properties
 runConfigurations.xml
 deploymentTargetDropDown.xml

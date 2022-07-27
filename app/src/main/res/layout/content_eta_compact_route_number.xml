@@ -26,6 +26,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,20 +42,18 @@
         android:paddingBottom="2dp"
         android:visibility="gone">
 
-        <TextView
-            android:id="@+id/routeMTRNumberTv"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+        <ImageView
+            android:id="@+id/routeMTRNumberIv"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/bg_route_badge_mtr"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:padding="4dp"
+            android:src="@drawable/ic_train_24"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="1" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -70,7 +69,7 @@
 
         <TextView
             android:id="@+id/routeLRTNumberTv"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/view_badge_route_lrt_width"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_route_badge_lrt"
             android:gravity="center"
@@ -81,6 +80,8 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="614P" />

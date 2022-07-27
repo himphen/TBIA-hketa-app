@@ -27,7 +27,8 @@ class BookmarkEditConfirmDialogActivity : FragmentActivity() {
 
         window.setBackgroundDrawable(ColorDrawable(Color.parseColor("#21272A")))
         if (savedInstanceState == null) {
-            val fragment = BookmarkEditConfirmDialogFragment.getInstance(intent?.getBundleExtra(ARG_BUNDLE))
+            val fragment =
+                BookmarkEditConfirmDialogFragment.getInstance(intent?.getBundleExtra(ARG_BUNDLE))
             GuidedStepSupportFragment.addAsRoot(this, fragment, android.R.id.content)
         }
     }

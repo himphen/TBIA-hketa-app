@@ -7,6 +7,10 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import hibernate.v2.sunshine.db.ctb.CtbDao
+import hibernate.v2.sunshine.db.ctb.CtbRouteEntity
+import hibernate.v2.sunshine.db.ctb.CtbRouteStopEntity
+import hibernate.v2.sunshine.db.ctb.CtbStopEntity
 import hibernate.v2.sunshine.db.eta.EtaDao
 import hibernate.v2.sunshine.db.eta.EtaOrderDao
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
@@ -27,10 +31,6 @@ import hibernate.v2.sunshine.db.mtr.MTRDao
 import hibernate.v2.sunshine.db.mtr.MTRRouteEntity
 import hibernate.v2.sunshine.db.mtr.MTRRouteStopEntity
 import hibernate.v2.sunshine.db.mtr.MTRStopEntity
-import hibernate.v2.sunshine.db.nc.NCDao
-import hibernate.v2.sunshine.db.nc.NCRouteEntity
-import hibernate.v2.sunshine.db.nc.NCRouteStopEntity
-import hibernate.v2.sunshine.db.nc.NCStopEntity
 import hibernate.v2.sunshine.db.nlb.NLBDao
 import hibernate.v2.sunshine.db.nlb.NLBRouteEntity
 import hibernate.v2.sunshine.db.nlb.NLBRouteStopEntity
@@ -42,13 +42,13 @@ private const val DATABASE_NAME = "saved_data"
     entities = [
         SavedEtaEntity::class, EtaOrderEntity::class,
         KmbRouteEntity::class, KmbStopEntity::class, KmbRouteStopEntity::class,
-        NCRouteEntity::class, NCStopEntity::class, NCRouteStopEntity::class,
+        CtbRouteEntity::class, CtbStopEntity::class, CtbRouteStopEntity::class,
         GmbRouteEntity::class, GmbStopEntity::class, GmbRouteStopEntity::class,
         MTRRouteEntity::class, MTRStopEntity::class, MTRRouteStopEntity::class,
         LRTRouteEntity::class, LRTStopEntity::class, LRTRouteStopEntity::class,
         NLBRouteEntity::class, NLBStopEntity::class, NLBRouteStopEntity::class,
     ],
-    version = 21,
+    version = 22,
     exportSchema = false
 )
 @TypeConverters(DataTypeConverter::class)
@@ -56,7 +56,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun etaDao(): EtaDao
     abstract fun etaOrderDao(): EtaOrderDao
     abstract fun kmbDao(): KmbDao
-    abstract fun ncDao(): NCDao
+    abstract fun ctbDao(): CtbDao
     abstract fun gmbDao(): GmbDao
     abstract fun mtrDao(): MTRDao
     abstract fun lrtDao(): LRTDao

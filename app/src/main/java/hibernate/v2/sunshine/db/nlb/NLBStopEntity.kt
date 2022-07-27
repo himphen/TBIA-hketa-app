@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.nlb.NLBStop
+import hibernate.v2.api.model.transport.nlb.NlbStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 
 @Keep
@@ -27,7 +27,7 @@ data class NLBStopEntity(
     val geohash: String,
 ) {
     companion object {
-        fun fromApiModel(stop: NLBStop): NLBStopEntity {
+        fun fromApiModel(stop: NlbStop): NLBStopEntity {
             return NLBStopEntity(
                 stopId = stop.stopId,
                 nameEn = stop.nameEn,

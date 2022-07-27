@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentOnboardingBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
-import hibernate.v2.sunshine.ui.onboarding.FetchTransportDataType
+import hibernate.v2.sunshine.ui.onboarding.FailedCheckType
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
@@ -23,7 +22,6 @@ import org.koin.android.ext.android.inject
 class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
 
     private val viewModel by inject<OnboardingViewModel>()
-    private val sharedPreferencesManager by inject<SharedPreferencesManager>()
 
     companion object {
         fun getInstance() = OnboardingFragment()
@@ -38,24 +36,27 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // sharedPreferencesManager.etaCardType = EtaCardViewType.Classic
-
         initEvent()
         initUI()
         initData()
     }
 
     fun initEvent() {
+        viewModel.fetchTransportDataCannotInit.observe(viewLifecycleOwner) {
+            viewBinding?.logoIv?.gone(true)
+            viewBinding?.loadingCl?.visible(true)
+            viewBinding?.animationView?.apply {
+                visible()
+                playAnimation()
+            }
+            viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_app_token)
+        }
+
         viewModel.fetchTransportDataRequired.observe(viewLifecycleOwner) {
             if (it < 0) return@observe
 
             if (it > 0) {
-                viewBinding?.logoIv?.gone(true)
-                viewBinding?.loadingCl?.visible(true)
-                viewBinding?.animationView?.apply {
-                    visible()
-                    playAnimation()
-                }
+                showLoading()
             } else {
                 goToMainActivity()
             }
@@ -73,27 +74,31 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
 
         viewModel.fetchTransportDataCompleted.observe(viewLifecycleOwner) {
             if (viewModel.fetchTransportDataFailedList.isNotEmpty()) {
+                showLoading()
                 when (viewModel.fetchTransportDataFailedList.first()) {
-                    FetchTransportDataType.KMB -> {
+                    FailedCheckType.KMB -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_kmb)
                     }
-                    FetchTransportDataType.NC -> {
+                    FailedCheckType.CTB -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_ctb)
                     }
-                    FetchTransportDataType.GMB -> {
+                    FailedCheckType.GMB -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_gmb)
                     }
-                    FetchTransportDataType.MTR -> {
+                    FailedCheckType.MTR -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_mtr)
                     }
-                    FetchTransportDataType.LRT -> {
+                    FailedCheckType.LRT -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_lrt)
                     }
-                    FetchTransportDataType.NLB -> {
+                    FailedCheckType.NLB -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_nlb)
                     }
-                    FetchTransportDataType.ALL -> {
-                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_all)
+                    FailedCheckType.OTHER -> {
+                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_other)
+                    }
+                    FailedCheckType.CHECKSUM -> {
+                        viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_checksum)
                     }
                 }
             } else {
@@ -110,6 +115,15 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
 
     fun initData() {
         viewModel.checkDbTransportData()
+    }
+
+    private fun showLoading() {
+        viewBinding?.logoIv?.gone(true)
+        viewBinding?.loadingCl?.visible(true)
+        viewBinding?.animationView?.apply {
+            visible()
+            playAnimation()
+        }
     }
 
     private fun goToMainActivity() {

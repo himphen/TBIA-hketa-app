@@ -1,12 +1,10 @@
 package hibernate.v2.sunshine.repository
 
 import com.fonfon.kgeohash.GeoHash
-import com.google.firebase.database.DatabaseException
-import com.google.firebase.database.ktx.getValue
-import hibernate.v2.api.model.transport.nlb.NLBRoute
-import hibernate.v2.api.model.transport.nlb.NLBRouteStop
-import hibernate.v2.api.model.transport.nlb.NLBStop
-import hibernate.v2.sunshine.db.nc.NCRouteEntity
+import com.himphen.logger.Logger
+import hibernate.v2.api.core.ApiSafeCall
+import hibernate.v2.api.core.Resource
+import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.nlb.NLBDao
 import hibernate.v2.sunshine.db.nlb.NLBRouteEntity
 import hibernate.v2.sunshine.db.nlb.NLBRouteStopEntity
@@ -14,50 +12,59 @@ import hibernate.v2.sunshine.db.nlb.NLBStopEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportRoute
-import hibernate.v2.sunshine.util.getSnapshotValue
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.supervisorScope
 
 class NLBRepository(
     private val dao: NLBDao,
+    private val apiManager: ApiManager
 ) : BaseRepository() {
-    private val dbName = FIREBASE_DB_NLB
 
-    @Throws(DatabaseException::class)
-    suspend fun saveRouteListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<NLBRoute>>()?.let { list ->
-            val temp = list
-                .map(NLBRouteEntity.Companion::fromApiModel)
-                .toMutableList()
-                .apply { sortWith(NLBRouteEntity::compareTo) }
+    suspend fun saveData() {
+        val result = ApiSafeCall { apiManager.dataService.getNlbData() }
 
-            saveRouteList(temp)
+        val data = when (result) {
+            is Resource.Success -> result.getData()
+            is Resource.HttpError -> throw result.getThrowable()
+            is Resource.OtherError -> throw result.getThrowable()
         }
-    }
 
-    @Throws(DatabaseException::class)
-    suspend fun saveRouteStopListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<NLBRouteStop>>()?.let { list ->
-            saveRouteStopList(
-                list.map { NLBRouteStop ->
-                    NLBRouteStopEntity.fromApiModel(NLBRouteStop)
-                }
-            )
-        }
-    }
+        supervisorScope {
+            listOf(
+                async(Dispatchers.IO) {
+                    data.route?.let { list ->
+                        val temp = list
+                            .map(NLBRouteEntity.Companion::fromApiModel)
+                            .toMutableList()
+                            .apply { sortWith(NLBRouteEntity::compareTo) }
 
-    @Throws(DatabaseException::class)
-    suspend fun saveStopListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<NLBStop>>()?.let { list ->
-            saveStopList(
-                list.map { NLBStop ->
-                    NLBStopEntity.fromApiModel(NLBStop)
+                        saveRouteList(temp)
+                    }
+                    Logger.t("lifecycle").d("NLBRepository saveRouteList done")
+                },
+                async(Dispatchers.IO) {
+                    data.routeStop?.let { list ->
+                        saveRouteStopList(
+                            list.map { NLBRouteStop ->
+                                NLBRouteStopEntity.fromApiModel(NLBRouteStop)
+                            }
+                        )
+                    }
+                    Logger.t("lifecycle").d("NLBRepository saveRouteStopList done")
+                },
+                async(Dispatchers.IO) {
+                    data.stop?.let { list ->
+                        saveStopList(
+                            list.map { NLBStop ->
+                                NLBStopEntity.fromApiModel(NLBStop)
+                            }
+                        )
+                    }
+                    Logger.t("lifecycle").d("NLBRepository saveStopList done")
                 }
-            )
+            ).awaitAll()
         }
     }
 

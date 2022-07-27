@@ -27,15 +27,15 @@ enum class EtaType {
     }
 
     fun name(context: Context): String = when (this) {
-        KMB -> context.getString(R.string.dialog_add_eta_brand_selection_kmb_btn)
-        NWFB -> context.getString(R.string.dialog_add_eta_brand_selection_nwfb_btn)
-        CTB -> context.getString(R.string.dialog_add_eta_brand_selection_ctb_btn)
-        GMB_HKI -> context.getString(R.string.dialog_add_eta_brand_selection_gmb_hki_btn)
-        GMB_KLN -> context.getString(R.string.dialog_add_eta_brand_selection_gmb_kln_btn)
-        GMB_NT -> context.getString(R.string.dialog_add_eta_brand_selection_gmb_nt_btn)
-        MTR -> context.getString(R.string.dialog_add_eta_brand_selection_mtr_btn)
-        LRT -> context.getString(R.string.dialog_add_eta_brand_selection_lrt_btn)
-        NLB -> context.getString(R.string.dialog_add_eta_brand_selection_nlb_btn)
+        KMB -> context.getString(R.string.add_eta_brand_selection_kmb_btn)
+        NWFB -> context.getString(R.string.add_eta_brand_selection_nwfb_btn)
+        CTB -> context.getString(R.string.add_eta_brand_selection_ctb_btn)
+        GMB_HKI -> context.getString(R.string.add_eta_brand_selection_gmb_hki_btn)
+        GMB_KLN -> context.getString(R.string.add_eta_brand_selection_gmb_kln_btn)
+        GMB_NT -> context.getString(R.string.add_eta_brand_selection_gmb_nt_btn)
+        MTR -> context.getString(R.string.add_eta_brand_selection_mtr_btn)
+        LRT -> context.getString(R.string.add_eta_brand_selection_lrt_btn)
+        NLB -> context.getString(R.string.add_eta_brand_selection_nlb_btn)
     }
 
     @ColorInt

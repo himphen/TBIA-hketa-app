@@ -3,26 +3,26 @@ package hibernate.v2.sunshine.ui.onboarding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
+import hibernate.v2.api.model.transport.Checksum
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.repository.CoreRepository
+import hibernate.v2.sunshine.repository.CtbRepository
 import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
-import hibernate.v2.sunshine.repository.NCRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 
 class OnboardingViewModel(
     private val sharedPreferencesManager: SharedPreferencesManager,
     private val coreRepository: CoreRepository,
     private val kmbRepository: KmbRepository,
-    private val ncRepository: NCRepository,
+    private val ctbRepository: CtbRepository,
     private val gmbRepository: GmbRepository,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
@@ -30,34 +30,52 @@ class OnboardingViewModel(
 ) : BaseViewModel() {
 
     val fetchTransportDataRequired = MutableLiveData(-1)
+    val fetchTransportDataCannotInit = MutableLiveData<Unit>()
     val fetchTransportDataCompleted = MutableLiveData<Unit>()
     val fetchTransportDataCompletedCount = MutableLiveData(0)
-    val fetchTransportDataFailedList = arrayListOf<FetchTransportDataType>()
+    val fetchTransportDataFailedList = arrayListOf<FailedCheckType>()
 
     fun checkDbTransportData() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 var dataLoadingCount = 0
-                val checksum = coreRepository.getChecksum()
+
+                val serverChecksum = try {
+                    coreRepository.getChecksum()
+                } catch (e: Exception) {
+                    fetchTransportDataFailedList.add(FailedCheckType.CHECKSUM)
+                    throw e
+                }
+
+                var newChecksum = Checksum()
+
                 val existingChecksum = sharedPreferencesManager.transportDataChecksum
 
                 val updateCheck = UpdateCheck()
 
-                if (checksum != null && existingChecksum != null) {
-                    if (checksum == existingChecksum) {
+                if (existingChecksum != null) {
+                    if (serverChecksum.isValid() && serverChecksum == existingChecksum) {
                         fetchTransportDataRequired.postValue(dataLoadingCount)
                         return@launch
                     }
 
-                    updateCheck.kmb = checksum.kmb != existingChecksum.kmb
-                    updateCheck.nc = checksum.citybusNwfb != existingChecksum.citybusNwfb
-                    updateCheck.gmb = checksum.gmb != existingChecksum.gmb
-                    updateCheck.mtr = checksum.mtr != existingChecksum.mtr
-                    updateCheck.lrt = checksum.lrt != existingChecksum.lrt
-                    updateCheck.nlb = checksum.nlb != existingChecksum.nlb
+                    updateCheck.kmb =
+                        serverChecksum.kmb == null || serverChecksum.kmb != existingChecksum.kmb
+                    updateCheck.ctb =
+                        serverChecksum.ctb == null || serverChecksum.ctb != existingChecksum.ctb
+                    updateCheck.gmb =
+                        serverChecksum.gmb == null || serverChecksum.gmb != existingChecksum.gmb
+                    updateCheck.mtr =
+                        serverChecksum.mtr == null || serverChecksum.mtr != existingChecksum.mtr
+                    updateCheck.lrt =
+                        serverChecksum.lrt == null || serverChecksum.lrt != existingChecksum.lrt
+                    updateCheck.nlb =
+                        serverChecksum.nlb == null || serverChecksum.nlb != existingChecksum.nlb
+
+                    newChecksum = existingChecksum.copy()
 
                     if (updateCheck.kmb) dataLoadingCount++
-                    if (updateCheck.nc) dataLoadingCount++
+                    if (updateCheck.ctb) dataLoadingCount++
                     if (updateCheck.gmb) dataLoadingCount++
                     if (updateCheck.mtr) dataLoadingCount++
                     if (updateCheck.lrt) dataLoadingCount++
@@ -74,9 +92,10 @@ class OnboardingViewModel(
                         if (updateCheck.kmb) {
                             try {
                                 downloadKmbTransportData()
+                                newChecksum.kmb = serverChecksum.kmb
                             } catch (e: Exception) {
                                 Logger.t("lifecycle").e(e, "downloadKmbTransportData error")
-                                fetchTransportDataFailedList.add(FetchTransportDataType.KMB)
+                                fetchTransportDataFailedList.add(FailedCheckType.KMB)
                             }
                             fetchTransportDataCompletedCount.postValue(
                                 (fetchTransportDataCompletedCount.value ?: 0) + 1
@@ -84,12 +103,13 @@ class OnboardingViewModel(
                         }
                     },
                     async {
-                        if (updateCheck.nc) {
+                        if (updateCheck.ctb) {
                             try {
-                                downloadNCTransportData()
+                                downloadCtbTransportData()
+                                newChecksum.ctb = serverChecksum.ctb
                             } catch (e: Exception) {
                                 Logger.t("lifecycle").e(e, "downloadNCTransportData error")
-                                fetchTransportDataFailedList.add(FetchTransportDataType.NC)
+                                fetchTransportDataFailedList.add(FailedCheckType.CTB)
                             }
                             fetchTransportDataCompletedCount.postValue(
                                 (fetchTransportDataCompletedCount.value ?: 0) + 1
@@ -100,9 +120,10 @@ class OnboardingViewModel(
                         if (updateCheck.gmb) {
                             try {
                                 downloadGmbTransportData()
+                                newChecksum.gmb = serverChecksum.gmb
                             } catch (e: Exception) {
                                 Logger.t("lifecycle").e(e, "downloadGmbTransportData error")
-                                fetchTransportDataFailedList.add(FetchTransportDataType.GMB)
+                                fetchTransportDataFailedList.add(FailedCheckType.GMB)
                             }
                             fetchTransportDataCompletedCount.postValue(
                                 (fetchTransportDataCompletedCount.value ?: 0) + 1
@@ -112,10 +133,11 @@ class OnboardingViewModel(
                     async {
                         if (updateCheck.mtr) {
                             try {
-                                downloadMTRTransportData()
+                                downloadMtrTransportData()
+                                newChecksum.mtr = serverChecksum.mtr
                             } catch (e: Exception) {
                                 Logger.t("lifecycle").e(e, "downloadMTRTransportData error")
-                                fetchTransportDataFailedList.add(FetchTransportDataType.MTR)
+                                fetchTransportDataFailedList.add(FailedCheckType.MTR)
                             }
                             fetchTransportDataCompletedCount.postValue(
                                 (fetchTransportDataCompletedCount.value ?: 0) + 1
@@ -125,10 +147,11 @@ class OnboardingViewModel(
                     async {
                         if (updateCheck.lrt) {
                             try {
-                                downloadLRTTransportData()
+                                downloadLrtTransportData()
+                                newChecksum.lrt = serverChecksum.lrt
                             } catch (e: Exception) {
                                 Logger.t("lifecycle").e(e, "downloadLRTTransportData error")
-                                fetchTransportDataFailedList.add(FetchTransportDataType.LRT)
+                                fetchTransportDataFailedList.add(FailedCheckType.LRT)
                             }
                             fetchTransportDataCompletedCount.postValue(
                                 (fetchTransportDataCompletedCount.value ?: 0) + 1
@@ -138,10 +161,11 @@ class OnboardingViewModel(
                     async {
                         if (updateCheck.nlb) {
                             try {
-                                downloadNLBTransportData()
+                                downloadNlbTransportData()
+                                newChecksum.nlb = serverChecksum.nlb
                             } catch (e: Exception) {
                                 Logger.t("lifecycle").e(e, "downloadNLBTransportData error")
-                                fetchTransportDataFailedList.add(FetchTransportDataType.NLB)
+                                fetchTransportDataFailedList.add(FailedCheckType.NLB)
                             }
                             fetchTransportDataCompletedCount.postValue(
                                 (fetchTransportDataCompletedCount.value ?: 0) + 1
@@ -150,11 +174,14 @@ class OnboardingViewModel(
                     }
                 ).awaitAll()
 
-                sharedPreferencesManager.transportDataChecksum = checksum
+                sharedPreferencesManager.transportDataChecksum = newChecksum
+
                 fetchTransportDataCompleted.postValue(Unit)
             } catch (e: Exception) {
                 e.printStackTrace()
-                fetchTransportDataFailedList.add(FetchTransportDataType.ALL)
+                if (fetchTransportDataFailedList.isEmpty()) {
+                    fetchTransportDataFailedList.add(FailedCheckType.OTHER)
+                }
                 fetchTransportDataCompleted.postValue(Unit)
             }
         }
@@ -163,153 +190,43 @@ class OnboardingViewModel(
     private suspend fun downloadKmbTransportData() {
         Logger.t("lifecycle").d("downloadKmbTransportData start")
         kmbRepository.initDatabase()
-
-        supervisorScope {
-            listOf(
-                async(Dispatchers.IO) {
-                    kmbRepository.saveStopListFromFirebase()
-                    Logger.t("lifecycle").d("downloadKmbTransportData saveStopListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    kmbRepository.saveRouteListFromFirebase()
-                    Logger.t("lifecycle").d("downloadKmbTransportData saveRouteListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    kmbRepository.saveRouteStopListFromFirebase()
-                    Logger.t("lifecycle").d("downloadKmbTransportData saveRouteStopListFromFirebase done")
-                }
-            ).awaitAll()
-        }
+        kmbRepository.saveData()
     }
 
-    private suspend fun downloadNCTransportData() {
+    private suspend fun downloadCtbTransportData() {
         Logger.t("lifecycle").d("downloadNCTransportData start")
-        ncRepository.initDatabase()
-
-        supervisorScope {
-            listOf(
-                async(Dispatchers.IO) {
-                    ncRepository.saveRouteListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadNCTransportData saveRouteListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    ncRepository.saveRouteStopListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadNCTransportData saveRouteStopListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    ncRepository.saveStopListFromFirebase()
-                    Logger.t("lifecycle").d("downloadNCTransportData saveStopListFromFirebase done")
-                }
-            ).awaitAll()
-        }
+        ctbRepository.initDatabase()
+        ctbRepository.saveData()
     }
 
     private suspend fun downloadGmbTransportData() {
         Logger.t("lifecycle").d("downloadGmbTransportData start")
         gmbRepository.initDatabase()
-
-        supervisorScope {
-            listOf(
-                async(Dispatchers.IO) {
-                    gmbRepository.saveRouteListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadGmbTransportData saveRouteListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    gmbRepository.saveRouteStopListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadGmbTransportData saveRouteStopListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    gmbRepository.saveStopListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadGmbTransportData saveStopListFromFirebase done")
-                }
-            ).awaitAll()
-        }
+        gmbRepository.saveData()
     }
 
-    private suspend fun downloadMTRTransportData() {
+    private suspend fun downloadMtrTransportData() {
         Logger.t("lifecycle").d("downloadMTRTransportData start")
         mtrRepository.initDatabase()
-
-        supervisorScope {
-            listOf(
-                async(Dispatchers.IO) {
-                    mtrRepository.saveRouteListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadMTRTransportData saveRouteListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    mtrRepository.saveRouteStopListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadMTRTransportData saveRouteStopListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    mtrRepository.saveStopListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadMTRTransportData saveStopListFromFirebase done")
-                }
-            ).awaitAll()
-        }
+        mtrRepository.saveData()
     }
 
-    private suspend fun downloadLRTTransportData() {
+    private suspend fun downloadLrtTransportData() {
         Logger.t("lifecycle").d("downloadLRTTransportData start")
         lrtRepository.initDatabase()
-
-        supervisorScope {
-            listOf(
-                async(Dispatchers.IO) {
-                    lrtRepository.saveRouteListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadLRTTransportData saveRouteListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    lrtRepository.saveRouteStopListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadLRTTransportData saveRouteStopListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    lrtRepository.saveStopListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadLRTTransportData saveStopListFromFirebase done")
-                }
-            ).awaitAll()
-        }
+        lrtRepository.saveData()
     }
 
-    private suspend fun downloadNLBTransportData() {
+    private suspend fun downloadNlbTransportData() {
         Logger.t("lifecycle").d("downloadNLBTransportData start")
         nlbRepository.initDatabase()
-
-        supervisorScope {
-            listOf(
-                async(Dispatchers.IO) {
-                    nlbRepository.saveRouteListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadNLBTransportData saveRouteListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    nlbRepository.saveRouteStopListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadNLBTransportData saveRouteStopListFromFirebase done")
-                },
-                async(Dispatchers.IO) {
-                    nlbRepository.saveStopListFromFirebase()
-                    Logger.t("lifecycle")
-                        .d("downloadNLBTransportData saveStopListFromFirebase done")
-                }
-            ).awaitAll()
-        }
+        nlbRepository.saveData()
     }
 
     suspend fun resetTransportData() {
         sharedPreferencesManager.transportDataChecksum = null
         kmbRepository.initDatabase()
-        ncRepository.initDatabase()
+        ctbRepository.initDatabase()
         gmbRepository.initDatabase()
         mtrRepository.initDatabase()
         lrtRepository.initDatabase()
@@ -317,13 +234,13 @@ class OnboardingViewModel(
     }
 }
 
-enum class FetchTransportDataType {
-    KMB, NC, GMB, MTR, LRT, NLB, ALL
+enum class FailedCheckType {
+    KMB, CTB, GMB, MTR, LRT, NLB, OTHER, CHECKSUM
 }
 
 class UpdateCheck(
     var kmb: Boolean = true,
-    var nc: Boolean = true,
+    var ctb: Boolean = true,
     var gmb: Boolean = true,
     var nlb: Boolean = true,
     var mtr: Boolean = true,

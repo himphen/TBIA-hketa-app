@@ -1,29 +1,22 @@
 package hibernate.v2.api.model.transport.kmb
 
 import androidx.annotation.Keep
-import com.google.firebase.database.PropertyName
+import com.google.gson.annotations.SerializedName
 
 @Keep
 data class KmbStop(
-    @get:PropertyName("lat")
-    @set:PropertyName("lat")
+    @SerializedName("lat")
     var lat: String = "0.0",
-    @get:PropertyName("long")
-    @set:PropertyName("long")
+    @SerializedName("long")
     var lng: String = "0.0",
-    @get:PropertyName("name_en")
-    @set:PropertyName("name_en")
+    @SerializedName("name_en")
     var nameEn: String = "",
-    @get:PropertyName("name_sc")
-    @set:PropertyName("name_sc")
+    @SerializedName("name_sc")
     var nameSc: String = "",
-    @get:PropertyName("name_tc")
-    @set:PropertyName("name_tc")
+    @SerializedName("name_tc")
     var nameTc: String = "",
-    @get:PropertyName("stop")
-    @set:PropertyName("stop")
+    @SerializedName("stop")
     var stopId: String = "",
-    @get:PropertyName("geohash")
-    @set:PropertyName("geohash")
+    @SerializedName("geohash")
     var geohash: String = "",
 )

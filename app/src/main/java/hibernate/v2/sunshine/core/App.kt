@@ -5,9 +5,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
-import com.google.firebase.appcheck.FirebaseAppCheck
-import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
-import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory
 import com.himphen.logger.AndroidLogAdapter
 import com.himphen.logger.Logger
 import com.himphen.logger.PrettyFormatStrategy
@@ -17,7 +14,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
-import java.util.ArrayList
 
 class App : Application() {
 
@@ -25,7 +21,6 @@ class App : Application() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate()
 
-        initFirebaseAppCheck()
         initLogger()
         initAdMob()
         initKoin()
@@ -34,7 +29,8 @@ class App : Application() {
     // init logger
     private fun initLogger() {
         val formatStrategy = PrettyFormatStrategy.newBuilder()
-            .methodCount(3)
+            .showThreadInfo(false)
+            .methodCount(2)
             .build()
         Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy) {
             override fun isLoggable(priority: Int, tag: String?): Boolean {
@@ -53,18 +49,6 @@ class App : Application() {
                 koinUIModule
             )
         }
-    }
-
-    private fun initFirebaseAppCheck() {
-        val firebaseAppCheck = FirebaseAppCheck.getInstance()
-        firebaseAppCheck.installAppCheckProviderFactory(
-            if (BuildConfig.DEBUG) {
-                DebugAppCheckProviderFactory.getInstance()
-//                SafetyNetAppCheckProviderFactory.getInstance()
-            } else {
-                SafetyNetAppCheckProviderFactory.getInstance()
-            }
-        )
     }
 
     private fun initAdMob() {

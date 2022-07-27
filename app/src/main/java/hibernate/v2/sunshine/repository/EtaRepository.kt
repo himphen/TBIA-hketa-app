@@ -1,13 +1,15 @@
 package hibernate.v2.sunshine.repository
 
+import hibernate.v2.api.core.ApiSafeCall
+import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.request.eta.NLBRequest
+import hibernate.v2.api.request.eta.NlbRequest
 import hibernate.v2.api.response.eta.EtaResponse
 import hibernate.v2.api.response.eta.GmbEtaResponse
-import hibernate.v2.api.response.eta.LRTEtaResponse
+import hibernate.v2.api.response.eta.LrtEtaResponse
 import hibernate.v2.api.response.eta.MTREtaResponse
-import hibernate.v2.api.response.eta.NLBEtaResponse
+import hibernate.v2.api.response.eta.NlbEtaResponse
 import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.eta.EtaDao
 import hibernate.v2.sunshine.db.eta.EtaOrderDao
@@ -21,11 +23,11 @@ class EtaRepository(
 ) {
 
     suspend fun getSavedKmbEtaList() = etaDao.getAllKmbEtaWithOrdering()
-    suspend fun getSavedNCEtaList() = etaDao.getAllNCEtaWithOrdering()
+    suspend fun getSavedNCEtaList() = etaDao.getAllCtbEtaWithOrdering()
     suspend fun getSavedGmbEtaList() = etaDao.getAllGmbEtaWithOrdering()
-    suspend fun getSavedMTREtaList() = etaDao.getAllMTREtaWithOrdering()
-    suspend fun getSavedLRTEtaList() = etaDao.getAllLRTEtaWithOrdering()
-    suspend fun getSavedNLBEtaList() = etaDao.getAllNLBEtaWithOrdering()
+    suspend fun getSavedMTREtaList() = etaDao.getAllMtrEtaWithOrdering()
+    suspend fun getSavedLRTEtaList() = etaDao.getAllLrtEtaWithOrdering()
+    suspend fun getSavedNLBEtaList() = etaDao.getAllNlbEtaWithOrdering()
 
     suspend fun hasEtaInDb(
         stopId: String,
@@ -43,8 +45,12 @@ class EtaRepository(
         company
     ) != null
 
-    suspend fun addEta(entity: SavedEtaEntity) {
-        etaDao.add(entity)
+    suspend fun addEta(entity: SavedEtaEntity): Long {
+        return etaDao.add(entity)
+    }
+
+    suspend fun clearEta(entityId: Long) {
+        etaDao.clear(entityId)
     }
 
     suspend fun clearEta(entity: SavedEtaEntity) {
@@ -69,19 +75,38 @@ class EtaRepository(
     }
 
     suspend fun getKmbStopEtaApi(stopId: String, route: String): EtaResponse {
-        return apiManager.kmbService.getStopEta(
-            stopId = stopId,
-            route = route,
-            serviceType = 1
-        )
+        val result = ApiSafeCall {
+            apiManager.kmbService.getStopEta(
+                stopId = stopId,
+                route = route,
+                serviceType = 1
+            )
+        }
+
+        val data = when (result) {
+            is Resource.Success -> result.getData()
+            is Resource.HttpError -> throw result.getThrowable()
+            is Resource.OtherError -> throw result.getThrowable()
+        }
+
+        return data
     }
 
-    suspend fun getNCStopEtaApi(company: Company, stopId: String, route: String): EtaResponse {
-        return apiManager.transportService.getNCStopEta(
-            company = company.value,
-            stopId = stopId,
-            route = route
-        )
+    suspend fun getCtbStopEtaApi(company: Company, stopId: String, route: String): EtaResponse {
+        val result = ApiSafeCall {
+            apiManager.transportService.getCtbStopEta(
+                company = company.value,
+                stopId = stopId,
+                route = route
+            )
+        }
+
+        val data = when (result) {
+            is Resource.Success -> result.getData()
+            is Resource.HttpError -> throw result.getThrowable()
+            is Resource.OtherError -> throw result.getThrowable()
+        }
+        return data
     }
 
     suspend fun getGmbStopEtaApi(
@@ -89,38 +114,78 @@ class EtaRepository(
         serviceType: String,
         route: String
     ): GmbEtaResponse {
-        return apiManager.gmbService.getStopEta(
-            stopSeq = stopSeq,
-            route = route,
-            serviceType = serviceType
-        )
+        val result = ApiSafeCall {
+            apiManager.gmbService.getStopEta(
+                stopSeq = stopSeq,
+                route = route,
+                serviceType = serviceType
+            )
+        }
+
+        val data = when (result) {
+            is Resource.Success -> result.getData()
+            is Resource.HttpError -> throw result.getThrowable()
+            is Resource.OtherError -> throw result.getThrowable()
+        }
+
+        return data
     }
 
     suspend fun getMTRStopEtaApi(
         stopId: String,
         route: String
     ): MTREtaResponse {
-        return apiManager.transportService.getMTRStopEta(
-            stopId = stopId,
-            routeId = route
-        )
+        val result = ApiSafeCall {
+            apiManager.transportService.getMtrStopEta(
+                stopId = stopId,
+                routeId = route
+            )
+        }
+
+        val data = when (result) {
+            is Resource.Success -> result.getData()
+            is Resource.HttpError -> throw result.getThrowable()
+            is Resource.OtherError -> throw result.getThrowable()
+        }
+
+        return data
     }
 
     suspend fun getLRTStopEtaApi(
         stopId: String
-    ): LRTEtaResponse {
-        return apiManager.transportService.getLRTStopEta(
-            stopId = stopId
-        )
+    ): LrtEtaResponse {
+        val result = ApiSafeCall {
+            apiManager.transportService.getLrtStopEta(
+                stopId = stopId
+            )
+        }
+
+        val data = when (result) {
+            is Resource.Success -> result.getData()
+            is Resource.HttpError -> throw result.getThrowable()
+            is Resource.OtherError -> throw result.getThrowable()
+        }
+
+        return data
     }
 
-    suspend fun getNLBStopEtaApi(stopId: String, routeId: String): NLBEtaResponse {
-        return apiManager.transportService.getNLBStopEta(
-            NLBRequest(
-                routeId = routeId,
-                stopId = stopId,
-                language = "zh"
+    suspend fun getNLBStopEtaApi(stopId: String, routeId: String): NlbEtaResponse {
+        val result = ApiSafeCall {
+            apiManager.transportService.getNlbStopEta(
+                NlbRequest(
+                    routeId = routeId,
+                    stopId = stopId,
+                    language = "zh"
+                )
             )
-        )
+        }
+
+        val data = when (result) {
+            is Resource.Success -> result.getData()
+            is Resource.HttpError -> throw result.getThrowable()
+            is Resource.OtherError -> throw result.getThrowable()
+        }
+
+        return data
     }
 }

@@ -6,15 +6,55 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mapContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="1" />
+        app:layout_constraintVertical_weight="1"
+        tools:visibility="visible">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:elevation="1dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageButton
+                android:id="@+id/traffic_layer_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_button_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_traffic_24"
+                app:tint="@color/white" />
+
+            <ImageButton
+                android:id="@+id/myLocationBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_button_selector"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_location_searching_24"
+                app:tint="@color/white" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -24,8 +64,7 @@
         android:scrollbars="none"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/map"
+        app:layout_constraintTop_toBottomOf="@id/mapContainer"
         app:layout_constraintVertical_weight="1"
         tools:listitem="@layout/item_route_details_stop" />
 </androidx.constraintlayout.widget.ConstraintLayout>

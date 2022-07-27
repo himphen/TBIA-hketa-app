@@ -1,11 +1,9 @@
 package hibernate.v2.sunshine.repository
 
-import com.google.firebase.database.DatabaseException
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
-import hibernate.v2.api.model.transport.mtr.MTRRoute
-import hibernate.v2.api.model.transport.mtr.MTRRouteStop
-import hibernate.v2.api.model.transport.mtr.MTRStop
+import com.himphen.logger.Logger
+import hibernate.v2.api.core.ApiSafeCall
+import hibernate.v2.api.core.Resource
+import hibernate.v2.sunshine.api.ApiManager
 import hibernate.v2.sunshine.db.mtr.MTRDao
 import hibernate.v2.sunshine.db.mtr.MTRRouteEntity
 import hibernate.v2.sunshine.db.mtr.MTRRouteStopEntity
@@ -13,50 +11,59 @@ import hibernate.v2.sunshine.db.mtr.MTRStopEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.TransportRoute
-import hibernate.v2.sunshine.util.getSnapshotValue
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.supervisorScope
 
 class MTRRepository(
     private val mtrDao: MTRDao,
+    private val apiManager: ApiManager
 ) : BaseRepository() {
-    private val dbName = FIREBASE_DB_MTR
 
-    @Throws(DatabaseException::class)
-    suspend fun saveRouteListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_ROUTE + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<MTRRoute>>()?.let { list ->
-            val temp = list
-                .map(MTRRouteEntity.Companion::fromApiModel)
-                .toMutableList()
-                .apply { sortWith(MTRRouteEntity::compareTo) }
+    suspend fun saveData() {
+        val result = ApiSafeCall { apiManager.dataService.getMtrData() }
 
-            saveRouteList(temp)
+        val data = when (result) {
+            is Resource.Success -> result.getData()
+            is Resource.HttpError -> throw result.getThrowable()
+            is Resource.OtherError -> throw result.getThrowable()
         }
-    }
 
-    @Throws(DatabaseException::class)
-    suspend fun saveRouteStopListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_ROUTE_STOP + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<MTRRouteStop>>()?.let { list ->
-            saveRouteStopList(
-                list.map { routeStop ->
-                    MTRRouteStopEntity.fromApiModel(routeStop)
-                }
-            )
-        }
-    }
+        supervisorScope {
+            listOf(
+                async(Dispatchers.IO) {
+                    data.route?.let { list ->
+                        val temp = list
+                            .map(MTRRouteEntity.Companion::fromApiModel)
+                            .toMutableList()
+                            .apply { sortWith(MTRRouteEntity::compareTo) }
 
-    @Throws(DatabaseException::class)
-    suspend fun saveStopListFromFirebase() {
-        val routeRef = database.reference.child(FIREBASE_REF_STOP + dbName)
-        val snapshot = routeRef.getSnapshotValue()
-        snapshot.getValue<List<MTRStop>>()?.let { list ->
-            saveStopList(
-                list.map { stop ->
-                    MTRStopEntity.fromApiModel(stop)
+                        saveRouteList(temp)
+                    }
+                    Logger.t("lifecycle").d("MTRRepository saveRouteList done")
+                },
+                async(Dispatchers.IO) {
+                    data.routeStop?.let { list ->
+                        saveRouteStopList(
+                            list.map { routeStop ->
+                                MTRRouteStopEntity.fromApiModel(routeStop)
+                            }
+                        )
+                    }
+                    Logger.t("lifecycle").d("MTRRepository saveRouteStopList done")
+                },
+                async(Dispatchers.IO) {
+                    data.stop?.let { list ->
+                        saveStopList(
+                            list.map { stop ->
+                                MTRStopEntity.fromApiModel(stop)
+                            }
+                        )
+                    }
+                    Logger.t("lifecycle").d("MTRRepository saveStopList done")
                 }
-            )
+            ).awaitAll()
         }
     }
 

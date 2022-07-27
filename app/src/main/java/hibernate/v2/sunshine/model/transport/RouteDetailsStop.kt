@@ -6,5 +6,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class RouteDetailsStop(
     val transportStop: TransportStop,
-    var isBookmarked: Boolean
+    var savedEtaId: Long?
 ) : Parcelable

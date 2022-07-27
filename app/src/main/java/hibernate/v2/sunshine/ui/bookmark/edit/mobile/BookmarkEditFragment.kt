@@ -1,7 +1,6 @@
 package hibernate.v2.sunshine.ui.bookmark.edit.mobile
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu

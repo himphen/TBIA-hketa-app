@@ -25,7 +25,7 @@ class RouteListBrandSelectionFragment : GuidedStepSupportFragment() {
     override fun onCreateGuidance(savedInstanceState: Bundle?): Guidance {
         return Guidance(
             getString(
-                R.string.dialog_add_eta_brand_selection_title
+                R.string.add_eta_brand_selection_title
             ),
             "",
             "",

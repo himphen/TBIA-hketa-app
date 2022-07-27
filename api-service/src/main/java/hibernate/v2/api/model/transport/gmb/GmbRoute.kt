@@ -1,41 +1,31 @@
 package hibernate.v2.api.model.transport.gmb
 
 import androidx.annotation.Keep
-import com.google.firebase.database.PropertyName
+import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.GmbRegion
 
 @Keep
 data class GmbRoute(
     val bound: Bound = Bound.O,
-    @get:PropertyName("dest_en")
-    @set:PropertyName("dest_en")
+    @SerializedName("dest_en")
     var destEn: String = "",
-    @get:PropertyName("dest_sc")
-    @set:PropertyName("dest_sc")
+    @SerializedName("dest_sc")
     var destSc: String = "",
-    @get:PropertyName("dest_tc")
-    @set:PropertyName("dest_tc")
+    @SerializedName("dest_tc")
     var destTc: String = "",
-    @get:PropertyName("orig_en")
-    @set:PropertyName("orig_en")
+    @SerializedName("orig_en")
     var origEn: String = "",
-    @get:PropertyName("orig_sc")
-    @set:PropertyName("orig_sc")
+    @SerializedName("orig_sc")
     var origSc: String = "",
-    @get:PropertyName("orig_tc")
-    @set:PropertyName("orig_tc")
+    @SerializedName("orig_tc")
     var origTc: String = "",
-    @get:PropertyName("route_id")
-    @set:PropertyName("route_id")
+    @SerializedName("route_id")
     var routeId: Long = 0,
-    @get:PropertyName("route_no")
-    @set:PropertyName("route_no")
+    @SerializedName("route_no")
     var routeNo: String = "",
-    @get:PropertyName("service_type")
-    @set:PropertyName("service_type")
+    @SerializedName("service_type")
     var serviceType: Long = 0,
-    @get:PropertyName("region")
-    @set:PropertyName("region")
+    @SerializedName("region")
     var region: GmbRegion = GmbRegion.UNKNOWN,
 )

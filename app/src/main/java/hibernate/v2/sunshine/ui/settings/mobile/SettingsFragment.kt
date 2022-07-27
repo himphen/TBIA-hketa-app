@@ -3,6 +3,7 @@ package hibernate.v2.sunshine.ui.settings.mobile
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
@@ -11,12 +12,14 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.core.AdManager
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.ui.onboarding.mobile.OnboardingActivity
 import hibernate.v2.sunshine.ui.settings.eta.layout.mobile.EtaLayoutSelectionActivity
 import hibernate.v2.sunshine.util.GeneralUtils
+import hibernate.v2.sunshine.util.dpToPx
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -26,11 +29,12 @@ import java.util.Date
 class SettingsFragment : PreferenceFragmentCompat() {
 
     companion object {
-        const val AD_TIME = 2 * 24 * 60 * 60 * 1000
+        const val AD_TIME = 2 * 24 * 60 * 60 * 1000 // 2 days
     }
 
     private val onboardingViewModel by inject<OnboardingViewModel>()
     private val preferences by inject<SharedPreferencesManager>()
+    private val adManager by inject<AdManager>()
 
     private var etaLayoutLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -51,6 +55,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
+        findPreference<Preference>("pref_settings_default_company")?.setOnPreferenceClickListener {
+            MaterialAlertDialogBuilder(it.context)
+                .setItems(R.array.add_eta_brand_selections) { dialog, which ->
+                    preferences.defaultCompany = which
+                    dialog.dismiss()
+                }
+                .setNegativeButton(R.string.dialog_cancel_btn) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+            true
+        }
+
+
 //        findPreference<CheckBoxPreference>("pref_settings_map_traffic_toggle")?.apply {
 //            isChecked = preferences.trafficLayerToggle
 //
@@ -65,27 +83,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
 //        }
 
         findPreference<CheckBoxPreference>("pref_settings_hide_ad_banner")?.apply {
-            fun setSummaryOnText(value: Long) {
-                summaryOn = getString(R.string.settings_hide_ad_summary, Date().run {
-                    time = value
-                    SimpleDateFormat("yyyy-MM-dd HH:mm").format(this)
-                })
-            }
-
-            val time = preferences.hideAdBanner
-            isChecked = time != 0L
-            if (isChecked) {
-                setSummaryOnText(time)
-            }
-
             setOnPreferenceChangeListener { _, newValue ->
                 val value = newValue as Boolean
                 if (value) {
                     val newTime = System.currentTimeMillis() + AD_TIME
-                    preferences.hideAdBanner = newTime
-                    setSummaryOnText(newTime)
+                    preferences.hideAdBannerUntil = newTime
+                    setAdSummaryOnText(newTime)
                 } else {
-                    preferences.hideAdBanner = 0
+                    preferences.hideAdBannerUntil = 0
                 }
                 Toast.makeText(context, R.string.settings_hide_ad_toast_message, Toast.LENGTH_LONG)
                     .show()
@@ -115,5 +120,35 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        listView.apply {
+            setPadding(paddingLeft, paddingTop, paddingRight, dpToPx(120))
+            clipToPadding = false
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Check hide ad expire time
+        findPreference<CheckBoxPreference>("pref_settings_hide_ad_banner")?.apply {
+            if (adManager.shouldShowBannerAd()) {
+                isChecked = false
+            } else {
+                isChecked = true
+                setAdSummaryOnText(preferences.hideAdBannerUntil)
+            }
+        }
+    }
+
+    private fun CheckBoxPreference.setAdSummaryOnText(value: Long) {
+        summaryOn = getString(R.string.settings_hide_ad_summary, Date().run {
+            time = value
+            SimpleDateFormat("yyyy-MM-dd HH:mm").format(this)
+        })
     }
 }

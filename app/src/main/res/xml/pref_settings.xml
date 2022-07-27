@@ -6,34 +6,55 @@
     <!--        android:key="pref_settings_map_traffic_toggle"-->
     <!--        android:title="@string/title_settings_maps_traffic_toggle" />-->
 
-    <Preference
-        android:icon="@drawable/ic_settings_eta_layout_24"
-        android:key="pref_settings_eta_layout"
-        android:title="@string/title_activity_eta_layout" />
+    <PreferenceCategory android:title="@string/settings_category_settings_title">
+        <Preference
+            android:icon="@drawable/ic_settings_eta_layout_24"
+            android:key="pref_settings_eta_layout"
+            android:title="@string/title_activity_eta_layout" />
+        <Preference
+            android:icon="@drawable/ic_settings_eta_layout_24"
+            android:key="pref_settings_default_company"
+            android:title="@string/title_settings_default_company" />
 
-    <Preference
-        android:icon="@drawable/ic_settings_version_24"
-        android:key="pref_settings_version"
-        android:title="@string/title_settings_version"
-        tools:summary="1.0.0" />
+        title_settings_default_company
 
-    <Preference
-        android:icon="@drawable/ic_settings_reset_24"
-        android:key="pref_settings_reset"
-        android:title="@string/title_settings_reset" />
+        <Preference
+            android:icon="@drawable/ic_settings_version_24"
+            android:key="pref_settings_version"
+            android:title="@string/title_settings_version"
+            tools:summary="1.0.0" />
 
-    <Preference
-        android:icon="@drawable/ic_integration_instructions_24"
-        android:key="pref_settings_acknowledgement"
-        android:summary="@string/settings_acknowledgement_summary1"
-        android:title="@string/settings_acknowledgement_title1" />
+        <Preference
+            android:icon="@drawable/ic_settings_version_24"
+            android:key="pref_settings_version"
+            android:title="@string/title_settings_version"
+            tools:summary="1.0.0" />
 
-    <Preference
-        android:icon="@drawable/ic_integration_instructions_24"
-        android:key="pref_settings_acknowledgement2"
-        android:summary="@string/settings_acknowledgement_summary2"
-        android:title="@string/settings_acknowledgement_title2" />
+        <Preference
+            android:icon="@drawable/ic_settings_reset_24"
+            android:key="pref_settings_reset"
+            android:title="@string/title_settings_reset" />
 
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_category_notices_title">
+        <Preference
+            android:icon="@drawable/ic_integration_instructions_24"
+            android:key="pref_settings_acknowledgement"
+            android:summary="@string/settings_acknowledgement_summary1"
+            android:title="@string/settings_acknowledgement_title1" />
+
+        <Preference
+            android:icon="@drawable/ic_integration_instructions_24"
+            android:key="pref_settings_acknowledgement2"
+            android:summary="@string/settings_acknowledgement_summary2"
+            android:title="@string/settings_acknowledgement_title2" />
+
+        <Preference
+            android:icon="@drawable/ic_integration_instructions_24"
+            android:key="pref_settings_notice_1"
+            android:summary="@string/settings_acknowledgement_summary3"
+            android:title="@string/settings_acknowledgement_title3" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_category_ad_title">
 
         <CheckBoxPreference

@@ -7,14 +7,11 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.ActivityMainBinding
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
 import hibernate.v2.sunshine.ui.route.list.mobile.RouteListActivity
-import hibernate.v2.sunshine.ui.settings.mobile.SettingsFragment
 import hibernate.v2.sunshine.util.slideToBottomAnimate
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseFragmentActivity<ActivityMainBinding>() {
@@ -25,8 +22,6 @@ class MainActivity : BaseFragmentActivity<ActivityMainBinding>() {
     }
 
     override fun getActivityViewBinding() = ActivityMainBinding.inflate(layoutInflater)
-
-    private val sharedPreferencesManager: SharedPreferencesManager by inject()
 
     var etaUpdatedLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -45,10 +40,6 @@ class MainActivity : BaseFragmentActivity<ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setHomeButtonEnabled(false)
-
-        if (sharedPreferencesManager.hideAdBanner > System.currentTimeMillis() + SettingsFragment.AD_TIME) {
-            sharedPreferencesManager.hideAdBanner = 0
-        }
 
         initUI()
         initEvent()

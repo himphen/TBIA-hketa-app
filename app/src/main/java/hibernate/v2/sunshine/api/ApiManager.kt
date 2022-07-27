@@ -1,15 +1,16 @@
 package hibernate.v2.sunshine.api
 
-import android.content.Context
+import android.util.Patterns
 import com.google.gson.Gson
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiConverterFactory
+import hibernate.v2.api.service.DataService
 import hibernate.v2.api.service.GmbService
 import hibernate.v2.api.service.HkoWeatherService
 import hibernate.v2.api.service.KmbService
-import hibernate.v2.api.service.OpenWeatherService
 import hibernate.v2.api.service.TransportService
 import hibernate.v2.sunshine.BuildConfig
+import hibernate.v2.sunshine.repository.RemoteConfigRepository
 import hibernate.v2.sunshine.util.JsonUtils
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,16 +18,18 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-open class ApiManager(val context: Context) {
+open class ApiManager(
+    private val remoteConfigRepository: RemoteConfigRepository
+) {
     private val connectTimeout: Long = 15
     private val readTimeout: Long = 15
     private val writeTimeout: Long = 15
     private lateinit var client: OkHttpClient
+    lateinit var dataService: DataService
     lateinit var kmbService: KmbService
     lateinit var gmbService: GmbService
     lateinit var transportService: TransportService
     lateinit var hkoWeatherService: HkoWeatherService
-    lateinit var openWeatherService: OpenWeatherService
 
     private fun initClient() {
         // init okHttp Client
@@ -42,6 +45,20 @@ open class ApiManager(val context: Context) {
             )
             .addInterceptor(ApiLogInterceptor())
             .build()
+
+        var dataServiceBaseUrl = remoteConfigRepository.remoteConfig.getString("api_base_url_v1")
+
+        if (!Patterns.WEB_URL.matcher(dataServiceBaseUrl).matches()) {
+            dataServiceBaseUrl = "https://localhost/"
+        }
+
+        dataService = Retrofit.Builder()
+            .baseUrl(dataServiceBaseUrl)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(ApiConverterFactory(Gson()))
+            .build()
+            .create(DataService::class.java)
 
         kmbService = Retrofit.Builder()
             .baseUrl("https://data.etabus.gov.hk/")
@@ -65,13 +82,6 @@ open class ApiManager(val context: Context) {
             .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(ApiConverterFactory(Gson()))
             .build().create(HkoWeatherService::class.java)
-
-        openWeatherService = Retrofit.Builder()
-            .baseUrl("https://api.openweathermap.org/")
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addConverterFactory(ApiConverterFactory(Gson()))
-            .build().create(OpenWeatherService::class.java)
 
         gmbService = Retrofit.Builder()
             .baseUrl("https://data.etagmb.gov.hk/")

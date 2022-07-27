@@ -15,7 +15,8 @@ class BookmarkEditConfirmDialogFragment : GuidedStepSupportFragment() {
     private var afterId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        currentBookmarkEdit = arguments?.getParcelable(BookmarkEditConfirmDialogActivity.ARG_SELECTED_ETA)!!
+        currentBookmarkEdit =
+            arguments?.getParcelable(BookmarkEditConfirmDialogActivity.ARG_SELECTED_ETA)!!
         beforeId = arguments?.getString(BookmarkEditConfirmDialogActivity.ARG_BEFORE_ETA_ID)
         afterId = arguments?.getString(BookmarkEditConfirmDialogActivity.ARG_AFTER_ETA_ID)
 
@@ -80,7 +81,8 @@ class BookmarkEditConfirmDialogFragment : GuidedStepSupportFragment() {
     }
 
     companion object {
-        fun getInstance(bundle: Bundle?) = BookmarkEditConfirmDialogFragment().apply { arguments = bundle }
+        fun getInstance(bundle: Bundle?) =
+            BookmarkEditConfirmDialogFragment().apply { arguments = bundle }
 
         const val ACTION_ID_MOVE_UP = 1L
         const val ACTION_ID_MOVE_DOWN = 2L

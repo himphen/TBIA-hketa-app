@@ -12,6 +12,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemRouteListBinding
 import hibernate.v2.sunshine.model.transport.EtaType
 import hibernate.v2.sunshine.model.transport.LRTTransportRoute
+import hibernate.v2.sunshine.model.transport.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportRoute
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.route.list.mobile.RouteListRouteItemAdapter.RouteItemViewHolder
@@ -49,17 +50,23 @@ class RouteListRouteItemAdapter(
                         newLayoutParams.width = dpToPx(100)
                         root.requestLayout()
 
+                        routeCompanyColor.visible()
                         routeBusNumberLl.visible()
                         routeBusNumberTv.textSize = 16f
                         routeMTRNumberLl.gone()
                         routeLRTNumberLl.gone()
                     }
                     EtaType.LRT -> {
+                        val newLayoutParams = root.layoutParams as ConstraintLayout.LayoutParams
+                        newLayoutParams.width = dpToPx(100)
+                        root.requestLayout()
+                        routeCompanyColor.gone()
                         routeBusNumberLl.gone()
                         routeMTRNumberLl.gone()
                         routeLRTNumberLl.visible()
                     }
                     else -> {
+                        routeCompanyColor.gone()
                         routeBusNumberLl.visible()
                         routeMTRNumberLl.gone()
                         routeLRTNumberLl.gone()
@@ -92,6 +99,14 @@ class RouteListRouteItemAdapter(
                                         setStroke(dpToPx(3), color)
                                     }
                                 }
+                            }
+                        }
+                        is MTRTransportRoute -> {
+                            val color = route.getColor(context, false)
+                            routeCompanyColor.setBackgroundColor(color)
+                            routeBusNumberTv.apply {
+                                text = route.getCardRouteText()
+                                visible()
                             }
                         }
                         else -> {

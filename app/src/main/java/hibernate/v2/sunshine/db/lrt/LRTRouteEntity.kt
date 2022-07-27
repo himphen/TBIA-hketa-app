@@ -6,7 +6,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.lrt.LRTRoute
+import hibernate.v2.api.model.transport.lrt.LrtRoute
 import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.LRTRouteInfo
 import hibernate.v2.sunshine.model.transport.LRTTransportRoute
@@ -42,7 +42,7 @@ data class LRTRouteEntity(
     val routeInfoIsEnabled: Boolean,
 ) : TransportHashable, Comparable<LRTRouteEntity>, BaseRouteEntity() {
     companion object {
-        fun fromApiModel(route: LRTRoute): LRTRouteEntity {
+        fun fromApiModel(route: LrtRoute): LRTRouteEntity {
             return LRTRouteEntity(
                 routeId = route.routeId,
                 bound = route.bound,

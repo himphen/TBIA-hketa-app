@@ -12,15 +12,15 @@ import androidx.leanback.widget.VerticalGridPresenter
 import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.BookmarkEdit
+import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
-import hibernate.v2.sunshine.ui.route.list.leanback.RouteListActivity
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel
 import hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditConfirmDialogActivity.Companion.ARG_RESULT_CODE
 import hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditConfirmDialogFragment.Companion.ACTION_ID_MOVE_DOWN
 import hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditConfirmDialogFragment.Companion.ACTION_ID_MOVE_UP
 import hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditConfirmDialogFragment.Companion.ACTION_ID_REMOVE
+import hibernate.v2.sunshine.ui.route.list.leanback.RouteListActivity
 import hibernate.v2.sunshine.util.swap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +34,7 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
         }
     }
 
-    var BookmarkEditLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+    var bookmarkEditLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             lifecycleScope.launch(Dispatchers.Main) {
                 when (result.data?.getLongExtra(ARG_RESULT_CODE, -1)) {
@@ -149,7 +149,7 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
                 is Card.SettingsEtaItemCard -> {
                     viewModel.editCard.postValue(card)
 
-                    BookmarkEditLauncher.launch(
+                    bookmarkEditLauncher.launch(
                         Intent(
                             context,
                             BookmarkEditConfirmDialogActivity::class.java

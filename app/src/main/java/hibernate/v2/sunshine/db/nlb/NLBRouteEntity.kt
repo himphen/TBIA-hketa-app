@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.nlb.NLBRoute
+import hibernate.v2.api.model.transport.nlb.NlbRoute
 import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.TransportHashable
 import hibernate.v2.sunshine.model.transport.TransportRoute
@@ -41,7 +41,7 @@ data class NLBRouteEntity(
     fun isSpecialRoute(): Boolean = false
 
     companion object {
-        fun fromApiModel(route: NLBRoute): NLBRouteEntity {
+        fun fromApiModel(route: NlbRoute): NLBRouteEntity {
             return NLBRouteEntity(
                 routeId = route.routeId,
                 origEn = route.origEn,
