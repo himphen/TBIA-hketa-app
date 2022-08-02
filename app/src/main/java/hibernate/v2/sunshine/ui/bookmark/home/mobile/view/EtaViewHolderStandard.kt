@@ -31,7 +31,7 @@ class EtaViewHolderStandard(viewBinding: ItemEtaCardStandardBinding) :
 
             applyRouteNumberContainer(card, routeNumberContainer)
 
-            stopNameTv.text = card.stop.getName(context)
+            stopNameTv.text = card.stop.getLocalisedName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)
 
             card.etaList.getOrNull(0)?.getEtaMinuteText()?.let {

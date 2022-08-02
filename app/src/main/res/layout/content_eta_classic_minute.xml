@@ -26,7 +26,7 @@
         android:layout_marginStart="2dp"
         android:gravity="center_vertical|end"
         android:text="@string/demo_card_eta_minute_classic_unit"
-        android:textSize="14sp"
+        android:textSize="@dimen/eta_classic_minute_unit"
         app:layout_constraintBaseline_toBaselineOf="@id/etaMinuteTv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/etaMinuteTv" />

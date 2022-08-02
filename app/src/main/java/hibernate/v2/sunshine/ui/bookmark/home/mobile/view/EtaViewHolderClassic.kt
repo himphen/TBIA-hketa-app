@@ -16,7 +16,7 @@ class EtaViewHolderClassic(viewBinding: ItemEtaCardClassicBinding) :
         viewBinding.content.apply {
             applyRouteNumberContainer(card, routeNumberContainer)
 
-            stopNameTv.text = card.stop.getName(context)
+            stopNameTv.text = card.stop.getLocalisedName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)
 
             (etaMinuteLl.etaTimeRv.adapter as EtaTimeAdapter).apply {

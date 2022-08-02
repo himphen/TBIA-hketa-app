@@ -6,10 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.sunshine.model.AddEtaRowItem
-import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.model.transport.GmbTransportRoute
-import hibernate.v2.sunshine.model.transport.LRTTransportRoute
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
+import hibernate.v2.sunshine.model.transport.eta.EtaType
+import hibernate.v2.sunshine.model.transport.route.GmbTransportRoute
+import hibernate.v2.sunshine.model.transport.route.LRTTransportRoute
+import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportRouteStopList
 import hibernate.v2.sunshine.repository.CtbRepository
 import hibernate.v2.sunshine.repository.GmbRepository
@@ -53,11 +53,11 @@ class RouteListLeanbackViewModel(
                 EtaType.NLB -> getNLBRouteList(context)
             }
 
-            searchRoute(etaType)
+            searchRoute(context, etaType)
         }
     }
 
-    fun searchRoute(etaType: EtaType) {
+    fun searchRoute(context:Context, etaType: EtaType) {
         executingSearchJob?.cancel()
         if (!RouteAndStopListDataHolder.hasData(etaType)) {
             executingSearchJob = viewModelScope.launch(Dispatchers.IO) {
@@ -81,8 +81,8 @@ class RouteListLeanbackViewModel(
         executingSearchJob = viewModelScope.launch(Dispatchers.IO) {
             val result = allTransportRouteList.filter { routeForRowAdapter ->
                 routeForRowAdapter.route.routeNo.startsWith(keyword, true) ||
-                    routeForRowAdapter.route.destTc.startsWith(keyword, true) ||
-                    routeForRowAdapter.route.origTc.startsWith(keyword, true)
+                    routeForRowAdapter.route.getLocalisedDest(context).startsWith(keyword, true) ||
+                    routeForRowAdapter.route.getLocalisedOrig(context).startsWith(keyword, true)
             }
 
             filteredTransportRouteList.emit(Pair(etaType, result))

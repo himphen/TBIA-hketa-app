@@ -17,7 +17,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentRouteListViewPagerBinding
-import hibernate.v2.sunshine.model.transport.EtaType
+import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.ui.base.BaseActivity
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.util.afterTextChanged
@@ -146,7 +146,7 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
                 .debounce(searchDelay)
                 .onEach {
                     viewModel.searchRouteKeyword.value = it
-                    viewModel.searchRoute(etaType)
+                    viewModel.searchRoute(context, etaType)
                 }
                 .launchIn(lifecycleScope)
 

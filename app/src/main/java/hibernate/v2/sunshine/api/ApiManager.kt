@@ -1,6 +1,8 @@
 package hibernate.v2.sunshine.api
 
 import android.util.Patterns
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.gson.Gson
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiConverterFactory
@@ -10,7 +12,6 @@ import hibernate.v2.api.service.HkoWeatherService
 import hibernate.v2.api.service.KmbService
 import hibernate.v2.api.service.TransportService
 import hibernate.v2.sunshine.BuildConfig
-import hibernate.v2.sunshine.repository.RemoteConfigRepository
 import hibernate.v2.sunshine.util.JsonUtils
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,9 +19,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-open class ApiManager(
-    private val remoteConfigRepository: RemoteConfigRepository
-) {
+open class ApiManager {
     private val connectTimeout: Long = 15
     private val readTimeout: Long = 15
     private val writeTimeout: Long = 15
@@ -46,7 +45,7 @@ open class ApiManager(
             .addInterceptor(ApiLogInterceptor())
             .build()
 
-        var dataServiceBaseUrl = remoteConfigRepository.remoteConfig.getString("api_base_url_v1")
+        var dataServiceBaseUrl = Firebase.remoteConfig.getString("api_base_url_v1")
 
         if (!Patterns.WEB_URL.matcher(dataServiceBaseUrl).matches()) {
             dataServiceBaseUrl = "https://localhost/"

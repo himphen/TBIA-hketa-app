@@ -23,7 +23,7 @@ class BookmarkEditCardView(context: Context) :
     fun onBindItemView(card: Card.SettingsEtaItemCard) {
         viewBinding.apply {
             applyRouteNumberContainer(card, routeNumberContainer)
-            stopNameTv.text = card.stop.getName(context)
+            stopNameTv.text = card.stop.getLocalisedName(context)
             routeDirectionTv.text = card.route.getDestDirectionText(context)
             routeDirectionTv.visibility = VISIBLE
         }

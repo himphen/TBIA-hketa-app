@@ -1,10 +1,12 @@
 package hibernate.v2.sunshine.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewbinding.ViewBinding
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.util.GeneralUtils
 
 abstract class BaseLeanbackActivity<T : ViewBinding> : FragmentActivity() {
     lateinit var viewBinding: T
@@ -12,6 +14,10 @@ abstract class BaseLeanbackActivity<T : ViewBinding> : FragmentActivity() {
     open var fragment: Fragment? = null
     open var titleId: Int? = null
     open var titleString: String? = null
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(GeneralUtils.updateLanguage(newBase))
+    }
 
     abstract fun getActivityViewBinding(): T
 

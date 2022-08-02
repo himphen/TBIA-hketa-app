@@ -10,7 +10,7 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.ctb.CtbRoute
 import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.TransportHashable
-import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.transport.route.TransportRoute
 
 @Keep
 @Entity(

@@ -18,7 +18,7 @@ import hibernate.v2.sunshine.core.AdManager
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentBookmarkHomeBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.TransportEta
+import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.bookmark.EtaCardViewType
 import hibernate.v2.sunshine.ui.bookmark.edit.mobile.BookmarkEditActivity
@@ -27,7 +27,8 @@ import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.route.list.mobile.RouteListActivity
 import hibernate.v2.sunshine.util.DateUtil
-import hibernate.v2.sunshine.util.GeneralUtils.REFRESH_TIME
+import hibernate.v2.sunshine.util.GeneralUtils.ETA_LAST_UPDATED_REFRESH_TIME
+import hibernate.v2.sunshine.util.GeneralUtils.ETA_REFRESH_TIME
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.tickerFlow
@@ -81,6 +82,7 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
 
     private fun initEvent() {
         viewModel.savedEtaCardList.observe(viewLifecycleOwner) {
+            viewModel.lastUpdatedTime.postValue(System.currentTimeMillis())
             hideUpdateEtaFailedText()
 
             etaCardList?.let { etaCardList ->
@@ -129,9 +131,23 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                Logger.t("lifecycle").d("repeatOnLifecycle")
-                tickerFlow(REFRESH_TIME.milliseconds).collect {
+                Logger.t("lifecycle").d("repeatOnLifecycle ETA_REFRESH_TIME")
+                tickerFlow(ETA_REFRESH_TIME.milliseconds).collect {
                     viewModel.etaRequested.emit(true)
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                Logger.t("lifecycle").d("repeatOnLifecycle viewModel.lastUpdatedTime")
+                tickerFlow(ETA_LAST_UPDATED_REFRESH_TIME.milliseconds).collect {
+                    viewModel.lastUpdatedTime.value?.let { lastUpdatedTime ->
+                        viewBinding?.lastUpdatedTv?.text = getString(
+                            R.string.eta_last_updated_at,
+                            ((System.currentTimeMillis() - lastUpdatedTime) / 1000).toInt()
+                        )
+                    }
                 }
             }
         }
@@ -163,7 +179,7 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
             (recyclerView.itemAnimator as? SimpleItemAnimator)
                 ?.supportsChangeAnimations = false
 
-            viewBinding?.updateEtaFailedTv?.setOnClickListener{
+            viewBinding?.updateEtaFailedTv?.setOnClickListener {
                 lifecycleScope.launch {
                     viewModel.etaRequested.emit(true)
                 }
@@ -180,11 +196,13 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
             viewBinding?.apply {
                 emptyViewCl.root.visible()
                 recyclerView.gone()
+                lastUpdatedTv.gone()
             }
         } else {
             viewBinding?.apply {
                 emptyViewCl.root.gone()
                 recyclerView.visible()
+                lastUpdatedTv.visible()
             }
             etaCardList.forEachIndexed { index, etaCard ->
                 val temp = etaCard.etaList.filter { eta: TransportEta ->

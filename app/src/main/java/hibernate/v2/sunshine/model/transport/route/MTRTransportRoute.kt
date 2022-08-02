@@ -1,15 +1,16 @@
-package hibernate.v2.sunshine.model.transport
+package hibernate.v2.sunshine.model.transport.route
 
 import android.content.Context
 import android.os.Parcelable
+import androidx.annotation.ColorInt
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.util.GeneralUtils
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class GmbTransportRoute(
+data class MTRTransportRoute(
     override val routeId: String,
     override val routeNo: String,
     override val bound: Bound,
@@ -21,7 +22,7 @@ data class GmbTransportRoute(
     override val destTc: String,
     override val destSc: String,
     override val company: Company,
-    val region: GmbRegion
+    val routeInfo: MTRRouteInfo,
 ) : TransportRoute(
     routeId,
     routeNo,
@@ -38,33 +39,47 @@ data class GmbTransportRoute(
     Parcelable {
 
     override fun compareTo(other: TransportRoute): Int {
-        if (other is GmbTransportRoute) {
-            val result = region.ordering.compareTo(other.region.ordering)
+        if (other is MTRTransportRoute) {
+            val result = routeInfo.nameEn.compareTo(other.routeInfo.nameEn)
             if (result != 0) {
                 return result
             }
         }
 
-        return super.compareTo(other)
+        return serviceType.compareTo(other.serviceType)
     }
 
     override fun isSpecialRoute(): Boolean = false
 
-    private fun getRegionName(context: Context): String {
-        return when (region) {
-            GmbRegion.HKI -> context.getString(R.string.text_gmb_region_hki)
-            GmbRegion.KLN -> context.getString(R.string.text_gmb_region_kln)
-            GmbRegion.NT -> context.getString(R.string.text_gmb_region_nt)
-            GmbRegion.UNKNOWN -> ""
-        }
-    }
-
     override fun getDirectionWithRouteText(context: Context): String {
         return context.getString(
-            R.string.text_add_eta_destination,
-            "${getRegionName(context)}$routeNo",
-            origTc,
-            destTc
+            R.string.text_add_eta_destination_train,
+            routeInfo.nameTc,
+            getLocalisedDest(context),
+            getLocalisedDest(context)
         )
+    }
+
+    override fun getCardRouteText(): String = routeInfo.nameTc
+
+    @ColorInt
+    override fun getColor(context: Context, combineNC: Boolean): Int =
+        routeInfo.color
+}
+
+@Parcelize
+data class MTRRouteInfo(
+    var nameEn: String,
+    var nameTc: String,
+    @ColorInt var color: Int,
+) : Parcelable {
+    fun getLocalisedName(context: Context): String {
+        val localisedName = if (GeneralUtils.isLangEnglish(context)) {
+            nameEn
+        } else {
+            nameTc
+        }
+
+        return localisedName
     }
 }

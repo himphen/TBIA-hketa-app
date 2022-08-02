@@ -8,11 +8,11 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
-import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.model.transport.LRTTransportEta
-import hibernate.v2.sunshine.model.transport.MTRTransportEta
-import hibernate.v2.sunshine.model.transport.TransportEta
-import hibernate.v2.sunshine.model.transport.filterCircularStop
+import hibernate.v2.sunshine.model.transport.eta.EtaType
+import hibernate.v2.sunshine.model.transport.eta.LRTTransportEta
+import hibernate.v2.sunshine.model.transport.eta.MTRTransportEta
+import hibernate.v2.sunshine.model.transport.eta.TransportEta
+import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
 import hibernate.v2.sunshine.repository.CtbRepository
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.repository.GmbRepository
@@ -48,6 +48,7 @@ class SearchMapViewModel(
     val etaUpdateError = MutableSharedFlow<Throwable>()
     val etaRequested = MutableSharedFlow<Boolean>()
     val startRefreshEtaJob = MutableSharedFlow<Unit>()
+    val lastUpdatedTime = MutableLiveData<Long?>()
 
     val requestedLocationUpdates = MutableLiveData(false)
 

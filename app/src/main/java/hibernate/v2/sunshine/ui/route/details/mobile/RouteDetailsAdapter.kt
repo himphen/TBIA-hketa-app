@@ -10,8 +10,8 @@ import hibernate.v2.sunshine.databinding.ItemRouteDetailsStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteDetailsStopExpandedBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.RouteDetailsStop
-import hibernate.v2.sunshine.model.transport.TransportEta
-import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.transport.eta.TransportEta
+import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.bookmark.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.view.setEtaTimeFlexManager
@@ -138,7 +138,7 @@ class RouteDetailsAdapter(
             val stop = item.transportStop
             val color = route.getColor(context)
             viewBinding.apply {
-                contentRouteDetailsStop.stopNameTv.text = stop.getName(context)
+                contentRouteDetailsStop.stopNameTv.text = stop.getLocalisedName(context)
                 contentRouteDetailsStop.stopSeqTv.text = String.format("%02d", stop.seq)
 
                 contentRouteDetailsStop.stopLineTop.setBackgroundColor(color)
@@ -166,7 +166,7 @@ class RouteDetailsAdapter(
             val isLast = absoluteAdapterPosition == stopList.lastIndex
             val stop = item.transportStop
             viewBinding.apply {
-                contentRouteDetailsStop.stopNameTv.text = stop.getName(context)
+                contentRouteDetailsStop.stopNameTv.text = stop.getLocalisedName(context)
                 contentRouteDetailsStop.stopSeqTv.text = String.format("%02d", stop.seq)
 
                 contentRouteDetailsStop.stopLineTop.setBackgroundColor(color)

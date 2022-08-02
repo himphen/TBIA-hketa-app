@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemRouteListBinding
-import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.model.transport.LRTTransportRoute
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
-import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.transport.eta.EtaType
+import hibernate.v2.sunshine.model.transport.route.LRTTransportRoute
+import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
+import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.route.list.mobile.RouteListRouteItemAdapter.RouteItemViewHolder
 import hibernate.v2.sunshine.util.dpToPx
@@ -118,8 +118,8 @@ class RouteListRouteItemAdapter(
                     }
                 }
 
-                routeOrigTv.text = route.origTc
-                routeDestTv.text = route.destTc
+                routeOrigTv.text = route.getLocalisedOrig(context)
+                routeDestTv.text = route.getLocalisedDest(context)
 
                 routeSpTv.apply {
                     if (route.isSpecialRoute()) {
@@ -141,8 +141,8 @@ class RouteListRouteItemAdapter(
         fun getDirectionText(context: Context, route: TransportRoute): String {
             return context.getString(
                 R.string.text_add_eta_destination_mobile,
-                route.origTc,
-                route.destTc
+                route.getLocalisedOrig(context),
+                route.getLocalisedDest(context)
             )
         }
     }

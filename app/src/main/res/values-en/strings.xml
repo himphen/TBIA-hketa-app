@@ -122,6 +122,7 @@
     <string name="demo_card_eta_minute_compact_2">13</string>
     <string name="demo_card_eta_minute_compact_3">23</string>
     <string name="demo_card_eta_minute_classic">3</string>
+    <string name="demo_card_eta_minute_classic_comma">,</string>
     <string name="demo_card_eta_minute_classic_unit">min</string>
     <string name="demo_card_eta_minute_classic_time">07:30</string>
     <string name="demo_card_eta_minute_na">-</string>
@@ -166,5 +167,7 @@
     <string name="settings_hide_ad_toast_message">Restart the app to apply the changes.</string>
     <string name="settings_hide_ad_title">Hide Banner</string>
     <string name="settings_hide_ad_summary">Ads won\'t show until %s</string>
+    <string name="eta_last_updated_at">Departures updated %ds ago</string>
+    <string name="eta_last_updated_at_init">Loading departures…</string>
 
 </resources>

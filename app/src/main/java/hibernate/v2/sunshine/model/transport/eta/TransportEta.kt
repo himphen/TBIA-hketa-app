@@ -1,11 +1,14 @@
-package hibernate.v2.sunshine.model.transport
+package hibernate.v2.sunshine.model.transport.eta
 
+import android.content.Context
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.BusEta
 import hibernate.v2.api.model.transport.gmb.GmbEta
 import hibernate.v2.api.model.transport.nlb.NLBEta
+import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.util.DateFormatPattern
 import hibernate.v2.sunshine.util.DateUtil
+import hibernate.v2.sunshine.util.GeneralUtils.isLangEnglish
 import java.util.Calendar
 import java.util.Date
 
@@ -17,6 +20,17 @@ open class TransportEta(
     val bound: Bound?,
     val seq: Int?,
 ) {
+
+    fun getLocalisedRmk(context: Context): String? {
+        val localisedRmk = if (isLangEnglish(context)) {
+            rmkEn
+        } else {
+            rmkTc
+        }
+
+        return localisedRmk
+    }
+
     private val etaWithoutSecond by lazy {
         eta?.let {
             // Ignore second and millisecond

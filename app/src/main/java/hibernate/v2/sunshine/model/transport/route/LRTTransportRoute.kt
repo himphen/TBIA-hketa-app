@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.model.transport
+package hibernate.v2.sunshine.model.transport.route
 
 import android.content.Context
 import android.os.Parcelable
@@ -6,6 +6,7 @@ import androidx.annotation.ColorInt
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.util.GeneralUtils
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -40,11 +41,22 @@ data class LRTTransportRoute(
     override fun isSpecialRoute(): Boolean = false
 
     override fun getDirectionWithRouteText(context: Context): String {
+        val localisedDesc = if (GeneralUtils.isLangEnglish(context)) {
+            destEn
+        } else {
+            destTc
+        }
+        val localisedOrig = if (GeneralUtils.isLangEnglish(context)) {
+            origEn
+        } else {
+            destTc
+        }
+
         return context.getString(
             R.string.text_add_eta_destination_train,
             routeNo,
-            origTc,
-            destTc
+            localisedOrig,
+            localisedDesc
         )
     }
 

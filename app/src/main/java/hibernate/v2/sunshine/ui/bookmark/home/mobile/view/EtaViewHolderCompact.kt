@@ -33,7 +33,7 @@ class EtaViewHolderCompact(viewBinding: ItemEtaCardCompactBinding) :
 
             applyRouteNumberContainer(card, routeNumberContainer)
 
-            stopNameTv.text = card.stop.getName(context)
+            stopNameTv.text = card.stop.getLocalisedName(context)
             routeDirectionTv.text = route.getDestDirectionText(context)
 
             val first = card.etaList.getOrNull(0)?.getEtaMinuteText()

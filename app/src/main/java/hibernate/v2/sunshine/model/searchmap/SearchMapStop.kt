@@ -7,7 +7,7 @@ import hibernate.v2.sunshine.db.gmb.GmbStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 import hibernate.v2.sunshine.db.nlb.NLBStopEntity
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.EtaType
+import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.TransportStop
 
 data class SearchMapStop(

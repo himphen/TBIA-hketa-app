@@ -4,8 +4,9 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemEtaTimeBinding
-import hibernate.v2.sunshine.model.transport.TransportEta
+import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 
 class EtaTimeAdapter : RecyclerView.Adapter<BaseViewHolder<ItemEtaTimeBinding>>() {
@@ -30,6 +31,14 @@ class EtaTimeAdapter : RecyclerView.Adapter<BaseViewHolder<ItemEtaTimeBinding>>(
         val item = list[position]
         item.getEtaMinuteText("-").let {
             holder.viewBinding.etaMinuteTv.text = it.second
+        }
+
+        if (list.lastIndex == position) {
+            holder.viewBinding.etaMinuteUnitTv.text =
+                holder.context.getString(R.string.demo_card_eta_minute_classic_unit)
+        } else {
+            holder.viewBinding.etaMinuteUnitTv.text =
+                holder.context.getString(R.string.demo_card_eta_minute_classic_comma)
         }
     }
 

@@ -52,7 +52,23 @@ object GeneralUtils : KoinComponent {
         }
     }
 
-    const val REFRESH_TIME = 60 * 1000L
+    fun getLanguage(context: Context): Locale? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            context.resources.configuration.locales.get(0)
+        else
+            context.resources.configuration.locale
+    }
+
+    fun isLangEnglish(context: Context): Boolean {
+        return getLanguage(context) == Locale.ENGLISH
+    }
+
+    fun isLangTC(context: Context): Boolean {
+        return getLanguage(context) == Locale.TRADITIONAL_CHINESE
+    }
+
+    const val ETA_REFRESH_TIME = 60 * 1000L
+    const val ETA_LAST_UPDATED_REFRESH_TIME = 1 * 1000L
 }
 
 fun <T> MutableList<T>.moveAt(oldIndex: Int, newIndex: Int) {

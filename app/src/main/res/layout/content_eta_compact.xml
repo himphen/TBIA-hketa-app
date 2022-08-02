@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:gravity="start|center_vertical"
             android:letterSpacing="0.1"
-            android:maxLines="1"
+            android:maxLines="2"
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
             android:text="@string/demo_card_stop_name"

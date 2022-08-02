@@ -14,7 +14,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -41,15 +43,17 @@ import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentSearchMapBinding
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
-import hibernate.v2.sunshine.model.transport.TransportEta
+import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.GeneralUtils
+import hibernate.v2.sunshine.util.GeneralUtils.ETA_LAST_UPDATED_REFRESH_TIME
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
+import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.visible
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
@@ -61,6 +65,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.Date
 import kotlin.coroutines.resume
+import kotlin.time.Duration.Companion.milliseconds
 
 class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
@@ -92,7 +97,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                         getString(
                             R.string.dialog_add_eta_in_search_map_description_bus,
                             card.route.routeNo,
-                            card.stop.nameTc
+                            card.stop.getLocalisedName(context)
                         )
                     )
                     .setPositiveButton(R.string.dialog_add_eta_in_search_map_confirm_btn) { _, _ ->
@@ -163,6 +168,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.routeListForBottomSheet.observe(viewLifecycleOwner) {
+            viewModel.lastUpdatedTime.postValue(System.currentTimeMillis())
             showRouteListOnBottomSheet(it)
         }
 
@@ -195,6 +201,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
         mainViewModel.onRouteBottomSheetStateChanged.observe(viewLifecycleOwner) {
             if (it == BottomSheetBehavior.STATE_HIDDEN) {
+                viewModel.lastUpdatedTime.postValue(-1)
                 stopRefreshEtaJob()
                 routeListAdapter.setData(mutableListOf())
             }
@@ -233,6 +240,27 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 etaRequestJob?.cancel()
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                Logger.t("lifecycle").d("repeatOnLifecycle viewModel.lastUpdatedTime")
+                tickerFlow(ETA_LAST_UPDATED_REFRESH_TIME.milliseconds).collect {
+                    viewModel.lastUpdatedTime.value?.let { lastUpdatedTime ->
+                        if (lastUpdatedTime > 0) {
+                            viewBinding?.layoutRouteList?.lastUpdatedTv?.text = getString(
+                                R.string.eta_last_updated_at,
+                                ((System.currentTimeMillis() - lastUpdatedTime) / 1000).toInt()
+                            )
+                        } else {
+                            viewBinding?.layoutRouteList?.lastUpdatedTv?.text = getString(
+                                R.string.eta_last_updated_at_init
+                            )
+                            viewModel.lastUpdatedTime.postValue(null)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun checkMapToggleButton() {
@@ -623,7 +651,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private fun startRefreshEtaJob() {
         if (routeListAdapter.list.isNotEmpty()) {
             Logger.t("lifecycle").d("startRefreshEtaJob")
-            refreshEtaJob = lifecycleScope.launchPeriodicAsync(GeneralUtils.REFRESH_TIME) {
+            refreshEtaJob = lifecycleScope.launchPeriodicAsync(GeneralUtils.ETA_REFRESH_TIME) {
                 lifecycleScope.launch {
                     viewModel.etaRequested.emit(true)
                 }

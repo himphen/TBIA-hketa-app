@@ -7,8 +7,8 @@ import hibernate.v2.sunshine.databinding.ContentEtaClassicRouteNumberBinding
 import hibernate.v2.sunshine.databinding.ContentEtaCompactRouteNumberBinding
 import hibernate.v2.sunshine.databinding.ContentEtaStandardRouteNumberBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.LRTTransportRoute
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
+import hibernate.v2.sunshine.model.transport.route.LRTTransportRoute
+import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible

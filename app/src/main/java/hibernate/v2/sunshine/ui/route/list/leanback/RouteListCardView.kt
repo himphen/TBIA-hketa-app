@@ -16,7 +16,7 @@ class RouteListCardView(context: Context) : BaseCardView(
 
     fun updateDataUi(card: Card.RouteStopAddCard) {
         card.stop
-        viewBinding.stopNameTv.text = card.stop.getName(context)
+        viewBinding.stopNameTv.text = card.stop.getLocalisedName(context)
     }
 
     init {

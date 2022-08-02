@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="eta_standard_stop_name">24sp</dimen>
+    <dimen name="eta_standard_desc_name">16sp</dimen>
+
+    <dimen name="eta_classic_stop_name">16sp</dimen>
+    <dimen name="eta_classic_desc_name">12sp</dimen>
+    <dimen name="eta_classic_minute_unit">10sp</dimen>
+</resources>

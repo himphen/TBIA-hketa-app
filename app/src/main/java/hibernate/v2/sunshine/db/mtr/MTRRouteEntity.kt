@@ -8,8 +8,8 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.mtr.MtrRoute
 import hibernate.v2.sunshine.db.BaseRouteEntity
-import hibernate.v2.sunshine.model.transport.MTRRouteInfo
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
+import hibernate.v2.sunshine.model.transport.route.MTRRouteInfo
+import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Keep

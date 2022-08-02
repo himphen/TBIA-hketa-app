@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import hibernate.v2.sunshine.databinding.ActivityContainerBinding
-import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.transport.eta.EtaType
+import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
 import org.koin.androidx.viewmodel.ext.android.getStateViewModel
 import org.koin.core.parameter.parametersOf

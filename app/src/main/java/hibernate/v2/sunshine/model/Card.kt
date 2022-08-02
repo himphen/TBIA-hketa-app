@@ -1,8 +1,8 @@
 package hibernate.v2.sunshine.model
 
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
-import hibernate.v2.sunshine.model.transport.TransportEta
-import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.transport.eta.TransportEta
+import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.model.transport.TransportStop
 
 sealed class Card {
@@ -13,7 +13,7 @@ sealed class Card {
         var icon: Int,
     ) : Card() {
         enum class Type {
-            ETA, ETA_LAYOUT, TRAFFIC, NONE, VERSION
+            ETA, ETA_LAYOUT, TRAFFIC, NONE, VERSION, LANG
         }
     }
 

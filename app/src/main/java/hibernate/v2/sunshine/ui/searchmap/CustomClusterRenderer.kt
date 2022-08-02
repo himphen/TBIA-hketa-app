@@ -7,7 +7,7 @@ import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
-import hibernate.v2.sunshine.model.transport.EtaType
+import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.util.GoogleMapsUtils
 
 class CustomClusterRenderer(

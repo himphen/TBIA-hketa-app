@@ -1,5 +1,7 @@
 package hibernate.v2.sunshine.model.transport
 
+import hibernate.v2.sunshine.model.transport.route.TransportRoute
+
 data class TransportRouteStopList(
     val route: TransportRoute,
     val stopList: MutableList<TransportStop>

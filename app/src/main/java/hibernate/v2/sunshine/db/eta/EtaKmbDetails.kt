@@ -5,7 +5,7 @@ import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.model.transport.TransportStop
 
 data class EtaKmbDetails(

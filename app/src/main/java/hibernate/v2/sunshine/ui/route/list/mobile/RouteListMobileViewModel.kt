@@ -1,11 +1,12 @@
 package hibernate.v2.sunshine.ui.route.list.mobile
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.GmbRegion
-import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.transport.eta.EtaType
+import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.repository.CtbRepository
 import hibernate.v2.sunshine.repository.GmbRepository
@@ -39,7 +40,7 @@ class RouteListMobileViewModel(
 
     private var executingSearchJob: EnumMap<EtaType, Job?> = EnumMap(EtaType::class.java)
 
-    fun getTransportRouteList(etaType: EtaType) {
+    fun getTransportRouteList(context:Context, etaType: EtaType) {
         viewModelScope.launch(Dispatchers.IO) {
             when (etaType) {
                 EtaType.KMB -> getKmbRouteList()
@@ -53,7 +54,7 @@ class RouteListMobileViewModel(
                 EtaType.NLB -> getNLBRouteList()
             }
 
-            searchRoute(etaType)
+            searchRoute(context, etaType)
         }
     }
 
@@ -179,7 +180,7 @@ class RouteListMobileViewModel(
         }
     }
 
-    fun searchRoute(etaType: EtaType) {
+    fun searchRoute(context: Context, etaType: EtaType) {
         executingSearchJob[etaType]?.cancel()
 
         if (!RouteListDataHolder.hasData(etaType)) {
@@ -204,8 +205,8 @@ class RouteListMobileViewModel(
         executingSearchJob[etaType] = viewModelScope.launch(Dispatchers.IO) {
             val result = allTransportRouteList.filter { transportRoute ->
                 transportRoute.routeNo.startsWith(keyword, true) ||
-                    transportRoute.destTc.startsWith(keyword, true) ||
-                    transportRoute.origTc.startsWith(keyword, true)
+                    transportRoute.getLocalisedDest(context).startsWith(keyword, true) ||
+                    transportRoute.getLocalisedOrig(context).startsWith(keyword, true)
             }
 
             filteredTransportRouteList.emit(Pair(etaType, result))

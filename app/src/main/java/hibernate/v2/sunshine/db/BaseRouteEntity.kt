@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.db
 
 import androidx.room.Ignore
-import hibernate.v2.sunshine.model.transport.RouteComponent
+import hibernate.v2.sunshine.model.transport.route.RouteComponent
 
 abstract class BaseRouteEntity {
     @Ignore

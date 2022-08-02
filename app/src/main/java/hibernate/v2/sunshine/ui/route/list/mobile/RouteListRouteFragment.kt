@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.himphen.logger.Logger
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentRouteListBinding
-import hibernate.v2.sunshine.model.transport.EtaType
+import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.route.details.mobile.RouteDetailsActivity
@@ -117,7 +117,7 @@ class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 Logger.d("ac1 repeatOnLifecycle: $etaType")
-                viewModel.getTransportRouteList(etaType)
+                viewModel.getTransportRouteList(requireContext(), etaType)
             }
         }
     }

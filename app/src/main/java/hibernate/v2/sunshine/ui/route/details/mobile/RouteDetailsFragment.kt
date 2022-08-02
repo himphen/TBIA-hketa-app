@@ -38,7 +38,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentRouteDetailsBinding
 import hibernate.v2.sunshine.model.RouteDetailsMarkerItem
-import hibernate.v2.sunshine.model.transport.EtaType
+import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.RouteDetailsStop
 import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.ui.base.BaseFragment
@@ -317,7 +317,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
     private fun startRefreshEtaJob() {
         if (refreshEtaJob == null) {
             Logger.t("lifecycle").d("startRefreshEtaJob")
-            refreshEtaJob = lifecycleScope.launchPeriodicAsync(GeneralUtils.REFRESH_TIME) {
+            refreshEtaJob = lifecycleScope.launchPeriodicAsync(GeneralUtils.ETA_REFRESH_TIME) {
                 lifecycleScope.launch {
                     viewModel.etaRequested.emit(true)
                 }

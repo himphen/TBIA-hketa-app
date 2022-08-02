@@ -17,7 +17,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentBookmarkEditBinding
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.MTRTransportRoute
+import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.base.ItemTouchHelperCallback
@@ -75,8 +75,8 @@ class BookmarkEditFragment : BaseFragment<FragmentBookmarkEditBinding>() {
                         setMessage(
                             getString(
                                 R.string.dialog_settings_eta_remove_mtr_message,
-                                card.route.routeInfo.nameTc,
-                                card.stop.nameTc
+                                card.route.routeInfo.getLocalisedName(context),
+                                card.stop.getLocalisedName(context)
                             )
                         )
                     } else {
@@ -84,7 +84,7 @@ class BookmarkEditFragment : BaseFragment<FragmentBookmarkEditBinding>() {
                             getString(
                                 R.string.dialog_settings_eta_remove_message,
                                 card.route.routeNo,
-                                card.stop.nameTc
+                                card.stop.getLocalisedName(context)
                             )
                         )
                     }

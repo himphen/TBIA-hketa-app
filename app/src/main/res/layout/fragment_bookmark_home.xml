@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    <TextView
+        android:id="@+id/lastUpdatedTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/eta_update_failed_background"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:text="@string/eta_last_updated_at_init"
+        android:textColor="@color/eta_update_failed_text"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -17,7 +31,7 @@
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lastUpdatedTv"
         tools:listitem="@layout/item_eta_card_classic"
         tools:visibility="visible" />
 

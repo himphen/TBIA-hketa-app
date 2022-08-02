@@ -28,7 +28,7 @@ class BookmarkEditConfirmDialogFragment : GuidedStepSupportFragment() {
             getString(
                 R.string.dialog_edit_eta_title,
                 currentBookmarkEdit.route.routeNo,
-                currentBookmarkEdit.stop.nameTc
+                currentBookmarkEdit.stop.getLocalisedName(requireContext())
             ),
             getString(R.string.dialog_edit_eta_description),
             "",

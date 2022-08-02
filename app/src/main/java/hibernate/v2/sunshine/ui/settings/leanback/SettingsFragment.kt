@@ -11,6 +11,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditActivity
 import hibernate.v2.sunshine.ui.settings.eta.layout.leanback.EtaLayoutSelectionActivity
+import hibernate.v2.sunshine.ui.settings.lang.leanback.LangSelectionActivity
 
 class SettingsFragment : VerticalGridSupportFragment() {
 
@@ -46,6 +47,11 @@ class SettingsFragment : VerticalGridSupportFragment() {
                 }
                 Card.SettingsCard.Type.VERSION -> {
                 }
+                Card.SettingsCard.Type.LANG -> {
+                    startActivity(
+                        Intent(context, LangSelectionActivity::class.java)
+                    )
+                }
                 Card.SettingsCard.Type.ETA_LAYOUT -> {
                     startActivity(
                         Intent(context, EtaLayoutSelectionActivity::class.java)
@@ -72,6 +78,13 @@ class SettingsFragment : VerticalGridSupportFragment() {
                 title = getString(R.string.title_activity_eta_layout),
                 type = Card.SettingsCard.Type.ETA_LAYOUT,
                 icon = R.drawable.ic_settings_eta_layout_24
+            )
+        )
+        list.add(
+            Card.SettingsCard(
+                title = getString(R.string.title_settings_language),
+                type = Card.SettingsCard.Type.LANG,
+                icon = R.drawable.ic_settings_translate_24
             )
         )
         list.add(

@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.model.transport
+package hibernate.v2.sunshine.model.transport.route
 
 import android.content.Context
 import android.os.Parcelable
@@ -6,6 +6,8 @@ import androidx.annotation.ColorInt
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.model.transport.TransportHashable
+import hibernate.v2.sunshine.util.GeneralUtils
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
@@ -73,13 +75,13 @@ open class TransportRoute(
             _getDestDirectionText = if (isSpecialRoute()) {
                 context.getString(
                     R.string.text_settings_eta_destination_with_sp,
-                    destTc,
+                    getLocalisedDest(context),
                     serviceType
                 )
             } else {
                 context.getString(
                     R.string.text_settings_eta_destination,
-                    destTc
+                    getLocalisedDest(context)
                 )
             }
         }
@@ -94,15 +96,15 @@ open class TransportRoute(
                     R.string.text_add_eta_destination_with_sp,
                     routeNo,
                     serviceType,
-                    origTc,
-                    destTc
+                    getLocalisedOrig(context),
+                    getLocalisedDest(context)
                 )
             } else {
                 context.getString(
                     R.string.text_add_eta_destination,
                     routeNo,
-                    origTc,
-                    destTc
+                    getLocalisedOrig(context),
+                    getLocalisedDest(context)
                 )
             }
         }
@@ -116,14 +118,14 @@ open class TransportRoute(
                 context.getString(
                     R.string.text_add_eta_destination_subtitle_with_sp,
                     serviceType,
-                    origTc,
-                    destTc
+                    getLocalisedOrig(context),
+                    getLocalisedDest(context)
                 )
             } else {
                 context.getString(
                     R.string.text_add_eta_destination_subtitle,
-                    origTc,
-                    destTc
+                    getLocalisedOrig(context),
+                    getLocalisedDest(context)
                 )
             }
         }
@@ -132,6 +134,26 @@ open class TransportRoute(
     }
 
     open fun getCardRouteText(): String = routeNo
+
+    fun getLocalisedOrig(context: Context): String {
+        val localisedOrig = if (GeneralUtils.isLangEnglish(context)) {
+            origEn
+        } else {
+            origTc
+        }
+
+        return localisedOrig
+    }
+
+    fun getLocalisedDest(context: Context): String {
+        val localisedDest = if (GeneralUtils.isLangEnglish(context)) {
+            destEn
+        } else {
+            destTc
+        }
+
+        return localisedDest
+    }
 
     @ColorInt
     open fun getColor(context: Context, combineNC: Boolean = false): Int =

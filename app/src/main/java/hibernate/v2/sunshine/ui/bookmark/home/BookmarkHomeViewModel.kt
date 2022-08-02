@@ -6,10 +6,10 @@ import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.LRTTransportEta
-import hibernate.v2.sunshine.model.transport.MTRTransportEta
-import hibernate.v2.sunshine.model.transport.TransportEta
-import hibernate.v2.sunshine.model.transport.filterCircularStop
+import hibernate.v2.sunshine.model.transport.eta.LRTTransportEta
+import hibernate.v2.sunshine.model.transport.eta.MTRTransportEta
+import hibernate.v2.sunshine.model.transport.eta.TransportEta
+import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
 import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -28,6 +28,7 @@ class BookmarkHomeViewModel(
     val savedEtaCardList = MutableLiveData<List<Card.EtaCard>>()
     val etaUpdateError = MutableSharedFlow<Throwable>()
     val etaRequested = MutableSharedFlow<Boolean>()
+    val lastUpdatedTime = MutableLiveData<Long?>()
 
     private val etaExceptionHandler = CoroutineExceptionHandler { _, t ->
         run {

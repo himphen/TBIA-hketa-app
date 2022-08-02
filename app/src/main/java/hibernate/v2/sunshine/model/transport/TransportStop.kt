@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Parcelable
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.util.GeneralUtils.isLangEnglish
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -18,12 +19,18 @@ data class TransportStop(
     var seq: Int? = null
 ) : Parcelable {
 
-    fun getName(context: Context): String {
-        if (company == Company.MTR || company == Company.LRT) {
-            return context.getString(R.string.text_eta_card_classic_mtr_station, nameTc)
+    fun getLocalisedName(context: Context): String {
+        val localisedName = if (isLangEnglish(context)) {
+            nameEn
+        } else {
+            nameTc
         }
 
-        return nameTc
+        if (company == Company.MTR || company == Company.LRT) {
+            return context.getString(R.string.text_eta_card_classic_mtr_station, localisedName)
+        }
+
+        return localisedName
     }
 
     companion object {

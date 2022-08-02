@@ -16,7 +16,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.LbFragmentEtaBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.TransportEta
+import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.ui.base.FullWidthGridPresenter
 import hibernate.v2.sunshine.ui.bookmark.home.BookmarkHomeViewModel
 import hibernate.v2.sunshine.util.DateUtil
@@ -70,6 +70,7 @@ class BookmarkHomeFragment : VerticalGridSupportFragment() {
 
     private fun initEvent() {
         viewModel.savedEtaCardList.observe(viewLifecycleOwner) {
+            viewModel.lastUpdatedTime.postValue(System.currentTimeMillis())
             hideUpdateEtaFailedText()
             etaCardList?.let { etaCardList ->
                 etaCardList.clear()
@@ -104,7 +105,7 @@ class BookmarkHomeFragment : VerticalGridSupportFragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                tickerFlow(GeneralUtils.REFRESH_TIME.milliseconds).collect {
+                tickerFlow(GeneralUtils.ETA_REFRESH_TIME.milliseconds).collect {
                     viewModel.etaRequested.emit(true)
                 }
             }

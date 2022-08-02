@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.model.transport
+package hibernate.v2.sunshine.model.transport.eta
 
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.response.eta.MTREta

@@ -12,7 +12,7 @@ import hibernate.v2.sunshine.db.gmb.GmbRouteStopEntity
 import hibernate.v2.sunshine.db.gmb.GmbStopEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
-import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

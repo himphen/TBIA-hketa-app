@@ -1,4 +1,6 @@
-package hibernate.v2.sunshine.model.transport
+package hibernate.v2.sunshine.model.transport.route
+
+import hibernate.v2.sunshine.model.transport.eta.EtaType
 
 class StopMapWithRoute(
     val lat: Double,

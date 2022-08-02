@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.model.transport
+package hibernate.v2.sunshine.model.transport.eta
 
 import android.content.Context
 import androidx.annotation.ColorInt

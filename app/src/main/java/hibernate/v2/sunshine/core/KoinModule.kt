@@ -10,7 +10,6 @@ import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
-import hibernate.v2.sunshine.repository.RemoteConfigRepository
 import hibernate.v2.sunshine.repository.WeatherRepository
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel
@@ -29,7 +28,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val koinServiceModule: Module = module {
-    single { ApiManager(get()) }
+    single { ApiManager() }
     single { SharedPreferencesManager(androidContext()) }
     single { AdManager(get()) }
 }
@@ -79,5 +78,4 @@ val koinRepositoryModule: Module = module {
     single { LRTRepository(get(), get()) }
     single { NLBRepository(get(), get()) }
     single { WeatherRepository(get()) }
-    single { RemoteConfigRepository() }
 }

@@ -8,7 +8,7 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.api.model.transport.gmb.GmbRoute
 import hibernate.v2.sunshine.db.BaseRouteEntity
-import hibernate.v2.sunshine.model.transport.GmbTransportRoute
+import hibernate.v2.sunshine.model.transport.route.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Keep

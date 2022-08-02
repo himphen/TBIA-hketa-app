@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.repository
 
-import hibernate.v2.sunshine.model.transport.EtaType
-import hibernate.v2.sunshine.model.transport.TransportRoute
+import hibernate.v2.sunshine.model.transport.eta.EtaType
+import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import java.util.EnumMap
 
 enum class RouteListDataHolder {

@@ -40,22 +40,27 @@
         </activity>
         <activity
             android:name=".ui.main.mobile.MainActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile.MainActivity" />
         <activity
             android:name=".ui.bookmark.edit.mobile.BookmarkEditActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
             android:name=".ui.route.list.mobile.RouteListActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
             android:name=".ui.route.details.mobile.RouteDetailsActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" />
         <activity
             android:name=".ui.settings.eta.layout.mobile.EtaLayoutSelectionActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Mobile" /> <!-- Leanback -->
         <activity
@@ -72,18 +77,27 @@
         </activity>
         <activity
             android:name=".ui.main.leanback.MainActivity"
+            android:exported="false"
             android:theme="@style/AppTheme.Leanback" />
         <activity
             android:name=".ui.bookmark.edit.leanback.BookmarkEditActivity"
+            android:exported="false"
             android:theme="@style/AppTheme.Leanback" />
         <activity
             android:name=".ui.route.list.leanback.RouteListActivity"
+            android:exported="false"
             android:theme="@style/AppTheme.Leanback" />
         <activity
             android:name=".ui.bookmark.edit.leanback.BookmarkEditConfirmDialogActivity"
+            android:exported="false"
             android:theme="@style/AppTheme.Leanback" />
         <activity
             android:name=".ui.settings.eta.layout.leanback.EtaLayoutSelectionActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.Leanback" />
+        <activity
+            android:name=".ui.settings.lang.leanback.LangSelectionActivity"
+            android:exported="false"
             android:theme="@style/AppTheme.Leanback" />
 
         <meta-data

@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.AddEtaRowItem
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.EtaType
+import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.route.list.leanback.RouteListActivity.Companion.ARG_ETA_TYPE
 import hibernate.v2.sunshine.util.getEnum
@@ -111,7 +111,9 @@ class RouteListFragment : SearchSupportFragment(), SearchSupportFragment.SearchR
         searchJob = lifecycleScope.launch {
             delay(searchDelay)
             viewModel.searchRouteKeyword.value = newQuery
-            viewModel.searchRoute(etaType)
+            context?.let { context ->
+                viewModel.searchRoute(context, etaType)
+            }
         }
 
         return true
