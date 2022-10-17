@@ -1,6 +1,11 @@
 package hibernate.v2.sunshine.core
 
 import hibernate.v2.sunshine.api.ApiManager
+import hibernate.v2.sunshine.api.DataServiceProvider
+import hibernate.v2.sunshine.api.GmbServiceProvider
+import hibernate.v2.sunshine.api.HkoWeatherServiceProvider
+import hibernate.v2.sunshine.api.KmbServiceProvider
+import hibernate.v2.sunshine.api.TransportServiceProvider
 import hibernate.v2.sunshine.db.LocalDatabase
 import hibernate.v2.sunshine.repository.CoreRepository
 import hibernate.v2.sunshine.repository.CtbRepository
@@ -28,7 +33,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val koinServiceModule: Module = module {
-    single { ApiManager() }
+    single { ApiManager(androidContext()) }
     single { SharedPreferencesManager(androidContext()) }
     single { AdManager(get()) }
 }
@@ -70,7 +75,7 @@ val koinRepositoryModule: Module = module {
     single { get<LocalDatabase>().lrtDao() }
     single { get<LocalDatabase>().nlbDao() }
     single { CoreRepository(get()) }
-    single { EtaRepository(get(), get(), get()) }
+    single { EtaRepository(get(), get(), get(), get(), get()) }
     single { KmbRepository(get(), get()) }
     single { CtbRepository(get(), get()) }
     single { GmbRepository(get(), get()) }
@@ -78,4 +83,12 @@ val koinRepositoryModule: Module = module {
     single { LRTRepository(get(), get()) }
     single { NLBRepository(get(), get()) }
     single { WeatherRepository(get()) }
+}
+
+val koinProviderModule: Module = module {
+    single { DataServiceProvider(get()) }
+    single { TransportServiceProvider(get()) }
+    single { KmbServiceProvider(get()) }
+    single { GmbServiceProvider(get()) }
+    single { HkoWeatherServiceProvider(get()) }
 }

@@ -10,14 +10,19 @@ import hibernate.v2.api.response.eta.GmbEtaResponse
 import hibernate.v2.api.response.eta.LrtEtaResponse
 import hibernate.v2.api.response.eta.MTREtaResponse
 import hibernate.v2.api.response.eta.NlbEtaResponse
-import hibernate.v2.sunshine.api.ApiManager
+import hibernate.v2.sunshine.api.DataServiceProvider
+import hibernate.v2.sunshine.api.GmbServiceProvider
+import hibernate.v2.sunshine.api.KmbServiceProvider
+import hibernate.v2.sunshine.api.TransportServiceProvider
 import hibernate.v2.sunshine.db.eta.EtaDao
 import hibernate.v2.sunshine.db.eta.EtaOrderDao
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 
 class EtaRepository(
-    private val apiManager: ApiManager,
+    private val kmbServiceProvider: KmbServiceProvider,
+    private val gmbServiceProvider: GmbServiceProvider,
+    private val transportServiceProvider: TransportServiceProvider,
     private val etaDao: EtaDao,
     private val etaOrderDb: EtaOrderDao
 ) {
@@ -76,7 +81,7 @@ class EtaRepository(
 
     suspend fun getKmbStopEtaApi(stopId: String, route: String): EtaResponse {
         val result = ApiSafeCall {
-            apiManager.kmbService.getStopEta(
+            kmbServiceProvider.getService().getStopEta(
                 stopId = stopId,
                 route = route,
                 serviceType = 1
@@ -94,7 +99,7 @@ class EtaRepository(
 
     suspend fun getCtbStopEtaApi(company: Company, stopId: String, route: String): EtaResponse {
         val result = ApiSafeCall {
-            apiManager.transportService.getCtbStopEta(
+            transportServiceProvider.getService().getCtbStopEta(
                 company = company.value,
                 stopId = stopId,
                 route = route
@@ -115,7 +120,7 @@ class EtaRepository(
         route: String
     ): GmbEtaResponse {
         val result = ApiSafeCall {
-            apiManager.gmbService.getStopEta(
+            gmbServiceProvider.getService().getStopEta(
                 stopSeq = stopSeq,
                 route = route,
                 serviceType = serviceType
@@ -136,7 +141,7 @@ class EtaRepository(
         route: String
     ): MTREtaResponse {
         val result = ApiSafeCall {
-            apiManager.transportService.getMtrStopEta(
+            transportServiceProvider.getService().getMtrStopEta(
                 stopId = stopId,
                 routeId = route
             )
@@ -155,7 +160,7 @@ class EtaRepository(
         stopId: String
     ): LrtEtaResponse {
         val result = ApiSafeCall {
-            apiManager.transportService.getLrtStopEta(
+            transportServiceProvider.getService().getLrtStopEta(
                 stopId = stopId
             )
         }
@@ -171,7 +176,7 @@ class EtaRepository(
 
     suspend fun getNLBStopEtaApi(stopId: String, routeId: String): NlbEtaResponse {
         val result = ApiSafeCall {
-            apiManager.transportService.getNlbStopEta(
+            transportServiceProvider.getService().getNlbStopEta(
                 NlbRequest(
                     routeId = routeId,
                     stopId = stopId,

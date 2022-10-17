@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:background="@color/eta_card_background"
             android:visibility="gone"
+            app:cardCornerRadius="@dimen/eta_card_radius"
             tools:visibility="visible">
 
             <include
@@ -51,7 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/eta_card_background"
-            android:visibility="gone">
+            android:visibility="gone"
+            app:cardCornerRadius="@dimen/eta_card_radius">
 
             <include
                 android:id="@+id/content_eta_standard"

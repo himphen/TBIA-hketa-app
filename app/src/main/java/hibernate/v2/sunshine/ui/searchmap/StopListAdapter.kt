@@ -48,7 +48,7 @@ class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
         val item = getItem(position)
         holder.viewBinding.apply {
             stopCompanyColor.setBackgroundColor(item.etaType.color(holder.context))
-            stopNameTv.text = item.nameTc
+            stopNameTv.text = item.getLocalisedName(holder.context)
 
             (routeNumberRecyclerView.adapter as RouteBadgeAdapter).apply {
                 setData(

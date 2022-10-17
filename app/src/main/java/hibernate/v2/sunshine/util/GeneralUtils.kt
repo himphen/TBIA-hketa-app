@@ -53,18 +53,20 @@ object GeneralUtils : KoinComponent {
     }
 
     fun getLanguage(context: Context): Locale? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             context.resources.configuration.locales.get(0)
         else
             context.resources.configuration.locale
+
+        return locale
     }
 
     fun isLangEnglish(context: Context): Boolean {
-        return getLanguage(context) == Locale.ENGLISH
+        return getLanguage(context)?.language == Locale.ENGLISH.language
     }
 
     fun isLangTC(context: Context): Boolean {
-        return getLanguage(context) == Locale.TRADITIONAL_CHINESE
+        return getLanguage(context)?.language == Locale.TRADITIONAL_CHINESE.language
     }
 
     const val ETA_REFRESH_TIME = 60 * 1000L

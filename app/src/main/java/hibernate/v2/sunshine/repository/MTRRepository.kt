@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.repository
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.sunshine.api.ApiManager
+import hibernate.v2.sunshine.api.DataServiceProvider
 import hibernate.v2.sunshine.db.mtr.MTRDao
 import hibernate.v2.sunshine.db.mtr.MTRRouteEntity
 import hibernate.v2.sunshine.db.mtr.MTRRouteStopEntity
@@ -18,11 +18,11 @@ import kotlinx.coroutines.supervisorScope
 
 class MTRRepository(
     private val mtrDao: MTRDao,
-    private val apiManager: ApiManager
+    private val dataServiceProvider: DataServiceProvider
 ) : BaseRepository() {
 
     suspend fun saveData() {
-        val result = ApiSafeCall { apiManager.dataService.getMtrData() }
+        val result = ApiSafeCall { dataServiceProvider.getService().getMtrData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

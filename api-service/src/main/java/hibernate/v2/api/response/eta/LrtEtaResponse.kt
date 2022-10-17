@@ -4,6 +4,7 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.response.BaseResponse
 
+@Keep
 data class LrtEtaResponse(
     @SerializedName("platform_list")
     val platformList: List<Platform>? = null,
@@ -13,6 +14,7 @@ data class LrtEtaResponse(
     val systemTime: String? = null,
 ) : BaseResponse()
 
+@Keep
 data class Platform(
     @SerializedName("platform_id")
     val platformId: Int,
@@ -22,6 +24,7 @@ data class Platform(
     val endServiceStatus: Int? = null,
 )
 
+@Keep
 data class LRTEta(
     @SerializedName("arrival_departure")
     val arrivalDeparture: ArrivalDeparture,

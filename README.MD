@@ -12,3 +12,6 @@ The project contains both mobile and Android TV (Android Leanback) modules. Andr
 Feel free to contribute with pull requests to this project if you have any android specific improvements in mind.
 
 Google Play Store link: https://play.google.com/store/apps/details?id=hibernate.v2.sunshine
+
+## Development
+

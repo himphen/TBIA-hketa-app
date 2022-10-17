@@ -36,7 +36,7 @@ class BookmarkEditCardView(context: Context) :
             routeNumberContainer.routeBusNumberLl.visible()
             routeNumberContainer.routeMTRNumberLl.gone()
             routeNumberContainer.routeLRTNumberLl.gone()
-            stopNameTv.text = "按此加入"
+            stopNameTv.text = context.getString(R.string.eta_button_add)
             routeDirectionTv.visibility = GONE
         }
     }

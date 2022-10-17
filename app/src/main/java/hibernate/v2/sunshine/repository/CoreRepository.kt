@@ -3,14 +3,14 @@ package hibernate.v2.sunshine.repository
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.Checksum
-import hibernate.v2.sunshine.api.ApiManager
+import hibernate.v2.sunshine.api.DataServiceProvider
 
 class CoreRepository(
-    private val apiManager: ApiManager
+    private val dataServiceProvider: DataServiceProvider
 ) : BaseRepository() {
 
     suspend fun getChecksum(): Checksum {
-        val result = ApiSafeCall { apiManager.dataService.getChecksum() }
+        val result = ApiSafeCall { dataServiceProvider.getService().getChecksum() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

@@ -8,13 +8,15 @@
     <LinearLayout
         android:id="@+id/stationLineLl"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:elevation="1dp"
         android:gravity="end"
-        app:layout_constraintBottom_toBottomOf="@id/lineBgView"
-        app:layout_constraintEnd_toStartOf="@id/lineArrowBgView"
-        app:layout_constraintStart_toStartOf="@id/lineBgView"
-        app:layout_constraintTop_toTopOf="@id/lineBgView">
+        android:paddingStart="0dp"
+        android:paddingEnd="12dp"
+        app:layout_constraintBottom_toTopOf="@id/stationEtaCl"
+        app:layout_constraintEnd_toEndOf="@id/lineBgView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/stationInfoCl">
 
         <TextView
             android:id="@+id/routeDirectionTv"
@@ -31,34 +33,22 @@
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/lineArrowBgView"
-        android:layout_width="20dp"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/lineBgView"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/eta_card_line_arrow"
-        app:layout_constraintBottom_toBottomOf="@id/lineBgView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/lineBgView"
-        app:layout_constraintTop_toTopOf="@id/lineBgView" />
-
-
-    <View
-        android:id="@+id/lineBgView"
-        android:layout_width="0dp"
-        android:layout_height="28dp"
         android:background="@color/brand_color_kmb"
-        app:layout_constraintBottom_toTopOf="@id/stationEtaCl"
-        app:layout_constraintEnd_toStartOf="@id/lineArrowBgView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/stationInfoCl" />
+        app:layout_constraintBottom_toBottomOf="@id/stationLineLl"
+        app:layout_constraintTop_toTopOf="@id/stationLineLl"
+        app:shapeAppearanceOverlay="@style/Eta.Card.Compact.Arrow" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/stationEtaCl"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/lineArrowBgView"
+        app:layout_constraintEnd_toEndOf="@id/lineBgView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lineBgView">
 
@@ -172,7 +162,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/stationLineLl"
-        app:layout_constraintEnd_toEndOf="@id/lineArrowBgView"
+        app:layout_constraintEnd_toEndOf="@id/lineBgView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -200,7 +190,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end|center_vertical"
-                android:letterSpacing="0.05"
+                android:letterSpacing="@dimen/eta_stop_name_letter_spacing"
                 android:maxLines="2"
                 android:padding="4dp"
                 android:text="@string/demo_card_stop_name"

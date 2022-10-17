@@ -25,7 +25,6 @@ class EtaViewHolderStandard(viewBinding: ItemEtaCardStandardBinding) :
             ) as? RotateDrawable?).let { arrowDrawable ->
                 arrowDrawable?.mutate()
                 (arrowDrawable?.drawable as? GradientDrawable)?.setColor(color)
-                lineArrowBgView.background = arrowDrawable
                 lineBgView.setBackgroundColor(color)
             }
 

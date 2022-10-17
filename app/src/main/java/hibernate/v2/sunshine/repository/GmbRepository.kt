@@ -5,7 +5,7 @@ import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.GmbRegion
-import hibernate.v2.sunshine.api.ApiManager
+import hibernate.v2.sunshine.api.DataServiceProvider
 import hibernate.v2.sunshine.db.gmb.GmbDao
 import hibernate.v2.sunshine.db.gmb.GmbRouteEntity
 import hibernate.v2.sunshine.db.gmb.GmbRouteStopEntity
@@ -20,11 +20,11 @@ import kotlinx.coroutines.supervisorScope
 
 class GmbRepository(
     private val gmbDao: GmbDao,
-    private val apiManager: ApiManager
+    private val dataServiceProvider: DataServiceProvider
 ) : BaseRepository() {
 
     suspend fun saveData() {
-        val result = ApiSafeCall { apiManager.dataService.getGmbData() }
+        val result = ApiSafeCall { dataServiceProvider.getService().getGmbData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

@@ -134,4 +134,10 @@
     <style name="EtaAddTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorHeight">4dp</item>
     </style>
+
+    <style name="Eta.Card.Compact.Arrow" parent="">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSizeTopRight">50%</item>
+        <item name="cornerSizeBottomRight">50%</item>
+    </style>
 </resources>

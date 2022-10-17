@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.repository
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.sunshine.api.ApiManager
+import hibernate.v2.sunshine.api.DataServiceProvider
 import hibernate.v2.sunshine.db.lrt.LRTDao
 import hibernate.v2.sunshine.db.lrt.LRTRouteEntity
 import hibernate.v2.sunshine.db.lrt.LRTRouteStopEntity
@@ -18,11 +18,11 @@ import kotlinx.coroutines.supervisorScope
 
 class LRTRepository(
     private val lrtDao: LRTDao,
-    private val apiManager: ApiManager
+    private val dataServiceProvider: DataServiceProvider
 ) : BaseRepository() {
 
     suspend fun saveData() {
-        val result = ApiSafeCall { apiManager.dataService.getLrtData() }
+        val result = ApiSafeCall { dataServiceProvider.getService().getLrtData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

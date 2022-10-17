@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.model.searchmap
 
+import android.content.Context
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 import hibernate.v2.sunshine.db.ctb.CtbStopEntity
@@ -9,6 +10,7 @@ import hibernate.v2.sunshine.db.nlb.NLBStopEntity
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.TransportStop
+import hibernate.v2.sunshine.util.GeneralUtils
 
 data class SearchMapStop(
     val lat: Double,
@@ -20,6 +22,17 @@ data class SearchMapStop(
     val etaType: EtaType,
     var mapRouteList: List<Card.EtaCard> = emptyList(),
 ) : ClusterItem {
+
+    fun getLocalisedName(context: Context): String {
+        val localisedName = if (GeneralUtils.isLangEnglish(context)) {
+            nameEn
+        } else {
+            nameTc
+        }
+
+        return localisedName
+    }
+
     companion object {
         fun fromStopEntity(it: KmbStopEntity): SearchMapStop {
             return SearchMapStop(

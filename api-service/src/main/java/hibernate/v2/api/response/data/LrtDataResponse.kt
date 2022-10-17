@@ -1,11 +1,13 @@
 package hibernate.v2.api.response.data
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.lrt.LrtRoute
 import hibernate.v2.api.model.transport.lrt.LrtRouteStop
 import hibernate.v2.api.model.transport.lrt.LrtStop
 import hibernate.v2.api.response.BaseResponse
 
+@Keep
 data class LrtDataResponse(
     @SerializedName("route")
     val route: List<LrtRoute>? = null,

@@ -24,8 +24,8 @@ android {
         applicationId "hibernate.v2.sunshine"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        versionCode 240100
+        versionName "Aberdeen Channel 1.0.0"
     }
 
     buildTypes {
@@ -45,7 +45,7 @@ android {
         release {
             debuggable true
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "GOOGLE_MAP_API_KEY", properties.getProperty('google_map.api_key')
             resValue "string", "GOOGLE_MAP_API_KEY", properties.getProperty("google_map.api_key")

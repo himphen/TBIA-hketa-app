@@ -2,6 +2,9 @@ package hibernate.v2.sunshine.ui.onboarding
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Checksum
 import hibernate.v2.sunshine.core.SharedPreferencesManager
@@ -17,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class OnboardingViewModel(
     private val sharedPreferencesManager: SharedPreferencesManager,
@@ -38,6 +42,8 @@ class OnboardingViewModel(
     fun checkDbTransportData() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                initRemoteConfig()
+
                 var dataLoadingCount = 0
 
                 val serverChecksum = try {
@@ -178,13 +184,22 @@ class OnboardingViewModel(
 
                 fetchTransportDataCompleted.postValue(Unit)
             } catch (e: Exception) {
-                e.printStackTrace()
+                Logger.e(e, "Fetch transport data failed")
                 if (fetchTransportDataFailedList.isEmpty()) {
                     fetchTransportDataFailedList.add(FailedCheckType.OTHER)
                 }
                 fetchTransportDataCompleted.postValue(Unit)
             }
         }
+    }
+
+    private suspend fun initRemoteConfig() {
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 3600
+        }
+        Firebase.remoteConfig.setConfigSettingsAsync(configSettings).await()
+        Firebase.remoteConfig.setDefaultsAsync(mapOf("api_base_url_v1" to "")).await()
+        Firebase.remoteConfig.fetchAndActivate().await()
     }
 
     private suspend fun downloadKmbTransportData() {

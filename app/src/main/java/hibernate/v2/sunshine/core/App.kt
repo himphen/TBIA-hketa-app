@@ -30,10 +30,6 @@ class App : Application() {
         initLogger()
         initAdMob()
         initKoin()
-
-        MainScope().launch {
-            initRemoteConfig()
-        }
     }
 
     // init logger
@@ -56,7 +52,8 @@ class App : Application() {
             modules(
                 koinServiceModule,
                 koinRepositoryModule,
-                koinUIModule
+                koinUIModule,
+                koinProviderModule
             )
         }
     }
@@ -71,19 +68,6 @@ class App : Application() {
                 .setTestDeviceIds(testDevices)
                 .build()
             MobileAds.setRequestConfiguration(requestConfiguration)
-        }
-    }
-
-    private suspend fun initRemoteConfig() {
-        try {
-            val configSettings = remoteConfigSettings {
-                minimumFetchIntervalInSeconds = 3600
-            }
-            Firebase.remoteConfig.setConfigSettingsAsync(configSettings).await()
-            Firebase.remoteConfig.setDefaultsAsync(mapOf("api_base_url_v1" to ""))
-            Firebase.remoteConfig.fetchAndActivate().await()
-        } catch (e: Exception) {
-            Logger.e(e, "")
         }
     }
 }

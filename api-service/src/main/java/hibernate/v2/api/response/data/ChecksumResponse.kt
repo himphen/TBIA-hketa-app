@@ -1,8 +1,10 @@
 package hibernate.v2.api.response.data
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.response.BaseResponse
 
+@Keep
 data class ChecksumResponse(
     @SerializedName("kmb")
     var kmb: ChecksumDetailResponse? = null,
@@ -18,6 +20,7 @@ data class ChecksumResponse(
     var gmb: ChecksumDetailResponse? = null,
 ) : BaseResponse()
 
+@Keep
 data class ChecksumDetailResponse(
     @SerializedName("route")
     val route: String? = null,

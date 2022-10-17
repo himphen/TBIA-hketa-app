@@ -1,15 +1,18 @@
 package hibernate.v2.api.response.eta
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.response.BaseResponse
 
+@Keep
 data class MTREtaResponse(
     @SerializedName("data")
     @Expose
     val data: Map<String, MTREtaRouteStop>? = null
 ) : BaseResponse()
 
+@Keep
 data class MTREtaRouteStop(
     @SerializedName("curr_time")
     val currTime: String? = null,
@@ -21,6 +24,7 @@ data class MTREtaRouteStop(
     val up: List<MTREta>? = null
 )
 
+@Keep
 data class MTREta(
     @SerializedName("dest")
     val dest: String? = null,

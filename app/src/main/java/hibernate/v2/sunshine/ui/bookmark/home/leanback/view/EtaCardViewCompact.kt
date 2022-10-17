@@ -31,7 +31,6 @@ class EtaCardViewCompact(context: Context) :
             drawable.let { arrowDrawable ->
                 arrowDrawable?.mutate()
                 (arrowDrawable?.drawable as? GradientDrawable)?.setColor(color)
-                lineArrowBgView.background = arrowDrawable
                 lineBgView.setBackgroundColor(color)
             }
 

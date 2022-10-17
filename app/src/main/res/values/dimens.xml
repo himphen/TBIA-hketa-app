@@ -16,4 +16,6 @@
     <dimen name="eta_classic_stop_name">20sp</dimen>
     <dimen name="eta_classic_desc_name">14sp</dimen>
     <dimen name="eta_classic_minute_unit">12sp</dimen>
+
+    <item name="eta_stop_name_letter_spacing" format="float" type="dimen">0.05</item>
 </resources>

@@ -5,7 +5,7 @@ import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.sunshine.api.ApiManager
+import hibernate.v2.sunshine.api.DataServiceProvider
 import hibernate.v2.sunshine.db.ctb.CtbDao
 import hibernate.v2.sunshine.db.ctb.CtbRouteEntity
 import hibernate.v2.sunshine.db.ctb.CtbRouteStopEntity
@@ -20,11 +20,11 @@ import kotlinx.coroutines.supervisorScope
 
 class CtbRepository(
     private val ctbDao: CtbDao,
-    private val apiManager: ApiManager
+    private val dataServiceProvider: DataServiceProvider
 ) : BaseRepository() {
 
     suspend fun saveData() {
-        val result = ApiSafeCall { apiManager.dataService.getCtbData() }
+        val result = ApiSafeCall { dataServiceProvider.getService().getCtbData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()
