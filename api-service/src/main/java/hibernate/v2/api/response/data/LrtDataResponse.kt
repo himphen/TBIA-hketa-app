@@ -1,18 +1,18 @@
 package hibernate.v2.api.response.data
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.lrt.LrtRoute
 import hibernate.v2.api.model.transport.lrt.LrtRouteStop
 import hibernate.v2.api.model.transport.lrt.LrtStop
 import hibernate.v2.api.response.BaseResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class LrtDataResponse(
-    @SerializedName("route")
+    @SerialName("route")
     val route: List<LrtRoute>? = null,
-    @SerializedName("routeStop")
+    @SerialName("routeStop")
     val routeStop: List<LrtRouteStop>? = null,
-    @SerializedName("stop")
+    @SerialName("stop")
     val stop: List<LrtStop>? = null
 ) : BaseResponse()

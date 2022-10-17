@@ -1,14 +1,14 @@
 package hibernate.v2.api.model.transport.gmb
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class GmbEtaRouteStop(
-    @SerializedName("enabled")
+    @SerialName("enabled")
     val enabled: Boolean? = null,
-    @SerializedName("stop_id")
+    @SerialName("stop_id")
     val stopId: Int? = null,
-    @SerializedName("eta")
+    @SerialName("eta")
     val etaList: List<GmbEta>? = null
 )

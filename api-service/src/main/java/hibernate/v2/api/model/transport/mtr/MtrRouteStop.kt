@@ -1,19 +1,19 @@
 package hibernate.v2.api.model.transport.mtr
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.Bound
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class MtrRouteStop(
-    @SerializedName("bound")
+    @SerialName("bound")
     var bound: Bound = Bound.UNKNOWN,
-    @SerializedName("route_id")
+    @SerialName("route_id")
     var routeId: String = "",
-    @SerializedName("seq")
+    @SerialName("seq")
     var seq: Int = 0,
-    @SerializedName("service_type")
+    @SerialName("service_type")
     var serviceType: String = "",
-    @SerializedName("stop")
+    @SerialName("stop")
     var stopId: String = "",
 )

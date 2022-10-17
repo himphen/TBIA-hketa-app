@@ -1,24 +1,24 @@
 package hibernate.v2.api.model.transport.nlb
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class NlbRoute(
-    @SerializedName("dest_en")
+    @SerialName("dest_en")
     var destEn: String = "",
-    @SerializedName("dest_sc")
+    @SerialName("dest_sc")
     var destSc: String = "",
-    @SerializedName("dest_tc")
+    @SerialName("dest_tc")
     var destTc: String = "",
-    @SerializedName("orig_en")
+    @SerialName("orig_en")
     var origEn: String = "",
-    @SerializedName("orig_sc")
+    @SerialName("orig_sc")
     var origSc: String = "",
-    @SerializedName("orig_tc")
+    @SerialName("orig_tc")
     var origTc: String = "",
-    @SerializedName("route_id")
+    @SerialName("route_id")
     var routeId: String = "",
-    @SerializedName("route_no")
+    @SerialName("route_no")
     var routeNo: String = ""
 )

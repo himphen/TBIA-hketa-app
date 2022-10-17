@@ -1,43 +1,41 @@
 package hibernate.v2.api.response.eta
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.response.BaseResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class MTREtaResponse(
-    @SerializedName("data")
-    @Expose
+    @SerialName("data")
     val data: Map<String, MTREtaRouteStop>? = null
 ) : BaseResponse()
 
-@Keep
+@Serializable
 data class MTREtaRouteStop(
-    @SerializedName("curr_time")
+    @SerialName("curr_time")
     val currTime: String? = null,
-    @SerializedName("sys_time")
+    @SerialName("sys_time")
     val sysTime: String? = null,
-    @SerializedName("DOWN")
+    @SerialName("DOWN")
     val down: List<MTREta>? = null,
-    @SerializedName("UP")
+    @SerialName("UP")
     val up: List<MTREta>? = null
 )
 
-@Keep
+@Serializable
 data class MTREta(
-    @SerializedName("dest")
+    @SerialName("dest")
     val dest: String? = null,
-    @SerializedName("plat")
+    @SerialName("plat")
     val plat: String? = null,
-    @SerializedName("seq")
+    @SerialName("seq")
     val seq: String? = null,
-    @SerializedName("source")
+    @SerialName("source")
     val source: String? = null,
-    @SerializedName("time")
+    @SerialName("time")
     val time: String? = null,
-    @SerializedName("ttnt")
+    @SerialName("ttnt")
     val ttnt: String? = null,
-    @SerializedName("valid")
+    @SerialName("valid")
     val valid: String? = null
 )

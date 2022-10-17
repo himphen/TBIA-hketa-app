@@ -1,11 +1,10 @@
 package hibernate.v2.api.model.transport
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.response.data.ChecksumDetailResponse
 import hibernate.v2.api.response.data.ChecksumResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
 data class Checksum(
     var kmb: ChecksumDetail? = null,
     var ctb: ChecksumDetail? = null,
@@ -32,13 +31,13 @@ data class Checksum(
     }
 }
 
-@Keep
+@Serializable
 data class ChecksumDetail(
-    @SerializedName("route")
+    @SerialName("route")
     val route: String? = null,
-    @SerializedName("routeStop")
+    @SerialName("routeStop")
     val routeStop: String? = null,
-    @SerializedName("stop")
+    @SerialName("stop")
     val stop: String? = null
 ) {
     companion object {

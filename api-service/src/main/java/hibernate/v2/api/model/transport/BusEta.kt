@@ -1,32 +1,32 @@
 package hibernate.v2.api.model.transport
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class BusEta(
-    @SerializedName("co")
+    @SerialName("co")
     val company: String? = null,
-    @SerializedName("dest_en")
+    @SerialName("dest_en")
     val destEn: String? = null,
-    @SerializedName("dest_sc")
+    @SerialName("dest_sc")
     val destSc: String? = null,
-    @SerializedName("dest_tc")
+    @SerialName("dest_tc")
     val destTc: String? = null,
-    @SerializedName("dir")
+    @SerialName("dir")
     val bound: Bound? = null,
-    @SerializedName("eta")
+    @SerialName("eta")
     val eta: String? = null,
-    @SerializedName("rmk_en")
+    @SerialName("rmk_en")
     val rmkEn: String? = null,
-    @SerializedName("rmk_sc")
+    @SerialName("rmk_sc")
     val rmkSc: String? = null,
-    @SerializedName("rmk_tc")
+    @SerialName("rmk_tc")
     val rmkTc: String? = null,
-    @SerializedName("route")
+    @SerialName("route")
     val route: String? = null,
-    @SerializedName("seq")
+    @SerialName("seq")
     val seq: Int? = null,
-    @SerializedName("service_type")
+    @SerialName("service_type")
     val serviceType: Int? = null
 )

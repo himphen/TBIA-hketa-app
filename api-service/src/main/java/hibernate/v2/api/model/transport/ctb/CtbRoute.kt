@@ -1,27 +1,27 @@
 package hibernate.v2.api.model.transport.ctb
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class CtbRoute(
-    @SerializedName("co")
+    @SerialName("co")
     var company: Company = Company.UNKNOWN,
     var bound: Bound = Bound.UNKNOWN,
-    @SerializedName("dest_en")
+    @SerialName("dest_en")
     var destEn: String = "",
-    @SerializedName("dest_sc")
+    @SerialName("dest_sc")
     var destSc: String = "",
-    @SerializedName("dest_tc")
+    @SerialName("dest_tc")
     var destTc: String = "",
-    @SerializedName("orig_en")
+    @SerialName("orig_en")
     var origEn: String = "",
-    @SerializedName("orig_sc")
+    @SerialName("orig_sc")
     var origSc: String = "",
-    @SerializedName("orig_tc")
+    @SerialName("orig_tc")
     var origTc: String = "",
-    @SerializedName("route")
+    @SerialName("route")
     var routeId: String = "",
 )

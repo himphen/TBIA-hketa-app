@@ -1,18 +1,18 @@
 package hibernate.v2.api.response.data
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.ctb.CtbRoute
 import hibernate.v2.api.model.transport.ctb.CtbRouteStop
 import hibernate.v2.api.model.transport.ctb.CtbStop
 import hibernate.v2.api.response.BaseResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class CtbDataResponse(
-    @SerializedName("route")
+    @SerialName("route")
     val route: List<CtbRoute>? = null,
-    @SerializedName("routeStop")
+    @SerialName("routeStop")
     val routeStop: List<CtbRouteStop>? = null,
-    @SerializedName("stop")
+    @SerialName("stop")
     val stop: List<CtbStop>? = null
 ) : BaseResponse()

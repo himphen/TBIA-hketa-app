@@ -1,57 +1,41 @@
 package hibernate.v2.api.response.eta
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.response.BaseResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class LrtEtaResponse(
-    @SerializedName("platform_list")
-    val platformList: List<Platform>? = null,
-    @SerializedName("status")
-    val status: Int? = null,
-    @SerializedName("system_time")
-    val systemTime: String? = null,
+    @SerialName("platform_list") val platformList: List<Platform>? = null,
+    @SerialName("status") val status: Int? = null,
+    @SerialName("system_time") val systemTime: String? = null,
 ) : BaseResponse()
 
-@Keep
+@Serializable
 data class Platform(
-    @SerializedName("platform_id")
-    val platformId: Int,
-    @SerializedName("route_list")
-    val etaList: List<LRTEta>? = null,
-    @SerializedName("end_service_status")
-    val endServiceStatus: Int? = null,
+    @SerialName("platform_id") val platformId: Int,
+    @SerialName("route_list") val etaList: List<LRTEta>? = null,
+    @SerialName("end_service_status") val endServiceStatus: Int? = null,
 )
 
-@Keep
+@Serializable
 data class LRTEta(
-    @SerializedName("arrival_departure")
-    val arrivalDeparture: ArrivalDeparture,
-    @SerializedName("dest_ch")
-    val destCh: String,
-    @SerializedName("dest_en")
-    val destEn: String,
-    @SerializedName("route_no")
-    val routeNo: String,
-    @SerializedName("stop")
-    val stop: Int,
-    @SerializedName("time_ch")
-    val timeCh: String,
-    @SerializedName("time_en")
-    val timeEn: String,
-    @SerializedName("train_length")
-    val trainLength: Int,
+    @SerialName("arrival_departure") val arrivalDeparture: ArrivalDeparture,
+    @SerialName("dest_ch") val destCh: String,
+    @SerialName("dest_en") val destEn: String,
+    @SerialName("route_no") val routeNo: String,
+    @SerialName("stop") val stop: Int,
+    @SerialName("time_ch") val timeCh: String,
+    @SerialName("time_en") val timeEn: String,
+    @SerialName("train_length") val trainLength: Int,
 )
 
+@Serializable
 enum class ArrivalDeparture(val value: String) {
-    @Keep
     A("A"),
 
-    @Keep
     D("D"),
 
-    @Keep
     UNKNOWN("unknown");
 
     companion object {

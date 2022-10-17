@@ -1,12 +1,12 @@
 package hibernate.v2.api.core
 
-import com.google.gson.Gson
 import hibernate.v2.api.response.ErrorResponse
+import io.ktor.client.call.body
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import java.io.IOException
 
 object ApiSafeCall {
     suspend operator fun <T> invoke(
@@ -16,19 +16,14 @@ object ApiSafeCall {
         return withContext(dispatcher) {
             try {
                 val result = apiCall.invoke()
-                if (result != null) {
-                    Resource.Success(result as T)
-                } else {
-                    Resource.OtherError(NetworkThrowable.BodyParsing.throwable)
-                }
-
+                Resource.Success(result)
             } catch (throwable: Throwable) {
                 when (throwable) {
-                    is IOException -> Resource.OtherError(throwable)
-                    is HttpException -> {
-                        val code = throwable.code()
+                    is ClientRequestException -> {
+                        val code = throwable.response.status.value
                         val errorResponse =
-                            getErrorResponse(throwable) ?: ErrorResponse.getEmptyErrorResponse()
+                            getErrorResponse(throwable.response)
+                                ?: ErrorResponse.getEmptyErrorResponse()
                         Resource.HttpError(
                             code,
                             NetworkErrorHelper.getThrowable(code).throwable,
@@ -43,11 +38,9 @@ object ApiSafeCall {
         }
     }
 
-    private fun getErrorResponse(throwable: HttpException): ErrorResponse? {
+    private suspend fun getErrorResponse(response: HttpResponse): ErrorResponse? {
         return try {
-            throwable.response()?.errorBody()?.string()?.let {
-                Gson().fromJson(it, ErrorResponse::class.java)
-            }
+            response.body()
         } catch (exception: Exception) {
             null
         }
@@ -72,20 +65,19 @@ object ApiSafeCall {
     }
 
     object NetworkErrorHelper {
-        //300
+        // 300
         private const val NOT_MODIFIED = 304
 
-        //400
+        // 400
         private const val BAD_REQUEST = 400
         private const val UNAUTHORIZED = 401
         private const val FORBIDDEN = 403
         private const val NOT_FOUND = 404
 
-        //500
+        // 500
         private const val INTERNAL_SERVER_ERROR = 500
         private const val SERVICE_UNAVAILABLE = 503
         private const val GATEWAY_TIMEOUT = 504
-
 
         fun getThrowable(errorCode: Int): NetworkThrowable {
             when (errorCode) {
@@ -98,12 +90,10 @@ object ApiSafeCall {
                 SERVICE_UNAVAILABLE -> return NetworkThrowable.ServiceUnavailable
                 GATEWAY_TIMEOUT -> return NetworkThrowable.GatewayTimeout
 
-
                 in 100..199 -> return NetworkThrowable.InformationalError
                 in 300..399 -> return NetworkThrowable.RedirectionError
                 in 400..499 -> return NetworkThrowable.OtherClientError
                 in 500..600 -> return NetworkThrowable.OtherServerError
-
 
                 else -> {
                     return NetworkThrowable.Undefined

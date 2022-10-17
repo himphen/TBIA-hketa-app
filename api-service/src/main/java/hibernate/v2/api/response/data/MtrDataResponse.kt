@@ -1,18 +1,18 @@
 package hibernate.v2.api.response.data
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.mtr.MtrRoute
 import hibernate.v2.api.model.transport.mtr.MtrRouteStop
 import hibernate.v2.api.model.transport.mtr.MtrStop
 import hibernate.v2.api.response.BaseResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class MtrDataResponse(
-    @SerializedName("route")
+    @SerialName("route")
     val route: List<MtrRoute>? = null,
-    @SerializedName("routeStop")
+    @SerialName("routeStop")
     val routeStop: List<MtrRouteStop>? = null,
-    @SerializedName("stop")
+    @SerialName("stop")
     val stop: List<MtrStop>? = null
 ) : BaseResponse()

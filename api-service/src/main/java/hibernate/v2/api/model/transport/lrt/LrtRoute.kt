@@ -1,37 +1,35 @@
 package hibernate.v2.api.model.transport.lrt
 
-import android.os.Parcelable
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.Bound
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class LrtRoute(
     var bound: Bound = Bound.UNKNOWN,
-    @SerializedName("dest_en")
+    @SerialName("dest_en")
     var destEn: String = "",
-    @SerializedName("dest_sc")
+    @SerialName("dest_sc")
     var destSc: String = "",
-    @SerializedName("dest_tc")
+    @SerialName("dest_tc")
     var destTc: String = "",
-    @SerializedName("orig_en")
+    @SerialName("orig_en")
     var origEn: String = "",
-    @SerializedName("orig_sc")
+    @SerialName("orig_sc")
     var origSc: String = "",
-    @SerializedName("orig_tc")
+    @SerialName("orig_tc")
     var origTc: String = "",
-    @SerializedName("route_id")
+    @SerialName("route_id")
     var routeId: String = "",
-    @SerializedName("route_info")
+    @SerialName("route_info")
     var routeInfo: LRTRouteInfo = LRTRouteInfo(),
-    @SerializedName("service_type")
+    @SerialName("service_type")
     var serviceType: String = "",
 )
 
-@Parcelize
+@Serializable
 data class LRTRouteInfo(
     var color: String = "",
-    @SerializedName("isEnabled")
+    @SerialName("isEnabled")
     var isEnabled: Boolean = false,
-) : Parcelable
+)

@@ -4,7 +4,7 @@ import com.fonfon.kgeohash.GeoHash
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.sunshine.api.DataServiceProvider
+import hibernate.v2.api.service.DataService
 import hibernate.v2.sunshine.db.nlb.NLBDao
 import hibernate.v2.sunshine.db.nlb.NLBRouteEntity
 import hibernate.v2.sunshine.db.nlb.NLBRouteStopEntity
@@ -18,12 +18,11 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
 
 class NLBRepository(
-    private val dao: NLBDao,
-    private val dataServiceProvider: DataServiceProvider
+    private val dao: NLBDao
 ) : BaseRepository() {
 
     suspend fun saveData() {
-        val result = ApiSafeCall { dataServiceProvider.getService().getNlbData() }
+        val result = ApiSafeCall { DataService.getNlbData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

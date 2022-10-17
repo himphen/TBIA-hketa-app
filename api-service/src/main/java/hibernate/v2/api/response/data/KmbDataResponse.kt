@@ -1,18 +1,18 @@
 package hibernate.v2.api.response.data
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.kmb.KmbRoute
 import hibernate.v2.api.model.transport.kmb.KmbRouteStop
 import hibernate.v2.api.model.transport.kmb.KmbStop
 import hibernate.v2.api.response.BaseResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class KmbDataResponse(
-    @SerializedName("route")
+    @SerialName("route")
     val route: List<KmbRoute>? = null,
-    @SerializedName("routeStop")
+    @SerialName("routeStop")
     val routeStop: List<KmbRouteStop>? = null,
-    @SerializedName("stop")
+    @SerialName("stop")
     val stop: List<KmbStop>? = null
 ) : BaseResponse()

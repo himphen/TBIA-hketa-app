@@ -4,7 +4,7 @@ import com.fonfon.kgeohash.GeoHash
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.sunshine.api.DataServiceProvider
+import hibernate.v2.api.service.DataService
 import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
@@ -18,12 +18,11 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
 
 class KmbRepository(
-    private val kmbDao: KmbDao,
-    private val dataServiceProvider: DataServiceProvider
+    private val kmbDao: KmbDao
 ) : BaseRepository() {
 
     suspend fun saveData() {
-        val result = ApiSafeCall { dataServiceProvider.getService().getKmbData() }
+        val result = ApiSafeCall { DataService.getKmbData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

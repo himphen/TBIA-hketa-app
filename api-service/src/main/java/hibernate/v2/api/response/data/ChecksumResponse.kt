@@ -1,31 +1,31 @@
 package hibernate.v2.api.response.data
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.response.BaseResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class ChecksumResponse(
-    @SerializedName("kmb")
+    @SerialName("kmb")
     var kmb: ChecksumDetailResponse? = null,
-    @SerializedName("ctb")
+    @SerialName("ctb")
     var ctb: ChecksumDetailResponse? = null,
-    @SerializedName("nlb")
+    @SerialName("nlb")
     var nlb: ChecksumDetailResponse? = null,
-    @SerializedName("mtr")
+    @SerialName("mtr")
     var mtr: ChecksumDetailResponse? = null,
-    @SerializedName("lrt")
+    @SerialName("lrt")
     var lrt: ChecksumDetailResponse? = null,
-    @SerializedName("gmb")
+    @SerialName("gmb")
     var gmb: ChecksumDetailResponse? = null,
 ) : BaseResponse()
 
-@Keep
+@Serializable
 data class ChecksumDetailResponse(
-    @SerializedName("route")
+    @SerialName("route")
     val route: String? = null,
-    @SerializedName("routeStop")
+    @SerialName("routeStop")
     val routeStop: String? = null,
-    @SerializedName("stop")
+    @SerialName("stop")
     val stop: String? = null
 ) : BaseResponse()

@@ -1,20 +1,20 @@
 package hibernate.v2.api.model.transport.gmb
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class GmbEta(
-    @SerializedName("eta_seq")
+    @SerialName("eta_seq")
     val seq: Int? = null,
-    @SerializedName("diff")
+    @SerialName("diff")
     val diff: Int? = null,
-    @SerializedName("timestamp")
+    @SerialName("timestamp")
     val timestamp: String? = null,
-    @SerializedName("remarks_en")
+    @SerialName("remarks_en")
     val rmkEn: String? = null,
-    @SerializedName("remarks_sc")
+    @SerialName("remarks_sc")
     val rmkSc: String? = null,
-    @SerializedName("remarks_tc")
+    @SerialName("remarks_tc")
     val rmkTc: String? = null
 )

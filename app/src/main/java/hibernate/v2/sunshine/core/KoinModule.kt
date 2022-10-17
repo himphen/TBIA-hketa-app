@@ -1,11 +1,5 @@
 package hibernate.v2.sunshine.core
 
-import hibernate.v2.sunshine.api.ApiManager
-import hibernate.v2.sunshine.api.DataServiceProvider
-import hibernate.v2.sunshine.api.GmbServiceProvider
-import hibernate.v2.sunshine.api.HkoWeatherServiceProvider
-import hibernate.v2.sunshine.api.KmbServiceProvider
-import hibernate.v2.sunshine.api.TransportServiceProvider
 import hibernate.v2.sunshine.db.LocalDatabase
 import hibernate.v2.sunshine.repository.CoreRepository
 import hibernate.v2.sunshine.repository.CtbRepository
@@ -15,7 +9,6 @@ import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
-import hibernate.v2.sunshine.repository.WeatherRepository
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel
 import hibernate.v2.sunshine.ui.bookmark.home.BookmarkHomeViewModel
@@ -26,14 +19,12 @@ import hibernate.v2.sunshine.ui.route.list.leanback.RouteListLeanbackViewModel
 import hibernate.v2.sunshine.ui.route.list.mobile.RouteListMobileViewModel
 import hibernate.v2.sunshine.ui.searchmap.SearchMapViewModel
 import hibernate.v2.sunshine.ui.traffic.TrafficViewModel
-import hibernate.v2.sunshine.ui.weather.WeatherViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val koinServiceModule: Module = module {
-    single { ApiManager(androidContext()) }
     single { SharedPreferencesManager(androidContext()) }
     single { AdManager(get()) }
 }
@@ -45,8 +36,7 @@ val koinUIModule: Module = module {
     viewModel { RouteListLeanbackViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { RouteListMobileViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { BookmarkSaveViewModel(get()) }
-    viewModel { WeatherViewModel(get()) }
-    viewModel { TrafficViewModel(get()) }
+    viewModel { TrafficViewModel() }
     viewModel { SearchMapViewModel(get(), get(), get(), get(), get(), get(), get()) }
     viewModel { MainViewModel() }
     viewModel { params ->
@@ -74,21 +64,15 @@ val koinRepositoryModule: Module = module {
     single { get<LocalDatabase>().mtrDao() }
     single { get<LocalDatabase>().lrtDao() }
     single { get<LocalDatabase>().nlbDao() }
-    single { CoreRepository(get()) }
-    single { EtaRepository(get(), get(), get(), get(), get()) }
-    single { KmbRepository(get(), get()) }
-    single { CtbRepository(get(), get()) }
-    single { GmbRepository(get(), get()) }
-    single { MTRRepository(get(), get()) }
-    single { LRTRepository(get(), get()) }
-    single { NLBRepository(get(), get()) }
-    single { WeatherRepository(get()) }
+    single { CoreRepository() }
+    single { EtaRepository(get(), get()) }
+    single { KmbRepository(get()) }
+    single { CtbRepository(get()) }
+    single { GmbRepository(get()) }
+    single { MTRRepository(get()) }
+    single { LRTRepository(get()) }
+    single { NLBRepository(get()) }
 }
 
 val koinProviderModule: Module = module {
-    single { DataServiceProvider(get()) }
-    single { TransportServiceProvider(get()) }
-    single { KmbServiceProvider(get()) }
-    single { GmbServiceProvider(get()) }
-    single { HkoWeatherServiceProvider(get()) }
 }

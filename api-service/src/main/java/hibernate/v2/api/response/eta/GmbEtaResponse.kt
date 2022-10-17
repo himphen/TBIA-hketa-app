@@ -1,12 +1,12 @@
 package hibernate.v2.api.response.eta
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.gmb.GmbEtaRouteStop
 import hibernate.v2.api.response.BaseResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class GmbEtaResponse(
-    @SerializedName("data")
+    @SerialName("data")
     val `data`: GmbEtaRouteStop? = null
 ) : BaseResponse()

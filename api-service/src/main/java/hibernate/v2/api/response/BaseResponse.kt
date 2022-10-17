@@ -1,12 +1,14 @@
 package hibernate.v2.api.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 open class BaseResponse(
-    @SerializedName("generated_timestamp")
+    @SerialName("generated_timestamp")
     val generatedTimestamp: String? = null,
-    @SerializedName("type")
+    @SerialName("type")
     val type: String? = null,
-    @SerializedName("version")
+    @SerialName("version")
     val version: String? = null
 )

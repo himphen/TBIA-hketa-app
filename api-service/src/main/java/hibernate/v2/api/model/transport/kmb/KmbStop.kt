@@ -1,22 +1,22 @@
 package hibernate.v2.api.model.transport.kmb
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class KmbStop(
-    @SerializedName("lat")
+    @SerialName("lat")
     var lat: String = "0.0",
-    @SerializedName("long")
+    @SerialName("long")
     var lng: String = "0.0",
-    @SerializedName("name_en")
+    @SerialName("name_en")
     var nameEn: String = "",
-    @SerializedName("name_sc")
+    @SerialName("name_sc")
     var nameSc: String = "",
-    @SerializedName("name_tc")
+    @SerialName("name_tc")
     var nameTc: String = "",
-    @SerializedName("stop")
+    @SerialName("stop")
     var stopId: String = "",
-    @SerializedName("geohash")
+    @SerialName("geohash")
     var geohash: String = "",
 )

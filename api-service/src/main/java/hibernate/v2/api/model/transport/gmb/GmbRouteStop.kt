@@ -1,20 +1,20 @@
 package hibernate.v2.api.model.transport.gmb
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.GmbRegion
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class GmbRouteStop(
     val bound: Bound = Bound.O,
-    @SerializedName("region")
+    @SerialName("region")
     var region: GmbRegion = GmbRegion.UNKNOWN,
-    @SerializedName("route_id")
+    @SerialName("route_id")
     var routeId: Long = 0,
     var seq: Int = 0,
-    @SerializedName("stop")
+    @SerialName("stop")
     var stopId: Long = 0,
-    @SerializedName("service_type")
+    @SerialName("service_type")
     var serviceType: Long = 0,
 )

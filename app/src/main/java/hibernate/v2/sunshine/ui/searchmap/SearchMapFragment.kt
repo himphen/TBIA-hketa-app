@@ -4,9 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Insets.add
 import android.location.Location
-import android.location.LocationRequest
 import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
@@ -65,7 +63,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.java.KoinJavaComponent.inject
 import java.util.Date
 import kotlin.coroutines.resume
 import kotlin.time.Duration.Companion.milliseconds

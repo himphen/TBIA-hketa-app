@@ -1,11 +1,11 @@
 package hibernate.v2.sunshine.model
 
 import com.google.android.gms.maps.model.LatLngBounds
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class TrafficLocation(
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
-    @SerializedName("bounds")
+    @SerialName("bounds")
     var bounds: LatLngBounds,
 )

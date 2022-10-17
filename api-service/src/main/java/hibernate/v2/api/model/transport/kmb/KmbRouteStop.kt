@@ -1,19 +1,19 @@
 package hibernate.v2.api.model.transport.kmb
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
 import hibernate.v2.api.model.transport.Bound
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class KmbRouteStop(
-    @SerializedName("bound")
+    @SerialName("bound")
     var bound: Bound = Bound.O,
-    @SerializedName("route")
+    @SerialName("route")
     var routeId: String = "",
-    @SerializedName("seq")
+    @SerialName("seq")
     var seq: String = "",
-    @SerializedName("service_type")
+    @SerialName("service_type")
     var serviceType: String = "",
-    @SerializedName("stop")
+    @SerialName("stop")
     var stopId: String = "",
 )

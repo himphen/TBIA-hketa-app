@@ -1,20 +1,20 @@
 package hibernate.v2.api.model.transport.nlb
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class NLBEta(
-    @SerializedName("estimatedArrivalTime")
+    @SerialName("estimatedArrivalTime")
     val estimatedArrivalTime: String? = null,
-    @SerializedName("routeVariantName")
+    @SerialName("routeVariantName")
     val routeVariantName: String? = null,
-    @SerializedName("departed")
+    @SerialName("departed")
     val departed: Int? = null,
-    @SerializedName("noGPS")
+    @SerialName("noGPS")
     val noGPS: Int? = null,
-    @SerializedName("wheelChair")
+    @SerialName("wheelChair")
     val wheelChair: Int? = null,
-    @SerializedName("generateTime")
+    @SerialName("generateTime")
     val generateTime: String? = null
 )
