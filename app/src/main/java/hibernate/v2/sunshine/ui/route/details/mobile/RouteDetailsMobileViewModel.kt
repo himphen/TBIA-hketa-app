@@ -9,6 +9,7 @@ import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
 import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
+import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.RouteDetailsStop
 import hibernate.v2.sunshine.model.transport.TransportStop
@@ -19,7 +20,6 @@ import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
 import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.repository.CtbRepository
-import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
@@ -35,7 +35,7 @@ class RouteDetailsMobileViewModel(
     val selectedRoute: TransportRoute,
     val selectedEtaType: EtaType,
     private val etaInteractor: EtaInteractor,
-    private val kmbRepository: KmbRepository,
+    private val kmbInteractor: KmbInteractor,
     private val ctbRepository: CtbRepository,
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
@@ -156,7 +156,7 @@ class RouteDetailsMobileViewModel(
 
     private suspend fun getKmbStopList(route: TransportRoute): List<TransportStop> {
         return try {
-            val allRouteList = kmbRepository.getRouteStopComponentListDb(route)
+            val allRouteList = kmbInteractor.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
             Logger.t("lifecycle").d("getKmbStopList done")
             allRouteList

@@ -9,9 +9,9 @@ import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Checksum
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
+import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.repository.CoreRepository
 import hibernate.v2.sunshine.repository.CtbRepository
-import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
@@ -25,7 +25,7 @@ import kotlinx.coroutines.tasks.await
 class OnboardingViewModel(
     private val sharedPreferencesManager: SharedPreferencesManager,
     private val coreRepository: CoreRepository,
-    private val kmbRepository: KmbRepository,
+    private val kmbInteractor: KmbInteractor,
     private val ctbRepository: CtbRepository,
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
@@ -204,8 +204,8 @@ class OnboardingViewModel(
 
     private suspend fun downloadKmbTransportData() {
         Logger.t("lifecycle").d("downloadKmbTransportData start")
-        kmbRepository.initDatabase()
-        kmbRepository.saveData()
+        kmbInteractor.initDatabase()
+        kmbInteractor.saveData()
     }
 
     private suspend fun downloadCtbTransportData() {
@@ -240,7 +240,7 @@ class OnboardingViewModel(
 
     suspend fun resetTransportData() {
         sharedPreferencesManager.transportDataChecksum = null
-        kmbRepository.initDatabase()
+        kmbInteractor.initDatabase()
         ctbRepository.initDatabase()
         gmbInteractor.initDatabase()
         mtrRepository.initDatabase()

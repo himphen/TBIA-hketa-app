@@ -1,6 +1,6 @@
-package hibernate.v2.sunshine.domain.gmb
+package hibernate.v2.sunshine.domain.kmb
 
-class GmbInteractor(
+class KmbInteractor(
     val saveData: SaveData,
     val getRouteListDb: GetRouteListDb,
     val getRouteStopComponentListDb: GetRouteStopComponentListDb,

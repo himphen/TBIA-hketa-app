@@ -6,8 +6,10 @@ import com.fonfon.kgeohash.GeoHash
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.sunshine.domain.GeneralInteractor
 import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
+import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.eta.EtaType
@@ -16,7 +18,6 @@ import hibernate.v2.sunshine.model.transport.eta.MTRTransportEta
 import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
 import hibernate.v2.sunshine.repository.CtbRepository
-import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
@@ -31,8 +32,9 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentSkipListMap
 
 class SearchMapViewModel(
+    private val generalInteractor: GeneralInteractor,
     private val etaInteractor: EtaInteractor,
-    private val kmbRepository: KmbRepository,
+    private val kmbInteractor: KmbInteractor,
     private val ctbRepository: CtbRepository,
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
@@ -65,7 +67,7 @@ class SearchMapViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val stop = selectedStop.value ?: return@launch
             val result = when (stop.etaType) {
-                EtaType.KMB -> kmbRepository.getRouteEtaCardList(stop)
+                EtaType.KMB -> kmbInteractor.getRouteEtaCardList(stop)
                 EtaType.NWFB -> ctbRepository.getRouteEtaCardList(stop)
                 EtaType.CTB -> ctbRepository.getRouteEtaCardList(stop)
                 EtaType.GMB_HKI,
@@ -85,7 +87,10 @@ class SearchMapViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val list = stopList.groupBy({ it.etaType }, { it }).map { (etaType, stopMapList) ->
                 when (etaType) {
-                    EtaType.KMB -> kmbRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.KMB -> kmbInteractor.setMapRouteListIntoMapStop(
+                        stopMapList,
+                        kmbInteractor.getRouteEtaCardList
+                    )
                     EtaType.NWFB -> ctbRepository.setMapRouteListIntoMapStop(stopMapList)
                     EtaType.CTB -> ctbRepository.setMapRouteListIntoMapStop(stopMapList)
                     EtaType.GMB_HKI,
@@ -109,7 +114,7 @@ class SearchMapViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val deferredList = listOf(
                 async {
-                    kmbRepository.getStopListDb(list).map {
+                    kmbInteractor.getStopListDb(list).map {
                         SearchMapStop.fromStopEntity(it)
                     }
                 },

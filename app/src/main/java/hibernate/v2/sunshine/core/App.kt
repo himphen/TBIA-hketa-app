@@ -9,6 +9,9 @@ import com.himphen.logger.AndroidLogAdapter
 import com.himphen.logger.Logger
 import com.himphen.logger.PrettyFormatStrategy
 import hibernate.v2.sunshine.BuildConfig
+import hibernate.v2.sunshine.core.koin.koinEtaUseCaseModule
+import hibernate.v2.sunshine.core.koin.koinGmbUseCaseModule
+import hibernate.v2.sunshine.core.koin.koinKmbUseCaseModule
 import hibernate.v2.sunshine.util.getAdMobDeviceID
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -48,7 +51,10 @@ class App : Application() {
                 koinRepositoryModule,
                 koinUIModule,
                 koinUseCaseModule,
-                koinInteractorModule
+                koinInteractorModule,
+                koinKmbUseCaseModule,
+                koinGmbUseCaseModule,
+                koinEtaUseCaseModule
             )
         }
     }
