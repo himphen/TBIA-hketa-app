@@ -9,6 +9,7 @@ import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.domain.lrt.LrtInteractor
+import hibernate.v2.sunshine.domain.nlb.NlbInteractor
 import hibernate.v2.sunshine.model.AddEtaRowItem
 import hibernate.v2.sunshine.model.transport.TransportRouteStopList
 import hibernate.v2.sunshine.model.transport.eta.EtaType
@@ -16,7 +17,6 @@ import hibernate.v2.sunshine.model.transport.route.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.route.LrtTransportRoute
 import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.repository.MTRRepository
-import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +30,7 @@ class RouteListLeanbackViewModel(
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtInteractor: LrtInteractor,
-    private val nlbRepository: NLBRepository,
+    private val nlbRepository: NlbInteractor,
 ) : BaseViewModel() {
 
     val filteredTransportRouteList = MutableSharedFlow<Pair<EtaType, List<AddEtaRowItem>>>()
@@ -50,7 +50,7 @@ class RouteListLeanbackViewModel(
                 EtaType.GMB_NT -> getGmbRouteList(context, etaType)
                 EtaType.MTR -> getMTRRouteList(context)
                 EtaType.LRT -> getLRTRouteList(context)
-                EtaType.NLB -> getNLBRouteList(context)
+                EtaType.NLB -> getNlbRouteList(context)
             }
 
             searchRoute(context, etaType)
@@ -381,7 +381,7 @@ class RouteListLeanbackViewModel(
         }
     }
 
-    private suspend fun getNLBRouteList(context: Context) {
+    private suspend fun getNlbRouteList(context: Context) {
         val etaType = EtaType.NLB
         if (RouteAndStopListDataHolder.hasData(etaType)) {
             return

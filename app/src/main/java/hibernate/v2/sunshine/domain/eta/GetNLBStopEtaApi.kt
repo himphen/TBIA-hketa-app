@@ -6,7 +6,7 @@ import hibernate.v2.api.request.eta.NlbRequest
 import hibernate.v2.api.response.eta.NlbEtaResponse
 import hibernate.v2.api.service.TransportService
 
-class GetNLBStopEtaApi {
+class GetNlbStopEtaApi {
     suspend operator fun invoke(
         stopId: String,
         routeId: String

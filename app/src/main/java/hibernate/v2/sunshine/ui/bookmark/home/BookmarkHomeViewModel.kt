@@ -59,7 +59,7 @@ class BookmarkHomeViewModel(
                 etaInteractor.getSavedLrtEtaList().map { it.toEtaCard() }
             )
             convertedEtaCardList.addAll(
-                etaInteractor.getSavedNLBEtaList().map { it.toEtaCard() }
+                etaInteractor.getSavedNlbEtaList().map { it.toEtaCard() }
             )
 
             convertedEtaCardList.sort()
@@ -174,7 +174,7 @@ class BookmarkHomeViewModel(
                             result[index] = etaCard
                         }
                         Company.LRT -> {
-                            val apiEtaResponse = etaInteractor.getLRTStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getLrtStopEtaApi(
                                 stopId = etaCard.stop.stopId
                             )
 
@@ -207,7 +207,7 @@ class BookmarkHomeViewModel(
                             result[index] = etaCard
                         }
                         Company.NLB -> {
-                            val apiEtaResponse = etaInteractor.getNLBStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getNlbStopEtaApi(
                                 stopId = etaCard.stop.stopId,
                                 routeId = etaCard.route.routeId
                             )

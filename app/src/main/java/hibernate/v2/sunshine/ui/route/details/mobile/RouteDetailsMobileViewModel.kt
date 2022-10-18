@@ -12,6 +12,7 @@ import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.domain.lrt.LrtInteractor
+import hibernate.v2.sunshine.domain.nlb.NlbInteractor
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.RouteDetailsStop
 import hibernate.v2.sunshine.model.transport.TransportStop
@@ -22,7 +23,6 @@ import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
 import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.repository.MTRRepository
-import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +40,7 @@ class RouteDetailsMobileViewModel(
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtInteractor: LrtInteractor,
-    private val nlbRepository: NLBRepository,
+    private val nlbRepository: NlbInteractor,
 ) : BaseViewModel() {
 
     val routeDetailsStopList = MutableLiveData<List<RouteDetailsStop>>()
@@ -133,7 +133,7 @@ class RouteDetailsMobileViewModel(
                 EtaType.GMB_NT -> getGmbStopList(route)
                 EtaType.MTR -> getMTRStopList(route)
                 EtaType.LRT -> getLrtStopList(route)
-                EtaType.NLB -> getNLBStopList(route)
+                EtaType.NLB -> getNlbStopList(route)
             }
         }
     }
@@ -149,7 +149,7 @@ class RouteDetailsMobileViewModel(
                 EtaType.GMB_NT -> etaInteractor.getSavedGmbEtaList().map { it.savedEta }
                 EtaType.MTR -> etaInteractor.getSavedMTREtaList().map { it.savedEta }
                 EtaType.LRT -> etaInteractor.getSavedLrtEtaList().map { it.savedEta }
-                EtaType.NLB -> etaInteractor.getSavedNLBEtaList().map { it.savedEta }
+                EtaType.NLB -> etaInteractor.getSavedNlbEtaList().map { it.savedEta }
             }
         }
     }
@@ -214,7 +214,7 @@ class RouteDetailsMobileViewModel(
         }
     }
 
-    private suspend fun getNLBStopList(route: TransportRoute): List<TransportStop> {
+    private suspend fun getNlbStopList(route: TransportRoute): List<TransportStop> {
         return try {
             val allRouteList = nlbRepository.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
@@ -349,7 +349,7 @@ class RouteDetailsMobileViewModel(
                     }
                 }
                 Company.LRT -> {
-                    val apiEtaResponse = etaInteractor.getLRTStopEtaApi(
+                    val apiEtaResponse = etaInteractor.getLrtStopEtaApi(
                         stopId = selectedStop.stopId
                     )
 
@@ -375,7 +375,7 @@ class RouteDetailsMobileViewModel(
                     }
                 }
                 Company.NLB -> {
-                    val apiEtaResponse = etaInteractor.getNLBStopEtaApi(
+                    val apiEtaResponse = etaInteractor.getNlbStopEtaApi(
                         stopId = selectedStop.stopId,
                         routeId = selectedRoute.routeId
                     )

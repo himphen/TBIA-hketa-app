@@ -12,6 +12,7 @@ import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.domain.lrt.LrtInteractor
+import hibernate.v2.sunshine.domain.nlb.NlbInteractor
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.eta.EtaType
@@ -20,7 +21,6 @@ import hibernate.v2.sunshine.model.transport.eta.MTRTransportEta
 import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
 import hibernate.v2.sunshine.repository.MTRRepository
-import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -39,7 +39,7 @@ class SearchMapViewModel(
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtInteractor: LrtInteractor,
-    private val nlbRepository: NLBRepository,
+    private val nlbRepository: NlbInteractor,
 ) : BaseViewModel() {
 
     val selectedStop = MutableLiveData<SearchMapStop>()
@@ -110,7 +110,10 @@ class SearchMapViewModel(
                         stopMapList,
                         lrtInteractor.getRouteEtaCardList
                     )
-                    EtaType.NLB -> nlbRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.NLB -> nlbRepository.setMapRouteListIntoMapStop(
+                        stopMapList,
+                        nlbRepository.getRouteEtaCardList
+                    )
                 }
             }
 
@@ -249,7 +252,7 @@ class SearchMapViewModel(
                             result[index] = etaCard
                         }
                         Company.LRT -> {
-                            val apiEtaResponse = etaInteractor.getLRTStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getLrtStopEtaApi(
                                 stopId = etaCard.stop.stopId
                             )
 
@@ -282,7 +285,7 @@ class SearchMapViewModel(
                             result[index] = etaCard
                         }
                         Company.NLB -> {
-                            val apiEtaResponse = etaInteractor.getNLBStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getNlbStopEtaApi(
                                 stopId = etaCard.stop.stopId,
                                 routeId = etaCard.route.routeId
                             )

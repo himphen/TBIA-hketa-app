@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NLBEta(
+data class NlbEta(
     @SerialName("estimatedArrivalTime")
     val estimatedArrivalTime: String? = null,
     @SerialName("routeVariantName")

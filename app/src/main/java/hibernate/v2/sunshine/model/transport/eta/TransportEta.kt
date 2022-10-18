@@ -4,7 +4,7 @@ import android.content.Context
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.BusEta
 import hibernate.v2.api.model.transport.gmb.GmbEta
-import hibernate.v2.api.model.transport.nlb.NLBEta
+import hibernate.v2.api.model.transport.nlb.NlbEta
 import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.util.DateFormatPattern
 import hibernate.v2.sunshine.util.DateUtil
@@ -71,7 +71,7 @@ open class TransportEta(
             )
         }
 
-        fun fromApiModel(eta: NLBEta, seq: Int?): TransportEta {
+        fun fromApiModel(eta: NlbEta, seq: Int?): TransportEta {
             return TransportEta(
                 eta = DateUtil.getDate(
                     eta.estimatedArrivalTime,

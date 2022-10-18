@@ -43,7 +43,7 @@ class BookmarkEditViewModel(
                         .map { it.toSettingsEtaCard() }
                 },
                 async {
-                    etaInteractor.getSavedNLBEtaList()
+                    etaInteractor.getSavedNlbEtaList()
                         .map { it.toSettingsEtaCard() }
                 }
             )

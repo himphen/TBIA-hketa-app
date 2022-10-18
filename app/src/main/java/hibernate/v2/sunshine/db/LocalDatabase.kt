@@ -31,10 +31,10 @@ import hibernate.v2.sunshine.db.mtr.MTRDao
 import hibernate.v2.sunshine.db.mtr.MTRRouteEntity
 import hibernate.v2.sunshine.db.mtr.MTRRouteStopEntity
 import hibernate.v2.sunshine.db.mtr.MTRStopEntity
-import hibernate.v2.sunshine.db.nlb.NLBDao
-import hibernate.v2.sunshine.db.nlb.NLBRouteEntity
-import hibernate.v2.sunshine.db.nlb.NLBRouteStopEntity
-import hibernate.v2.sunshine.db.nlb.NLBStopEntity
+import hibernate.v2.sunshine.db.nlb.NlbDao
+import hibernate.v2.sunshine.db.nlb.NlbRouteEntity
+import hibernate.v2.sunshine.db.nlb.NlbRouteStopEntity
+import hibernate.v2.sunshine.db.nlb.NlbStopEntity
 
 private const val DATABASE_NAME = "saved_data"
 
@@ -46,7 +46,7 @@ private const val DATABASE_NAME = "saved_data"
         GmbRouteEntity::class, GmbStopEntity::class, GmbRouteStopEntity::class,
         MTRRouteEntity::class, MTRStopEntity::class, MTRRouteStopEntity::class,
         LrtRouteEntity::class, LrtStopEntity::class, LrtRouteStopEntity::class,
-        NLBRouteEntity::class, NLBStopEntity::class, NLBRouteStopEntity::class,
+        NlbRouteEntity::class, NlbStopEntity::class, NlbRouteStopEntity::class,
     ],
     version = 22,
     exportSchema = false
@@ -60,7 +60,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun gmbDao(): GmbDao
     abstract fun mtrDao(): MTRDao
     abstract fun lrtDao(): LrtDao
-    abstract fun nlbDao(): NLBDao
+    abstract fun nlbDao(): NlbDao
 
     companion object {
         private val MIGRATION_1_2 = object : Migration(1, 2) {

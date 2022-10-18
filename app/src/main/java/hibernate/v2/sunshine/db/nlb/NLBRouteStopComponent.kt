@@ -5,13 +5,13 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 @Keep
-data class NLBRouteStopComponent(
+data class NlbRouteStopComponent(
     @Embedded
-    val routeStopEntity: NLBRouteStopEntity,
+    val routeStopEntity: NlbRouteStopEntity,
 
     @Relation(
         parentColumn = "nlb_route_stop_stop_id",
         entityColumn = "nlb_stop_id"
     )
-    val stopEntity: NLBStopEntity?
+    val stopEntity: NlbStopEntity?
 )

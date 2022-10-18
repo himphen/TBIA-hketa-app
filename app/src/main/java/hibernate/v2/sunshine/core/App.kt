@@ -14,6 +14,7 @@ import hibernate.v2.sunshine.core.koin.koinEtaUseCaseModule
 import hibernate.v2.sunshine.core.koin.koinGmbUseCaseModule
 import hibernate.v2.sunshine.core.koin.koinKmbUseCaseModule
 import hibernate.v2.sunshine.core.koin.koinLrtUseCaseModule
+import hibernate.v2.sunshine.core.koin.koinNlbUseCaseModule
 import hibernate.v2.sunshine.util.getAdMobDeviceID
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -58,6 +59,7 @@ class App : Application() {
                 koinCtbUseCaseModule,
                 koinGmbUseCaseModule,
                 koinLrtUseCaseModule,
+                koinNlbUseCaseModule,
                 koinEtaUseCaseModule
             )
         }

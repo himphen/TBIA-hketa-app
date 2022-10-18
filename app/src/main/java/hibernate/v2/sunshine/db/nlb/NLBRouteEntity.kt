@@ -16,7 +16,7 @@ import hibernate.v2.sunshine.model.transport.route.TransportRoute
     tableName = "nlb_route",
     primaryKeys = ["nlb_route_id"],
 )
-data class NLBRouteEntity(
+data class NlbRouteEntity(
     @ColumnInfo(name = "nlb_route_id")
     val routeId: String,
     @ColumnInfo(name = "orig_en")
@@ -31,7 +31,7 @@ data class NLBRouteEntity(
     val destTc: String,
     @ColumnInfo(name = "dest_sc")
     val destSc: String,
-) : TransportHashable, Comparable<NLBRouteEntity>, BaseRouteEntity() {
+) : TransportHashable, Comparable<NlbRouteEntity>, BaseRouteEntity() {
     @Ignore
     val bound = Bound.UNKNOWN
 
@@ -41,8 +41,8 @@ data class NLBRouteEntity(
     fun isSpecialRoute(): Boolean = false
 
     companion object {
-        fun fromApiModel(route: NlbRoute): NLBRouteEntity {
-            return NLBRouteEntity(
+        fun fromApiModel(route: NlbRoute): NlbRouteEntity {
+            return NlbRouteEntity(
                 routeId = route.routeId,
                 origEn = route.origEn,
                 origTc = route.origTc,
@@ -72,7 +72,7 @@ data class NLBRouteEntity(
 
     fun routeHashId() = routeHashId(Company.NLB, routeId, bound, serviceType)
 
-    override fun compareTo(other: NLBRouteEntity): Int {
+    override fun compareTo(other: NlbRouteEntity): Int {
         parseRouteNumber(routeId)
         other.parseRouteNumber(other.routeId)
 

@@ -19,7 +19,7 @@ import hibernate.v2.sunshine.model.transport.TransportHashable
     ],
     primaryKeys = ["nlb_route_stop_route_id", "nlb_route_stop_seq"]
 )
-data class NLBRouteStopEntity(
+data class NlbRouteStopEntity(
     @ColumnInfo(name = "nlb_route_stop_route_id")
     val routeId: String,
     @ColumnInfo(name = "nlb_route_stop_seq")
@@ -34,8 +34,8 @@ data class NLBRouteStopEntity(
     val serviceType = "1"
 
     companion object {
-        fun fromApiModel(routeStop: NlbRouteStop): NLBRouteStopEntity {
-            return NLBRouteStopEntity(
+        fun fromApiModel(routeStop: NlbRouteStop): NlbRouteStopEntity {
+            return NlbRouteStopEntity(
                 routeId = routeStop.routeId,
                 seq = routeStop.seq,
                 stopId = routeStop.stopId

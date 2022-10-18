@@ -6,10 +6,10 @@ import com.google.maps.android.clustering.ClusterItem
 import hibernate.v2.sunshine.db.ctb.CtbStopEntity
 import hibernate.v2.sunshine.db.gmb.GmbStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
-import hibernate.v2.sunshine.db.nlb.NLBStopEntity
+import hibernate.v2.sunshine.db.nlb.NlbStopEntity
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.TransportStop
+import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.util.GeneralUtils
 
 data class SearchMapStop(
@@ -70,7 +70,7 @@ data class SearchMapStop(
             )
         }
 
-        fun fromStopEntity(it: NLBStopEntity): SearchMapStop {
+        fun fromStopEntity(it: NlbStopEntity): SearchMapStop {
             return SearchMapStop(
                 lat = it.lat,
                 lng = it.lng,

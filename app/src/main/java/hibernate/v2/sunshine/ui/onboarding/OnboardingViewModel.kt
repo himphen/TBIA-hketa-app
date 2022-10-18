@@ -12,9 +12,9 @@ import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.domain.lrt.LrtInteractor
+import hibernate.v2.sunshine.domain.nlb.NlbInteractor
 import hibernate.v2.sunshine.repository.CoreRepository
 import hibernate.v2.sunshine.repository.MTRRepository
-import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -30,7 +30,7 @@ class OnboardingViewModel(
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtInteractor: LrtInteractor,
-    private val nlbRepository: NLBRepository,
+    private val nlbRepository: NlbInteractor,
 ) : BaseViewModel() {
 
     val fetchTransportDataRequired = MutableLiveData(-1)
