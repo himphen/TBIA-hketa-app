@@ -1,51 +1,25 @@
 package hibernate.v2.api.service
 
-import hibernate.v2.api.BuildConfig
-import hibernate.v2.api.core.KtorLogger
+import hibernate.v2.api.core.KtorClient
 import hibernate.v2.api.request.eta.NlbRequest
 import hibernate.v2.api.response.eta.EtaResponse
 import hibernate.v2.api.response.eta.LrtEtaResponse
 import hibernate.v2.api.response.eta.MTREtaResponse
 import hibernate.v2.api.response.eta.NlbEtaResponse
-import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.get
-import io.ktor.client.request.parameter
-import io.ktor.client.request.post
+import io.ktor.client.plugins.resources.get
+import io.ktor.client.plugins.resources.post
 import io.ktor.client.request.setBody
-import io.ktor.http.appendPathSegments
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
+import io.ktor.resources.Resource
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 object TransportService {
     private val client by lazy {
-        HttpClient(CIO) {
+        KtorClient.initClient().config {
             defaultRequest {
                 url("https://rt.data.gov.hk/")
-            }
-
-            install(ContentNegotiation) {
-                json(
-                    Json {
-                        prettyPrint = true
-                        isLenient = true
-                        ignoreUnknownKeys = true
-                    }
-                )
-            }
-
-            install(Logging) {
-                logger = KtorLogger()
-                level = if (BuildConfig.DEBUG) {
-                    LogLevel.BODY
-                } else {
-                    LogLevel.NONE
-                }
             }
         }
     }
@@ -55,17 +29,13 @@ object TransportService {
         stopId: String,
         route: String
     ): EtaResponse {
-        return client.get("v1/transport/citybus-nwfb/eta/") {
-            url {
-                appendPathSegments(company, stopId, route)
-            }
-        }.body()
+        return client.get(GetCtbStopEta(company, stopId, route)).body()
     }
 
     suspend fun getNlbStopEta(
         body: NlbRequest
     ): NlbEtaResponse {
-        return client.post("v1/transport/nlb/stop.php?action=estimatedArrivals") {
+        return client.post(GetNlbStopEta()) {
             setBody(body)
         }.body()
     }
@@ -74,21 +44,38 @@ object TransportService {
         routeId: String,
         stopId: String,
     ): MTREtaResponse {
-        return client.get("v1/transport/mtr/getSchedule.php") {
-            url {
-                parameter("line", routeId)
-                parameter("sta", stopId)
-            }
-        }.body()
+        return client.get(GetMtrStopEta(routeId, stopId)).body()
     }
 
     suspend fun getLrtStopEta(
         stopId: String,
     ): LrtEtaResponse {
-        return client.get("v1/transport/mtr/lrt/getSchedule/") {
-            url {
-                parameter("station_id", stopId)
-            }
-        }.body()
+        return client.get(GetLrtStopEta(stopId)).body()
     }
+
+    @Serializable
+    @Resource("v1/transport/citybus-nwfb/eta/{company}/{stopId}/{route}")
+    class GetCtbStopEta(
+        val company: String,
+        val stopId: String,
+        val route: String,
+    )
+
+    @Serializable
+    @Resource("v1/transport/nlb/stop.php?action=estimatedArrivals")
+    class GetNlbStopEta
+
+    @Serializable
+    @Resource("v1/transport/mtr/getSchedule.php")
+    class GetMtrStopEta(
+        val line: String,
+        val sta: String,
+    )
+
+    @Serializable
+    @Resource("v1/transport/mtr/lrt/getSchedule")
+    class GetLrtStopEta(
+        @SerialName("station_id")
+        val stationId: String
+    )
 }

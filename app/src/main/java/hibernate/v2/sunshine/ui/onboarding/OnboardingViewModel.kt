@@ -8,9 +8,9 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Checksum
 import hibernate.v2.sunshine.core.SharedPreferencesManager
+import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.repository.CoreRepository
 import hibernate.v2.sunshine.repository.CtbRepository
-import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
@@ -27,7 +27,7 @@ class OnboardingViewModel(
     private val coreRepository: CoreRepository,
     private val kmbRepository: KmbRepository,
     private val ctbRepository: CtbRepository,
-    private val gmbRepository: GmbRepository,
+    private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
     private val nlbRepository: NLBRepository,
@@ -216,8 +216,8 @@ class OnboardingViewModel(
 
     private suspend fun downloadGmbTransportData() {
         Logger.t("lifecycle").d("downloadGmbTransportData start")
-        gmbRepository.initDatabase()
-        gmbRepository.saveData()
+        gmbInteractor.initDatabase()
+        gmbInteractor.saveData()
     }
 
     private suspend fun downloadMtrTransportData() {
@@ -242,7 +242,7 @@ class OnboardingViewModel(
         sharedPreferencesManager.transportDataChecksum = null
         kmbRepository.initDatabase()
         ctbRepository.initDatabase()
-        gmbRepository.initDatabase()
+        gmbInteractor.initDatabase()
         mtrRepository.initDatabase()
         lrtRepository.initDatabase()
         nlbRepository.initDatabase()

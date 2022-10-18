@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
+import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -13,7 +13,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class BookmarkEditViewModel(
-    private val etaRepository: EtaRepository,
+    private val etaInteractor: EtaInteractor,
 ) : BaseViewModel() {
 
     val savedEtaCardList = MutableLiveData<MutableList<Card.SettingsEtaCard>>()
@@ -23,27 +23,27 @@ class BookmarkEditViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val deferredList = listOf(
                 async {
-                    etaRepository.getSavedKmbEtaList()
+                    etaInteractor.getSavedKmbEtaList()
                         .map { it.toSettingsEtaCard() }
                 },
                 async {
-                    etaRepository.getSavedNCEtaList()
+                    etaInteractor.getSavedNCEtaList()
                         .map { it.toSettingsEtaCard() }
                 },
                 async {
-                    etaRepository.getSavedGmbEtaList()
+                    etaInteractor.getSavedGmbEtaList()
                         .map { it.toSettingsEtaCard() }
                 },
                 async {
-                    etaRepository.getSavedMTREtaList()
+                    etaInteractor.getSavedMTREtaList()
                         .map { it.toSettingsEtaCard() }
                 },
                 async {
-                    etaRepository.getSavedLRTEtaList()
+                    etaInteractor.getSavedLRTEtaList()
                         .map { it.toSettingsEtaCard() }
                 },
                 async {
-                    etaRepository.getSavedNLBEtaList()
+                    etaInteractor.getSavedNLBEtaList()
                         .map { it.toSettingsEtaCard() }
                 }
             )
@@ -57,12 +57,12 @@ class BookmarkEditViewModel(
         }
     }
 
-    suspend fun removeEta(item: SavedEtaEntity) = etaRepository.clearEta(item)
+    suspend fun removeEta(item: SavedEtaEntity) = etaInteractor.clearEta(item)
 
-    suspend fun clearAllEta() = etaRepository.clearAllEta()
+    suspend fun clearAllEta() = etaInteractor.clearAllEta()
 
-    suspend fun getEtaOrderList() = etaRepository.getEtaOrderList()
+    suspend fun getEtaOrderList() = etaInteractor.getEtaOrderList()
 
     suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
-        etaRepository.updateEtaOrderList(entityList)
+        etaInteractor.updateEtaOrderList(entityList)
 }

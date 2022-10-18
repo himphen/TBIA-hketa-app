@@ -7,18 +7,18 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
+import hibernate.v2.sunshine.domain.eta.EtaInteractor
+import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.model.Card
+import hibernate.v2.sunshine.model.transport.RouteDetailsStop
+import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.eta.LRTTransportEta
 import hibernate.v2.sunshine.model.transport.eta.MTRTransportEta
-import hibernate.v2.sunshine.model.transport.RouteDetailsStop
 import hibernate.v2.sunshine.model.transport.eta.TransportEta
-import hibernate.v2.sunshine.model.transport.route.TransportRoute
-import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
+import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.repository.CtbRepository
-import hibernate.v2.sunshine.repository.EtaRepository
-import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
@@ -34,10 +34,10 @@ import kotlinx.coroutines.withContext
 class RouteDetailsMobileViewModel(
     val selectedRoute: TransportRoute,
     val selectedEtaType: EtaType,
-    private val etaRepository: EtaRepository,
+    private val etaInteractor: EtaInteractor,
     private val kmbRepository: KmbRepository,
     private val ctbRepository: CtbRepository,
-    private val gmbRepository: GmbRepository,
+    private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
     private val nlbRepository: NLBRepository,
@@ -73,7 +73,7 @@ class RouteDetailsMobileViewModel(
         seq: Int,
         company: Company,
     ) = withContext(Dispatchers.IO) {
-        etaRepository.hasEtaInDb(
+        etaInteractor.hasEtaInDb(
             stopId,
             routeId,
             bound,
@@ -84,13 +84,13 @@ class RouteDetailsMobileViewModel(
     }
 
     private suspend fun addEta(item: SavedEtaEntity) =
-        withContext(Dispatchers.IO) { return@withContext etaRepository.addEta(item) }
+        withContext(Dispatchers.IO) { return@withContext etaInteractor.addEta(item) }
 
     private suspend fun getEtaOrderList() =
-        withContext(Dispatchers.IO) { etaRepository.getEtaOrderList() }
+        withContext(Dispatchers.IO) { etaInteractor.getEtaOrderList() }
 
     private suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
-        withContext(Dispatchers.IO) { etaRepository.updateEtaOrderList(entityList) }
+        withContext(Dispatchers.IO) { etaInteractor.updateEtaOrderList(entityList) }
 
     fun getRouteDetailsStopList() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -141,15 +141,15 @@ class RouteDetailsMobileViewModel(
     private suspend fun getSavedEtaListFromDb(): List<SavedEtaEntity> {
         return withContext(Dispatchers.IO) {
             return@withContext when (selectedEtaType) {
-                EtaType.KMB -> etaRepository.getSavedKmbEtaList().map { it.savedEta }
+                EtaType.KMB -> etaInteractor.getSavedKmbEtaList().map { it.savedEta }
                 EtaType.NWFB,
-                EtaType.CTB -> etaRepository.getSavedNCEtaList().map { it.savedEta }
+                EtaType.CTB -> etaInteractor.getSavedNCEtaList().map { it.savedEta }
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
-                EtaType.GMB_NT -> etaRepository.getSavedGmbEtaList().map { it.savedEta }
-                EtaType.MTR -> etaRepository.getSavedMTREtaList().map { it.savedEta }
-                EtaType.LRT -> etaRepository.getSavedLRTEtaList().map { it.savedEta }
-                EtaType.NLB -> etaRepository.getSavedNLBEtaList().map { it.savedEta }
+                EtaType.GMB_NT -> etaInteractor.getSavedGmbEtaList().map { it.savedEta }
+                EtaType.MTR -> etaInteractor.getSavedMTREtaList().map { it.savedEta }
+                EtaType.LRT -> etaInteractor.getSavedLRTEtaList().map { it.savedEta }
+                EtaType.NLB -> etaInteractor.getSavedNLBEtaList().map { it.savedEta }
             }
         }
     }
@@ -180,7 +180,7 @@ class RouteDetailsMobileViewModel(
 
     private suspend fun getGmbStopList(route: TransportRoute): List<TransportStop> {
         return try {
-            val allRouteList = gmbRepository.getRouteStopComponentListDb(route)
+            val allRouteList = gmbInteractor.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
             Logger.t("lifecycle").d("getGmbStopList done")
             allRouteList
@@ -268,7 +268,7 @@ class RouteDetailsMobileViewModel(
 
     fun removeBookmark(position: Int, entityId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            etaRepository.clearEta(entityId)
+            etaInteractor.clearEta(entityId)
 
             isRemovedEtaBookmark.emit(position)
         }
@@ -283,7 +283,7 @@ class RouteDetailsMobileViewModel(
 
             when (selectedRoute.company) {
                 Company.KMB -> {
-                    val apiEtaResponse = etaRepository.getKmbStopEtaApi(
+                    val apiEtaResponse = etaInteractor.getKmbStopEtaApi(
                         stopId = selectedStop.stopId,
                         route = selectedRoute.routeId
                     )
@@ -298,7 +298,7 @@ class RouteDetailsMobileViewModel(
                 }
                 Company.NWFB,
                 Company.CTB -> {
-                    val apiEtaResponse = etaRepository.getCtbStopEtaApi(
+                    val apiEtaResponse = etaInteractor.getCtbStopEtaApi(
                         company = selectedRoute.company,
                         stopId = selectedStop.stopId,
                         route = selectedRoute.routeId
@@ -313,7 +313,7 @@ class RouteDetailsMobileViewModel(
                     }
                 }
                 Company.GMB -> {
-                    val apiEtaResponse = etaRepository.getGmbStopEtaApi(
+                    val apiEtaResponse = etaInteractor.getGmbStopEtaApi(
                         stopSeq = selectedStop.seq!!,
                         route = selectedRoute.routeId,
                         serviceType = selectedRoute.serviceType
@@ -329,7 +329,7 @@ class RouteDetailsMobileViewModel(
                     }
                 }
                 Company.MTR -> {
-                    val apiEtaResponse = etaRepository.getMTRStopEtaApi(
+                    val apiEtaResponse = etaInteractor.getMTRStopEtaApi(
                         stopId = selectedStop.stopId,
                         route = selectedRoute.routeId
                     )
@@ -349,7 +349,7 @@ class RouteDetailsMobileViewModel(
                     }
                 }
                 Company.LRT -> {
-                    val apiEtaResponse = etaRepository.getLRTStopEtaApi(
+                    val apiEtaResponse = etaInteractor.getLRTStopEtaApi(
                         stopId = selectedStop.stopId
                     )
 
@@ -375,7 +375,7 @@ class RouteDetailsMobileViewModel(
                     }
                 }
                 Company.NLB -> {
-                    val apiEtaResponse = etaRepository.getNLBStopEtaApi(
+                    val apiEtaResponse = etaInteractor.getNLBStopEtaApi(
                         stopId = selectedStop.stopId,
                         routeId = selectedRoute.routeId
                     )

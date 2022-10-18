@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.GmbRegion
+import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.model.AddEtaRowItem
+import hibernate.v2.sunshine.model.transport.TransportRouteStopList
 import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.route.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.route.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
-import hibernate.v2.sunshine.model.transport.TransportRouteStopList
 import hibernate.v2.sunshine.repository.CtbRepository
-import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 class RouteListLeanbackViewModel(
     private val kmbRepository: KmbRepository,
     private val ctbRepository: CtbRepository,
-    private val gmbRepository: GmbRepository,
+    private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
     private val nlbRepository: NLBRepository,
@@ -57,7 +57,7 @@ class RouteListLeanbackViewModel(
         }
     }
 
-    fun searchRoute(context:Context, etaType: EtaType) {
+    fun searchRoute(context: Context, etaType: EtaType) {
         executingSearchJob?.cancel()
         if (!RouteAndStopListDataHolder.hasData(etaType)) {
             executingSearchJob = viewModelScope.launch(Dispatchers.IO) {
@@ -208,9 +208,9 @@ class RouteListLeanbackViewModel(
         }
 
         try {
-            val allRouteList = gmbRepository.getRouteListDb(region)
+            val allRouteList = gmbInteractor.getRouteListDb(region)
             val allRouteStopList =
-                gmbRepository.getRouteStopComponentListDb(allRouteList.map { it.routeId })
+                gmbInteractor.getRouteStopComponentListDb(allRouteList.map { it.routeId })
 
             val transportRouteStopHashMap = allRouteList.associate { entity ->
                 val route = entity.toTransportModel()

@@ -3,8 +3,7 @@ package hibernate.v2.api.service
 import android.util.Patterns
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
-import hibernate.v2.api.BuildConfig
-import hibernate.v2.api.core.KtorLogger
+import hibernate.v2.api.core.KtorClient
 import hibernate.v2.api.response.data.ChecksumResponse
 import hibernate.v2.api.response.data.CtbDataResponse
 import hibernate.v2.api.response.data.GmbDataResponse
@@ -12,16 +11,9 @@ import hibernate.v2.api.response.data.KmbDataResponse
 import hibernate.v2.api.response.data.LrtDataResponse
 import hibernate.v2.api.response.data.MtrDataResponse
 import hibernate.v2.api.response.data.NlbDataResponse
-import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
 
 object DataService {
     private val client by lazy {
@@ -31,28 +23,9 @@ object DataService {
             dataServiceBaseUrl = "https://localhost/"
         }
 
-        HttpClient(CIO) {
+        KtorClient.initClient().config {
             defaultRequest {
                 url(dataServiceBaseUrl)
-            }
-
-            install(ContentNegotiation) {
-                json(
-                    Json {
-                        prettyPrint = true
-                        isLenient = true
-                        ignoreUnknownKeys = true
-                    }
-                )
-            }
-
-            install(Logging) {
-                logger = KtorLogger()
-                level = if (BuildConfig.DEBUG) {
-                    LogLevel.BODY
-                } else {
-                    LogLevel.NONE
-                }
             }
         }
     }

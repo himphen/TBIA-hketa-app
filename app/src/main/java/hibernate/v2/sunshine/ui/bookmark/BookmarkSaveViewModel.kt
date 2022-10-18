@@ -5,8 +5,8 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.db.eta.SavedEtaEntity
+import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,19 +14,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class BookmarkSaveViewModel(
-    private val etaRepository: EtaRepository,
+    private val etaInteractor: EtaInteractor,
 ) : BaseViewModel() {
 
     var isAddEtaSuccessful = MutableSharedFlow<Boolean>()
 
     private suspend fun addEta(item: SavedEtaEntity) =
-        withContext(Dispatchers.IO) { etaRepository.addEta(item) }
+        withContext(Dispatchers.IO) { etaInteractor.addEta(item) }
 
     private suspend fun getEtaOrderList() =
-        withContext(Dispatchers.IO) { etaRepository.getEtaOrderList() }
+        withContext(Dispatchers.IO) { etaInteractor.getEtaOrderList() }
 
     private suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
-        withContext(Dispatchers.IO) { etaRepository.updateEtaOrderList(entityList) }
+        withContext(Dispatchers.IO) { etaInteractor.updateEtaOrderList(entityList) }
 
     private suspend fun hasEtaInDb(
         stopId: String,
@@ -36,7 +36,7 @@ class BookmarkSaveViewModel(
         seq: Int,
         company: Company
     ) = withContext(Dispatchers.IO) {
-        etaRepository.hasEtaInDb(
+        etaInteractor.hasEtaInDb(
             stopId,
             routeId,
             bound,

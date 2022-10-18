@@ -1,10 +1,36 @@
 package hibernate.v2.sunshine.core
 
 import hibernate.v2.sunshine.db.LocalDatabase
+import hibernate.v2.sunshine.domain.eta.AddEta
+import hibernate.v2.sunshine.domain.eta.ClearAllEta
+import hibernate.v2.sunshine.domain.eta.ClearEta
+import hibernate.v2.sunshine.domain.eta.EtaInteractor
+import hibernate.v2.sunshine.domain.eta.GetCtbStopEtaApi
+import hibernate.v2.sunshine.domain.eta.GetEtaOrderList
+import hibernate.v2.sunshine.domain.eta.GetGmbStopEtaApi
+import hibernate.v2.sunshine.domain.eta.GetKmbStopEtaApi
+import hibernate.v2.sunshine.domain.eta.GetLRTStopEtaApi
+import hibernate.v2.sunshine.domain.eta.GetMTRStopEtaApi
+import hibernate.v2.sunshine.domain.eta.GetNLBStopEtaApi
+import hibernate.v2.sunshine.domain.eta.GetSavedGmbEtaList
+import hibernate.v2.sunshine.domain.eta.GetSavedKmbEtaList
+import hibernate.v2.sunshine.domain.eta.GetSavedLRTEtaList
+import hibernate.v2.sunshine.domain.eta.GetSavedMTREtaList
+import hibernate.v2.sunshine.domain.eta.GetSavedNCEtaList
+import hibernate.v2.sunshine.domain.eta.GetSavedNLBEtaList
+import hibernate.v2.sunshine.domain.eta.HasEtaInDb
+import hibernate.v2.sunshine.domain.eta.UpdateEtaOrderList
+import hibernate.v2.sunshine.domain.gmb.GetRouteEtaCardList
+import hibernate.v2.sunshine.domain.gmb.GetRouteListDb
+import hibernate.v2.sunshine.domain.gmb.GetRouteListFromStopId
+import hibernate.v2.sunshine.domain.gmb.GetRouteStopComponentListDb
+import hibernate.v2.sunshine.domain.gmb.GetStopListDb
+import hibernate.v2.sunshine.domain.gmb.GmbInteractor
+import hibernate.v2.sunshine.domain.gmb.InitDatabase
+import hibernate.v2.sunshine.domain.gmb.SaveData
+import hibernate.v2.sunshine.domain.gmb.SetMapRouteListIntoMapStop
 import hibernate.v2.sunshine.repository.CoreRepository
 import hibernate.v2.sunshine.repository.CtbRepository
-import hibernate.v2.sunshine.repository.EtaRepository
-import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
@@ -65,14 +91,76 @@ val koinRepositoryModule: Module = module {
     single { get<LocalDatabase>().lrtDao() }
     single { get<LocalDatabase>().nlbDao() }
     single { CoreRepository() }
-    single { EtaRepository(get(), get()) }
     single { KmbRepository(get()) }
     single { CtbRepository(get()) }
-    single { GmbRepository(get()) }
     single { MTRRepository(get()) }
     single { LRTRepository(get()) }
     single { NLBRepository(get()) }
 }
 
-val koinProviderModule: Module = module {
+val koinInteractorModule: Module = module {
+    single {
+        EtaInteractor(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+        )
+    }
+
+    single {
+        GmbInteractor(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+        )
+    }
+}
+
+val koinUseCaseModule: Module = module {
+    single { GetKmbStopEtaApi() }
+    single { GetCtbStopEtaApi() }
+    single { GetGmbStopEtaApi() }
+    single { GetMTRStopEtaApi() }
+    single { GetLRTStopEtaApi() }
+    single { GetNLBStopEtaApi() }
+    single { GetSavedKmbEtaList(get()) }
+    single { GetSavedNCEtaList(get()) }
+    single { GetSavedGmbEtaList(get()) }
+    single { GetSavedMTREtaList(get()) }
+    single { GetSavedLRTEtaList(get()) }
+    single { GetSavedNLBEtaList(get()) }
+    single { HasEtaInDb(get()) }
+    single { AddEta(get()) }
+    single { ClearEta(get()) }
+    single { ClearAllEta(get()) }
+    single { GetEtaOrderList(get()) }
+    single { UpdateEtaOrderList(get()) }
+    single { SaveData(get()) }
+    single { GetRouteListDb(get()) }
+    single { GetRouteStopComponentListDb(get()) }
+    single { InitDatabase(get()) }
+    single { GetStopListDb(get()) }
+    single { GetRouteListFromStopId(get()) }
+    single { SetMapRouteListIntoMapStop() }
+    single { GetRouteEtaCardList(get()) }
 }

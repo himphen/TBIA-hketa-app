@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.GmbRegion
+import hibernate.v2.sunshine.domain.gmb.GmbInteractor
+import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.route.TransportRoute
-import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.repository.CtbRepository
-import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
@@ -25,7 +25,7 @@ import java.util.EnumMap
 class RouteListMobileViewModel(
     private val kmbRepository: KmbRepository,
     private val ctbRepository: CtbRepository,
-    private val gmbRepository: GmbRepository,
+    private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
     private val nlbRepository: NLBRepository,
@@ -40,7 +40,7 @@ class RouteListMobileViewModel(
 
     private var executingSearchJob: EnumMap<EtaType, Job?> = EnumMap(EtaType::class.java)
 
-    fun getTransportRouteList(context:Context, etaType: EtaType) {
+    fun getTransportRouteList(context: Context, etaType: EtaType) {
         viewModelScope.launch(Dispatchers.IO) {
             when (etaType) {
                 EtaType.KMB -> getKmbRouteList()
@@ -111,7 +111,7 @@ class RouteListMobileViewModel(
         }
 
         try {
-            val allRouteList = gmbRepository.getRouteListDb(region).map { it.toTransportModel() }
+            val allRouteList = gmbInteractor.getRouteListDb(region).map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList)
 
             Logger.t("lifecycle").d("getGmbRouteList done")

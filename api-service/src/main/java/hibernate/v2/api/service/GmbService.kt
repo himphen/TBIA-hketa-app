@@ -1,44 +1,18 @@
 package hibernate.v2.api.service
 
-import hibernate.v2.api.BuildConfig
-import hibernate.v2.api.core.KtorLogger
+import hibernate.v2.api.core.KtorClient
 import hibernate.v2.api.response.eta.GmbEtaResponse
-import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.get
-import io.ktor.http.appendPathSegments
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
+import io.ktor.client.plugins.resources.get
+import io.ktor.resources.Resource
+import kotlinx.serialization.Serializable
 
 object GmbService {
     private val client by lazy {
-        HttpClient(CIO) {
+        KtorClient.initClient().config {
             defaultRequest {
                 url("https://data.etagmb.gov.hk/")
-            }
-
-            install(ContentNegotiation) {
-                json(
-                    Json {
-                        prettyPrint = true
-                        isLenient = true
-                        ignoreUnknownKeys = true
-                    }
-                )
-            }
-
-            install(Logging) {
-                logger = KtorLogger()
-                level = if (BuildConfig.DEBUG) {
-                    LogLevel.BODY
-                } else {
-                    LogLevel.NONE
-                }
             }
         }
     }
@@ -48,10 +22,14 @@ object GmbService {
         route: String,
         serviceType: String
     ): GmbEtaResponse {
-        return client.get("eta/route-stop/") {
-            url {
-                appendPathSegments(route, serviceType, stopSeq.toString())
-            }
-        }.body()
+        return client.get(GetStopEta(route, serviceType, stopSeq)).body()
     }
+
+    @Serializable
+    @Resource("eta/route-stop/{route}/{serviceType}/{stopSeq}")
+    class GetStopEta(
+        val route: String,
+        val serviceType: String,
+        val stopSeq: Int,
+    )
 }

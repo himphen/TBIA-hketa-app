@@ -1,44 +1,18 @@
 package hibernate.v2.api.service
 
-import hibernate.v2.api.BuildConfig
-import hibernate.v2.api.core.KtorLogger
+import hibernate.v2.api.core.KtorClient
 import hibernate.v2.api.response.eta.EtaResponse
-import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.get
-import io.ktor.http.appendPathSegments
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
+import io.ktor.client.plugins.resources.get
+import io.ktor.resources.Resource
+import kotlinx.serialization.Serializable
 
 object KmbService {
     private val client by lazy {
-        HttpClient(CIO) {
+        KtorClient.initClient().config {
             defaultRequest {
                 url("https://data.etabus.gov.hk/")
-            }
-
-            install(ContentNegotiation) {
-                json(
-                    Json {
-                        prettyPrint = true
-                        isLenient = true
-                        ignoreUnknownKeys = true
-                    }
-                )
-            }
-
-            install(Logging) {
-                logger = KtorLogger()
-                level = if (BuildConfig.DEBUG) {
-                    LogLevel.BODY
-                } else {
-                    LogLevel.NONE
-                }
             }
         }
     }
@@ -48,10 +22,14 @@ object KmbService {
         route: String,
         serviceType: Int
     ): EtaResponse {
-        return client.get("v1/transport/kmb/eta/") {
-            url {
-                appendPathSegments(stopId, route, serviceType.toString())
-            }
-        }.body()
+        return client.get(GetStopEta(stopId, route, serviceType)).body()
     }
+
+    @Serializable
+    @Resource("v1/transport/kmb/eta/{stopId}/{route}/{serviceType}")
+    class GetStopEta(
+        val stopId: String,
+        val route: String,
+        val serviceType: Int
+    )
 }

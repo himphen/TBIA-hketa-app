@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.eta.LRTTransportEta
 import hibernate.v2.sunshine.model.transport.eta.MTRTransportEta
 import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
-import hibernate.v2.sunshine.repository.EtaRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentSkipListMap
 
 class BookmarkHomeViewModel(
-    private val etaRepository: EtaRepository,
+    private val etaInteractor: EtaInteractor,
 ) : BaseViewModel() {
 
     val savedEtaCardList = MutableLiveData<List<Card.EtaCard>>()
@@ -44,22 +44,22 @@ class BookmarkHomeViewModel(
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val convertedEtaCardList = mutableListOf<Card.EtaCard>()
             convertedEtaCardList.addAll(
-                etaRepository.getSavedKmbEtaList().map { it.toEtaCard() }
+                etaInteractor.getSavedKmbEtaList().map { it.toEtaCard() }
             )
             convertedEtaCardList.addAll(
-                etaRepository.getSavedNCEtaList().map { it.toEtaCard() }
+                etaInteractor.getSavedNCEtaList().map { it.toEtaCard() }
             )
             convertedEtaCardList.addAll(
-                etaRepository.getSavedGmbEtaList().map { it.toEtaCard() }
+                etaInteractor.getSavedGmbEtaList().map { it.toEtaCard() }
             )
             convertedEtaCardList.addAll(
-                etaRepository.getSavedMTREtaList().map { it.toEtaCard() }
+                etaInteractor.getSavedMTREtaList().map { it.toEtaCard() }
             )
             convertedEtaCardList.addAll(
-                etaRepository.getSavedLRTEtaList().map { it.toEtaCard() }
+                etaInteractor.getSavedLRTEtaList().map { it.toEtaCard() }
             )
             convertedEtaCardList.addAll(
-                etaRepository.getSavedNLBEtaList().map { it.toEtaCard() }
+                etaInteractor.getSavedNLBEtaList().map { it.toEtaCard() }
             )
 
             convertedEtaCardList.sort()
@@ -84,7 +84,7 @@ class BookmarkHomeViewModel(
                 async {
                     when (etaCard.route.company) {
                         Company.KMB -> {
-                            val apiEtaResponse = etaRepository.getKmbStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getKmbStopEtaApi(
                                 stopId = etaCard.stop.stopId,
                                 route = etaCard.route.routeId
                             )
@@ -104,7 +104,7 @@ class BookmarkHomeViewModel(
                         }
                         Company.NWFB,
                         Company.CTB -> {
-                            val apiEtaResponse = etaRepository.getCtbStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getCtbStopEtaApi(
                                 company = etaCard.route.company,
                                 stopId = etaCard.stop.stopId,
                                 route = etaCard.route.routeId
@@ -124,7 +124,7 @@ class BookmarkHomeViewModel(
                             result[index] = etaCard
                         }
                         Company.GMB -> {
-                            val apiEtaResponse = etaRepository.getGmbStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getGmbStopEtaApi(
                                 stopSeq = etaCard.stop.seq!!,
                                 route = etaCard.route.routeId,
                                 serviceType = etaCard.route.serviceType
@@ -145,7 +145,7 @@ class BookmarkHomeViewModel(
                             result[index] = etaCard
                         }
                         Company.MTR -> {
-                            val apiEtaResponse = etaRepository.getMTRStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getMTRStopEtaApi(
                                 stopId = etaCard.stop.stopId,
                                 route = etaCard.route.routeId
                             )
@@ -174,7 +174,7 @@ class BookmarkHomeViewModel(
                             result[index] = etaCard
                         }
                         Company.LRT -> {
-                            val apiEtaResponse = etaRepository.getLRTStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getLRTStopEtaApi(
                                 stopId = etaCard.stop.stopId
                             )
 
@@ -207,7 +207,7 @@ class BookmarkHomeViewModel(
                             result[index] = etaCard
                         }
                         Company.NLB -> {
-                            val apiEtaResponse = etaRepository.getNLBStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getNLBStopEtaApi(
                                 stopId = etaCard.stop.stopId,
                                 routeId = etaCard.route.routeId
                             )

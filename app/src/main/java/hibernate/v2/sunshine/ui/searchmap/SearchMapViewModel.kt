@@ -6,6 +6,8 @@ import com.fonfon.kgeohash.GeoHash
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.sunshine.domain.eta.EtaInteractor
+import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.eta.EtaType
@@ -14,8 +16,6 @@ import hibernate.v2.sunshine.model.transport.eta.MTRTransportEta
 import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
 import hibernate.v2.sunshine.repository.CtbRepository
-import hibernate.v2.sunshine.repository.EtaRepository
-import hibernate.v2.sunshine.repository.GmbRepository
 import hibernate.v2.sunshine.repository.KmbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
@@ -31,10 +31,10 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentSkipListMap
 
 class SearchMapViewModel(
-    private val etaRepository: EtaRepository,
+    private val etaInteractor: EtaInteractor,
     private val kmbRepository: KmbRepository,
     private val ctbRepository: CtbRepository,
-    private val gmbRepository: GmbRepository,
+    private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
     private val nlbRepository: NLBRepository,
@@ -70,7 +70,7 @@ class SearchMapViewModel(
                 EtaType.CTB -> ctbRepository.getRouteEtaCardList(stop)
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
-                EtaType.GMB_NT -> gmbRepository.getRouteEtaCardList(stop)
+                EtaType.GMB_NT -> gmbInteractor.getRouteEtaCardList(stop)
                 EtaType.MTR -> mtrRepository.getRouteEtaCardList(stop)
                 EtaType.LRT -> lrtRepository.getRouteEtaCardList(stop)
                 EtaType.NLB -> nlbRepository.getRouteEtaCardList(stop)
@@ -91,7 +91,10 @@ class SearchMapViewModel(
                     EtaType.GMB_HKI,
                     EtaType.GMB_KLN,
                     EtaType.GMB_NT,
-                    -> gmbRepository.setMapRouteListIntoMapStop(stopMapList)
+                    -> gmbInteractor.setMapRouteListIntoMapStop(
+                        stopMapList,
+                        gmbInteractor.getRouteEtaCardList
+                    )
                     EtaType.MTR -> mtrRepository.setMapRouteListIntoMapStop(stopMapList)
                     EtaType.LRT -> lrtRepository.setMapRouteListIntoMapStop(stopMapList)
                     EtaType.NLB -> nlbRepository.setMapRouteListIntoMapStop(stopMapList)
@@ -116,7 +119,7 @@ class SearchMapViewModel(
                     }
                 },
                 async {
-                    gmbRepository.getStopListDb(list).map {
+                    gmbInteractor.getStopListDb(list).map {
                         SearchMapStop.fromStopEntity(it)
                     }
                 },
@@ -143,7 +146,7 @@ class SearchMapViewModel(
                 async {
                     when (etaCard.route.company) {
                         Company.KMB -> {
-                            val apiEtaResponse = etaRepository.getKmbStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getKmbStopEtaApi(
                                 stopId = etaCard.stop.stopId,
                                 route = etaCard.route.routeId
                             )
@@ -163,7 +166,7 @@ class SearchMapViewModel(
                         }
                         Company.NWFB,
                         Company.CTB -> {
-                            val apiEtaResponse = etaRepository.getCtbStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getCtbStopEtaApi(
                                 company = etaCard.route.company,
                                 stopId = etaCard.stop.stopId,
                                 route = etaCard.route.routeId
@@ -183,7 +186,7 @@ class SearchMapViewModel(
                             result[index] = etaCard
                         }
                         Company.GMB -> {
-                            val apiEtaResponse = etaRepository.getGmbStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getGmbStopEtaApi(
                                 stopSeq = etaCard.stop.seq!!,
                                 route = etaCard.route.routeId,
                                 serviceType = etaCard.route.serviceType
@@ -204,7 +207,7 @@ class SearchMapViewModel(
                             result[index] = etaCard
                         }
                         Company.MTR -> {
-                            val apiEtaResponse = etaRepository.getMTRStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getMTRStopEtaApi(
                                 stopId = etaCard.stop.stopId,
                                 route = etaCard.route.routeId
                             )
@@ -233,7 +236,7 @@ class SearchMapViewModel(
                             result[index] = etaCard
                         }
                         Company.LRT -> {
-                            val apiEtaResponse = etaRepository.getLRTStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getLRTStopEtaApi(
                                 stopId = etaCard.stop.stopId
                             )
 
@@ -266,7 +269,7 @@ class SearchMapViewModel(
                             result[index] = etaCard
                         }
                         Company.NLB -> {
-                            val apiEtaResponse = etaRepository.getNLBStopEtaApi(
+                            val apiEtaResponse = etaInteractor.getNLBStopEtaApi(
                                 stopId = etaCard.stop.stopId,
                                 routeId = etaCard.route.routeId
                             )
