@@ -8,13 +8,13 @@ import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
+import hibernate.v2.sunshine.domain.lrt.LrtInteractor
 import hibernate.v2.sunshine.model.AddEtaRowItem
 import hibernate.v2.sunshine.model.transport.TransportRouteStopList
 import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.route.GmbTransportRoute
-import hibernate.v2.sunshine.model.transport.route.LRTTransportRoute
+import hibernate.v2.sunshine.model.transport.route.LrtTransportRoute
 import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
-import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
@@ -29,7 +29,7 @@ class RouteListLeanbackViewModel(
     private val ctbInteractor: CtbInteractor,
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
-    private val lrtRepository: LRTRepository,
+    private val lrtInteractor: LrtInteractor,
     private val nlbRepository: NLBRepository,
 ) : BaseViewModel() {
 
@@ -327,8 +327,8 @@ class RouteListLeanbackViewModel(
         }
 
         try {
-            val allRouteList = lrtRepository.getRouteEnabledListDb()
-            val allRouteStopList = lrtRepository.getRouteStopComponentListDb()
+            val allRouteList = lrtInteractor.getRouteListDb(true)
+            val allRouteStopList = lrtInteractor.getRouteStopComponentListDb()
 
             val transportRouteStopHashMap = allRouteList.associate { entity ->
                 val route = entity.toTransportModel()
@@ -355,7 +355,7 @@ class RouteListLeanbackViewModel(
             val transportRouteList =
                 transportRouteStopList.map { routeAndStopList ->
                     val route = routeAndStopList.route
-                    route as LRTTransportRoute
+                    route as LrtTransportRoute
                     val headerTitle = route.getDirectionWithRouteText(context)
 
                     AddEtaRowItem(

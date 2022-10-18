@@ -1,17 +1,17 @@
 package hibernate.v2.sunshine.db.eta
 
 import androidx.room.Embedded
-import hibernate.v2.sunshine.db.lrt.LRTRouteEntity
-import hibernate.v2.sunshine.db.lrt.LRTStopEntity
+import hibernate.v2.sunshine.db.lrt.LrtRouteEntity
+import hibernate.v2.sunshine.db.lrt.LrtStopEntity
 import hibernate.v2.sunshine.model.Card
 
-data class EtaLRTDetails(
+data class EtaLrtDetails(
     @Embedded
     val savedEta: SavedEtaEntity,
     @Embedded
-    val route: LRTRouteEntity,
+    val route: LrtRouteEntity,
     @Embedded
-    val stop: LRTStopEntity,
+    val stop: LrtStopEntity,
     @Embedded
     val order: EtaOrderEntity,
 ) {

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemRouteListBinding
 import hibernate.v2.sunshine.model.transport.eta.EtaType
-import hibernate.v2.sunshine.model.transport.route.LRTTransportRoute
+import hibernate.v2.sunshine.model.transport.route.LrtTransportRoute
 import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
@@ -87,7 +87,7 @@ class RouteListRouteItemAdapter(
             viewBinding.apply {
                 routeNumberContainer.apply {
                     when (route) {
-                        is LRTTransportRoute -> {
+                        is LrtTransportRoute -> {
                             val color = route.getColor(context, false)
                             routeLRTNumberTv.apply {
                                 text = route.routeNo

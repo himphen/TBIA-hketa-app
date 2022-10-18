@@ -5,7 +5,7 @@ import hibernate.v2.api.core.Resource
 import hibernate.v2.api.response.eta.LrtEtaResponse
 import hibernate.v2.api.service.TransportService
 
-class GetLRTStopEtaApi {
+class GetLrtStopEtaApi {
     suspend operator fun invoke(
         stopId: String
     ): LrtEtaResponse {

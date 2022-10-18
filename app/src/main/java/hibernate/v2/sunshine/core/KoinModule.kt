@@ -3,7 +3,6 @@ package hibernate.v2.sunshine.core
 import hibernate.v2.sunshine.db.LocalDatabase
 import hibernate.v2.sunshine.domain.GeneralInteractor
 import hibernate.v2.sunshine.repository.CoreRepository
-import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
@@ -63,7 +62,6 @@ val koinRepositoryModule: Module = module {
     single { get<LocalDatabase>().nlbDao() }
     single { CoreRepository() }
     single { MTRRepository(get()) }
-    single { LRTRepository(get()) }
     single { NLBRepository(get()) }
 }
 

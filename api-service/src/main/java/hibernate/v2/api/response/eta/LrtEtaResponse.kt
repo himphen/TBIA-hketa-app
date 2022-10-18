@@ -14,12 +14,12 @@ data class LrtEtaResponse(
 @Serializable
 data class Platform(
     @SerialName("platform_id") val platformId: Int,
-    @SerialName("route_list") val etaList: List<LRTEta>? = null,
+    @SerialName("route_list") val etaList: List<LrtEta>? = null,
     @SerialName("end_service_status") val endServiceStatus: Int? = null,
 )
 
 @Serializable
-data class LRTEta(
+data class LrtEta(
     @SerialName("arrival_departure") val arrivalDeparture: ArrivalDeparture,
     @SerialName("dest_ch") val destCh: String,
     @SerialName("dest_en") val destEn: String,

@@ -22,13 +22,13 @@ data class LrtRoute(
     @SerialName("route_id")
     var routeId: String = "",
     @SerialName("route_info")
-    var routeInfo: LRTRouteInfo = LRTRouteInfo(),
+    var routeInfo: LrtRouteInfo = LrtRouteInfo(),
     @SerialName("service_type")
     var serviceType: String = "",
 )
 
 @Serializable
-data class LRTRouteInfo(
+data class LrtRouteInfo(
     var color: String = "",
     @SerialName("isEnabled")
     var isEnabled: Boolean = false,

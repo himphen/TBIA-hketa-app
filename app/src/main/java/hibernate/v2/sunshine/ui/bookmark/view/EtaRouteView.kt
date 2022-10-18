@@ -7,7 +7,7 @@ import hibernate.v2.sunshine.databinding.ContentEtaClassicRouteNumberBinding
 import hibernate.v2.sunshine.databinding.ContentEtaCompactRouteNumberBinding
 import hibernate.v2.sunshine.databinding.ContentEtaStandardRouteNumberBinding
 import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.route.LRTTransportRoute
+import hibernate.v2.sunshine.model.transport.route.LrtTransportRoute
 import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
@@ -38,7 +38,7 @@ interface EtaRouteView {
                         }
                     }
                 }
-                is LRTTransportRoute -> {
+                is LrtTransportRoute -> {
                     routeBusNumberLl.gone()
                     routeCompanyColor.gone()
                     routeMTRNumberLl.gone()
@@ -92,7 +92,7 @@ interface EtaRouteView {
                         }
                     }
                 }
-                is LRTTransportRoute -> {
+                is LrtTransportRoute -> {
                     routeBusNumberLl.gone()
                     routeMTRNumberLl.gone()
 
@@ -143,7 +143,7 @@ interface EtaRouteView {
                         }
                     }
                 }
-                is LRTTransportRoute -> {
+                is LrtTransportRoute -> {
                     routeBusNumberLl.gone()
                     routeMTRNumberLl.gone()
 
@@ -195,7 +195,7 @@ interface EtaRouteView {
                         }
                     }
                 }
-                is LRTTransportRoute -> {
+                is LrtTransportRoute -> {
                     routeBusNumberLl.gone()
                     routeCompanyColor.gone()
                     routeMTRNumberLl.gone()

@@ -8,10 +8,10 @@ import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
+import hibernate.v2.sunshine.domain.lrt.LrtInteractor
 import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.route.TransportRoute
-import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.repository.RouteListDataHolder
@@ -27,7 +27,7 @@ class RouteListMobileViewModel(
     private val ctbInteractor: CtbInteractor,
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
-    private val lrtRepository: LRTRepository,
+    private val lrtInteractor: LrtInteractor,
     private val nlbRepository: NLBRepository,
 ) : BaseViewModel() {
 
@@ -149,7 +149,7 @@ class RouteListMobileViewModel(
         }
 
         try {
-            val allRouteList = lrtRepository.getRouteEnabledListDb().map { it.toTransportModel() }
+            val allRouteList = lrtInteractor.getRouteListDb(true).map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList)
 
             Logger.t("lifecycle").d("getLRTRouteList done")

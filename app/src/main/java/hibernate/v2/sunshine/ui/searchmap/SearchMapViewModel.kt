@@ -11,6 +11,7 @@ import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
+import hibernate.v2.sunshine.domain.lrt.LrtInteractor
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.model.transport.eta.EtaType
@@ -18,7 +19,6 @@ import hibernate.v2.sunshine.model.transport.eta.LRTTransportEta
 import hibernate.v2.sunshine.model.transport.eta.MTRTransportEta
 import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
-import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
@@ -38,7 +38,7 @@ class SearchMapViewModel(
     private val ctbInteractor: CtbInteractor,
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
-    private val lrtRepository: LRTRepository,
+    private val lrtInteractor: LrtInteractor,
     private val nlbRepository: NLBRepository,
 ) : BaseViewModel() {
 
@@ -74,7 +74,7 @@ class SearchMapViewModel(
                 EtaType.GMB_KLN,
                 EtaType.GMB_NT -> gmbInteractor.getRouteEtaCardList(stop)
                 EtaType.MTR -> mtrRepository.getRouteEtaCardList(stop)
-                EtaType.LRT -> lrtRepository.getRouteEtaCardList(stop)
+                EtaType.LRT -> lrtInteractor.getRouteEtaCardList(stop)
                 EtaType.NLB -> nlbRepository.getRouteEtaCardList(stop)
             }
             routeListForBottomSheet.postValue(result)
@@ -101,13 +101,15 @@ class SearchMapViewModel(
                     )
                     EtaType.GMB_HKI,
                     EtaType.GMB_KLN,
-                    EtaType.GMB_NT,
-                    -> gmbInteractor.setMapRouteListIntoMapStop(
+                    EtaType.GMB_NT -> gmbInteractor.setMapRouteListIntoMapStop(
                         stopMapList,
                         gmbInteractor.getRouteEtaCardList
                     )
                     EtaType.MTR -> mtrRepository.setMapRouteListIntoMapStop(stopMapList)
-                    EtaType.LRT -> lrtRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.LRT -> lrtInteractor.setMapRouteListIntoMapStop(
+                        stopMapList,
+                        lrtInteractor.getRouteEtaCardList
+                    )
                     EtaType.NLB -> nlbRepository.setMapRouteListIntoMapStop(stopMapList)
                 }
             }

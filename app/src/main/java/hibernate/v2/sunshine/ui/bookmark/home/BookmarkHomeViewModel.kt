@@ -56,7 +56,7 @@ class BookmarkHomeViewModel(
                 etaInteractor.getSavedMTREtaList().map { it.toEtaCard() }
             )
             convertedEtaCardList.addAll(
-                etaInteractor.getSavedLRTEtaList().map { it.toEtaCard() }
+                etaInteractor.getSavedLrtEtaList().map { it.toEtaCard() }
             )
             convertedEtaCardList.addAll(
                 etaInteractor.getSavedNLBEtaList().map { it.toEtaCard() }

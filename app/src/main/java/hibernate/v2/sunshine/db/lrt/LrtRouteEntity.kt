@@ -8,16 +8,16 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.lrt.LrtRoute
 import hibernate.v2.sunshine.db.BaseRouteEntity
-import hibernate.v2.sunshine.model.transport.route.LRTRouteInfo
-import hibernate.v2.sunshine.model.transport.route.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.TransportHashable
+import hibernate.v2.sunshine.model.transport.route.LrtRouteInfo
+import hibernate.v2.sunshine.model.transport.route.LrtTransportRoute
 
 @Keep
 @Entity(
     tableName = "lrt_route",
     primaryKeys = ["lrt_route_id", "lrt_route_bound", "lrt_route_service_type"],
 )
-data class LRTRouteEntity(
+data class LrtRouteEntity(
     @ColumnInfo(name = "lrt_route_id")
     val routeId: String,
     @ColumnInfo(name = "lrt_route_bound")
@@ -40,10 +40,10 @@ data class LRTRouteEntity(
     val routeInfoColor: String,
     @ColumnInfo(name = "route_info_is_enabled")
     val routeInfoIsEnabled: Boolean,
-) : TransportHashable, Comparable<LRTRouteEntity>, BaseRouteEntity() {
+) : TransportHashable, Comparable<LrtRouteEntity>, BaseRouteEntity() {
     companion object {
-        fun fromApiModel(route: LrtRoute): LRTRouteEntity {
-            return LRTRouteEntity(
+        fun fromApiModel(route: LrtRoute): LrtRouteEntity {
+            return LrtRouteEntity(
                 routeId = route.routeId,
                 bound = route.bound,
                 serviceType = route.serviceType,
@@ -59,8 +59,8 @@ data class LRTRouteEntity(
         }
     }
 
-    fun toTransportModel(): LRTTransportRoute {
-        return LRTTransportRoute(
+    fun toTransportModel(): LrtTransportRoute {
+        return LrtTransportRoute(
             routeId = routeId,
             routeNo = routeId,
             bound = bound,
@@ -72,7 +72,7 @@ data class LRTRouteEntity(
             destTc = destTc,
             destSc = destSc,
             company = Company.LRT,
-            routeInfo = LRTRouteInfo(
+            routeInfo = LrtRouteInfo(
                 color = try {
                     Color.parseColor(routeInfoColor)
                 } catch (e: IllegalArgumentException) {
@@ -84,7 +84,7 @@ data class LRTRouteEntity(
 
     fun routeHashId() = routeHashId(Company.LRT, routeId, bound, serviceType)
 
-    override fun compareTo(other: LRTRouteEntity): Int {
+    override fun compareTo(other: LrtRouteEntity): Int {
         parseRouteNumber(routeId)
         other.parseRouteNumber(other.routeId)
 

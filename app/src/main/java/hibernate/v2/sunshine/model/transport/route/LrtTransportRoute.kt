@@ -10,7 +10,7 @@ import hibernate.v2.sunshine.util.GeneralUtils
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class LRTTransportRoute(
+data class LrtTransportRoute(
     override val routeId: String,
     override val routeNo: String,
     override val bound: Bound,
@@ -22,7 +22,7 @@ data class LRTTransportRoute(
     override val destTc: String,
     override val destSc: String,
     override val company: Company,
-    val routeInfo: LRTRouteInfo,
+    val routeInfo: LrtRouteInfo,
 ) : TransportRoute(
     routeId,
     routeNo,
@@ -68,6 +68,6 @@ data class LRTTransportRoute(
 }
 
 @Parcelize
-data class LRTRouteInfo(
+data class LrtRouteInfo(
     @ColorInt var color: Int,
 ) : Parcelable

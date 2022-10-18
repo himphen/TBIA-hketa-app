@@ -11,8 +11,8 @@ import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
+import hibernate.v2.sunshine.domain.lrt.LrtInteractor
 import hibernate.v2.sunshine.repository.CoreRepository
-import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
@@ -29,7 +29,7 @@ class OnboardingViewModel(
     private val ctbInteractor: CtbInteractor,
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
-    private val lrtRepository: LRTRepository,
+    private val lrtInteractor: LrtInteractor,
     private val nlbRepository: NLBRepository,
 ) : BaseViewModel() {
 
@@ -228,8 +228,8 @@ class OnboardingViewModel(
 
     private suspend fun downloadLrtTransportData() {
         Logger.t("lifecycle").d("downloadLRTTransportData start")
-        lrtRepository.initDatabase()
-        lrtRepository.saveData()
+        lrtInteractor.initDatabase()
+        lrtInteractor.saveData()
     }
 
     private suspend fun downloadNlbTransportData() {
@@ -244,7 +244,7 @@ class OnboardingViewModel(
         ctbInteractor.initDatabase()
         gmbInteractor.initDatabase()
         mtrRepository.initDatabase()
-        lrtRepository.initDatabase()
+        lrtInteractor.initDatabase()
         nlbRepository.initDatabase()
     }
 }

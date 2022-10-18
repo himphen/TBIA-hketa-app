@@ -9,21 +9,21 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
-interface LRTDao {
+interface LrtDao {
 
     // ====
 
     @Query("SELECT * FROM lrt_stop")
-    suspend fun getStopList(): List<LRTStopEntity>
+    suspend fun getStopList(): List<LrtStopEntity>
 
     @Query("SELECT * FROM lrt_stop WHERE lrt_stop_id = (:stop)")
-    suspend fun getStop(stop: String): List<LRTStopEntity>
+    suspend fun getStop(stop: String): List<LrtStopEntity>
 
     @Query("SELECT * FROM lrt_stop LIMIT 1")
-    suspend fun getSingleStop(): LRTStopEntity?
+    suspend fun getSingleStop(): LrtStopEntity?
 
     @Insert
-    suspend fun addStopList(entityList: List<LRTStopEntity>)
+    suspend fun addStopList(entityList: List<LrtStopEntity>)
 
     @Query("DELETE FROM lrt_stop")
     suspend fun clearStopList()
@@ -33,23 +33,23 @@ interface LRTDao {
     // ====
 
     @Query("SELECT * FROM lrt_route")
-    suspend fun getRouteList(): List<LRTRouteEntity>
+    suspend fun getRouteList(): List<LrtRouteEntity>
 
     @Query("SELECT * FROM lrt_route WHERE route_info_is_enabled = (:isEnabled)")
-    suspend fun getRouteList(isEnabled: Boolean = true): List<LRTRouteEntity>
+    suspend fun getRouteList(isEnabled: Boolean = true): List<LrtRouteEntity>
 
     @Query("SELECT * FROM lrt_route LIMIT 1")
-    suspend fun getSingleRoute(): LRTRouteEntity?
+    suspend fun getSingleRoute(): LrtRouteEntity?
 
     @Query("SELECT * FROM lrt_route WHERE lrt_route_id = (:route) AND lrt_route_bound = (:bound) AND lrt_route_service_type = (:serviceType)")
     suspend fun getRoute(
         route: String,
         bound: String,
         serviceType: String,
-    ): LRTRouteEntity?
+    ): LrtRouteEntity?
 
     @Insert
-    suspend fun addRouteList(entityList: List<LRTRouteEntity>)
+    suspend fun addRouteList(entityList: List<LrtRouteEntity>)
 
     @Query("DELETE FROM lrt_route")
     suspend fun clearRouteList()
@@ -57,12 +57,12 @@ interface LRTDao {
     // ====
 
     @Query("SELECT * FROM lrt_route_stop WHERE lrt_route_stop_stop_id = (:stopId)")
-    suspend fun getRouteStopListFromStopId(stopId: String): List<LRTRouteStopEntity>
+    suspend fun getRouteStopListFromStopId(stopId: String): List<LrtRouteStopEntity>
 
     @RawQuery
-    suspend fun getRouteListFromRouteId(query: SupportSQLiteQuery): List<LRTRouteEntity>
+    suspend fun getRouteListFromRouteId(query: SupportSQLiteQuery): List<LrtRouteEntity>
 
-    suspend fun getRouteListFromRouteId(routeStopList: List<LRTRouteStopEntity>): List<LRTRouteEntity> {
+    suspend fun getRouteListFromRouteId(routeStopList: List<LrtRouteStopEntity>): List<LrtRouteEntity> {
         if (routeStopList.isEmpty()) return emptyList()
 
         var mainQuery = "SELECT * FROM lrt_route WHERE "
@@ -92,7 +92,7 @@ interface LRTDao {
 
     @Transaction
     @Query("SELECT * FROM lrt_route_stop")
-    suspend fun getRouteStopComponentList(): List<LRTRouteStopComponent>
+    suspend fun getRouteStopComponentList(): List<LrtRouteStopComponent>
 
     @Transaction
     @Query("SELECT * FROM lrt_route_stop WHERE lrt_route_stop_route_id = (:route) AND lrt_route_stop_bound = (:bound) AND lrt_route_stop_service_type = (:serviceType)")
@@ -100,13 +100,13 @@ interface LRTDao {
         route: String,
         bound: String,
         serviceType: String,
-    ): List<LRTRouteStopComponent>
+    ): List<LrtRouteStopComponent>
 
     @Query("SELECT * FROM lrt_route_stop LIMIT 1")
-    suspend fun getSingleRouteStop(): LRTRouteStopEntity?
+    suspend fun getSingleRouteStop(): LrtRouteStopEntity?
 
     @Insert
-    suspend fun addRouteStopList(entityList: List<LRTRouteStopEntity>)
+    suspend fun addRouteStopList(entityList: List<LrtRouteStopEntity>)
 
     @Query("DELETE FROM lrt_route_stop")
     suspend fun clearRouteStopList()

@@ -23,10 +23,10 @@ import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
 import hibernate.v2.sunshine.db.kmb.KmbStopEntity
-import hibernate.v2.sunshine.db.lrt.LRTDao
-import hibernate.v2.sunshine.db.lrt.LRTRouteEntity
-import hibernate.v2.sunshine.db.lrt.LRTRouteStopEntity
-import hibernate.v2.sunshine.db.lrt.LRTStopEntity
+import hibernate.v2.sunshine.db.lrt.LrtDao
+import hibernate.v2.sunshine.db.lrt.LrtRouteEntity
+import hibernate.v2.sunshine.db.lrt.LrtRouteStopEntity
+import hibernate.v2.sunshine.db.lrt.LrtStopEntity
 import hibernate.v2.sunshine.db.mtr.MTRDao
 import hibernate.v2.sunshine.db.mtr.MTRRouteEntity
 import hibernate.v2.sunshine.db.mtr.MTRRouteStopEntity
@@ -45,7 +45,7 @@ private const val DATABASE_NAME = "saved_data"
         CtbRouteEntity::class, CtbStopEntity::class, CtbRouteStopEntity::class,
         GmbRouteEntity::class, GmbStopEntity::class, GmbRouteStopEntity::class,
         MTRRouteEntity::class, MTRStopEntity::class, MTRRouteStopEntity::class,
-        LRTRouteEntity::class, LRTStopEntity::class, LRTRouteStopEntity::class,
+        LrtRouteEntity::class, LrtStopEntity::class, LrtRouteStopEntity::class,
         NLBRouteEntity::class, NLBStopEntity::class, NLBRouteStopEntity::class,
     ],
     version = 22,
@@ -59,7 +59,7 @@ abstract class LocalDatabase : RoomDatabase() {
     abstract fun ctbDao(): CtbDao
     abstract fun gmbDao(): GmbDao
     abstract fun mtrDao(): MTRDao
-    abstract fun lrtDao(): LRTDao
+    abstract fun lrtDao(): LrtDao
     abstract fun nlbDao(): NLBDao
 
     companion object {

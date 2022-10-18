@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.model.transport.eta
 
 import hibernate.v2.api.model.transport.Bound
-import hibernate.v2.api.response.eta.LRTEta
+import hibernate.v2.api.response.eta.LrtEta
 import hibernate.v2.sunshine.util.DateFormatPattern
 import hibernate.v2.sunshine.util.DateUtil
 import java.util.Calendar
@@ -16,7 +16,7 @@ class LRTTransportEta(
 ) : TransportEta(date, rmkEn, rmkSc, rmkTc, Bound.O, 1) {
 
     companion object {
-        fun fromApiModel(eta: LRTEta, platform: String, systemTime: String?): LRTTransportEta {
+        fun fromApiModel(eta: LrtEta, platform: String, systemTime: String?): LRTTransportEta {
             var rmkEn = ""
             var rmkTc = ""
             var date: Date? = null

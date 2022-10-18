@@ -8,7 +8,7 @@ import hibernate.v2.sunshine.domain.eta.GetCtbStopEtaApi
 import hibernate.v2.sunshine.domain.eta.GetEtaOrderList
 import hibernate.v2.sunshine.domain.eta.GetGmbStopEtaApi
 import hibernate.v2.sunshine.domain.eta.GetKmbStopEtaApi
-import hibernate.v2.sunshine.domain.eta.GetLRTStopEtaApi
+import hibernate.v2.sunshine.domain.eta.GetLrtStopEtaApi
 import hibernate.v2.sunshine.domain.eta.GetMTRStopEtaApi
 import hibernate.v2.sunshine.domain.eta.GetNLBStopEtaApi
 import hibernate.v2.sunshine.domain.eta.GetSavedGmbEtaList
@@ -51,7 +51,7 @@ val koinEtaUseCaseModule: Module = module {
     single { GetCtbStopEtaApi() }
     single { GetGmbStopEtaApi() }
     single { GetMTRStopEtaApi() }
-    single { GetLRTStopEtaApi() }
+    single { GetLrtStopEtaApi() }
     single { GetNLBStopEtaApi() }
     single { GetSavedKmbEtaList(get()) }
     single { GetSavedNCEtaList(get()) }
