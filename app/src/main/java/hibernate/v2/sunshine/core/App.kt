@@ -9,6 +9,7 @@ import com.himphen.logger.AndroidLogAdapter
 import com.himphen.logger.Logger
 import com.himphen.logger.PrettyFormatStrategy
 import hibernate.v2.sunshine.BuildConfig
+import hibernate.v2.sunshine.core.koin.koinCtbUseCaseModule
 import hibernate.v2.sunshine.core.koin.koinEtaUseCaseModule
 import hibernate.v2.sunshine.core.koin.koinGmbUseCaseModule
 import hibernate.v2.sunshine.core.koin.koinKmbUseCaseModule
@@ -53,6 +54,7 @@ class App : Application() {
                 koinUseCaseModule,
                 koinInteractorModule,
                 koinKmbUseCaseModule,
+                koinCtbUseCaseModule,
                 koinGmbUseCaseModule,
                 koinEtaUseCaseModule
             )

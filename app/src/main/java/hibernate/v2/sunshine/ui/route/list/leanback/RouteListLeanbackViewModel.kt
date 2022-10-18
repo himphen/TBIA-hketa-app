@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.GmbRegion
+import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.model.AddEtaRowItem
@@ -13,7 +14,6 @@ import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.route.GmbTransportRoute
 import hibernate.v2.sunshine.model.transport.route.LRTTransportRoute
 import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
-import hibernate.v2.sunshine.repository.CtbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 class RouteListLeanbackViewModel(
     private val kmbInteractor: KmbInteractor,
-    private val ctbRepository: CtbRepository,
+    private val ctbInteractor: CtbInteractor,
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
@@ -147,8 +147,8 @@ class RouteListLeanbackViewModel(
         }
 
         try {
-            val allRouteList = ctbRepository.getRouteListByCompanyDb(etaType.company())
-            val allRouteStopList = ctbRepository.getRouteStopComponentListDb(etaType.company())
+            val allRouteList = ctbInteractor.getRouteListDb(etaType.company())
+            val allRouteStopList = ctbInteractor.getRouteStopComponentListDb(etaType.company())
 
             val transportRouteStopHashMap = allRouteList.associate { entity ->
                 val route = entity.toTransportModel()

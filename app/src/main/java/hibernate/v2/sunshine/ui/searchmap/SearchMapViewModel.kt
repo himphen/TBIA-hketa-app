@@ -7,6 +7,7 @@ import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.sunshine.domain.GeneralInteractor
+import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
@@ -17,7 +18,6 @@ import hibernate.v2.sunshine.model.transport.eta.LRTTransportEta
 import hibernate.v2.sunshine.model.transport.eta.MTRTransportEta
 import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
-import hibernate.v2.sunshine.repository.CtbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
@@ -35,7 +35,7 @@ class SearchMapViewModel(
     private val generalInteractor: GeneralInteractor,
     private val etaInteractor: EtaInteractor,
     private val kmbInteractor: KmbInteractor,
-    private val ctbRepository: CtbRepository,
+    private val ctbInteractor: CtbInteractor,
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
@@ -68,8 +68,8 @@ class SearchMapViewModel(
             val stop = selectedStop.value ?: return@launch
             val result = when (stop.etaType) {
                 EtaType.KMB -> kmbInteractor.getRouteEtaCardList(stop)
-                EtaType.NWFB -> ctbRepository.getRouteEtaCardList(stop)
-                EtaType.CTB -> ctbRepository.getRouteEtaCardList(stop)
+                EtaType.NWFB -> ctbInteractor.getRouteEtaCardList(stop)
+                EtaType.CTB -> ctbInteractor.getRouteEtaCardList(stop)
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
                 EtaType.GMB_NT -> gmbInteractor.getRouteEtaCardList(stop)
@@ -91,8 +91,14 @@ class SearchMapViewModel(
                         stopMapList,
                         kmbInteractor.getRouteEtaCardList
                     )
-                    EtaType.NWFB -> ctbRepository.setMapRouteListIntoMapStop(stopMapList)
-                    EtaType.CTB -> ctbRepository.setMapRouteListIntoMapStop(stopMapList)
+                    EtaType.NWFB -> ctbInteractor.setMapRouteListIntoMapStop(
+                        stopMapList,
+                        ctbInteractor.getRouteEtaCardList
+                    )
+                    EtaType.CTB -> ctbInteractor.setMapRouteListIntoMapStop(
+                        stopMapList,
+                        ctbInteractor.getRouteEtaCardList
+                    )
                     EtaType.GMB_HKI,
                     EtaType.GMB_KLN,
                     EtaType.GMB_NT,
@@ -119,7 +125,7 @@ class SearchMapViewModel(
                     }
                 },
                 async {
-                    ctbRepository.getStopListDb(list).map {
+                    ctbInteractor.getStopListDb(list).map {
                         SearchMapStop.fromStopEntity(it)
                     }
                 },

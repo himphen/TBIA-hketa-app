@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.GmbRegion
+import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.route.TransportRoute
-import hibernate.v2.sunshine.repository.CtbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
@@ -24,7 +24,7 @@ import java.util.EnumMap
 
 class RouteListMobileViewModel(
     private val kmbInteractor: KmbInteractor,
-    private val ctbRepository: CtbRepository,
+    private val ctbInteractor: CtbInteractor,
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
@@ -85,7 +85,7 @@ class RouteListMobileViewModel(
         }
 
         try {
-            val allRouteList = ctbRepository.getRouteListByCompanyDb(etaType.company())
+            val allRouteList = ctbInteractor.getRouteListDb(etaType.company())
                 .map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList)
 

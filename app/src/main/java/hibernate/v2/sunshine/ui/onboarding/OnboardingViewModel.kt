@@ -8,10 +8,10 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Checksum
 import hibernate.v2.sunshine.core.SharedPreferencesManager
+import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.repository.CoreRepository
-import hibernate.v2.sunshine.repository.CtbRepository
 import hibernate.v2.sunshine.repository.LRTRepository
 import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.NLBRepository
@@ -26,7 +26,7 @@ class OnboardingViewModel(
     private val sharedPreferencesManager: SharedPreferencesManager,
     private val coreRepository: CoreRepository,
     private val kmbInteractor: KmbInteractor,
-    private val ctbRepository: CtbRepository,
+    private val ctbInteractor: CtbInteractor,
     private val gmbInteractor: GmbInteractor,
     private val mtrRepository: MTRRepository,
     private val lrtRepository: LRTRepository,
@@ -210,8 +210,8 @@ class OnboardingViewModel(
 
     private suspend fun downloadCtbTransportData() {
         Logger.t("lifecycle").d("downloadNCTransportData start")
-        ctbRepository.initDatabase()
-        ctbRepository.saveData()
+        ctbInteractor.initDatabase()
+        ctbInteractor.saveData()
     }
 
     private suspend fun downloadGmbTransportData() {
@@ -241,7 +241,7 @@ class OnboardingViewModel(
     suspend fun resetTransportData() {
         sharedPreferencesManager.transportDataChecksum = null
         kmbInteractor.initDatabase()
-        ctbRepository.initDatabase()
+        ctbInteractor.initDatabase()
         gmbInteractor.initDatabase()
         mtrRepository.initDatabase()
         lrtRepository.initDatabase()
