@@ -12,7 +12,7 @@ import hibernate.v2.sunshine.model.transport.TransportStop
 @Entity(
     tableName = "mtr_stop"
 )
-data class MTRStopEntity(
+data class MtrStopEntity(
     @PrimaryKey
     @ColumnInfo(name = "mtr_stop_id")
     val stopId: String,
@@ -27,8 +27,8 @@ data class MTRStopEntity(
     val geohash: String,
 ) {
     companion object {
-        fun fromApiModel(stop: MtrStop): MTRStopEntity {
-            return MTRStopEntity(
+        fun fromApiModel(stop: MtrStop): MtrStopEntity {
+            return MtrStopEntity(
                 stopId = stop.stopId,
                 nameEn = stop.nameEn,
                 nameTc = stop.nameTc,

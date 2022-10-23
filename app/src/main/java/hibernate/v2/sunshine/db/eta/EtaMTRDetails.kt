@@ -1,17 +1,17 @@
 package hibernate.v2.sunshine.db.eta
 
 import androidx.room.Embedded
-import hibernate.v2.sunshine.db.mtr.MTRRouteEntity
-import hibernate.v2.sunshine.db.mtr.MTRStopEntity
+import hibernate.v2.sunshine.db.mtr.MtrRouteEntity
+import hibernate.v2.sunshine.db.mtr.MtrStopEntity
 import hibernate.v2.sunshine.model.Card
 
 data class EtaMTRDetails(
     @Embedded
     val savedEta: SavedEtaEntity,
     @Embedded
-    val route: MTRRouteEntity,
+    val route: MtrRouteEntity,
     @Embedded
-    val stop: MTRStopEntity,
+    val stop: MtrStopEntity,
     @Embedded
     val order: EtaOrderEntity,
 ) {

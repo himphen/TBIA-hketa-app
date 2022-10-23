@@ -9,21 +9,21 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 
 @Dao
-interface MTRDao {
+interface MtrDao {
 
     // ====
 
     @Query("SELECT * FROM mtr_stop")
-    suspend fun getStopList(): List<MTRStopEntity>
+    suspend fun getStopList(): List<MtrStopEntity>
 
     @Query("SELECT * FROM mtr_stop WHERE mtr_stop_id = (:stop)")
-    suspend fun getStop(stop: String): List<MTRStopEntity>
+    suspend fun getStop(stop: String): List<MtrStopEntity>
 
     @Query("SELECT * FROM mtr_stop LIMIT 1")
-    suspend fun getSingleStop(): MTRStopEntity?
+    suspend fun getSingleStop(): MtrStopEntity?
 
     @Insert
-    suspend fun addStopList(entityList: List<MTRStopEntity>)
+    suspend fun addStopList(entityList: List<MtrStopEntity>)
 
     @Query("DELETE FROM mtr_stop")
     suspend fun clearStopList()
@@ -31,23 +31,23 @@ interface MTRDao {
     // ====
 
     @Query("SELECT * FROM mtr_route")
-    suspend fun getRouteList(): List<MTRRouteEntity>
+    suspend fun getRouteList(): List<MtrRouteEntity>
 
     @Query("SELECT * FROM mtr_route WHERE route_info_is_enabled = (:isEnabled)")
-    suspend fun getRouteList(isEnabled: Boolean = true): List<MTRRouteEntity>
+    suspend fun getRouteList(isEnabled: Boolean = true): List<MtrRouteEntity>
 
     @Query("SELECT * FROM mtr_route LIMIT 1")
-    suspend fun getSingleRoute(): MTRRouteEntity?
+    suspend fun getSingleRoute(): MtrRouteEntity?
 
     @Query("SELECT * FROM mtr_route WHERE mtr_route_id = (:route) AND mtr_route_bound = (:bound) AND mtr_route_service_type = (:serviceType)")
     suspend fun getRoute(
         route: String,
         bound: String,
         serviceType: String,
-    ): MTRRouteEntity?
+    ): MtrRouteEntity?
 
     @Insert
-    suspend fun addRouteList(entityList: List<MTRRouteEntity>)
+    suspend fun addRouteList(entityList: List<MtrRouteEntity>)
 
     @Query("DELETE FROM mtr_route")
     suspend fun clearRouteList()
@@ -55,12 +55,12 @@ interface MTRDao {
     // ====
 
     @Query("SELECT * FROM mtr_route_stop WHERE mtr_route_stop_stop_id = (:stopId)")
-    suspend fun getRouteStopListFromStopId(stopId: String): List<MTRRouteStopEntity>
+    suspend fun getRouteStopListFromStopId(stopId: String): List<MtrRouteStopEntity>
 
     @RawQuery
-    suspend fun getRouteListFromRouteId(query: SupportSQLiteQuery): List<MTRRouteEntity>
+    suspend fun getRouteListFromRouteId(query: SupportSQLiteQuery): List<MtrRouteEntity>
 
-    suspend fun getRouteListFromRouteId(routeStopList: List<MTRRouteStopEntity>): List<MTRRouteEntity> {
+    suspend fun getRouteListFromRouteId(routeStopList: List<MtrRouteStopEntity>): List<MtrRouteEntity> {
         if (routeStopList.isEmpty()) return emptyList()
 
         var mainQuery = "SELECT * FROM mtr_route WHERE "
@@ -90,7 +90,7 @@ interface MTRDao {
 
     @Transaction
     @Query("SELECT * FROM mtr_route_stop")
-    suspend fun getRouteStopComponentList(): List<MTRRouteStopComponent>
+    suspend fun getRouteStopComponentList(): List<MtrRouteStopComponent>
 
     @Transaction
     @Query("SELECT * FROM mtr_route_stop WHERE mtr_route_stop_route_id = (:route) AND mtr_route_stop_bound = (:bound) AND mtr_route_stop_service_type = (:serviceType)")
@@ -98,13 +98,13 @@ interface MTRDao {
         route: String,
         bound: String,
         serviceType: String,
-    ): List<MTRRouteStopComponent>
+    ): List<MtrRouteStopComponent>
 
     @Query("SELECT * FROM mtr_route_stop LIMIT 1")
-    suspend fun getSingleRouteStop(): MTRRouteStopEntity?
+    suspend fun getSingleRouteStop(): MtrRouteStopEntity?
 
     @Insert
-    suspend fun addRouteStopList(entityList: List<MTRRouteStopEntity>)
+    suspend fun addRouteStopList(entityList: List<MtrRouteStopEntity>)
 
     @Query("DELETE FROM mtr_route_stop")
     suspend fun clearRouteStopList()

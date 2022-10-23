@@ -9,11 +9,11 @@ import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.domain.lrt.LrtInteractor
+import hibernate.v2.sunshine.domain.mtr.MtrInteractor
 import hibernate.v2.sunshine.domain.nlb.NlbInteractor
 import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.model.transport.route.TransportRoute
-import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.repository.RouteListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +26,7 @@ class RouteListMobileViewModel(
     private val kmbInteractor: KmbInteractor,
     private val ctbInteractor: CtbInteractor,
     private val gmbInteractor: GmbInteractor,
-    private val mtrRepository: MTRRepository,
+    private val mtrInteractor: MtrInteractor,
     private val lrtInteractor: LrtInteractor,
     private val nlbRepository: NlbInteractor,
 ) : BaseViewModel() {
@@ -130,7 +130,7 @@ class RouteListMobileViewModel(
         }
 
         try {
-            val allRouteList = mtrRepository.getRouteEnabledListDb().map { it.toTransportModel() }
+            val allRouteList = mtrInteractor.getRouteListDb(true).map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList)
 
             Logger.t("lifecycle").d("getMTRRouteList done")

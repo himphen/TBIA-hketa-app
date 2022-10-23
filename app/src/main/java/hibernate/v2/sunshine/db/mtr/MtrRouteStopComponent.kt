@@ -5,13 +5,13 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 @Keep
-data class MTRRouteStopComponent(
+data class MtrRouteStopComponent(
     @Embedded
-    val routeStopEntity: MTRRouteStopEntity,
+    val routeStopEntity: MtrRouteStopEntity,
 
     @Relation(
         parentColumn = "mtr_route_stop_stop_id",
         entityColumn = "mtr_stop_id"
     )
-    val stopEntity: MTRStopEntity?
+    val stopEntity: MtrStopEntity?
 )

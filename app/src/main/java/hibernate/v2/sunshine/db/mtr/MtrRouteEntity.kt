@@ -8,16 +8,16 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.api.model.transport.mtr.MtrRoute
 import hibernate.v2.sunshine.db.BaseRouteEntity
+import hibernate.v2.sunshine.model.transport.TransportHashable
 import hibernate.v2.sunshine.model.transport.route.MTRRouteInfo
 import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
-import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Keep
 @Entity(
     tableName = "mtr_route",
     primaryKeys = ["mtr_route_id", "mtr_route_bound", "mtr_route_service_type"],
 )
-data class MTRRouteEntity(
+data class MtrRouteEntity(
     @ColumnInfo(name = "mtr_route_id")
     val routeId: String,
     @ColumnInfo(name = "mtr_route_bound")
@@ -46,10 +46,10 @@ data class MTRRouteEntity(
     val routeInfoColor: String,
     @ColumnInfo(name = "route_info_is_enabled")
     val routeInfoIsEnabled: Boolean,
-) : TransportHashable, Comparable<MTRRouteEntity>, BaseRouteEntity() {
+) : TransportHashable, Comparable<MtrRouteEntity>, BaseRouteEntity() {
     companion object {
-        fun fromApiModel(route: MtrRoute): MTRRouteEntity {
-            return MTRRouteEntity(
+        fun fromApiModel(route: MtrRoute): MtrRouteEntity {
+            return MtrRouteEntity(
                 routeId = route.routeId,
                 bound = route.bound,
                 serviceType = route.serviceType,
@@ -95,7 +95,7 @@ data class MTRRouteEntity(
 
     fun routeHashId() = routeHashId(Company.MTR, routeId, bound, serviceType)
 
-    override fun compareTo(other: MTRRouteEntity): Int {
+    override fun compareTo(other: MtrRouteEntity): Int {
         val routeIdCompare = routeId.compareTo(other.routeId)
         if (routeIdCompare != 0) return routeIdCompare
 

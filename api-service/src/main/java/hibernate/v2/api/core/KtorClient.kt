@@ -20,9 +20,9 @@ object KtorClient {
             install(ContentNegotiation) {
                 json(
                     Json {
-                        prettyPrint = true
-                        isLenient = true
                         ignoreUnknownKeys = true
+                        encodeDefaults = true
+                        classDiscriminator = "discriminator"
                     }
                 )
             }

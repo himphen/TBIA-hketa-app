@@ -12,6 +12,7 @@ import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.domain.lrt.LrtInteractor
+import hibernate.v2.sunshine.domain.mtr.MtrInteractor
 import hibernate.v2.sunshine.domain.nlb.NlbInteractor
 import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.model.transport.RouteDetailsStop
@@ -22,7 +23,6 @@ import hibernate.v2.sunshine.model.transport.eta.MTRTransportEta
 import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.model.transport.eta.filterCircularStop
 import hibernate.v2.sunshine.model.transport.route.TransportRoute
-import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +38,7 @@ class RouteDetailsMobileViewModel(
     private val kmbInteractor: KmbInteractor,
     private val ctbInteractor: CtbInteractor,
     private val gmbInteractor: GmbInteractor,
-    private val mtrRepository: MTRRepository,
+    private val mtrRepository: MtrInteractor,
     private val lrtInteractor: LrtInteractor,
     private val nlbRepository: NlbInteractor,
 ) : BaseViewModel() {
@@ -131,7 +131,7 @@ class RouteDetailsMobileViewModel(
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
                 EtaType.GMB_NT -> getGmbStopList(route)
-                EtaType.MTR -> getMTRStopList(route)
+                EtaType.MTR -> getMtrStopList(route)
                 EtaType.LRT -> getLrtStopList(route)
                 EtaType.NLB -> getNlbStopList(route)
             }
@@ -190,7 +190,7 @@ class RouteDetailsMobileViewModel(
         }
     }
 
-    private suspend fun getMTRStopList(route: TransportRoute): List<TransportStop> {
+    private suspend fun getMtrStopList(route: TransportRoute): List<TransportStop> {
         return try {
             val allRouteList = mtrRepository.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }

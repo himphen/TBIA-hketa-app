@@ -12,9 +12,9 @@ import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.domain.lrt.LrtInteractor
+import hibernate.v2.sunshine.domain.mtr.MtrInteractor
 import hibernate.v2.sunshine.domain.nlb.NlbInteractor
 import hibernate.v2.sunshine.repository.CoreRepository
-import hibernate.v2.sunshine.repository.MTRRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -28,7 +28,7 @@ class OnboardingViewModel(
     private val kmbInteractor: KmbInteractor,
     private val ctbInteractor: CtbInteractor,
     private val gmbInteractor: GmbInteractor,
-    private val mtrRepository: MTRRepository,
+    private val mtrInteractor: MtrInteractor,
     private val lrtInteractor: LrtInteractor,
     private val nlbRepository: NlbInteractor,
 ) : BaseViewModel() {
@@ -222,8 +222,8 @@ class OnboardingViewModel(
 
     private suspend fun downloadMtrTransportData() {
         Logger.t("lifecycle").d("downloadMTRTransportData start")
-        mtrRepository.initDatabase()
-        mtrRepository.saveData()
+        mtrInteractor.initDatabase()
+        mtrInteractor.saveData()
     }
 
     private suspend fun downloadLrtTransportData() {
@@ -243,7 +243,7 @@ class OnboardingViewModel(
         kmbInteractor.initDatabase()
         ctbInteractor.initDatabase()
         gmbInteractor.initDatabase()
-        mtrRepository.initDatabase()
+        mtrInteractor.initDatabase()
         lrtInteractor.initDatabase()
         nlbRepository.initDatabase()
     }

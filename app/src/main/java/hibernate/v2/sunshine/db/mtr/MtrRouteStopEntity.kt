@@ -18,7 +18,7 @@ import hibernate.v2.sunshine.model.transport.TransportHashable
     ],
     primaryKeys = ["mtr_route_stop_route_id", "mtr_route_stop_bound", "mtr_route_stop_service_type", "mtr_route_stop_seq"]
 )
-data class MTRRouteStopEntity(
+data class MtrRouteStopEntity(
     @ColumnInfo(name = "mtr_route_stop_route_id")
     val routeId: String,
     @ColumnInfo(name = "mtr_route_stop_bound")
@@ -32,8 +32,8 @@ data class MTRRouteStopEntity(
 ) : TransportHashable {
 
     companion object {
-        fun fromApiModel(routeStop: MtrRouteStop): MTRRouteStopEntity {
-            return MTRRouteStopEntity(
+        fun fromApiModel(routeStop: MtrRouteStop): MtrRouteStopEntity {
+            return MtrRouteStopEntity(
                 routeId = routeStop.routeId,
                 bound = routeStop.bound,
                 serviceType = routeStop.serviceType,

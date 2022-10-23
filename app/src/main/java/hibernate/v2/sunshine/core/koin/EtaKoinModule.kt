@@ -13,8 +13,8 @@ import hibernate.v2.sunshine.domain.eta.GetMTRStopEtaApi
 import hibernate.v2.sunshine.domain.eta.GetNlbStopEtaApi
 import hibernate.v2.sunshine.domain.eta.GetSavedGmbEtaList
 import hibernate.v2.sunshine.domain.eta.GetSavedKmbEtaList
-import hibernate.v2.sunshine.domain.eta.GetSavedLRTEtaList
-import hibernate.v2.sunshine.domain.eta.GetSavedMTREtaList
+import hibernate.v2.sunshine.domain.eta.GetSavedLrtEtaList
+import hibernate.v2.sunshine.domain.eta.GetSavedMtrEtaList
 import hibernate.v2.sunshine.domain.eta.GetSavedNCEtaList
 import hibernate.v2.sunshine.domain.eta.GetSavedNlbEtaList
 import hibernate.v2.sunshine.domain.eta.HasEtaInDb
@@ -56,8 +56,8 @@ val koinEtaUseCaseModule: Module = module {
     single { GetSavedKmbEtaList(get()) }
     single { GetSavedNCEtaList(get()) }
     single { GetSavedGmbEtaList(get()) }
-    single { GetSavedMTREtaList(get()) }
-    single { GetSavedLRTEtaList(get()) }
+    single { GetSavedMtrEtaList(get()) }
+    single { GetSavedLrtEtaList(get()) }
     single { GetSavedNlbEtaList(get()) }
     single { HasEtaInDb(get()) }
     single { AddEta(get()) }
