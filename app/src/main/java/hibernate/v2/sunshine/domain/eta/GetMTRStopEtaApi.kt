@@ -2,8 +2,8 @@ package hibernate.v2.sunshine.domain.eta
 
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
+import hibernate.v2.api.repository.TransportRepository
 import hibernate.v2.api.response.eta.MTREtaResponse
-import hibernate.v2.api.service.TransportService
 
 class GetMTRStopEtaApi {
     suspend operator fun invoke(
@@ -11,7 +11,7 @@ class GetMTRStopEtaApi {
         route: String
     ): MTREtaResponse {
         val result = ApiSafeCall {
-            TransportService.getMtrStopEta(
+            TransportRepository.getMtrStopEta(
                 stopId = stopId,
                 routeId = route
             )

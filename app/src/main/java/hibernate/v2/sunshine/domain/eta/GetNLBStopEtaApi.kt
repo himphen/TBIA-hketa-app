@@ -1,18 +1,16 @@
 package hibernate.v2.sunshine.domain.eta
 
-import hibernate.v2.api.core.ApiSafeCall
-import hibernate.v2.api.core.Resource
+import hibernate.v2.api.repository.TransportRepository
 import hibernate.v2.api.request.eta.NlbRequest
 import hibernate.v2.api.response.eta.NlbEtaResponse
-import hibernate.v2.api.service.TransportService
 
 class GetNlbStopEtaApi {
     suspend operator fun invoke(
         stopId: String,
         routeId: String
     ): NlbEtaResponse {
-        val result = ApiSafeCall {
-            TransportService.getNlbStopEta(
+        val result = hibernate.v2.api.core.ApiSafeCall {
+            TransportRepository.getNlbStopEta(
                 NlbRequest(
                     routeId = routeId,
                     stopId = stopId,
@@ -22,9 +20,9 @@ class GetNlbStopEtaApi {
         }
 
         val data = when (result) {
-            is Resource.Success -> result.getData()
-            is Resource.HttpError -> throw result.getThrowable()
-            is Resource.OtherError -> throw result.getThrowable()
+            is hibernate.v2.api.core.Resource.Success -> result.getData()
+            is hibernate.v2.api.core.Resource.HttpError -> throw result.getThrowable()
+            is hibernate.v2.api.core.Resource.OtherError -> throw result.getThrowable()
         }
 
         return data

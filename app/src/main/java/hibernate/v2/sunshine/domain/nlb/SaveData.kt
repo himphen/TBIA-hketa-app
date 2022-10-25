@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.domain.nlb
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.service.DataService
+import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.sunshine.db.nlb.NlbDao
 import hibernate.v2.sunshine.db.nlb.NlbRouteEntity
 import hibernate.v2.sunshine.db.nlb.NlbRouteStopEntity
@@ -17,7 +17,7 @@ class SaveData(
     private val nlbDao: NlbDao
 ) {
     suspend operator fun invoke() {
-        val result = ApiSafeCall { DataService.getNlbData() }
+        val result = ApiSafeCall { DataRepository.getNlbData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

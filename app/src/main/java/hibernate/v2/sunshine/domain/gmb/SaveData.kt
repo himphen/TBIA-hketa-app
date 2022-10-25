@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.domain.gmb
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.service.DataService
+import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.sunshine.db.gmb.GmbDao
 import hibernate.v2.sunshine.db.gmb.GmbRouteEntity
 import hibernate.v2.sunshine.db.gmb.GmbRouteStopEntity
@@ -17,7 +17,7 @@ class SaveData(
     private val gmbDao: GmbDao
 ) {
     suspend operator fun invoke() {
-        val result = ApiSafeCall { DataService.getGmbData() }
+        val result = ApiSafeCall { DataRepository.getGmbData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.domain.mtr
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.service.DataService
+import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.sunshine.db.mtr.MtrDao
 import hibernate.v2.sunshine.db.mtr.MtrRouteEntity
 import hibernate.v2.sunshine.db.mtr.MtrRouteStopEntity
@@ -17,7 +17,7 @@ class SaveData(
     private val mtrDao: MtrDao
 ) {
     suspend operator fun invoke() {
-        val result = ApiSafeCall { DataService.getMtrData() }
+        val result = ApiSafeCall { DataRepository.getMtrData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

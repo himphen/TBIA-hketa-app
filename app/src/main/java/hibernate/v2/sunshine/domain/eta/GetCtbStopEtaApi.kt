@@ -3,8 +3,8 @@ package hibernate.v2.sunshine.domain.eta
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.api.repository.TransportRepository
 import hibernate.v2.api.response.eta.EtaResponse
-import hibernate.v2.api.service.TransportService
 
 class GetCtbStopEtaApi {
     suspend operator fun invoke(
@@ -13,7 +13,7 @@ class GetCtbStopEtaApi {
         route: String
     ): EtaResponse {
         val result = ApiSafeCall {
-            TransportService.getCtbStopEta(
+            TransportRepository.getCtbStopEta(
                 company = company.value,
                 stopId = stopId,
                 route = route

@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.domain.lrt
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.service.DataService
+import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.sunshine.db.lrt.LrtDao
 import hibernate.v2.sunshine.db.lrt.LrtRouteEntity
 import hibernate.v2.sunshine.db.lrt.LrtRouteStopEntity
@@ -17,7 +17,7 @@ class SaveData(
     private val lrtDao: LrtDao
 ) {
     suspend operator fun invoke() {
-        val result = ApiSafeCall { DataService.getLrtData() }
+        val result = ApiSafeCall { DataRepository.getLrtData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

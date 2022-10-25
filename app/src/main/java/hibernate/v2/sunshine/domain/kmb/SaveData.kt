@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.domain.kmb
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.service.DataService
+import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
@@ -17,7 +17,7 @@ class SaveData(
     private val kmbDao: KmbDao
 ) {
     suspend operator fun invoke() {
-        val result = ApiSafeCall { DataService.getKmbData() }
+        val result = ApiSafeCall { DataRepository.getKmbData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

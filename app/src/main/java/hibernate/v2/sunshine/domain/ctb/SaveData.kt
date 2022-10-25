@@ -3,7 +3,7 @@ package hibernate.v2.sunshine.domain.ctb
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.service.DataService
+import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.sunshine.db.ctb.CtbDao
 import hibernate.v2.sunshine.db.ctb.CtbRouteEntity
 import hibernate.v2.sunshine.db.ctb.CtbRouteStopEntity
@@ -17,7 +17,7 @@ class SaveData(
     private val ctbDao: CtbDao
 ) {
     suspend operator fun invoke() {
-        val result = ApiSafeCall { DataService.getCtbData() }
+        val result = ApiSafeCall { DataRepository.getCtbData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

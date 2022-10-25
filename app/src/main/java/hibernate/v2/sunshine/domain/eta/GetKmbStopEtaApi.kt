@@ -2,8 +2,8 @@ package hibernate.v2.sunshine.domain.eta
 
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
+import hibernate.v2.api.repository.KmbRepository
 import hibernate.v2.api.response.eta.EtaResponse
-import hibernate.v2.api.service.KmbService
 
 class GetKmbStopEtaApi {
     suspend operator fun invoke(
@@ -11,7 +11,7 @@ class GetKmbStopEtaApi {
         route: String
     ): EtaResponse {
         val result = ApiSafeCall {
-            KmbService.getStopEta(
+            KmbRepository.getStopEta(
                 stopId = stopId,
                 route = route,
                 serviceType = 1
