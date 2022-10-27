@@ -3,10 +3,13 @@ plugins {
     kotlin("native.cocoapods")
     kotlin("plugin.serialization")
     id("com.android.library")
+    id("com.squareup.sqldelight")
+    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 val coroutinesVersion = "1.6.4"
 val ktorVersion = "2.1.2"
+val sqlDelightVersion = "1.5.3"
 
 kotlin {
     android()
@@ -41,6 +44,11 @@ kotlin {
                 implementation("dev.gitlive:firebase-auth:1.6.2")
                 implementation("dev.gitlive:firebase-database:1.6.2")
                 implementation("dev.gitlive:firebase-config:1.6.2")
+
+                implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
+                implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
+
+                implementation("dev.icerock.moko:resources:0.20.1")
             }
         }
         val commonTest by getting {
@@ -59,6 +67,8 @@ kotlin {
                 implementation("com.google.firebase:firebase-storage-ktx")
 
                 implementation("com.github.himphen:logger:3.0.1")
+
+                implementation("com.squareup.sqldelight:android-driver:1.5.3")
             }
         }
         val androidTest by getting
@@ -71,6 +81,8 @@ kotlin {
 
             dependencies {
                 implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+
+                implementation("com.squareup.sqldelight:native-driver:1.5.3")
             }
         }
         val iosArm64Test by getting
@@ -90,4 +102,18 @@ android {
         minSdk = 24
         targetSdk = 31
     }
+}
+
+sqldelight {
+    database("KmbDatabase") {
+        packageName = "hibernate.v2.database"
+    }
+}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "hibernate.v2.res" // required
+    multiplatformResourcesClassName = "SharedRes" // optional, default MR
+    multiplatformResourcesVisibility = dev.icerock.gradle.MRVisibility.Internal // optional, default Public
+    iosBaseLocalizationRegion = "en" // optional, default "en"
+    multiplatformResourcesSourceSet = "commonMain"  // optional, default "commonMain"
 }

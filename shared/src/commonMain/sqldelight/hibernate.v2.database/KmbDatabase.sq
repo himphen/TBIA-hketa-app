@@ -1,0 +1,68 @@
+CREATE TABLE kmb_stop (
+    kmb_stop_id TEXT NOT NULL,
+    name_en     TEXT NOT NULL,
+    name_tc     TEXT NOT NULL,
+    name_sc     TEXT NOT NULL,
+    lat         REAL NOT NULL,
+    lng         REAL NOT NULL,
+    geohash     TEXT NOT NULL
+);
+
+addStopList:
+INSERT INTO kmb_stop(kmb_stop_id, name_en, name_tc, name_sc, lat, lng, geohash)
+VALUES ?;
+
+getAllStopList:
+SELECT * FROM kmb_stop;
+
+getStopList:
+SELECT * FROM kmb_stop WHERE geohash IN (:list);
+
+clearStopList:
+DELETE FROM kmb_stop;
+
+CREATE TABLE kmb_route (
+    kmb_route_id TEXT NOT NULL,
+    kmb_route_bound     TEXT NOT NULL,
+    kmb_route_service_type     TEXT NOT NULL,
+    orig_en     TEXT NOT NULL,
+    orig_tc         REAL NOT NULL,
+    orig_sc         REAL NOT NULL,
+    dest_en     TEXT NOT NULL,
+    dest_tc     TEXT NOT NULL,
+    dest_sc     TEXT NOT NULL
+);
+
+addRouteList:
+INSERT INTO kmb_route(kmb_route_id, kmb_route_bound, kmb_route_service_type, orig_en, orig_tc, orig_sc, dest_en, dest_tc, dest_sc)
+VALUES ?;
+
+getRoute:
+SELECT * FROM kmb_route WHERE kmb_route_id = (:route) AND kmb_route_bound = (:bound) AND kmb_route_service_type = (:serviceType);
+
+clearRouteList:
+DELETE FROM kmb_route;
+
+CREATE TABLE kmb_route_stop (
+    kmb_route_stop_route_id TEXT NOT NULL,
+    kmb_route_stop_bound     TEXT NOT NULL,
+    kmb_route_stop_service_type     TEXT NOT NULL,
+    kmb_route_stop_seq     REAL NOT NULL,
+    kmb_route_stop_stop_id         TEXT NOT NULL
+);
+
+addRouteStopList:
+INSERT INTO kmb_route_stop(kmb_route_stop_route_id, kmb_route_stop_bound, kmb_route_stop_service_type, kmb_route_stop_seq, kmb_route_stop_stop_id)
+VALUES ?;
+
+getRouteStopListFromStopId:
+SELECT * FROM kmb_route_stop WHERE kmb_route_stop_stop_id = (:stopId);
+
+selectRouteStopComponent:
+SELECT *
+FROM kmb_route_stop
+INNER JOIN kmb_stop ON kmb_route_stop.kmb_route_stop_stop_id = kmb_stop.kmb_stop_id
+WHERE kmb_route_stop_route_id = (:route) AND kmb_route_stop_bound = (:bound) AND kmb_route_stop_service_type = (:serviceType);
+
+clearRouteStopList:
+DELETE FROM kmb_route_stop;

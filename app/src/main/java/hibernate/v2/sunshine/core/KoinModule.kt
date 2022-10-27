@@ -1,5 +1,7 @@
 package hibernate.v2.sunshine.core
 
+import hibernate.v2.database.DatabaseDriverFactory
+import hibernate.v2.database.LocalDatabaseKmm
 import hibernate.v2.sunshine.db.LocalDatabase
 import hibernate.v2.sunshine.domain.GeneralInteractor
 import hibernate.v2.sunshine.repository.CoreRepository
@@ -59,6 +61,8 @@ val koinRepositoryModule: Module = module {
     single { get<LocalDatabase>().lrtDao() }
     single { get<LocalDatabase>().nlbDao() }
     single { CoreRepository() }
+    single { DatabaseDriverFactory(androidContext()) }
+    single { LocalDatabaseKmm(get()) }
 }
 
 val koinInteractorModule: Module = module {

@@ -4,6 +4,7 @@ import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
 import hibernate.v2.api.repository.DataRepository
+import hibernate.v2.database.LocalDatabaseKmm
 import hibernate.v2.sunshine.db.kmb.KmbDao
 import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
 import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
@@ -14,7 +15,8 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
 
 class SaveData(
-    private val kmbDao: KmbDao
+    private val kmbDao: KmbDao,
+    private val localDatabaseKmm: LocalDatabaseKmm
 ) {
     suspend operator fun invoke() {
         val result = ApiSafeCall { DataRepository.getKmbData() }
@@ -55,6 +57,8 @@ class SaveData(
                                 KmbStopEntity.fromApiModel(kmbStop)
                             }
                         )
+
+                        localDatabaseKmm.insert(list)
                     }
                     Logger.t("lifecycle").d("KmbRepository saveStopList done")
                 }
