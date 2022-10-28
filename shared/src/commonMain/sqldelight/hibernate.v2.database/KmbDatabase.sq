@@ -26,8 +26,8 @@ CREATE TABLE kmb_route (
     kmb_route_bound     TEXT NOT NULL,
     kmb_route_service_type     TEXT NOT NULL,
     orig_en     TEXT NOT NULL,
-    orig_tc         REAL NOT NULL,
-    orig_sc         REAL NOT NULL,
+    orig_tc     TEXT NOT NULL,
+    orig_sc     TEXT NOT NULL,
     dest_en     TEXT NOT NULL,
     dest_tc     TEXT NOT NULL,
     dest_sc     TEXT NOT NULL
@@ -47,7 +47,7 @@ CREATE TABLE kmb_route_stop (
     kmb_route_stop_route_id TEXT NOT NULL,
     kmb_route_stop_bound     TEXT NOT NULL,
     kmb_route_stop_service_type     TEXT NOT NULL,
-    kmb_route_stop_seq     REAL NOT NULL,
+    kmb_route_stop_seq     INTEGER NOT NULL,
     kmb_route_stop_stop_id         TEXT NOT NULL
 );
 

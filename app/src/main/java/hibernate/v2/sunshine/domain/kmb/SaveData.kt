@@ -3,19 +3,15 @@ package hibernate.v2.sunshine.domain.kmb
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
+import hibernate.v2.api.model.transport.kmb.KmbRoute
 import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.database.LocalDatabaseKmm
-import hibernate.v2.sunshine.db.kmb.KmbDao
-import hibernate.v2.sunshine.db.kmb.KmbRouteEntity
-import hibernate.v2.sunshine.db.kmb.KmbRouteStopEntity
-import hibernate.v2.sunshine.db.kmb.KmbStopEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
 
 class SaveData(
-    private val kmbDao: KmbDao,
     private val localDatabaseKmm: LocalDatabaseKmm
 ) {
     suspend operator fun invoke() {
@@ -31,50 +27,27 @@ class SaveData(
             listOf(
                 async(Dispatchers.IO) {
                     data.route?.let { list ->
-                        val temp = list
-                            .map(KmbRouteEntity.Companion::fromApiModel)
-                            .toMutableList()
-                            .apply { sortWith(KmbRouteEntity::compareTo) }
-
-                        saveRouteList(temp)
+                        list.toMutableList()
+                            .apply { sortWith(KmbRoute::compareTo) }
+                            .let {
+                                localDatabaseKmm.saveRouteList(it)
+                            }
                     }
                     Logger.t("lifecycle").d("KmbRepository saveRouteList done")
                 },
                 async(Dispatchers.IO) {
                     data.routeStop?.let { list ->
-                        saveRouteStopList(
-                            list.map { kmbRouteStop ->
-                                KmbRouteStopEntity.fromApiModel(kmbRouteStop)
-                            }
-                        )
+                        localDatabaseKmm.saveRouteStopList(list)
                     }
                     Logger.t("lifecycle").d("KmbRepository saveRouteStopList done")
                 },
                 async(Dispatchers.IO) {
                     data.stop?.let { list ->
-                        saveStopList(
-                            list.map { kmbStop ->
-                                KmbStopEntity.fromApiModel(kmbStop)
-                            }
-                        )
-
-                        localDatabaseKmm.insert(list)
+                        localDatabaseKmm.saveStopList(list)
                     }
                     Logger.t("lifecycle").d("KmbRepository saveStopList done")
                 }
             ).awaitAll()
         }
-    }
-
-    private suspend fun saveRouteList(entityList: List<KmbRouteEntity>) {
-        kmbDao.addRouteList(entityList)
-    }
-
-    private suspend fun saveRouteStopList(entityList: List<KmbRouteStopEntity>) {
-        kmbDao.addRouteStopList(entityList)
-    }
-
-    private suspend fun saveStopList(entityList: List<KmbStopEntity>) {
-        kmbDao.addStopList(entityList)
     }
 }

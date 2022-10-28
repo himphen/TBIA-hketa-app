@@ -2,10 +2,10 @@ package hibernate.v2.database.kmb
 
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.kmb.KmbRoute
 import hibernate.v2.database.BaseRouteEntity
 import hibernate.v2.model.transport.TransportHashable
-import hibernate.v2.sunshine.model.transport.route.TransportRoute
+import hibernate.v2.model.transport.route.TransportRoute
+import hibernatev2database.Kmb_route
 import kotlinx.serialization.SerialName
 
 data class KmbRouteEntity(
@@ -32,17 +32,17 @@ data class KmbRouteEntity(
     fun isSpecialRoute(): Boolean = serviceType != "1"
 
     companion object {
-        fun fromApiModel(route: KmbRoute): KmbRouteEntity {
+        fun convertFrom(item: Kmb_route): KmbRouteEntity {
             return KmbRouteEntity(
-                routeId = route.routeId,
-                bound = route.bound,
-                serviceType = route.serviceType,
-                origEn = route.origEn,
-                origTc = route.origTc,
-                origSc = route.origSc,
-                destEn = route.destEn,
-                destTc = route.destTc,
-                destSc = route.destSc
+                routeId = item.kmb_route_id,
+                bound = Bound.from(item.kmb_route_bound),
+                serviceType = item.kmb_route_service_type,
+                origEn = item.orig_en,
+                origTc = item.orig_tc,
+                origSc = item.orig_sc,
+                destEn = item.dest_en,
+                destTc = item.dest_tc,
+                destSc = item.dest_sc
             )
         }
     }

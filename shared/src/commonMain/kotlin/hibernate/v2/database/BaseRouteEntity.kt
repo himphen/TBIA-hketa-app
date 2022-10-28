@@ -1,10 +1,8 @@
 package hibernate.v2.database
 
-import androidx.room.Ignore
-import hibernate.v2.sunshine.model.transport.route.RouteComponent
+import hibernate.v2.model.transport.route.RouteComponent
 
 abstract class BaseRouteEntity {
-    @Ignore
     var routeComponent: RouteComponent = RouteComponent()
 
     fun parseRouteNumber(routeNo: String) {

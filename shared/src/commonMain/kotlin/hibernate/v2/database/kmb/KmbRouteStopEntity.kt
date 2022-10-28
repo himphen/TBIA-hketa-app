@@ -2,11 +2,11 @@ package hibernate.v2.database.kmb
 
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.kmb.KmbRouteStop
 import hibernate.v2.model.transport.TransportHashable
+import hibernatev2database.Kmb_route_stop
 import kotlinx.serialization.SerialName
 
-data class KmbRouteStopEntityNew(
+data class KmbRouteStopEntity(
     @SerialName("kmb_route_stop_route_id")
     val routeId: String,
     @SerialName("kmb_route_stop_bound")
@@ -20,13 +20,13 @@ data class KmbRouteStopEntityNew(
 ) : TransportHashable {
 
     companion object {
-        fun fromApiModel(routeStop: KmbRouteStop): KmbRouteStopEntityNew {
-            return KmbRouteStopEntityNew(
-                routeId = routeStop.routeId,
-                bound = routeStop.bound,
-                serviceType = routeStop.serviceType,
-                seq = routeStop.seq.toIntOrNull() ?: 0,
-                stopId = routeStop.stopId
+        fun convertFrom(item: Kmb_route_stop): KmbRouteStopEntity {
+            return KmbRouteStopEntity(
+                routeId = item.kmb_route_stop_route_id,
+                bound = Bound.from(item.kmb_route_stop_bound),
+                serviceType = item.kmb_route_stop_service_type,
+                seq = item.kmb_route_stop_seq.toInt(),
+                stopId = item.kmb_route_stop_stop_id
             )
         }
     }

@@ -5,7 +5,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.kmb.KmbRoute
 import hibernate.v2.sunshine.db.BaseRouteEntity
 import hibernate.v2.sunshine.model.transport.TransportHashable
 import hibernate.v2.sunshine.model.transport.route.TransportRoute
@@ -39,19 +38,19 @@ data class KmbRouteEntity(
     fun isSpecialRoute(): Boolean = serviceType != "1"
 
     companion object {
-        fun fromApiModel(route: KmbRoute): KmbRouteEntity {
-            return KmbRouteEntity(
-                routeId = route.routeId,
-                bound = route.bound,
-                serviceType = route.serviceType,
-                origEn = route.origEn,
-                origTc = route.origTc,
-                origSc = route.origSc,
-                destEn = route.destEn,
-                destTc = route.destTc,
-                destSc = route.destSc
-            )
-        }
+//        fun fromApiModel(route: KmbRoute): KmbRouteEntity {
+//            return KmbRouteEntity(
+//                routeId = route.routeId,
+//                bound = route.bound,
+//                serviceType = route.serviceType,
+//                origEn = route.origEn,
+//                origTc = route.origTc,
+//                origSc = route.origSc,
+//                destEn = route.destEn,
+//                destTc = route.destTc,
+//                destSc = route.destSc
+//            )
+//        }
     }
 
     fun toTransportModel(): TransportRoute {

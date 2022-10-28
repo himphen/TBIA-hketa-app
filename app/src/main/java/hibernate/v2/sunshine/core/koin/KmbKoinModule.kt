@@ -27,7 +27,6 @@ val koinKmbUseCaseModule: Module = module {
     }
     single {
         SaveData(
-            get(),
             get()
         )
     }

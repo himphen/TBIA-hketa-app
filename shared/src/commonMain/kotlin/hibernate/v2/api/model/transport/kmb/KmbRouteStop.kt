@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class KmbRouteStop(
     @SerialName("bound")
-    var bound: Bound = Bound.O,
+    var bound: String = Bound.O.value,
     @SerialName("route")
     var routeId: String = "",
     @SerialName("seq")

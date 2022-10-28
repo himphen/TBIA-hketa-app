@@ -6,7 +6,6 @@ import androidx.room.Entity
 import androidx.room.Index
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.api.model.transport.kmb.KmbRouteStop
 import hibernate.v2.sunshine.model.transport.TransportHashable
 
 @Keep
@@ -32,15 +31,15 @@ data class KmbRouteStopEntity(
 ) : TransportHashable {
 
     companion object {
-        fun fromApiModel(routeStop: KmbRouteStop): KmbRouteStopEntity {
-            return KmbRouteStopEntity(
-                routeId = routeStop.routeId,
-                bound = routeStop.bound,
-                serviceType = routeStop.serviceType,
-                seq = routeStop.seq.toIntOrNull() ?: 0,
-                stopId = routeStop.stopId
-            )
-        }
+//        fun fromApiModel(routeStop: KmbRouteStop): KmbRouteStopEntity {
+//            return KmbRouteStopEntity(
+//                routeId = routeStop.routeId,
+//                bound = routeStop.bound,
+//                serviceType = routeStop.serviceType,
+//                seq = routeStop.seq.toIntOrNull() ?: 0,
+//                stopId = routeStop.stopId
+//            )
+//        }
     }
 
     fun routeHashId() = routeHashId(Company.KMB, routeId, bound, serviceType)

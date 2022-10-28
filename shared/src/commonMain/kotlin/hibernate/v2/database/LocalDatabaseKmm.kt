@@ -1,10 +1,13 @@
 package hibernate.v2.database
 
-import com.squareup.sqldelight.db.SqlPreparedStatement
 import hibernate.v2.api.CommonLogger
+import hibernate.v2.api.model.transport.kmb.KmbRoute
+import hibernate.v2.api.model.transport.kmb.KmbRouteStop
 import hibernate.v2.api.model.transport.kmb.KmbStop
 import hibernate.v2.database.kmb.KmbRouteEntity
-import hibernate.v2.database.kmb.KmbRouteStopEntityNew
+import hibernate.v2.database.kmb.KmbRouteStopEntity
+import hibernatev2database.Kmb_route
+import hibernatev2database.Kmb_route_stop
 import hibernatev2database.Kmb_stop
 
 class LocalDatabaseKmm(val databaseDriverFactory: DatabaseDriverFactory) {
@@ -12,25 +15,55 @@ class LocalDatabaseKmm(val databaseDriverFactory: DatabaseDriverFactory) {
 
     private val kmbDatabase = KmbDatabase(driver)
 
-    fun insert(list: List<KmbStop>) {
+    fun saveStopList(list: List<KmbStop>) {
         kmbDatabase.kmbDatabaseQueries.transaction {
             list.forEach { kmbDatabase.kmbDatabaseQueries.addStopList(convertFrom(it)) }
         }
     }
 
-    private fun convertFrom(stop: KmbStop): Kmb_stop {
-        return Kmb_stop(
-            kmb_stop_id = stop.stopId,
-            name_en = stop.nameEn,
-            name_tc = stop.nameTc,
-            name_sc = stop.nameSc,
-            lat = stop.lat.toDoubleOrNull() ?: 0.0,
-            lng = stop.lng.toDoubleOrNull() ?: 0.0,
-            geohash = stop.geohash,
-        )
+    fun saveRouteStopList(list: List<KmbRouteStop>) {
+        kmbDatabase.kmbDatabaseQueries.transaction {
+            list.forEach { kmbDatabase.kmbDatabaseQueries.addRouteStopList(convertFrom(it)) }
+        }
     }
 
-    fun meow(routeStopList: List<KmbRouteStopEntityNew>): List<KmbRouteEntity> {
+    fun saveRouteList(list: List<KmbRoute>) {
+        kmbDatabase.kmbDatabaseQueries.transaction {
+            list.forEach { kmbDatabase.kmbDatabaseQueries.addRouteList(convertFrom(it)) }
+        }
+    }
+
+    private fun convertFrom(item: KmbStop) = Kmb_stop(
+        kmb_stop_id = item.stopId,
+        name_en = item.nameEn,
+        name_tc = item.nameTc,
+        name_sc = item.nameSc,
+        lat = item.lat.toDoubleOrNull() ?: 0.0,
+        lng = item.lng.toDoubleOrNull() ?: 0.0,
+        geohash = item.geohash,
+    )
+
+    private fun convertFrom(item: KmbRouteStop) = Kmb_route_stop(
+        kmb_route_stop_route_id = item.routeId,
+        kmb_route_stop_bound = item.bound,
+        kmb_route_stop_service_type = item.serviceType,
+        kmb_route_stop_seq = item.seq.toLongOrNull() ?: 0,
+        kmb_route_stop_stop_id = item.stopId,
+    )
+
+    private fun convertFrom(item: KmbRoute) = Kmb_route(
+        kmb_route_id = item.routeId,
+        kmb_route_bound = item.bound,
+        kmb_route_service_type = item.serviceType,
+        orig_en = item.origEn,
+        orig_tc = item.origTc,
+        orig_sc = item.origSc,
+        dest_en = item.destEn,
+        dest_tc = item.destTc,
+        dest_sc = item.destSc,
+    )
+
+    fun meow(routeStopList: List<KmbRouteStopEntity>): List<KmbRouteEntity> {
         if (routeStopList.isEmpty()) return emptyList()
 
         var mainQuery = "SELECT * FROM kmb_route WHERE "
@@ -41,7 +74,8 @@ class LocalDatabaseKmm(val databaseDriverFactory: DatabaseDriverFactory) {
             bindArgs.add(it.bound.value)
             bindArgs.add(it.serviceType)
 
-            var where = "(kmb_route_id = (?) AND kmb_route_bound = (?) AND kmb_route_service_type = (?))"
+            var where =
+                "(kmb_route_id = (?) AND kmb_route_bound = (?) AND kmb_route_service_type = (?))"
 
             if (routeStopList.lastIndex != index) {
                 where += " OR "
