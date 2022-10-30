@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.leanback.widget.BaseCardView
 import androidx.leanback.widget.Presenter
-import hibernate.v2.sunshine.model.Card
+import hibernate.v2.model.Card
 
 abstract class BaseCardPresenter<T : BaseCardView, U : Card>(
     val context: Context

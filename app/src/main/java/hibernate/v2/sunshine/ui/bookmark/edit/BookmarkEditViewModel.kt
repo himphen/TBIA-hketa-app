@@ -2,10 +2,10 @@ package hibernate.v2.sunshine.ui.bookmark.edit
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import hibernate.v2.sunshine.db.eta.EtaOrderEntity
-import hibernate.v2.sunshine.db.eta.SavedEtaEntity
+import hibernate.v2.database.eta.SavedEtaEntity
+import hibernate.v2.database.eta.SavedEtaOrderEntity
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.domain.eta.EtaInteractor
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -63,6 +63,6 @@ class BookmarkEditViewModel(
 
     suspend fun getEtaOrderList() = etaInteractor.getEtaOrderList()
 
-    suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
+    suspend fun updateEtaOrderList(entityList: List<SavedEtaOrderEntity>) =
         etaInteractor.updateEtaOrderList(entityList)
 }

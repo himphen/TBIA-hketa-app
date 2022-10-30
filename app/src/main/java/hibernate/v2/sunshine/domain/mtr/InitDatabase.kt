@@ -1,6 +1,6 @@
 package hibernate.v2.sunshine.domain.mtr
 
-import hibernate.v2.sunshine.db.mtr.MtrDao
+import hibernate.v2.database.mtr.MtrDao
 
 class InitDatabase(
     private val mtrDao: MtrDao

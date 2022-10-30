@@ -23,7 +23,7 @@ data class KmbRouteStopEntity(
         fun convertFrom(item: Kmb_route_stop): KmbRouteStopEntity {
             return KmbRouteStopEntity(
                 routeId = item.kmb_route_stop_route_id,
-                bound = Bound.from(item.kmb_route_stop_bound),
+                bound = item.kmb_route_stop_bound,
                 serviceType = item.kmb_route_stop_service_type,
                 seq = item.kmb_route_stop_seq.toInt(),
                 stopId = item.kmb_route_stop_stop_id

@@ -1,5 +1,6 @@
 package hibernate.v2.model.transport.route
 
+import dev.icerock.moko.graphics.Color
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 
@@ -34,5 +35,5 @@ data class LrtTransportRoute(
 }
 
 data class LrtRouteInfo(
-    var color: Int,
+    var color: Color,
 )

@@ -2,12 +2,11 @@ package hibernate.v2.model.transport.eta
 
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.response.eta.MTREta
-import hibernate.v2.sunshine.util.DateFormatPattern
-import hibernate.v2.sunshine.util.DateUtil
-import java.util.Date
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toLocalDateTime
 
 class MTRTransportEta(
-    eta: Date? = null,
+    eta: LocalDateTime? = null,
     rmkEn: String? = null,
     rmkSc: String? = null,
     rmkTc: String? = null,
@@ -17,10 +16,8 @@ class MTRTransportEta(
     companion object {
         fun fromApiModel(eta: MTREta): MTRTransportEta {
             return MTRTransportEta(
-                eta = DateUtil.getDate(
-                    eta.time,
-                    DateFormatPattern.YYYY_MM_DD_HH_MM_SS.value
-                ),
+                // YYYY_MM_DD_HH_MM_SS
+                eta = eta.time?.replaceFirst(' ', 'T')?.toLocalDateTime(),
                 rmkEn = "",
                 rmkSc = "",
                 rmkTc = "",

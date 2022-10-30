@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.domain.ctb
 
-import hibernate.v2.sunshine.db.ctb.CtbDao
-import hibernate.v2.sunshine.model.Card
+import hibernate.v2.database.ctb.CtbDao
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 
 class GetRouteEtaCardList(

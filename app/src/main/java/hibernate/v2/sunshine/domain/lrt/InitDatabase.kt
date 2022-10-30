@@ -1,6 +1,6 @@
 package hibernate.v2.sunshine.domain.lrt
 
-import hibernate.v2.sunshine.db.lrt.LrtDao
+import hibernate.v2.database.lrt.LrtDao
 
 class InitDatabase(
     private val lrtDao: LrtDao

@@ -3,8 +3,8 @@ package hibernate.v2.sunshine.ui.settings.leanback
 import android.content.Context
 import android.view.ContextThemeWrapper
 import coil.load
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseCardPresenter
 
 class SettingsCardPresenter(

@@ -12,11 +12,11 @@ import androidx.leanback.widget.FocusHighlight
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import hibernate.v2.model.Card
+import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.LbFragmentEtaBinding
-import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.ui.base.FullWidthGridPresenter
 import hibernate.v2.sunshine.ui.bookmark.home.BookmarkHomeViewModel
 import hibernate.v2.sunshine.util.DateUtil

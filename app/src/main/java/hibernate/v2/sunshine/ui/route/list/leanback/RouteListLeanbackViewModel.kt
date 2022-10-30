@@ -5,6 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.GmbRegion
+import hibernate.v2.model.transport.TransportRouteStopList
+import hibernate.v2.model.transport.eta.EtaType
+import hibernate.v2.model.transport.route.GmbTransportRoute
+import hibernate.v2.model.transport.route.LrtTransportRoute
+import hibernate.v2.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
@@ -12,11 +17,6 @@ import hibernate.v2.sunshine.domain.lrt.LrtInteractor
 import hibernate.v2.sunshine.domain.mtr.MtrInteractor
 import hibernate.v2.sunshine.domain.nlb.NlbInteractor
 import hibernate.v2.sunshine.model.AddEtaRowItem
-import hibernate.v2.sunshine.model.transport.TransportRouteStopList
-import hibernate.v2.sunshine.model.transport.eta.EtaType
-import hibernate.v2.sunshine.model.transport.route.GmbTransportRoute
-import hibernate.v2.sunshine.model.transport.route.LrtTransportRoute
-import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers

@@ -15,9 +15,9 @@ import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentRouteListViewPagerBinding
-import hibernate.v2.sunshine.model.transport.eta.EtaType
 import hibernate.v2.sunshine.ui.base.BaseActivity
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.util.afterTextChanged
@@ -85,11 +85,11 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
                 override fun onTabReselected(tab: TabLayout.Tab) {}
             })
         viewBinding.viewPager.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                etaType = adapter.list[position]
-            }
-        })
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    etaType = adapter.list[position]
+                }
+            })
 
         TabLayoutMediator(
             viewBinding.tabLayout,

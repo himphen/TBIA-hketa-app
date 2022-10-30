@@ -3,13 +3,13 @@ package hibernate.v2.sunshine.model.searchmap
 import android.content.Context
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
-import hibernate.v2.sunshine.db.ctb.CtbStopEntity
-import hibernate.v2.sunshine.db.gmb.GmbStopEntity
-import hibernate.v2.sunshine.db.kmb.KmbStopEntity
-import hibernate.v2.sunshine.db.nlb.NlbStopEntity
-import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.TransportStop
-import hibernate.v2.sunshine.model.transport.eta.EtaType
+import hibernate.v2.database.ctb.CtbStopEntity
+import hibernate.v2.database.gmb.GmbStopEntity
+import hibernate.v2.database.kmb.KmbStopEntity
+import hibernate.v2.database.nlb.NlbStopEntity
+import hibernate.v2.model.Card
+import hibernate.v2.model.transport.TransportStop
+import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.util.GeneralUtils
 
 data class SearchMapStop(

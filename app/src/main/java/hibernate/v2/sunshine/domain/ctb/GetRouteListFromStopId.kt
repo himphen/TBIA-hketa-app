@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.domain.ctb
 
-import hibernate.v2.sunshine.db.ctb.CtbDao
-import hibernate.v2.sunshine.model.transport.route.TransportRoute
+import hibernate.v2.database.ctb.CtbDao
+import hibernate.v2.model.transport.route.TransportRoute
 
 class GetRouteListFromStopId(
     private val ctbDao: CtbDao

@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import hibernate.v2.database.eta.SavedEtaOrderEntity
+import hibernate.v2.model.Card
+import hibernate.v2.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentBookmarkEditBinding
-import hibernate.v2.sunshine.db.eta.EtaOrderEntity
-import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.base.ItemTouchHelperCallback
@@ -72,10 +72,11 @@ class BookmarkEditFragment : BaseFragment<FragmentBookmarkEditBinding>() {
                 .setTitle(R.string.dialog_settings_eta_remove_title)
                 .apply {
                     if (card.route is MTRTransportRoute) {
+                        val route = card.route as MTRTransportRoute
                         setMessage(
                             getString(
                                 R.string.dialog_settings_eta_remove_mtr_message,
-                                card.route.routeInfo.getLocalisedName(context),
+                                route.routeInfo.getLocalisedName(GeneralUtils.getTransportationLanguage(context)),
                                 card.stop.getLocalisedName(context)
                             )
                         )
@@ -97,8 +98,8 @@ class BookmarkEditFragment : BaseFragment<FragmentBookmarkEditBinding>() {
                         val currentEtaOrderList = viewModel.getEtaOrderList()
                         val updatedEtaOrderList = currentEtaOrderList.filterNot {
                             it.id == card.entity.id
-                        }.mapIndexed { index, etaOrderEntity ->
-                            EtaOrderEntity(id = etaOrderEntity.id, position = index)
+                        }.mapIndexed { index, SavedEtaOrderEntity ->
+                            SavedEtaOrderEntity(id = SavedEtaOrderEntity.id, position = index)
                         }
                         viewModel.updateEtaOrderList(updatedEtaOrderList)
 
@@ -246,7 +247,7 @@ class BookmarkEditFragment : BaseFragment<FragmentBookmarkEditBinding>() {
     private suspend fun saveNewEtaOrder() {
         val updatedEtaOrderList =
             savedEtaCardList.mapIndexed { index, card ->
-                EtaOrderEntity(id = card.entity.id, position = index)
+                SavedEtaOrderEntity(id = card.entity.id, position = index)
             }
         viewModel.updateEtaOrderList(updatedEtaOrderList)
         activity?.setResult(MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK)

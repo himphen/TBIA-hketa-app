@@ -1,8 +1,8 @@
 package hibernate.v2.database.kmb
 
 import hibernate.v2.api.model.transport.Company
-import hibernatev2database.Kmb_stop
 import hibernate.v2.model.transport.TransportStop
+import hibernatev2database.Kmb_stop
 
 data class KmbStopEntity(
     val stopId: String,

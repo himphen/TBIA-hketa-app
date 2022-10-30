@@ -1,0 +1,83 @@
+import hibernate.v2.api.model.transport.Bound;
+import hibernate.v2.api.model.transport.GmbRegion;
+
+CREATE TABLE gmb_stop (
+    gmb_stop_id TEXT NOT NULL,
+    name_en     TEXT NOT NULL,
+    name_tc     TEXT NOT NULL,
+    name_sc     TEXT NOT NULL,
+    lat         REAL NOT NULL,
+    lng         REAL NOT NULL,
+    geohash     TEXT NOT NULL
+);
+
+getAllStopList:
+SELECT * FROM gmb_stop;
+
+getStopList:
+SELECT * FROM gmb_stop WHERE geohash IN ?;
+
+addStopList:
+INSERT INTO gmb_stop(gmb_stop_id, name_en, name_tc, name_sc, lat, lng, geohash)
+VALUES ?;
+
+clearStopList:
+DELETE FROM gmb_stop;
+
+CREATE TABLE gmb_route (
+    gmb_route_id TEXT NOT NULL,
+    gmb_route_no TEXT NOT NULL,
+    gmb_route_bound     TEXT AS Bound NOT NULL,
+    gmb_route_service_type     TEXT NOT NULL,
+    orig_en     TEXT NOT NULL,
+    orig_tc     TEXT NOT NULL,
+    orig_sc     TEXT NOT NULL,
+    dest_en     TEXT NOT NULL,
+    dest_tc     TEXT NOT NULL,
+    dest_sc     TEXT NOT NULL,
+    region     TEXT AS GmbRegion NOT NULL
+);
+
+getRoute:
+SELECT * FROM gmb_route WHERE gmb_route_id = (:route) AND gmb_route_bound = (:bound) AND gmb_route_service_type = (:serviceType);
+
+getRouteListByRegion:
+SELECT * FROM gmb_route WHERE region = (:region);
+
+addRouteList:
+INSERT INTO gmb_route(gmb_route_id, gmb_route_no, gmb_route_bound, gmb_route_service_type, orig_en, orig_tc, orig_sc, dest_en, dest_tc, dest_sc, region)
+VALUES ?;
+
+clearRouteList:
+DELETE FROM gmb_route;
+
+CREATE TABLE gmb_route_stop (
+    gmb_route_stop_route_id TEXT NOT NULL,
+    gmb_route_stop_bound     TEXT AS Bound NOT NULL,
+    gmb_route_stop_service_type     TEXT NOT NULL,
+    gmb_route_stop_seq     INTEGER NOT NULL,
+    gmb_route_stop_stop_id         TEXT NOT NULL
+);
+
+getRouteStopListFromStopId:
+SELECT * FROM gmb_route_stop WHERE gmb_route_stop_stop_id = (:stopId);
+
+getRouteStopComponentAllList:
+SELECT *
+FROM gmb_route_stop
+INNER JOIN gmb_stop ON gmb_route_stop.gmb_route_stop_stop_id = gmb_stop.gmb_stop_id
+WHERE gmb_route_stop_route_id IN ?;
+
+getRouteStopComponentList:
+SELECT *
+FROM gmb_route_stop
+INNER JOIN gmb_stop ON gmb_route_stop.gmb_route_stop_stop_id = gmb_stop.gmb_stop_id
+WHERE gmb_route_stop_route_id = (:route) AND gmb_route_stop_bound = (:bound) AND gmb_route_stop_service_type = (:serviceType);
+
+
+addRouteStopList:
+INSERT INTO gmb_route_stop(gmb_route_stop_route_id, gmb_route_stop_bound, gmb_route_stop_service_type, gmb_route_stop_seq, gmb_route_stop_stop_id)
+VALUES ?;
+
+clearRouteStopList:
+DELETE FROM gmb_route_stop;

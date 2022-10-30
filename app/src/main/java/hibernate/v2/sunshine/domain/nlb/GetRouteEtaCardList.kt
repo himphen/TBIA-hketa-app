@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.domain.nlb
 
-import hibernate.v2.sunshine.db.nlb.NlbDao
-import hibernate.v2.sunshine.model.Card
+import hibernate.v2.database.nlb.NlbDao
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 
 class GetRouteEtaCardList(

@@ -1,8 +1,7 @@
 package hibernate.v2.sunshine.core
 
 import hibernate.v2.database.DatabaseDriverFactory
-import hibernate.v2.database.LocalDatabaseKmm
-import hibernate.v2.sunshine.db.LocalDatabase
+import hibernate.v2.database.kmb.KmbDao
 import hibernate.v2.sunshine.domain.GeneralInteractor
 import hibernate.v2.sunshine.repository.CoreRepository
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
@@ -51,18 +50,18 @@ val koinUIModule: Module = module {
 }
 
 val koinRepositoryModule: Module = module {
-    single { LocalDatabase.getInstance(androidContext()) }
-    single { get<LocalDatabase>().etaDao() }
-    single { get<LocalDatabase>().etaOrderDao() }
-    single { get<LocalDatabase>().kmbDao() }
-    single { get<LocalDatabase>().ctbDao() }
-    single { get<LocalDatabase>().gmbDao() }
-    single { get<LocalDatabase>().mtrDao() }
-    single { get<LocalDatabase>().lrtDao() }
-    single { get<LocalDatabase>().nlbDao() }
+//    single { LocalDatabase.getInstance(androidContext()) }
+//    single { get<LocalDatabase>().etaDao() }
+//    single { get<LocalDatabase>().etaOrderDao() }
+//    single { get<LocalDatabase>().kmbDao() }
+//    single { get<LocalDatabase>().ctbDao() }
+//    single { get<LocalDatabase>().gmbDao() }
+//    single { get<LocalDatabase>().mtrDao() }
+//    single { get<LocalDatabase>().lrtDao() }
+//    single { get<LocalDatabase>().nlbDao() }
     single { CoreRepository() }
     single { DatabaseDriverFactory(androidContext()) }
-    single { LocalDatabaseKmm(get()) }
+    single { KmbDao(get()) }
 }
 
 val koinInteractorModule: Module = module {

@@ -5,14 +5,14 @@ import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.kmb.KmbRoute
 import hibernate.v2.api.repository.DataRepository
-import hibernate.v2.database.LocalDatabaseKmm
+import hibernate.v2.database.kmb.KmbDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
 
 class SaveData(
-    private val localDatabaseKmm: LocalDatabaseKmm
+    private val kmbDao: KmbDao
 ) {
     suspend operator fun invoke() {
         val result = ApiSafeCall { DataRepository.getKmbData() }
@@ -30,20 +30,20 @@ class SaveData(
                         list.toMutableList()
                             .apply { sortWith(KmbRoute::compareTo) }
                             .let {
-                                localDatabaseKmm.saveRouteList(it)
+                                kmbDao.addRouteList(it)
                             }
                     }
                     Logger.t("lifecycle").d("KmbRepository saveRouteList done")
                 },
                 async(Dispatchers.IO) {
                     data.routeStop?.let { list ->
-                        localDatabaseKmm.saveRouteStopList(list)
+                        kmbDao.addRouteStopList(list)
                     }
                     Logger.t("lifecycle").d("KmbRepository saveRouteStopList done")
                 },
                 async(Dispatchers.IO) {
                     data.stop?.let { list ->
-                        localDatabaseKmm.saveStopList(list)
+                        kmbDao.addStopList(list)
                     }
                     Logger.t("lifecycle").d("KmbRepository saveStopList done")
                 }

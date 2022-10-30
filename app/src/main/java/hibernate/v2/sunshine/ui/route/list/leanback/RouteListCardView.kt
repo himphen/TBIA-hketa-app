@@ -3,9 +3,9 @@ package hibernate.v2.sunshine.ui.route.list.leanback
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.leanback.widget.BaseCardView
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.LbCardAddEtaStopBinding
-import hibernate.v2.sunshine.model.Card
 
 class RouteListCardView(context: Context) : BaseCardView(
     context,

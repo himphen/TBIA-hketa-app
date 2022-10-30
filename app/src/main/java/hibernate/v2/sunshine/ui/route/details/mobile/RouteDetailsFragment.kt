@@ -34,13 +34,13 @@ import com.google.maps.android.SphericalUtil
 import com.google.maps.android.ktx.awaitMap
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.model.transport.RouteDetailsStop
+import hibernate.v2.model.transport.TransportStop
+import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentRouteDetailsBinding
 import hibernate.v2.sunshine.model.RouteDetailsMarkerItem
-import hibernate.v2.sunshine.model.transport.eta.EtaType
-import hibernate.v2.sunshine.model.transport.RouteDetailsStop
-import hibernate.v2.sunshine.model.transport.TransportStop
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.util.GeneralUtils

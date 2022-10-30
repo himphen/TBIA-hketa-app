@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.domain.kmb
 
 import com.fonfon.kgeohash.GeoHash
-import hibernate.v2.sunshine.db.kmb.KmbDao
+import hibernate.v2.database.kmb.KmbDao
 
 class GetStopListDb(
     private val kmbDao: KmbDao

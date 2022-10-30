@@ -8,13 +8,13 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.sunshine.databinding.ItemEtaAdBannerBinding
 import hibernate.v2.sunshine.databinding.ItemEtaButtonGroupBinding
 import hibernate.v2.sunshine.databinding.ItemEtaCardClassicBinding
 import hibernate.v2.sunshine.databinding.ItemEtaCardCompactBinding
 import hibernate.v2.sunshine.databinding.ItemEtaCardStandardBinding
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.bookmark.EtaCardViewType
 import hibernate.v2.sunshine.ui.bookmark.EtaTimeAdapter

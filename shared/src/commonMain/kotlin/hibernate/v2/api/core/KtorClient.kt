@@ -1,7 +1,7 @@
 package hibernate.v2.api.core
 
-import hibernate.v2.api.CommonLogger
-import hibernate.v2.api.isDebugBuild
+import hibernate.v2.utils.CommonLogger
+import hibernate.v2.utils.isDebugBuild
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation

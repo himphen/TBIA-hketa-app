@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.domain.kmb
 
-import hibernate.v2.sunshine.db.kmb.KmbDao
-import hibernate.v2.sunshine.model.transport.route.TransportRoute
+import hibernate.v2.database.kmb.KmbDao
+import hibernate.v2.model.transport.route.TransportRoute
 
 class GetRouteListFromStopId(
     private val kmbDao: KmbDao

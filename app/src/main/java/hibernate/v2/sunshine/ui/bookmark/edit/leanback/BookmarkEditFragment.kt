@@ -10,10 +10,10 @@ import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.VerticalGridPresenter
 import androidx.lifecycle.lifecycleScope
+import hibernate.v2.database.eta.SavedEtaOrderEntity
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.db.eta.EtaOrderEntity
 import hibernate.v2.sunshine.model.BookmarkEdit
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel
 import hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditConfirmDialogActivity.Companion.ARG_RESULT_CODE
@@ -46,8 +46,8 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
                             val currentEtaOrderList = viewModel.getEtaOrderList().toMutableList()
                             currentEtaOrderList.swap(position - OFFSET, newPosition - OFFSET)
                             val updatedEtaOrderList =
-                                currentEtaOrderList.mapIndexed { index, etaOrderEntity ->
-                                    EtaOrderEntity(id = etaOrderEntity.id, position = index)
+                                currentEtaOrderList.mapIndexed { index, SavedEtaOrderEntity ->
+                                    SavedEtaOrderEntity(id = SavedEtaOrderEntity.id, position = index)
                                 }
                             viewModel.updateEtaOrderList(updatedEtaOrderList)
 
@@ -63,8 +63,8 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
                             val currentEtaOrderList = viewModel.getEtaOrderList().toMutableList()
                             currentEtaOrderList.swap(position - OFFSET, newPosition - OFFSET)
                             val updatedEtaOrderList =
-                                currentEtaOrderList.mapIndexed { index, etaOrderEntity ->
-                                    EtaOrderEntity(id = etaOrderEntity.id, position = index)
+                                currentEtaOrderList.mapIndexed { index, SavedEtaOrderEntity ->
+                                    SavedEtaOrderEntity(id = SavedEtaOrderEntity.id, position = index)
                                 }
                             viewModel.updateEtaOrderList(updatedEtaOrderList)
 
@@ -80,8 +80,8 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
                             val currentEtaOrderList = viewModel.getEtaOrderList()
                             val updatedEtaOrderList = currentEtaOrderList.filterNot {
                                 it.id == card.entity.id
-                            }.mapIndexed { index, etaOrderEntity ->
-                                EtaOrderEntity(id = etaOrderEntity.id, position = index)
+                            }.mapIndexed { index, SavedEtaOrderEntity ->
+                                SavedEtaOrderEntity(id = SavedEtaOrderEntity.id, position = index)
                             }
                             viewModel.updateEtaOrderList(updatedEtaOrderList)
 

@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.domain.mtr
 
-import hibernate.v2.sunshine.db.mtr.MtrDao
-import hibernate.v2.sunshine.model.Card
+import hibernate.v2.database.mtr.MtrDao
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 
 class GetRouteEtaCardList(

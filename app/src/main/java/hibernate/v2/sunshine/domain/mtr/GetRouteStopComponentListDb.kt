@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.domain.mtr
 
-import hibernate.v2.sunshine.db.mtr.MtrDao
-import hibernate.v2.sunshine.model.transport.route.TransportRoute
+import hibernate.v2.database.mtr.MtrDao
+import hibernate.v2.model.transport.route.TransportRoute
 
 class GetRouteStopComponentListDb(
     private val mtrDao: MtrDao
@@ -14,7 +14,7 @@ class GetRouteStopComponentListDb(
         route: TransportRoute,
     ) = mtrDao.getRouteStopComponentList(
         route.routeId,
-        route.bound.value,
+        route.bound,
         route.serviceType
     )
 }

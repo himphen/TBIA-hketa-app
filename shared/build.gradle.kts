@@ -49,6 +49,8 @@ kotlin {
                 implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
 
                 implementation("dev.icerock.moko:resources:0.20.1")
+
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
             }
         }
         val commonTest by getting {
@@ -105,7 +107,7 @@ android {
 }
 
 sqldelight {
-    database("KmbDatabase") {
+    database("MyDatabase") {
         packageName = "hibernate.v2.database"
     }
 }

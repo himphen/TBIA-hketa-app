@@ -1,5 +1,7 @@
 package hibernate.v2.api.model.transport.nlb
 
+import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.database.BaseRouteEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,4 +23,21 @@ data class NlbRoute(
     var routeId: String = "",
     @SerialName("route_no")
     var routeNo: String = ""
-)
+) : Comparable<NlbRoute>, BaseRouteEntity() {
+    val bound = Bound.UNKNOWN
+
+    val serviceType = "1"
+
+    override fun compareTo(other: NlbRoute): Int {
+        parseRouteNumber(routeId)
+        other.parseRouteNumber(other.routeId)
+
+        val routeCompare = routeComponent.compareTo(other.routeComponent)
+        if (routeCompare != 0) return routeCompare
+
+        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
+        if (serviceTypeCompare != 0) return serviceTypeCompare
+
+        return bound.compareTo(other.bound)
+    }
+}

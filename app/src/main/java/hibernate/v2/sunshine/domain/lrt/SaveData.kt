@@ -3,11 +3,9 @@ package hibernate.v2.sunshine.domain.lrt
 import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
+import hibernate.v2.api.model.transport.lrt.LrtRoute
 import hibernate.v2.api.repository.DataRepository
-import hibernate.v2.sunshine.db.lrt.LrtDao
-import hibernate.v2.sunshine.db.lrt.LrtRouteEntity
-import hibernate.v2.sunshine.db.lrt.LrtRouteStopEntity
-import hibernate.v2.sunshine.db.lrt.LrtStopEntity
+import hibernate.v2.database.lrt.LrtDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -29,48 +27,27 @@ class SaveData(
             listOf(
                 async(Dispatchers.IO) {
                     data.route?.let { list ->
-                        val temp = list
-                            .map(LrtRouteEntity.Companion::fromApiModel)
-                            .toMutableList()
-                            .apply { sortWith(LrtRouteEntity::compareTo) }
-
-                        saveRouteList(temp)
+                        list.toMutableList()
+                            .apply { sortWith(LrtRoute::compareTo) }
+                            .let {
+                                lrtDao.addRouteList(it)
+                            }
                     }
                     Logger.t("lifecycle").d("LrtInteractor saveRouteList done")
                 },
                 async(Dispatchers.IO) {
                     data.routeStop?.let { list ->
-                        saveRouteStopList(
-                            list.map { routeStop ->
-                                LrtRouteStopEntity.fromApiModel(routeStop)
-                            }
-                        )
+                        lrtDao.addRouteStopList(list)
                     }
                     Logger.t("lifecycle").d("LrtInteractor saveRouteStopList done")
                 },
                 async(Dispatchers.IO) {
                     data.stop?.let { list ->
-                        saveStopList(
-                            list.map { stop ->
-                                LrtStopEntity.fromApiModel(stop)
-                            }
-                        )
+                        lrtDao.addStopList(list)
                     }
                     Logger.t("lifecycle").d("LrtInteractor saveStopList done")
                 }
             ).awaitAll()
         }
-    }
-
-    private suspend fun saveRouteList(entityList: List<LrtRouteEntity>) {
-        lrtDao.addRouteList(entityList)
-    }
-
-    private suspend fun saveRouteStopList(entityList: List<LrtRouteStopEntity>) {
-        lrtDao.addRouteStopList(entityList)
-    }
-
-    private suspend fun saveStopList(entityList: List<LrtStopEntity>) {
-        lrtDao.addStopList(entityList)
     }
 }

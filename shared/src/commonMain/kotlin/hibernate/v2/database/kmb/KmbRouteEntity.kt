@@ -35,7 +35,7 @@ data class KmbRouteEntity(
         fun convertFrom(item: Kmb_route): KmbRouteEntity {
             return KmbRouteEntity(
                 routeId = item.kmb_route_id,
-                bound = Bound.from(item.kmb_route_bound),
+                bound = item.kmb_route_bound,
                 serviceType = item.kmb_route_service_type,
                 origEn = item.orig_en,
                 origTc = item.orig_tc,

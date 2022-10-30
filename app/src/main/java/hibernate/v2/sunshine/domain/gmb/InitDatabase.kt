@@ -1,6 +1,6 @@
 package hibernate.v2.sunshine.domain.gmb
 
-import hibernate.v2.sunshine.db.gmb.GmbDao
+import hibernate.v2.database.gmb.GmbDao
 
 class InitDatabase(
     private val gmbDao: GmbDao

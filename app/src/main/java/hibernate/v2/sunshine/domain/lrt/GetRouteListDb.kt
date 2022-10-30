@@ -1,6 +1,6 @@
 package hibernate.v2.sunshine.domain.lrt
 
-import hibernate.v2.sunshine.db.lrt.LrtDao
+import hibernate.v2.database.lrt.LrtDao
 
 class GetRouteListDb(
     private val lrtDao: LrtDao
@@ -9,5 +9,5 @@ class GetRouteListDb(
         lrtDao.getRouteList()
 
     suspend operator fun invoke(enabled: Boolean) =
-        lrtDao.getRouteList(enabled)
+        lrtDao.getRouteList()
 }

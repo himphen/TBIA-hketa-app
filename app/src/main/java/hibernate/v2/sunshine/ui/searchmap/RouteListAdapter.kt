@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.databinding.ItemBottomSheetRouteBinding
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.bookmark.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.bookmark.home.mobile.view.BaseEtaViewHolder
 import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView

@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.ui.bookmark.edit.leanback
 
 import android.content.Context
-import hibernate.v2.sunshine.model.Card
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.ui.base.BaseCardPresenter
 
 class BookmarkEditCardPresenter(

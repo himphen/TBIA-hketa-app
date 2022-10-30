@@ -3,10 +3,10 @@ package hibernate.v2.sunshine.ui.bookmark
 import androidx.lifecycle.viewModelScope
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.sunshine.db.eta.EtaOrderEntity
-import hibernate.v2.sunshine.db.eta.SavedEtaEntity
+import hibernate.v2.database.eta.SavedEtaEntity
+import hibernate.v2.database.eta.SavedEtaOrderEntity
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.domain.eta.EtaInteractor
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,7 +25,7 @@ class BookmarkSaveViewModel(
     private suspend fun getEtaOrderList() =
         withContext(Dispatchers.IO) { etaInteractor.getEtaOrderList() }
 
-    private suspend fun updateEtaOrderList(entityList: List<EtaOrderEntity>) =
+    private suspend fun updateEtaOrderList(entityList: List<SavedEtaOrderEntity>) =
         withContext(Dispatchers.IO) { etaInteractor.updateEtaOrderList(entityList) }
 
     private suspend fun hasEtaInDb(
@@ -73,11 +73,11 @@ class BookmarkSaveViewModel(
             addEta(newEta)
 
             val currentEtaOrderList = getEtaOrderList()
-            val updatedEtaOrderList = mutableListOf<EtaOrderEntity>()
-            updatedEtaOrderList.add(EtaOrderEntity(id = newEta.id, position = 0))
+            val updatedEtaOrderList = mutableListOf<SavedEtaOrderEntity>()
+            updatedEtaOrderList.add(SavedEtaOrderEntity(id = newEta.id, position = 0))
             updatedEtaOrderList.addAll(
                 currentEtaOrderList.map {
-                    EtaOrderEntity(id = it.id, position = it.position + 1)
+                    SavedEtaOrderEntity(id = it.id, position = it.position + 1)
                 }
             )
             updateEtaOrderList(updatedEtaOrderList)

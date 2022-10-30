@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
 import hibernate.v2.sunshine.core.SharedPreferencesManager
+import hibernate.v2.utils.TransportationLanguage
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.math.BigInteger
@@ -59,6 +60,14 @@ object GeneralUtils : KoinComponent {
             context.resources.configuration.locale
 
         return locale
+    }
+
+    fun getTransportationLanguage(context: Context): TransportationLanguage {
+        return if (isLangEnglish(context)) {
+            TransportationLanguage.EN
+        } else {
+            TransportationLanguage.TC
+        }
     }
 
     fun isLangEnglish(context: Context): Boolean {

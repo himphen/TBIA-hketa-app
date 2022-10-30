@@ -3,8 +3,8 @@ package hibernate.v2.sunshine.ui.route.list.leanback
 import android.content.Context
 import android.view.View
 import androidx.core.content.ContextCompat
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.BaseCardPresenter
 
 class RouteListCardPresenter(

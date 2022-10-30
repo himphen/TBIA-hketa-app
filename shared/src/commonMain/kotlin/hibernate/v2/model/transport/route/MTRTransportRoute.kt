@@ -1,15 +1,10 @@
 package hibernate.v2.model.transport.route
 
-import android.content.Context
-import android.os.Parcelable
-import androidx.annotation.ColorInt
+import dev.icerock.moko.graphics.Color
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
-import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.util.GeneralUtils
-import kotlinx.parcelize.Parcelize
+import hibernate.v2.utils.TransportationLanguage
 
-@Parcelize
 data class MTRTransportRoute(
     override val routeId: String,
     override val routeNo: String,
@@ -35,8 +30,7 @@ data class MTRTransportRoute(
     destTc,
     destSc,
     company,
-),
-    Parcelable {
+) {
 
     override fun compareTo(other: TransportRoute): Int {
         if (other is MTRTransportRoute) {
@@ -51,33 +45,18 @@ data class MTRTransportRoute(
 
     override fun isSpecialRoute(): Boolean = false
 
-    override fun getDirectionWithRouteText(context: Context): String {
-        return context.getString(
-            R.string.text_add_eta_destination_train,
-            routeInfo.nameTc,
-            getLocalisedDest(context),
-            getLocalisedDest(context)
-        )
-    }
-
     override fun getCardRouteText(): String = routeInfo.nameTc
-
-    @ColorInt
-    override fun getColor(context: Context, combineNC: Boolean): Int =
-        routeInfo.color
 }
 
-@Parcelize
 data class MTRRouteInfo(
     var nameEn: String,
     var nameTc: String,
-    @ColorInt var color: Int,
-) : Parcelable {
-    fun getLocalisedName(context: Context): String {
-        val localisedName = if (GeneralUtils.isLangEnglish(context)) {
-            nameEn
-        } else {
-            nameTc
+    var color: Color,
+) {
+    fun getLocalisedName(language: TransportationLanguage): String {
+        val localisedName = when (language) {
+            TransportationLanguage.EN -> nameEn
+            else -> nameTc
         }
 
         return localisedName

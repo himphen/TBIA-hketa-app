@@ -2,8 +2,8 @@ package hibernate.v2.sunshine.ui.bookmark.edit.mobile
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.databinding.ItemBookmarkEditBinding
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView
 
 class BookmarkEditViewHolder(

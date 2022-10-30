@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import hibernate.v2.model.Card
+import hibernate.v2.model.transport.RouteDetailsStop
+import hibernate.v2.model.transport.eta.TransportEta
+import hibernate.v2.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.databinding.ItemRouteDetailsStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteDetailsStopExpandedBinding
-import hibernate.v2.sunshine.model.Card
-import hibernate.v2.sunshine.model.transport.RouteDetailsStop
-import hibernate.v2.sunshine.model.transport.eta.TransportEta
-import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.bookmark.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.view.setEtaTimeFlexManager

@@ -5,8 +5,8 @@ import android.util.AttributeSet
 import android.view.View.OnFocusChangeListener
 import androidx.leanback.widget.BaseCardView
 import androidx.viewbinding.ViewBinding
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.model.Card
 
 abstract class BaseEtaCardView<T : ViewBinding>(
     context: Context,

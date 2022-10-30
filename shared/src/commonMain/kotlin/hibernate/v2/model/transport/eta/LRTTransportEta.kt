@@ -2,13 +2,15 @@ package hibernate.v2.model.transport.eta
 
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.response.eta.LrtEta
-import hibernate.v2.sunshine.util.DateFormatPattern
-import hibernate.v2.sunshine.util.DateUtil
-import java.util.Calendar
-import java.util.Date
+import hibernate.v2.utils.hongKongTimezone
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.plus
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 
 class LRTTransportEta(
-    date: Date?,
+    date: LocalDateTime?,
     rmkEn: String?,
     rmkSc: String?,
     rmkTc: String?,
@@ -19,22 +21,23 @@ class LRTTransportEta(
         fun fromApiModel(eta: LrtEta, platform: String, systemTime: String?): LRTTransportEta {
             var rmkEn = ""
             var rmkTc = ""
-            var date: Date? = null
+            var date: LocalDateTime? = null
 
+            // YYYY_MM_DD_HH_MM_SS
             if (eta.timeEn.contains(" min")) {
-                DateUtil.getDate(systemTime, DateFormatPattern.YYYY_MM_DD_HH_MM_SS.value)?.let {
+                systemTime?.replaceFirst(' ', 'T')?.toLocalDateTime()?.let {
                     val minute = eta.timeEn.replace(" min", "").toIntOrNull() ?: 0
-                    val target = Calendar.getInstance()
-                    target.time = it
-                    target.add(Calendar.MINUTE, minute)
-                    date = target.time
+                    date = it
+                        .toInstant(hongKongTimezone())
+                        .plus(minute, DateTimeUnit.MINUTE)
+                        .toLocalDateTime(hongKongTimezone())
                 }
             } else if (eta.timeEn.lowercase() == "departing" || eta.timeEn.lowercase() == "arriving") {
-                DateUtil.getDate(systemTime, DateFormatPattern.YYYY_MM_DD_HH_MM_SS.value)?.let {
-                    val target = Calendar.getInstance()
-                    target.time = it
-                    target.add(Calendar.MINUTE, 1)
-                    date = target.time
+                systemTime?.replaceFirst(' ', 'T')?.toLocalDateTime()?.let {
+                    date = it
+                        .toInstant(hongKongTimezone())
+                        .plus(1, DateTimeUnit.MINUTE)
+                        .toLocalDateTime(hongKongTimezone())
                 }
 
                 rmkEn = eta.timeEn

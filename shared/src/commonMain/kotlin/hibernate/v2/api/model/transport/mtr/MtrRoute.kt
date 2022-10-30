@@ -1,6 +1,7 @@
 package hibernate.v2.api.model.transport.mtr
 
 import hibernate.v2.api.model.transport.Bound
+import hibernate.v2.database.BaseRouteEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -27,7 +28,18 @@ data class MtrRoute(
     var routeInfo: MTRRouteInfo = MTRRouteInfo(),
     @SerialName("service_type")
     var serviceType: String = "",
-)
+) : Comparable<MtrRoute>, BaseRouteEntity() {
+
+    override fun compareTo(other: MtrRoute): Int {
+        val routeIdCompare = routeId.compareTo(other.routeId)
+        if (routeIdCompare != 0) return routeIdCompare
+
+        val boundCompare = bound.compareTo(other.bound)
+        if (boundCompare != 0) return boundCompare
+
+        return serviceType.compareTo(other.serviceType)
+    }
+}
 
 @Serializable
 data class MTRRouteInfo(

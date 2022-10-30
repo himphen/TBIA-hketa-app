@@ -1,6 +1,6 @@
 package hibernate.v2.sunshine.domain.mtr
 
-import hibernate.v2.sunshine.db.mtr.MtrDao
+import hibernate.v2.database.mtr.MtrDao
 
 class GetRouteListDb(
     private val mtrDao: MtrDao
@@ -9,5 +9,5 @@ class GetRouteListDb(
         mtrDao.getRouteList()
 
     suspend operator fun invoke(enabled: Boolean) =
-        mtrDao.getRouteList(enabled)
+        mtrDao.getEnabledRouteList()
 }

@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.databinding.ItemBookmarkEditBinding
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.base.ItemTouchHelperAdapter
 
 class BookmarkEditAdapter(

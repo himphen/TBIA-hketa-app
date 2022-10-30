@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import hibernate.v2.model.transport.eta.EtaType
+import hibernate.v2.model.transport.route.LrtTransportRoute
+import hibernate.v2.model.transport.route.MTRTransportRoute
+import hibernate.v2.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemRouteListBinding
-import hibernate.v2.sunshine.model.transport.eta.EtaType
-import hibernate.v2.sunshine.model.transport.route.LrtTransportRoute
-import hibernate.v2.sunshine.model.transport.route.MTRTransportRoute
-import hibernate.v2.sunshine.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.route.list.mobile.RouteListRouteItemAdapter.RouteItemViewHolder
 import hibernate.v2.sunshine.util.dpToPx

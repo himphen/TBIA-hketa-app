@@ -5,7 +5,13 @@ import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 
 actual class DatabaseDriverFactory(private val context: Context) {
+    actual var driver: SqlDriver? = null
+
     actual fun createDriver(): SqlDriver {
-        return AndroidSqliteDriver(KmbDatabase.Schema, context, "data.db")
+        if (driver == null) {
+            driver = AndroidSqliteDriver(MyDatabase.Schema, context, "data.db")
+        }
+
+        return driver as SqlDriver
     }
 }

@@ -2,6 +2,7 @@ package hibernate.v2.api.model.transport.gmb
 
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.GmbRegion
+import hibernate.v2.database.BaseRouteEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -28,4 +29,18 @@ data class GmbRoute(
     var serviceType: Long = 0,
     @SerialName("region")
     var region: GmbRegion = GmbRegion.UNKNOWN,
-)
+) : Comparable<GmbRoute>, BaseRouteEntity() {
+
+    override fun compareTo(other: GmbRoute): Int {
+        parseRouteNumber(routeNo)
+        other.parseRouteNumber(routeNo)
+
+        val routeCompare = routeComponent.compareTo(other.routeComponent)
+        if (routeCompare != 0) return routeCompare
+
+        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
+        if (serviceTypeCompare != 0) return serviceTypeCompare
+
+        return bound.compareTo(other.bound)
+    }
+}

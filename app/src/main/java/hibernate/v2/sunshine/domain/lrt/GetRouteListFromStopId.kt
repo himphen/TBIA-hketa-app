@@ -1,7 +1,7 @@
 package hibernate.v2.sunshine.domain.lrt
 
-import hibernate.v2.sunshine.db.lrt.LrtDao
-import hibernate.v2.sunshine.model.transport.route.TransportRoute
+import hibernate.v2.database.lrt.LrtDao
+import hibernate.v2.model.transport.route.TransportRoute
 
 class GetRouteListFromStopId(
     private val lrtDao: LrtDao

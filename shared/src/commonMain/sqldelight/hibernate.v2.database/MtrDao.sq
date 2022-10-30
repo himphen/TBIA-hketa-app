@@ -1,0 +1,84 @@
+import hibernate.v2.api.model.transport.Bound;
+
+CREATE TABLE mtr_stop (
+    mtr_stop_id TEXT NOT NULL,
+    name_en     TEXT NOT NULL,
+    name_tc     TEXT NOT NULL,
+    name_sc     TEXT NOT NULL,
+    lat         REAL NOT NULL,
+    lng         REAL NOT NULL,
+    geohash     TEXT NOT NULL
+);
+
+getAllStopList:
+SELECT * FROM mtr_stop;
+
+addStopList:
+INSERT INTO mtr_stop(mtr_stop_id, name_en, name_tc, name_sc, lat, lng, geohash)
+VALUES ?;
+
+clearStopList:
+DELETE FROM mtr_stop;
+
+CREATE TABLE mtr_route (
+    mtr_route_id TEXT NOT NULL,
+    mtr_route_bound     TEXT AS Bound NOT NULL,
+    mtr_route_service_type     TEXT NOT NULL,
+    orig_en     TEXT NOT NULL,
+    orig_tc     TEXT NOT NULL,
+    orig_sc     TEXT NOT NULL,
+    dest_en     TEXT NOT NULL,
+    dest_tc     TEXT NOT NULL,
+    dest_sc     TEXT NOT NULL,
+    route_info_name_en     TEXT NOT NULL,
+    route_info_name_tc     TEXT NOT NULL,
+    route_info_name_sc     TEXT NOT NULL,
+    route_info_name_color     TEXT NOT NULL,
+    route_info_is_enabled     INTEGER AS Boolean NOT NULL
+);
+
+getRoute:
+SELECT * FROM mtr_route WHERE mtr_route_id = (:route) AND mtr_route_bound = (:bound) AND mtr_route_service_type = (:serviceType);
+
+getAllRouteList:
+SELECT * FROM mtr_route;
+
+getAllEnabledRouteList:
+SELECT * FROM mtr_route WHERE route_info_is_enabled != 1;
+
+addRouteList:
+INSERT INTO mtr_route(mtr_route_id, mtr_route_bound, mtr_route_service_type, orig_en, orig_tc, orig_sc, dest_en, dest_tc, dest_sc, route_info_name_en, route_info_name_tc, route_info_name_sc, route_info_name_color, route_info_is_enabled)
+VALUES ?;
+
+clearRouteList:
+DELETE FROM mtr_route;
+
+CREATE TABLE mtr_route_stop (
+    mtr_route_stop_route_id TEXT NOT NULL,
+    mtr_route_stop_bound     TEXT AS Bound NOT NULL,
+    mtr_route_stop_service_type     TEXT NOT NULL,
+    mtr_route_stop_seq     INTEGER NOT NULL,
+    mtr_route_stop_stop_id         TEXT NOT NULL
+);
+
+getRouteStopListFromStopId:
+SELECT * FROM mtr_route_stop WHERE mtr_route_stop_stop_id = (:stopId);
+
+getRouteStopComponentAllList:
+SELECT *
+FROM mtr_route_stop
+INNER JOIN mtr_stop ON mtr_route_stop.mtr_route_stop_stop_id = mtr_stop.mtr_stop_id;
+
+getRouteStopComponentList:
+SELECT *
+FROM mtr_route_stop
+INNER JOIN mtr_stop ON mtr_route_stop.mtr_route_stop_stop_id = mtr_stop.mtr_stop_id
+WHERE mtr_route_stop_route_id = (:route) AND mtr_route_stop_bound = (:bound) AND mtr_route_stop_service_type = (:serviceType);
+
+
+addRouteStopList:
+INSERT INTO mtr_route_stop(mtr_route_stop_route_id, mtr_route_stop_bound, mtr_route_stop_service_type, mtr_route_stop_seq, mtr_route_stop_stop_id)
+VALUES ?;
+
+clearRouteStopList:
+DELETE FROM mtr_route_stop;

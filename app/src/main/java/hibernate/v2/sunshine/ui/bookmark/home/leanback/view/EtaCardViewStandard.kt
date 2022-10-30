@@ -6,9 +6,9 @@ import android.graphics.drawable.RotateDrawable
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaStandardBinding
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 
@@ -23,10 +23,12 @@ class EtaCardViewStandard(context: Context) :
         viewBinding.apply {
             val color = card.route.getColor(context)
 
-            (ContextCompat.getDrawable(
-                context,
-                R.drawable.eta_card_line_arrow
-            ) as? RotateDrawable?).let { arrowDrawable ->
+            (
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.eta_card_line_arrow
+                ) as? RotateDrawable?
+                ).let { arrowDrawable ->
                 arrowDrawable?.mutate()
                 (arrowDrawable?.drawable as? GradientDrawable)?.setColor(color)
                 lineBgView.setBackgroundColor(color)

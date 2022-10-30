@@ -1,0 +1,75 @@
+import hibernate.v2.api.model.transport.Bound;
+
+CREATE TABLE nlb_stop (
+    nlb_stop_id TEXT NOT NULL,
+    name_en     TEXT NOT NULL,
+    name_tc     TEXT NOT NULL,
+    name_sc     TEXT NOT NULL,
+    lat         REAL NOT NULL,
+    lng         REAL NOT NULL,
+    geohash     TEXT NOT NULL
+);
+
+getAllStopList:
+SELECT * FROM nlb_stop;
+
+getStopList:
+SELECT * FROM nlb_stop WHERE geohash IN ?;
+
+addStopList:
+INSERT INTO nlb_stop(nlb_stop_id, name_en, name_tc, name_sc, lat, lng, geohash)
+VALUES ?;
+
+clearStopList:
+DELETE FROM nlb_stop;
+
+CREATE TABLE nlb_route (
+    nlb_route_id TEXT NOT NULL,
+    orig_en     TEXT NOT NULL,
+    orig_tc     TEXT NOT NULL,
+    orig_sc     TEXT NOT NULL,
+    dest_en     TEXT NOT NULL,
+    dest_tc     TEXT NOT NULL,
+    dest_sc     TEXT NOT NULL
+);
+
+getRoute:
+SELECT * FROM nlb_route WHERE nlb_route_id = (:route);
+
+getAllRouteList:
+SELECT * FROM nlb_route;
+
+addRouteList:
+INSERT INTO nlb_route(nlb_route_id, orig_en, orig_tc, orig_sc, dest_en, dest_tc, dest_sc)
+VALUES ?;
+
+clearRouteList:
+DELETE FROM nlb_route;
+
+CREATE TABLE nlb_route_stop (
+    nlb_route_stop_route_id TEXT NOT NULL,
+    nlb_route_stop_seq     INTEGER NOT NULL,
+    nlb_route_stop_stop_id         TEXT NOT NULL
+);
+
+getRouteStopListFromStopId:
+SELECT * FROM nlb_route_stop WHERE nlb_route_stop_stop_id = (:stopId);
+
+getRouteStopComponentAllList:
+SELECT *
+FROM nlb_route_stop
+INNER JOIN nlb_stop ON nlb_route_stop.nlb_route_stop_stop_id = nlb_stop.nlb_stop_id;
+
+getRouteStopComponentList:
+SELECT *
+FROM nlb_route_stop
+INNER JOIN nlb_stop ON nlb_route_stop.nlb_route_stop_stop_id = nlb_stop.nlb_stop_id
+WHERE nlb_route_stop_route_id = (:route);
+
+
+addRouteStopList:
+INSERT INTO nlb_route_stop(nlb_route_stop_route_id, nlb_route_stop_seq, nlb_route_stop_stop_id)
+VALUES ?;
+
+clearRouteStopList:
+DELETE FROM nlb_route_stop;

@@ -1,8 +1,8 @@
 package hibernate.v2.sunshine.ui.bookmark.home.mobile.view
 
+import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemEtaCardClassicBinding
-import hibernate.v2.sunshine.model.Card
 import hibernate.v2.sunshine.ui.bookmark.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
