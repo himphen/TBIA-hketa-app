@@ -155,74 +155,86 @@ class RouteDetailsMobileViewModel(
     }
 
     private suspend fun getKmbStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = kmbInteractor.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.t("lifecycle").d("getKmbStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getKmbStopList error")
-            mutableListOf()
+        return withContext(Dispatchers.IO) {
+            try {
+                val allRouteList = kmbInteractor.getRouteStopComponentListDb(route)
+                    .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
+                Logger.t("lifecycle").d("getKmbStopList done")
+                allRouteList
+            } catch (e: Exception) {
+                Logger.e(e, "lifecycle getKmbStopList error")
+                mutableListOf()
+            }
         }
     }
 
     private suspend fun getCtbStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = ctbInteractor.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.t("lifecycle").d("getCtbStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getCtbStopList error")
-            mutableListOf()
+        return withContext(Dispatchers.IO) {
+            try {
+                val allRouteList = ctbInteractor.getRouteStopComponentListDb(route)
+                    .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
+                Logger.t("lifecycle").d("getCtbStopList done")
+                allRouteList
+            } catch (e: Exception) {
+                Logger.e(e, "lifecycle getCtbStopList error")
+                mutableListOf()
+            }
         }
     }
 
     private suspend fun getGmbStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = gmbInteractor.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.t("lifecycle").d("getGmbStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getGmbStopList error")
-            mutableListOf()
+        return withContext(Dispatchers.IO) {
+            try {
+                val allRouteList = gmbInteractor.getRouteStopComponentListDb(route)
+                    .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
+                Logger.t("lifecycle").d("getGmbStopList done")
+                allRouteList
+            } catch (e: Exception) {
+                Logger.e(e, "lifecycle getGmbStopList error")
+                mutableListOf()
+            }
         }
     }
 
     private suspend fun getMtrStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = mtrRepository.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.t("lifecycle").d("getMTRStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getMTRStopList error")
-            mutableListOf()
+        return withContext(Dispatchers.IO) {
+            try {
+                val allRouteList = mtrRepository.getRouteStopComponentListDb(route)
+                    .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
+                Logger.t("lifecycle").d("getMTRStopList done")
+                allRouteList
+            } catch (e: Exception) {
+                Logger.e(e, "lifecycle getMTRStopList error")
+                mutableListOf()
+            }
         }
     }
 
     private suspend fun getLrtStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = lrtInteractor.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.t("lifecycle").d("getLRTStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getLRTStopList error")
-            mutableListOf()
+        return withContext(Dispatchers.IO) {
+            try {
+                val allRouteList = lrtInteractor.getRouteStopComponentListDb(route)
+                    .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
+                Logger.t("lifecycle").d("getLRTStopList done")
+                allRouteList
+            } catch (e: Exception) {
+                Logger.e(e, "lifecycle getLRTStopList error")
+                mutableListOf()
+            }
         }
     }
 
     private suspend fun getNlbStopList(route: TransportRoute): List<TransportStop> {
-        return try {
-            val allRouteList = nlbRepository.getRouteStopComponentListDb(route)
-                .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
-            Logger.t("lifecycle").d("getNLBStopList done")
-            allRouteList
-        } catch (e: Exception) {
-            Logger.e(e, "lifecycle getNLBStopList error")
-            mutableListOf()
+        return withContext(Dispatchers.IO) {
+            try {
+                val allRouteList = nlbRepository.getRouteStopComponentListDb(route)
+                    .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
+                Logger.t("lifecycle").d("getNLBStopList done")
+                allRouteList
+            } catch (e: Exception) {
+                Logger.e(e, "lifecycle getNLBStopList error")
+                mutableListOf()
+            }
         }
     }
 
@@ -254,7 +266,7 @@ class RouteDetailsMobileViewModel(
 
             val currentEtaOrderList = getEtaOrderList()
             val updatedEtaOrderList = mutableListOf<SavedEtaOrderEntity>()
-            updatedEtaOrderList.add(SavedEtaOrderEntity(id = insertId, position = 0))
+            updatedEtaOrderList.add(SavedEtaOrderEntity(id = newEta.id, position = 0))
             updatedEtaOrderList.addAll(
                 currentEtaOrderList.map {
                     SavedEtaOrderEntity(id = it.id, position = it.position + 1)

@@ -5,7 +5,7 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.utils.TransportationLanguage
 
-data class MTRTransportRoute(
+data class MtrTransportRoute(
     override val routeId: String,
     override val routeNo: String,
     override val bound: Bound,
@@ -33,7 +33,7 @@ data class MTRTransportRoute(
 ) {
 
     override fun compareTo(other: TransportRoute): Int {
-        if (other is MTRTransportRoute) {
+        if (other is MtrTransportRoute) {
             val result = routeInfo.nameEn.compareTo(other.routeInfo.nameEn)
             if (result != 0) {
                 return result

@@ -70,11 +70,11 @@ class BookmarkSaveViewModel(
                 seq = card.stop.seq!!,
                 company = card.route.company
             )
-            val newEtaId = addEta(newEta)
+            val insertId = addEta(newEta)
 
             val currentEtaOrderList = getEtaOrderList()
             val updatedEtaOrderList = mutableListOf<SavedEtaOrderEntity>()
-            updatedEtaOrderList.add(SavedEtaOrderEntity(id = newEtaId, position = 0))
+            updatedEtaOrderList.add(SavedEtaOrderEntity(id = newEta.id, position = 0))
             updatedEtaOrderList.addAll(
                 currentEtaOrderList.map {
                     SavedEtaOrderEntity(id = it.id, position = it.position + 1)

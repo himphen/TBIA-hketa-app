@@ -53,7 +53,9 @@ open class TransportEta(
         fun fromApiModel(eta: GmbEta): TransportEta {
             return TransportEta(
                 // ISO
-                eta = eta.timestamp?.toInstant()?.toEpochMilliseconds(),
+                eta = eta.timestamp
+                    ?.toInstant()
+                    ?.epochSeconds,
                 rmkEn = eta.rmkEn,
                 rmkSc = eta.rmkSc,
                 rmkTc = eta.rmkTc,

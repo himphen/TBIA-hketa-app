@@ -4,7 +4,7 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import hibernate.v2.model.Card
 import hibernate.v2.model.transport.route.LrtTransportRoute
-import hibernate.v2.model.transport.route.MTRTransportRoute
+import hibernate.v2.model.transport.route.MtrTransportRoute
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaClassicRouteNumberBinding
 import hibernate.v2.sunshine.databinding.ContentEtaCompactRouteNumberBinding
@@ -26,7 +26,7 @@ interface EtaRouteView {
 
         routeNumberContainer.apply {
             when (route) {
-                is MTRTransportRoute -> {
+                is MtrTransportRoute -> {
                     routeBusNumberLl.gone()
                     routeCompanyColor.gone()
                     routeLRTNumberLl.gone()
@@ -81,7 +81,7 @@ interface EtaRouteView {
 
         routeNumberContainer.apply {
             when (route) {
-                is MTRTransportRoute -> {
+                is MtrTransportRoute -> {
                     routeBusNumberLl.gone()
                     routeLRTNumberLl.gone()
 
@@ -132,7 +132,7 @@ interface EtaRouteView {
 
         routeNumberContainer.apply {
             when (route) {
-                is MTRTransportRoute -> {
+                is MtrTransportRoute -> {
                     routeBusNumberLl.gone()
                     routeLRTNumberLl.gone()
 
@@ -183,7 +183,7 @@ interface EtaRouteView {
 
         routeNumberContainer.apply {
             when (route) {
-                is MTRTransportRoute -> {
+                is MtrTransportRoute -> {
                     routeBusNumberLl.gone()
                     routeCompanyColor.gone()
                     routeLRTNumberLl.gone()

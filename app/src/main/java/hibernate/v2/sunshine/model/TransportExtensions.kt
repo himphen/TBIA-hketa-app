@@ -1,9 +1,12 @@
 package hibernate.v2.sunshine.model
 
 import android.content.Context
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.model.transport.TransportStop
 import hibernate.v2.model.transport.eta.EtaType
+import hibernate.v2.model.transport.route.LrtTransportRoute
+import hibernate.v2.model.transport.route.MtrTransportRoute
 import hibernate.v2.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.util.GeneralUtils.isLangEnglish
@@ -129,8 +132,16 @@ fun TransportRoute.getLocalisedDest(context: Context): String {
     return localisedDest
 }
 
-fun TransportRoute.getColor(context: Context, combineNC: Boolean = false): Int =
-    context.getColor(
+fun TransportRoute.getColor(context: Context, combineNC: Boolean = false): Int {
+    if (this is MtrTransportRoute) {
+        return routeInfo.color.colorInt()
+    }
+
+    if (this is LrtTransportRoute) {
+        return routeInfo.color.colorInt()
+    }
+
+    return context.getColor(
         when (company) {
             Company.KMB -> R.color.brand_color_kmb
             Company.NWFB -> R.color.brand_color_nwfb
@@ -147,3 +158,4 @@ fun TransportRoute.getColor(context: Context, combineNC: Boolean = false): Int =
             Company.NLB -> R.color.brand_color_nlb
         }
     )
+}

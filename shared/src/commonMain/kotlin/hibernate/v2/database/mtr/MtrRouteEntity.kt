@@ -7,7 +7,7 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.database.BaseRouteEntity
 import hibernate.v2.model.transport.TransportHashable
 import hibernate.v2.model.transport.route.MTRRouteInfo
-import hibernate.v2.model.transport.route.MTRTransportRoute
+import hibernate.v2.model.transport.route.MtrTransportRoute
 import hibernatev2database.Mtr_route
 
 data class MtrRouteEntity(
@@ -47,8 +47,8 @@ data class MtrRouteEntity(
         }
     }
 
-    fun toTransportModel(): MTRTransportRoute {
-        return MTRTransportRoute(
+    fun toTransportModel(): MtrTransportRoute {
+        return MtrTransportRoute(
             routeId = routeId,
             routeNo = routeId,
             bound = bound,

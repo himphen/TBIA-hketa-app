@@ -2,7 +2,6 @@ package hibernate.v2.database.eta
 
 import hibernate.v2.database.DatabaseDriverFactory
 import hibernate.v2.database.DatabaseFactory
-import hibernatev2database.Saved_eta_order
 
 class EtaOrderDao(databaseDriverFactory: DatabaseDriverFactory) {
     private val driver = databaseDriverFactory.createDriver()
@@ -17,17 +16,16 @@ class EtaOrderDao(databaseDriverFactory: DatabaseDriverFactory) {
 
     fun add(list: List<SavedEtaOrderEntity>) {
         queries.transaction {
-            list.forEach { queries.addEtaOrder(convertFrom(it)) }
+            list.forEach {
+                queries.addEtaOrder(
+                    it.id?.toLong(),
+                    it.position.toLong()
+                )
+            }
         }
     }
 
     fun clearAll() {
         queries.clearAllEtaOrder()
     }
-
-    private fun convertFrom(item: SavedEtaOrderEntity) = Saved_eta_order(
-        saved_eta_order_id = 0,
-        position = item.position.toLong(),
-    )
-
 }

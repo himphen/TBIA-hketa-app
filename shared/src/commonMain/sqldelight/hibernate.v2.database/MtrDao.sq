@@ -44,7 +44,7 @@ getAllRouteList:
 SELECT * FROM mtr_route;
 
 getAllEnabledRouteList:
-SELECT * FROM mtr_route WHERE route_info_is_enabled != 1;
+SELECT * FROM mtr_route WHERE route_info_is_enabled != 0;
 
 addRouteList:
 INSERT INTO mtr_route(mtr_route_id, mtr_route_bound, mtr_route_service_type, orig_en, orig_tc, orig_sc, dest_en, dest_tc, dest_sc, route_info_name_en, route_info_name_tc, route_info_name_sc, route_info_name_color, route_info_is_enabled)

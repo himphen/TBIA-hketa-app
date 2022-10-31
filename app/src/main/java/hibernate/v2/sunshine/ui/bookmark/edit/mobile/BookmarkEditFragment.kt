@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import hibernate.v2.database.eta.SavedEtaOrderEntity
 import hibernate.v2.model.Card
-import hibernate.v2.model.transport.route.MTRTransportRoute
+import hibernate.v2.model.transport.route.MtrTransportRoute
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentBookmarkEditBinding
 import hibernate.v2.sunshine.model.getLocalisedName
@@ -73,8 +73,8 @@ class BookmarkEditFragment : BaseFragment<FragmentBookmarkEditBinding>() {
             MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.dialog_settings_eta_remove_title)
                 .apply {
-                    if (card.route is MTRTransportRoute) {
-                        val route = card.route as MTRTransportRoute
+                    if (card.route is MtrTransportRoute) {
+                        val route = card.route as MtrTransportRoute
                         setMessage(
                             getString(
                                 R.string.dialog_settings_eta_remove_mtr_message,

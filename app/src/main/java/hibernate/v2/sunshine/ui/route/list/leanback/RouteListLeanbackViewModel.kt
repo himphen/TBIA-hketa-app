@@ -9,7 +9,7 @@ import hibernate.v2.model.transport.TransportRouteStopList
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.model.transport.route.GmbTransportRoute
 import hibernate.v2.model.transport.route.LrtTransportRoute
-import hibernate.v2.model.transport.route.MTRTransportRoute
+import hibernate.v2.model.transport.route.MtrTransportRoute
 import hibernate.v2.sunshine.domain.ctb.CtbInteractor
 import hibernate.v2.sunshine.domain.gmb.GmbInteractor
 import hibernate.v2.sunshine.domain.kmb.KmbInteractor
@@ -297,7 +297,7 @@ class RouteListLeanbackViewModel(
             val transportRouteList =
                 transportRouteStopList.map { routeAndStopList ->
                     val route = routeAndStopList.route
-                    route as MTRTransportRoute
+                    route as MtrTransportRoute
                     val headerTitle = route.getDirectionWithRouteText(context)
 
                     AddEtaRowItem(

@@ -4,13 +4,12 @@ plugins {
     kotlin("plugin.serialization")
     id("com.android.library")
     id("com.squareup.sqldelight")
-    id("dev.icerock.mobile.multiplatform-resources")
     id("kotlin-parcelize")
 }
 
 val coroutinesVersion = "1.6.4"
 val ktorVersion = "2.1.2"
-val sqlDelightVersion = "1.5.3"
+val sqlDelightVersion = "1.5.4"
 
 kotlin {
     android()
@@ -49,8 +48,8 @@ kotlin {
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
                 implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
 
-                implementation("dev.icerock.moko:resources:0.20.1")
-                implementation("dev.icerock.moko:parcelize:0.8.0")
+                api("dev.icerock.moko:graphics:0.9.0")
+                api("dev.icerock.moko:parcelize:0.8.0")
 
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
             }
@@ -112,12 +111,4 @@ sqldelight {
     database("MyDatabase") {
         packageName = "hibernate.v2.database"
     }
-}
-
-multiplatformResources {
-    multiplatformResourcesPackage = "hibernate.v2.res" // required
-    multiplatformResourcesClassName = "SharedRes" // optional, default MR
-    multiplatformResourcesVisibility = dev.icerock.gradle.MRVisibility.Internal // optional, default Public
-    iosBaseLocalizationRegion = "en" // optional, default "en"
-    multiplatformResourcesSourceSet = "commonMain"  // optional, default "commonMain"
 }

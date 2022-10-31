@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.model.transport.route.LrtTransportRoute
-import hibernate.v2.model.transport.route.MTRTransportRoute
+import hibernate.v2.model.transport.route.MtrTransportRoute
 import hibernate.v2.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemRouteListBinding
@@ -104,7 +104,7 @@ class RouteListRouteItemAdapter(
                                 }
                             }
                         }
-                        is MTRTransportRoute -> {
+                        is MtrTransportRoute -> {
                             val color = route.getColor(context, false)
                             routeCompanyColor.setBackgroundColor(color)
                             routeBusNumberTv.apply {

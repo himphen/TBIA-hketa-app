@@ -5,7 +5,6 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.database.DatabaseDriverFactory
 import hibernate.v2.database.DatabaseFactory
 import hibernate.v2.database.runGettingLastId
-import hibernatev2database.Saved_eta
 
 class EtaDao(databaseDriverFactory: DatabaseDriverFactory) {
 
@@ -67,15 +66,33 @@ class EtaDao(databaseDriverFactory: DatabaseDriverFactory) {
         ).executeAsOneOrNull() != null
     }
 
-    fun addEta(entity: SavedEtaEntity): Int {
+    fun addEta(item: SavedEtaEntity): Int {
         return database.runGettingLastId {
-            queries.addEta(convertFrom(entity))
+            queries.addEta(
+                saved_eta_id = item.id?.toLong(),
+                saved_eta_company = item.company,
+                saved_eta_stop_id = item.stopId,
+                saved_eta_route_id = item.routeId,
+                saved_eta_route_bound = item.bound,
+                saved_eta_service_type = item.serviceType,
+                saved_eta_seq = item.seq.toLong()
+            )
         }.toInt()
     }
 
     fun addEta(list: List<SavedEtaEntity>) {
         queries.transaction {
-            list.forEach { queries.addEta(convertFrom(it)) }
+            list.forEach { item ->
+                queries.addEta(
+                    saved_eta_id = item.id?.toLong(),
+                    saved_eta_company = item.company,
+                    saved_eta_stop_id = item.stopId,
+                    saved_eta_route_id = item.routeId,
+                    saved_eta_route_bound = item.bound,
+                    saved_eta_service_type = item.serviceType,
+                    saved_eta_seq = item.seq.toLong()
+                )
+            }
         }
     }
 
@@ -102,15 +119,4 @@ class EtaDao(databaseDriverFactory: DatabaseDriverFactory) {
     fun clearAllEta() {
         queries.clearAllEta()
     }
-
-    private fun convertFrom(item: SavedEtaEntity) = Saved_eta(
-        saved_eta_id = 0,
-        saved_eta_company = item.company,
-        saved_eta_stop_id = item.stopId,
-        saved_eta_route_id = item.routeId,
-        saved_eta_route_bound = item.bound,
-        saved_eta_service_type = item.serviceType,
-        saved_eta_seq = item.seq.toLong()
-    )
-
 }

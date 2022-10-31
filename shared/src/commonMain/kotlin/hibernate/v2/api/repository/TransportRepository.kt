@@ -11,6 +11,8 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.resources.get
 import io.ktor.client.plugins.resources.post
 import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import io.ktor.resources.Resource
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -36,6 +38,7 @@ object TransportRepository {
         body: NlbRequest
     ): NlbEtaResponse {
         return client.post(GetNlbStopEta()) {
+            contentType(ContentType.Application.Json)
             setBody(body)
         }.body()
     }
@@ -62,8 +65,10 @@ object TransportRepository {
     )
 
     @Serializable
-    @Resource("v1/transport/nlb/stop.php?action=estimatedArrivals")
-    class GetNlbStopEta
+    @Resource("v1/transport/nlb/stop.php")
+    class GetNlbStopEta(
+        val action: String = "estimatedArrivals"
+    )
 
     @Serializable
     @Resource("v1/transport/mtr/getSchedule.php")
