@@ -39,6 +39,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
                 implementation("io.ktor:ktor-client-auth:$ktorVersion")
                 implementation("io.ktor:ktor-client-resources:$ktorVersion")
+                implementation("io.ktor:ktor-client-encoding:$ktorVersion")
                 implementation("ch.qos.logback:logback-classic:1.2.3")
 
                 implementation("dev.gitlive:firebase-auth:1.6.2")
