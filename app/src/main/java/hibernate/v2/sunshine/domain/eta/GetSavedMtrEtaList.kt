@@ -5,5 +5,5 @@ import hibernate.v2.database.eta.EtaDao
 class GetSavedMtrEtaList(
     private val etaDao: EtaDao,
 ) {
-    suspend operator fun invoke() = etaDao.getAllMtrEtaWithOrdering()
+    operator fun invoke() = etaDao.getAllMtrEtaWithOrdering()
 }

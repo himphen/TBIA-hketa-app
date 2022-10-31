@@ -1,9 +1,13 @@
 package hibernate.v2.model.transport.route
 
+import dev.icerock.moko.parcelize.IgnoredOnParcel
+import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.parcelize.Parcelize
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.model.transport.TransportHashable
 
+@Parcelize
 open class TransportRoute(
     open val routeId: String,
     open val routeNo: String,
@@ -18,13 +22,16 @@ open class TransportRoute(
     open val company: Company,
 
     var routeComponent: RouteComponent = RouteComponent(),
-) : TransportHashable, Comparable<TransportRoute> {
+) : TransportHashable, Comparable<TransportRoute>, Parcelable {
 
-    private var _getDestDirectionText: String? = null
+    @IgnoredOnParcel
+    var _getDestDirectionText: String? = null
 
-    private var _getDirectionWithRouteText: String? = null
+    @IgnoredOnParcel
+    var _getDirectionWithRouteText: String? = null
 
-    private var _getDirectionSubtitleText: String? = null
+    @IgnoredOnParcel
+    var _getDirectionSubtitleText: String? = null
 
     fun routeHashId() = routeHashId(company, routeId, bound, serviceType)
 
@@ -77,12 +84,13 @@ open class TransportRoute(
     }
 }
 
+@Parcelize
 data class RouteComponent(
     var routePrefix: String = "",
     var routeNumber: Int = 0,
     var routeSuffix: String = "",
     var parsed: Boolean = false,
-) : Comparable<RouteComponent> {
+) : Comparable<RouteComponent>, Parcelable {
     override fun compareTo(other: RouteComponent): Int {
         val routePrefixCompare = routePrefix.compareTo(other.routePrefix)
         if (routePrefixCompare != 0) return routePrefixCompare

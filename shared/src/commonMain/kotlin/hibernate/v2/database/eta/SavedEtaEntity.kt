@@ -5,7 +5,7 @@ import hibernate.v2.api.model.transport.Company
 import hibernate.v2.model.transport.TransportHashable
 
 data class SavedEtaEntity(
-    val id: Long? = null,
+    val id: Int? = null,
     val company: Company,
     val stopId: String,
     val routeId: String,

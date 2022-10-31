@@ -6,6 +6,7 @@ import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.database.eta.SavedEtaEntity
+import hibernate.v2.database.eta.SavedEtaOrderEntity
 import hibernate.v2.model.Card
 import hibernate.v2.model.transport.RouteDetailsStop
 import hibernate.v2.model.transport.TransportStop
@@ -47,7 +48,7 @@ class RouteDetailsMobileViewModel(
 
     var selectedStop = MutableLiveData<TransportStop?>()
 
-    var isSavedEtaBookmark = MutableSharedFlow<Pair<Int, Long>>()
+    var isSavedEtaBookmark = MutableSharedFlow<Pair<Int, Int>>()
     var isRemovedEtaBookmark = MutableSharedFlow<Int>()
     val etaUpdateError = MutableSharedFlow<Throwable>()
     val etaRequested = MutableSharedFlow<Boolean>()
@@ -253,7 +254,7 @@ class RouteDetailsMobileViewModel(
 
             val currentEtaOrderList = getEtaOrderList()
             val updatedEtaOrderList = mutableListOf<SavedEtaOrderEntity>()
-            updatedEtaOrderList.add(SavedEtaOrderEntity(id = newEta.id, position = 0))
+            updatedEtaOrderList.add(SavedEtaOrderEntity(id = insertId, position = 0))
             updatedEtaOrderList.addAll(
                 currentEtaOrderList.map {
                     SavedEtaOrderEntity(id = it.id, position = it.position + 1)
@@ -265,7 +266,7 @@ class RouteDetailsMobileViewModel(
         }
     }
 
-    fun removeBookmark(position: Int, entityId: Long) {
+    fun removeBookmark(position: Int, entityId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             etaInteractor.clearEta(entityId)
 

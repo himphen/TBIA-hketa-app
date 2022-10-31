@@ -7,6 +7,8 @@ import androidx.leanback.widget.BaseCardView
 import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.LbCardSettingsEtaBinding
+import hibernate.v2.sunshine.model.getDestDirectionText
+import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible

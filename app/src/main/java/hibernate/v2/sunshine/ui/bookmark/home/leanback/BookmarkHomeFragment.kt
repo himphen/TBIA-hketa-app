@@ -19,18 +19,17 @@ import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.LbFragmentEtaBinding
 import hibernate.v2.sunshine.ui.base.FullWidthGridPresenter
 import hibernate.v2.sunshine.ui.bookmark.home.BookmarkHomeViewModel
-import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.toggleSlideDown
 import hibernate.v2.sunshine.util.visible
+import hibernate.v2.utils.getTimeDiffFromNowInMin
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import java.util.Date
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.time.Duration.Companion.milliseconds
@@ -169,11 +168,7 @@ class BookmarkHomeFragment : VerticalGridSupportFragment() {
             etaCardList.forEachIndexed { index, etaCard ->
                 val temp = etaCard.etaList.filter { eta: TransportEta ->
                     eta.eta?.let { etaDate ->
-                        val currentDate = Date()
-                        DateUtil.getTimeDiffInMin(
-                            etaDate,
-                            currentDate
-                        ) > 0
+                        getTimeDiffFromNowInMin(etaDate) > 0
                     } ?: run {
                         false
                     }

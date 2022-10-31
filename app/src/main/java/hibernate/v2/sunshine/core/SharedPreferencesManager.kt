@@ -34,8 +34,8 @@ class SharedPreferencesManager(val context: Context) {
 
     var lastLatLng: LatLng
         get() {
-            val lat = preferences.getFloat(PREF_LAST_POSITION_LAT, 22.3111191f).toDouble()
-            val lng = preferences.getFloat(PREF_LAST_POSITION_LNG, 114.1688018f).toDouble()
+            val lat = preferences.getFloat(PREF_LAST_POSITION_LAT, 22.31112f).toDouble()
+            val lng = preferences.getFloat(PREF_LAST_POSITION_LNG, 114.16880f).toDouble()
 
             return LatLng(lat, lng)
         }

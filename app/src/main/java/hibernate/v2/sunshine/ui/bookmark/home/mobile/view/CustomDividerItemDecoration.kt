@@ -70,7 +70,7 @@ class CustomDividerItemDecoration(context: Context, orientation: Int, isShowInLa
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
             val decoratedBottom = parent.layoutManager!!.getDecoratedBottom(child)
-            val bottom = decoratedBottom + Math.round(child.translationY)
+            val bottom = decoratedBottom + child.translationY.roundToInt()
             val top = bottom - mDivider!!.intrinsicHeight
             mDivider!!.setBounds(left, top, right, bottom)
             mDivider!!.draw(canvas)

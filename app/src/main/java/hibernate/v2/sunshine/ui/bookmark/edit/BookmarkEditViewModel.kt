@@ -61,7 +61,7 @@ class BookmarkEditViewModel(
 
     suspend fun clearAllEta() = etaInteractor.clearAllEta()
 
-    suspend fun getEtaOrderList() = etaInteractor.getEtaOrderList()
+    fun getEtaOrderList() = etaInteractor.getEtaOrderList()
 
     suspend fun updateEtaOrderList(entityList: List<SavedEtaOrderEntity>) =
         etaInteractor.updateEtaOrderList(entityList)

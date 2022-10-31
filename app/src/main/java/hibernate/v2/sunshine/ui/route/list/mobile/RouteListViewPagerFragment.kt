@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentRouteListViewPagerBinding
+import hibernate.v2.sunshine.model.color
 import hibernate.v2.sunshine.ui.base.BaseActivity
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.util.afterTextChanged

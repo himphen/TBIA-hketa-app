@@ -45,7 +45,7 @@ class KmbDao(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    suspend fun getRouteList(): List<KmbRouteEntity> {
+    fun getRouteList(): List<KmbRouteEntity> {
         return queries
             .getAllRouteList()
             .executeAsList().map {
@@ -53,7 +53,7 @@ class KmbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopComponentList(): List<KmbRouteStopComponent> {
+    fun getRouteStopComponentList(): List<KmbRouteStopComponent> {
         return queries
             .getRouteStopComponentAllList()
             .executeAsList().map {
@@ -61,7 +61,7 @@ class KmbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopComponentList(
+    fun getRouteStopComponentList(
         route: String,
         bound: Bound,
         serviceType: String
@@ -73,7 +73,7 @@ class KmbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopListFromStopId(stopId: String): List<KmbRouteStopEntity> {
+    fun getRouteStopListFromStopId(stopId: String): List<KmbRouteStopEntity> {
         return queries
             .getRouteStopListFromStopId(stopId)
             .executeAsList().map {
@@ -81,15 +81,15 @@ class KmbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun clearRouteList() {
+    fun clearRouteList() {
         queries.clearRouteList()
     }
 
-    suspend fun clearStopList() {
+    fun clearStopList() {
         queries.clearStopList()
     }
 
-    suspend fun clearRouteStopList() {
+    fun clearRouteStopList() {
         queries.clearRouteStopList()
     }
 

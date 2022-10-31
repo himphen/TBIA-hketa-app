@@ -44,7 +44,7 @@ class NlbDao(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    suspend fun getRouteList(): List<NlbRouteEntity> {
+    fun getRouteList(): List<NlbRouteEntity> {
         return queries
             .getAllRouteList()
             .executeAsList().map {
@@ -52,7 +52,7 @@ class NlbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopComponentList(): List<NlbRouteStopComponent> {
+    fun getRouteStopComponentList(): List<NlbRouteStopComponent> {
         return queries
             .getRouteStopComponentAllList()
             .executeAsList().map {
@@ -60,7 +60,7 @@ class NlbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopComponentList(
+    fun getRouteStopComponentList(
         routeId: String
     ): List<NlbRouteStopComponent> {
         return queries
@@ -70,7 +70,7 @@ class NlbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopListFromStopId(stopId: String): List<NlbRouteStopEntity> {
+    fun getRouteStopListFromStopId(stopId: String): List<NlbRouteStopEntity> {
         return queries
             .getRouteStopListFromStopId(stopId)
             .executeAsList().map {
@@ -78,15 +78,15 @@ class NlbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun clearRouteList() {
+    fun clearRouteList() {
         queries.clearRouteList()
     }
 
-    suspend fun clearStopList() {
+    fun clearStopList() {
         queries.clearStopList()
     }
 
-    suspend fun clearRouteStopList() {
+    fun clearRouteStopList() {
         queries.clearRouteStopList()
     }
 
@@ -116,7 +116,7 @@ class NlbDao(databaseDriverFactory: DatabaseDriverFactory) {
         dest_sc = item.destSc,
     )
 
-    suspend fun getRouteListFromRouteId(routeStopList: List<NlbRouteStopEntity>): List<NlbRouteEntity> {
+    fun getRouteListFromRouteId(routeStopList: List<NlbRouteStopEntity>): List<NlbRouteEntity> {
         if (routeStopList.isEmpty()) return emptyList()
 
         var mainQuery = "SELECT * FROM nlb_route WHERE "

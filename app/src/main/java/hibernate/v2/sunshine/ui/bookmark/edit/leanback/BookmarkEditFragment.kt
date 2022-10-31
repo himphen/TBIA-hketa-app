@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import hibernate.v2.database.eta.SavedEtaOrderEntity
 import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.model.BookmarkEdit
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel
 import hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditConfirmDialogActivity.Companion.ARG_RESULT_CODE
@@ -47,7 +46,10 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
                             currentEtaOrderList.swap(position - OFFSET, newPosition - OFFSET)
                             val updatedEtaOrderList =
                                 currentEtaOrderList.mapIndexed { index, SavedEtaOrderEntity ->
-                                    SavedEtaOrderEntity(id = SavedEtaOrderEntity.id, position = index)
+                                    SavedEtaOrderEntity(
+                                        id = SavedEtaOrderEntity.id,
+                                        position = index
+                                    )
                                 }
                             viewModel.updateEtaOrderList(updatedEtaOrderList)
 
@@ -64,7 +66,10 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
                             currentEtaOrderList.swap(position - OFFSET, newPosition - OFFSET)
                             val updatedEtaOrderList =
                                 currentEtaOrderList.mapIndexed { index, SavedEtaOrderEntity ->
-                                    SavedEtaOrderEntity(id = SavedEtaOrderEntity.id, position = index)
+                                    SavedEtaOrderEntity(
+                                        id = SavedEtaOrderEntity.id,
+                                        position = index
+                                    )
                                 }
                             viewModel.updateEtaOrderList(updatedEtaOrderList)
 
@@ -157,35 +162,36 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
                             putExtra(
                                 BookmarkEditConfirmDialogActivity.ARG_BUNDLE,
                                 Bundle().apply {
-                                    putParcelable(
-                                        BookmarkEditConfirmDialogActivity.ARG_SELECTED_ETA,
-                                        BookmarkEdit(
-                                            entity = card.entity,
-                                            route = card.route,
-                                            stop = card.stop
-                                        )
-                                    )
-
-                                    val currentPosition = savedEtaCardList.indexOf(card)
-                                    if (currentPosition > 1) {
-                                        putString(
-                                            BookmarkEditConfirmDialogActivity.ARG_BEFORE_ETA_ID,
-                                            (
-                                                savedEtaCardList.getOrNull(currentPosition - 1)
-                                                    as? Card.SettingsEtaItemCard
-                                                )?.entity?.id?.toString()
-                                        )
-                                    }
-
-                                    if (currentPosition < savedEtaCardList.lastIndex) {
-                                        putString(
-                                            BookmarkEditConfirmDialogActivity.ARG_AFTER_ETA_ID,
-                                            (
-                                                savedEtaCardList.getOrNull(currentPosition + 1)
-                                                    as? Card.SettingsEtaItemCard
-                                                )?.entity?.id?.toString()
-                                        )
-                                    }
+                                    // TODO
+//                                    putSerializable(
+//                                        BookmarkEditConfirmDialogActivity.ARG_SELECTED_ETA,
+//                                        BookmarkEdit(
+//                                            entity = card.entity,
+//                                            route = card.route,
+//                                            stop = card.stop
+//                                        )
+//                                    )
+//
+//                                    val currentPosition = savedEtaCardList.indexOf(card)
+//                                    if (currentPosition > 1) {
+//                                        putString(
+//                                            BookmarkEditConfirmDialogActivity.ARG_BEFORE_ETA_ID,
+//                                            (
+//                                                savedEtaCardList.getOrNull(currentPosition - 1)
+//                                                    as? Card.SettingsEtaItemCard
+//                                                )?.entity?.id?.toString()
+//                                        )
+//                                    }
+//
+//                                    if (currentPosition < savedEtaCardList.lastIndex) {
+//                                        putString(
+//                                            BookmarkEditConfirmDialogActivity.ARG_AFTER_ETA_ID,
+//                                            (
+//                                                savedEtaCardList.getOrNull(currentPosition + 1)
+//                                                    as? Card.SettingsEtaItemCard
+//                                                )?.entity?.id?.toString()
+//                                        )
+//                                    }
                                 }
                             )
                         }

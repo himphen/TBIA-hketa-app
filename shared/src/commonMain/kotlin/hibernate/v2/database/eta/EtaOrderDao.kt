@@ -9,8 +9,10 @@ class EtaOrderDao(databaseDriverFactory: DatabaseDriverFactory) {
     private val database = DatabaseFactory.createDatabase(driver)
     private val queries = database.etaDaoQueries
 
-    fun getEtaOrder(): List<Saved_eta_order> {
-        return queries.getAllEtaOrder().executeAsList()
+    fun getEtaOrder(): List<SavedEtaOrderEntity> {
+        return queries.getAllEtaOrder().executeAsList().map {
+            SavedEtaOrderEntity.convertFrom(it)
+        }
     }
 
     fun add(list: List<SavedEtaOrderEntity>) {
@@ -25,7 +27,7 @@ class EtaOrderDao(databaseDriverFactory: DatabaseDriverFactory) {
 
     private fun convertFrom(item: SavedEtaOrderEntity) = Saved_eta_order(
         saved_eta_order_id = 0,
-        position = item.position,
+        position = item.position.toLong(),
     )
 
 }

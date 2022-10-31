@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.sunshine.databinding.ItemBottomSheetStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteBadgeBinding
+import hibernate.v2.sunshine.model.color
+import hibernate.v2.sunshine.model.getColor
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.searchmap.item.RouteBadge

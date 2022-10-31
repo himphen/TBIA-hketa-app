@@ -4,13 +4,12 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.response.eta.LrtEta
 import hibernate.v2.utils.hongKongTimezone
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 class LRTTransportEta(
-    date: LocalDateTime?,
+    date: Long?,
     rmkEn: String?,
     rmkSc: String?,
     rmkTc: String?,
@@ -21,7 +20,7 @@ class LRTTransportEta(
         fun fromApiModel(eta: LrtEta, platform: String, systemTime: String?): LRTTransportEta {
             var rmkEn = ""
             var rmkTc = ""
-            var date: LocalDateTime? = null
+            var date: Long? = null
 
             // YYYY_MM_DD_HH_MM_SS
             if (eta.timeEn.contains(" min")) {
@@ -30,14 +29,14 @@ class LRTTransportEta(
                     date = it
                         .toInstant(hongKongTimezone())
                         .plus(minute, DateTimeUnit.MINUTE)
-                        .toLocalDateTime(hongKongTimezone())
+                        .epochSeconds
                 }
             } else if (eta.timeEn.lowercase() == "departing" || eta.timeEn.lowercase() == "arriving") {
                 systemTime?.replaceFirst(' ', 'T')?.toLocalDateTime()?.let {
                     date = it
                         .toInstant(hongKongTimezone())
                         .plus(1, DateTimeUnit.MINUTE)
-                        .toLocalDateTime(hongKongTimezone())
+                        .epochSeconds
                 }
 
                 rmkEn = eta.timeEn

@@ -1,5 +1,6 @@
 package hibernate.v2.utils
 
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlin.time.DurationUnit
@@ -23,6 +24,15 @@ enum class DateFormatPattern(val value: String) {
 fun getTimeDiffInMin(date1: Instant, date2: Instant): Int {
     val diff = date1 - date2
     return diff.toInt(DurationUnit.MINUTES)
+}
+
+fun getTimeDiffFromNowInMin(timestamp: Long): Int {
+    val diff = Instant.fromEpochSeconds(timestamp) - getCurrentTime()
+    return diff.toInt(DurationUnit.MINUTES)
+}
+
+fun getCurrentTime(): Instant {
+    return Clock.System.now()
 }
 
 fun hongKongTimezone() = TimeZone.of("Asia/Hong_Kong")

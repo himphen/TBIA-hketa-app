@@ -9,6 +9,9 @@ import androidx.core.content.ContextCompat
 import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaCompactBinding
+import hibernate.v2.sunshine.model.getColor
+import hibernate.v2.sunshine.model.getDestDirectionText
+import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 

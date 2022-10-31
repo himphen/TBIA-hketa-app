@@ -6,6 +6,6 @@ import hibernate.v2.database.ctb.CtbDao
 class GetRouteListDb(
     private val ctbDao: CtbDao
 ) {
-    suspend operator fun invoke(company: Company) =
+    operator fun invoke(company: Company) =
         ctbDao.getRouteList(company)
 }

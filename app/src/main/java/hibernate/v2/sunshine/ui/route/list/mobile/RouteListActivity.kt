@@ -5,6 +5,8 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityContainerBinding
+import hibernate.v2.sunshine.model.color
+import hibernate.v2.sunshine.model.name
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

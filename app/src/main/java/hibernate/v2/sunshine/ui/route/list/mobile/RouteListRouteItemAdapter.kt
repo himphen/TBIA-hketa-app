@@ -14,6 +14,9 @@ import hibernate.v2.model.transport.route.MTRTransportRoute
 import hibernate.v2.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemRouteListBinding
+import hibernate.v2.sunshine.model.getColor
+import hibernate.v2.sunshine.model.getLocalisedDest
+import hibernate.v2.sunshine.model.getLocalisedOrig
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.route.list.mobile.RouteListRouteItemAdapter.RouteItemViewHolder
 import hibernate.v2.sunshine.util.dpToPx

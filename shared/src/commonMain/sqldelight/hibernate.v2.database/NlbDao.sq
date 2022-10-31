@@ -1,5 +1,3 @@
-import hibernate.v2.api.model.transport.Bound;
-
 CREATE TABLE nlb_stop (
     nlb_stop_id TEXT NOT NULL,
     name_en     TEXT NOT NULL,

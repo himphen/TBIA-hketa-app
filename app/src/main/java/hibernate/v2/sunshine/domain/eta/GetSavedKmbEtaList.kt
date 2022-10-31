@@ -5,5 +5,5 @@ import hibernate.v2.database.eta.EtaDao
 class GetSavedKmbEtaList(
     private val etaDao: EtaDao,
 ) {
-    suspend operator fun invoke() = etaDao.getAllKmbEtaWithOrdering()
+    operator fun invoke() = etaDao.getAllKmbEtaWithOrdering()
 }

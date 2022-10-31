@@ -5,7 +5,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.leanback.app.GuidedStepSupportFragment
-import hibernate.v2.sunshine.model.BookmarkEdit
 
 class BookmarkEditConfirmDialogActivity : FragmentActivity() {
 
@@ -20,7 +19,7 @@ class BookmarkEditConfirmDialogActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        intent?.getBundleExtra(ARG_BUNDLE)?.getParcelable<BookmarkEdit>(ARG_SELECTED_ETA) ?: run {
+        intent?.getBundleExtra(ARG_BUNDLE)?.getSerializable(ARG_SELECTED_ETA) ?: run {
             finish()
             return
         }

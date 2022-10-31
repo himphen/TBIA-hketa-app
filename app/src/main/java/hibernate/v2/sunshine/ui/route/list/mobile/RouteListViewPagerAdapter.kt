@@ -8,6 +8,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.TabAddEtaBinding
+import hibernate.v2.sunshine.model.color
+import hibernate.v2.sunshine.model.name
 
 class RouteListViewPagerAdapter(
     private val fragment: Fragment,

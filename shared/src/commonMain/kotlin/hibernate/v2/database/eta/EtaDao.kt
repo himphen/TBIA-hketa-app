@@ -4,6 +4,7 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.database.DatabaseDriverFactory
 import hibernate.v2.database.DatabaseFactory
+import hibernate.v2.database.runGettingLastId
 import hibernatev2database.Saved_eta
 
 class EtaDao(databaseDriverFactory: DatabaseDriverFactory) {
@@ -48,14 +49,14 @@ class EtaDao(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    fun getSingleEta(
+    fun hasEtaInDb(
         stopId: String,
         routeId: String,
         bound: Bound,
         serviceType: String,
         seq: Int,
         company: Company,
-    ): Saved_eta {
+    ): Boolean {
         return queries.getSingleEta(
             stopId,
             routeId,
@@ -63,11 +64,13 @@ class EtaDao(databaseDriverFactory: DatabaseDriverFactory) {
             serviceType,
             seq.toLong(),
             company
-        ).executeAsOne()
+        ).executeAsOneOrNull() != null
     }
 
-    fun addEta(entity: SavedEtaEntity) {
-        queries.addEta(convertFrom(entity))
+    fun addEta(entity: SavedEtaEntity): Int {
+        return database.runGettingLastId {
+            queries.addEta(convertFrom(entity))
+        }.toInt()
     }
 
     fun addEta(list: List<SavedEtaEntity>) {
@@ -76,8 +79,8 @@ class EtaDao(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    fun clearEta(id: Long) {
-        queries.clearEtaById(id)
+    fun clearEta(id: Int) {
+        queries.clearEtaById(id.toLong())
     }
 
     fun clearEta(

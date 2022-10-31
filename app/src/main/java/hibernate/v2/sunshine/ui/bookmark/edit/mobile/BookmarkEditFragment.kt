@@ -18,11 +18,13 @@ import hibernate.v2.model.Card
 import hibernate.v2.model.transport.route.MTRTransportRoute
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentBookmarkEditBinding
+import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.base.ItemTouchHelperCallback
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
+import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.swap
 import hibernate.v2.sunshine.util.toggleSlideUp
@@ -76,7 +78,11 @@ class BookmarkEditFragment : BaseFragment<FragmentBookmarkEditBinding>() {
                         setMessage(
                             getString(
                                 R.string.dialog_settings_eta_remove_mtr_message,
-                                route.routeInfo.getLocalisedName(GeneralUtils.getTransportationLanguage(context)),
+                                route.routeInfo.getLocalisedName(
+                                    GeneralUtils.getTransportationLanguage(
+                                        context
+                                    )
+                                ),
                                 card.stop.getLocalisedName(context)
                             )
                         )

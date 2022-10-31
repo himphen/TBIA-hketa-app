@@ -43,11 +43,11 @@ import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentSearchMapBinding
+import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
-import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.GeneralUtils.ETA_LAST_UPDATED_REFRESH_TIME
 import hibernate.v2.sunshine.util.dpToPx
@@ -55,6 +55,7 @@ import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.visible
+import hibernate.v2.utils.getTimeDiffFromNowInMin
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -63,7 +64,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import java.util.Date
 import kotlin.coroutines.resume
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -590,11 +590,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         val temp = list.map { etaCard ->
             val temp = etaCard.etaList.filter { eta: TransportEta ->
                 eta.eta?.let { etaDate ->
-                    val currentDate = Date()
-                    DateUtil.getTimeDiffInMin(
-                        etaDate,
-                        currentDate
-                    ) > 0
+                    getTimeDiffFromNowInMin(etaDate) > 0
                 } ?: run {
                     false
                 }

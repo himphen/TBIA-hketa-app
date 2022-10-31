@@ -17,6 +17,9 @@ import hibernate.v2.sunshine.domain.lrt.LrtInteractor
 import hibernate.v2.sunshine.domain.mtr.MtrInteractor
 import hibernate.v2.sunshine.domain.nlb.NlbInteractor
 import hibernate.v2.sunshine.model.AddEtaRowItem
+import hibernate.v2.sunshine.model.getDirectionWithRouteText
+import hibernate.v2.sunshine.model.getLocalisedDest
+import hibernate.v2.sunshine.model.getLocalisedOrig
 import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers

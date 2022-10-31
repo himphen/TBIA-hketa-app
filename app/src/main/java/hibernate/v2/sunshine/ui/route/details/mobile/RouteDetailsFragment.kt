@@ -41,6 +41,9 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentRouteDetailsBinding
 import hibernate.v2.sunshine.model.RouteDetailsMarkerItem
+import hibernate.v2.sunshine.model.color
+import hibernate.v2.sunshine.model.getColor
+import hibernate.v2.sunshine.model.getDirectionSubtitleText
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.util.GeneralUtils

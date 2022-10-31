@@ -34,7 +34,7 @@ class GmbDao(val databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    suspend fun getStopList(list: List<String>): List<GmbStopEntity> {
+    fun getStopList(list: List<String>): List<GmbStopEntity> {
         return queries
             .getStopList(list)
             .executeAsList().map {
@@ -42,7 +42,7 @@ class GmbDao(val databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteList(region: GmbRegion): List<GmbRouteEntity> {
+    fun getRouteList(region: GmbRegion): List<GmbRouteEntity> {
         return queries
             .getRouteListByRegion(region)
             .executeAsList().map {
@@ -50,7 +50,7 @@ class GmbDao(val databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopComponentList(routeIdList: List<String>): List<GmbRouteStopComponent> {
+    fun getRouteStopComponentList(routeIdList: List<String>): List<GmbRouteStopComponent> {
         return queries
             .getRouteStopComponentAllList(routeIdList)
             .executeAsList().map {
@@ -58,7 +58,7 @@ class GmbDao(val databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopComponentList(
+    fun getRouteStopComponentList(
         route: String,
         bound: Bound,
         serviceType:String
@@ -70,7 +70,7 @@ class GmbDao(val databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopListFromStopId(stopId: String): List<GmbRouteStopEntity> {
+    fun getRouteStopListFromStopId(stopId: String): List<GmbRouteStopEntity> {
         return queries
             .getRouteStopListFromStopId(stopId)
             .executeAsList().map {
@@ -78,15 +78,15 @@ class GmbDao(val databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun clearRouteList() {
+    fun clearRouteList() {
         queries.clearRouteList()
     }
 
-    suspend fun clearStopList() {
+    fun clearStopList() {
         queries.clearStopList()
     }
 
-    suspend fun clearRouteStopList() {
+    fun clearRouteStopList() {
         queries.clearRouteStopList()
     }
 

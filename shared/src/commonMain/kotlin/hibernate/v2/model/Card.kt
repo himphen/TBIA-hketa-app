@@ -18,7 +18,7 @@ sealed class Card {
     }
 
     abstract class SettingsEtaCard(
-        open val position: Long = 0,
+        open val position: Int = 0,
     ) : Card(), Comparable<SettingsEtaCard> {
         override fun compareTo(other: SettingsEtaCard): Int {
             return position.compareTo(other.position)
@@ -29,7 +29,7 @@ sealed class Card {
         val entity: SavedEtaEntity,
         val route: TransportRoute,
         val stop: TransportStop,
-        override val position: Long,
+        override val position: Int,
         val isValid: Boolean = true,
     ) : SettingsEtaCard()
 
@@ -43,7 +43,7 @@ sealed class Card {
     data class EtaCard(
         val route: TransportRoute,
         val stop: TransportStop,
-        val position: Long,
+        val position: Int,
         val etaList: MutableList<TransportEta> = mutableListOf(),
         var platform: String? = "",
         val isValid: Boolean = true,

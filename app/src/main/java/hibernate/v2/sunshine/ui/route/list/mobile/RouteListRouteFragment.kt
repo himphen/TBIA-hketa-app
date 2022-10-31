@@ -17,6 +17,7 @@ import com.himphen.logger.Logger
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentRouteListBinding
+import hibernate.v2.sunshine.model.color
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.route.details.mobile.RouteDetailsActivity

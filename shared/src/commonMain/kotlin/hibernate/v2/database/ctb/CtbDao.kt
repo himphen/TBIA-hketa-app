@@ -7,7 +7,6 @@ import hibernate.v2.api.model.transport.ctb.CtbRouteStop
 import hibernate.v2.api.model.transport.ctb.CtbStop
 import hibernate.v2.database.DatabaseDriverFactory
 import hibernate.v2.database.DatabaseFactory
-import hibernate.v2.database.ctb.CtbRouteStopComponent
 import hibernatev2database.Ctb_route
 import hibernatev2database.Ctb_route_stop
 import hibernatev2database.Ctb_stop
@@ -35,7 +34,7 @@ class CtbDao(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    suspend fun getStopList(list: List<String>): List<CtbStopEntity> {
+    fun getStopList(list: List<String>): List<CtbStopEntity> {
         return queries
             .getStopList(list)
             .executeAsList().map {
@@ -43,7 +42,7 @@ class CtbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteList(company: Company): List<CtbRouteEntity> {
+    fun getRouteList(company: Company): List<CtbRouteEntity> {
         return queries
             .getAllRouteListByCompany(company)
             .executeAsList().map {
@@ -51,7 +50,7 @@ class CtbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopComponentList(company: Company): List<CtbRouteStopComponent> {
+    fun getRouteStopComponentList(company: Company): List<CtbRouteStopComponent> {
         return queries
             .getRouteStopComponentAllList(company)
             .executeAsList().map {
@@ -59,7 +58,7 @@ class CtbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopComponentList(
+    fun getRouteStopComponentList(
         company: Company,
         route: String,
         bound: Bound
@@ -71,7 +70,7 @@ class CtbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopListFromStopId(stopId: String): List<CtbRouteStopEntity> {
+    fun getRouteStopListFromStopId(stopId: String): List<CtbRouteStopEntity> {
         return queries
             .getRouteStopListFromStopId(stopId)
             .executeAsList().map {
@@ -79,15 +78,15 @@ class CtbDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun clearRouteList() {
+    fun clearRouteList() {
         queries.clearRouteList()
     }
 
-    suspend fun clearStopList() {
+    fun clearStopList() {
         queries.clearStopList()
     }
 
-    suspend fun clearRouteStopList() {
+    fun clearRouteStopList() {
         queries.clearRouteStopList()
     }
 

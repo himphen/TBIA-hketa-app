@@ -33,7 +33,7 @@ class MtrDao(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    suspend fun getStopList(): List<MtrStopEntity> {
+    fun getStopList(): List<MtrStopEntity> {
         return queries
             .getAllStopList()
             .executeAsList().map {
@@ -41,7 +41,7 @@ class MtrDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteList(): List<MtrRouteEntity> {
+    fun getRouteList(): List<MtrRouteEntity> {
         return queries
             .getAllRouteList()
             .executeAsList().map {
@@ -49,7 +49,7 @@ class MtrDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getEnabledRouteList(): List<MtrRouteEntity> {
+    fun getEnabledRouteList(): List<MtrRouteEntity> {
         return queries
             .getAllEnabledRouteList()
             .executeAsList().map {
@@ -57,7 +57,7 @@ class MtrDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopComponentList(): List<MtrRouteStopComponent> {
+    fun getRouteStopComponentList(): List<MtrRouteStopComponent> {
         return queries
             .getRouteStopComponentAllList()
             .executeAsList().map {
@@ -65,7 +65,7 @@ class MtrDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopComponentList(
+    fun getRouteStopComponentList(
         routeId: String, bound: Bound, serviceType: String
     ): List<MtrRouteStopComponent> {
         return queries
@@ -75,7 +75,7 @@ class MtrDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun getRouteStopListFromStopId(stopId: String): List<MtrRouteStopEntity> {
+    fun getRouteStopListFromStopId(stopId: String): List<MtrRouteStopEntity> {
         return queries
             .getRouteStopListFromStopId(stopId)
             .executeAsList().map {
@@ -83,15 +83,15 @@ class MtrDao(databaseDriverFactory: DatabaseDriverFactory) {
             }
     }
 
-    suspend fun clearRouteList() {
+    fun clearRouteList() {
         queries.clearRouteList()
     }
 
-    suspend fun clearStopList() {
+    fun clearStopList() {
         queries.clearStopList()
     }
 
-    suspend fun clearRouteStopList() {
+    fun clearRouteStopList() {
         queries.clearRouteStopList()
     }
 

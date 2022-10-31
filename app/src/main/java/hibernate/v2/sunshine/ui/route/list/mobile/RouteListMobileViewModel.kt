@@ -14,6 +14,8 @@ import hibernate.v2.sunshine.domain.kmb.KmbInteractor
 import hibernate.v2.sunshine.domain.lrt.LrtInteractor
 import hibernate.v2.sunshine.domain.mtr.MtrInteractor
 import hibernate.v2.sunshine.domain.nlb.NlbInteractor
+import hibernate.v2.sunshine.model.getLocalisedDest
+import hibernate.v2.sunshine.model.getLocalisedOrig
 import hibernate.v2.sunshine.repository.RouteListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -87,7 +89,7 @@ class RouteListMobileViewModel(
         try {
             val allRouteList = ctbInteractor.getRouteListDb(etaType.company())
                 .map { it.toTransportModel() }
-//            RouteListDataHolder.setData(etaType, allRouteList)
+            RouteListDataHolder.setData(etaType, allRouteList)
 
             Logger.t("lifecycle").d("getCtbRouteList done")
         } catch (e: Exception) {
@@ -112,7 +114,7 @@ class RouteListMobileViewModel(
 
         try {
             val allRouteList = gmbInteractor.getRouteListDb(region).map { it.toTransportModel() }
-//            RouteListDataHolder.setData(etaType, allRouteList)
+            RouteListDataHolder.setData(etaType, allRouteList)
 
             Logger.t("lifecycle").d("getGmbRouteList done")
         } catch (e: Exception) {
@@ -131,7 +133,7 @@ class RouteListMobileViewModel(
 
         try {
             val allRouteList = mtrInteractor.getRouteListDb(true).map { it.toTransportModel() }
-//            RouteListDataHolder.setData(etaType, allRouteList)
+            RouteListDataHolder.setData(etaType, allRouteList)
 
             Logger.t("lifecycle").d("getMTRRouteList done")
         } catch (e: Exception) {
@@ -150,7 +152,7 @@ class RouteListMobileViewModel(
 
         try {
             val allRouteList = lrtInteractor.getRouteListDb(true).map { it.toTransportModel() }
-//            RouteListDataHolder.setData(etaType, allRouteList)
+            RouteListDataHolder.setData(etaType, allRouteList)
 
             Logger.t("lifecycle").d("getLRTRouteList done")
         } catch (e: Exception) {
@@ -170,7 +172,7 @@ class RouteListMobileViewModel(
         try {
             val allRouteList = nlbRepository.getRouteListDb()
                 .map { it.toTransportModel() }
-//            RouteListDataHolder.setData(etaType, allRouteList)
+            RouteListDataHolder.setData(etaType, allRouteList)
 
             Logger.t("lifecycle").d("getNLBRouteList done")
         } catch (e: Exception) {
@@ -197,19 +199,19 @@ class RouteListMobileViewModel(
 
         if (keyword.isNullOrBlank()) {
             executingSearchJob[etaType] = viewModelScope.launch(Dispatchers.IO) {
-//                filteredTransportRouteList.emit(Pair(etaType, allTransportRouteList))
+                filteredTransportRouteList.emit(Pair(etaType, allTransportRouteList))
             }
             return
         }
 
         executingSearchJob[etaType] = viewModelScope.launch(Dispatchers.IO) {
-//            val result = allTransportRouteList.filter { transportRoute ->
-//                transportRoute.routeNo.startsWith(keyword, true) ||
-//                    transportRoute.getLocalisedDest(context).startsWith(keyword, true) ||
-//                    transportRoute.getLocalisedOrig(context).startsWith(keyword, true)
-//            }
+            val result = allTransportRouteList.filter { transportRoute ->
+                transportRoute.routeNo.startsWith(keyword, true) ||
+                    transportRoute.getLocalisedDest(context).startsWith(keyword, true) ||
+                    transportRoute.getLocalisedOrig(context).startsWith(keyword, true)
+            }
 
-//            filteredTransportRouteList.emit(Pair(etaType, result))
+            filteredTransportRouteList.emit(Pair(etaType, result))
         }
     }
 }

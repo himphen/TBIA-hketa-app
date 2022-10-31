@@ -6,11 +6,11 @@ import hibernate.v2.database.eta.SavedEtaEntity
 class ClearEta(
     private val etaDao: EtaDao,
 ) {
-    suspend operator fun invoke(entityId: Long) {
+    operator fun invoke(entityId: Int) {
         etaDao.clearEta(entityId)
     }
 
-    suspend operator fun invoke(entity: SavedEtaEntity) {
+    operator fun invoke(entity: SavedEtaEntity) {
         etaDao.clearEta(
             entity.stopId,
             entity.routeId,

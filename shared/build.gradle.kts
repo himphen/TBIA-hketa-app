@@ -5,6 +5,7 @@ plugins {
     id("com.android.library")
     id("com.squareup.sqldelight")
     id("dev.icerock.mobile.multiplatform-resources")
+    id("kotlin-parcelize")
 }
 
 val coroutinesVersion = "1.6.4"
@@ -49,6 +50,7 @@ kotlin {
                 implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
 
                 implementation("dev.icerock.moko:resources:0.20.1")
+                implementation("dev.icerock.moko:parcelize:0.8.0")
 
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
             }

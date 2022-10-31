@@ -26,7 +26,6 @@ import hibernate.v2.sunshine.ui.bookmark.home.BookmarkHomeViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.route.list.mobile.RouteListActivity
-import hibernate.v2.sunshine.util.DateUtil
 import hibernate.v2.sunshine.util.GeneralUtils.ETA_LAST_UPDATED_REFRESH_TIME
 import hibernate.v2.sunshine.util.GeneralUtils.ETA_REFRESH_TIME
 import hibernate.v2.sunshine.util.dpToPx
@@ -34,13 +33,13 @@ import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.toggleSlideUp
 import hibernate.v2.sunshine.util.visible
+import hibernate.v2.utils.getTimeDiffFromNowInMin
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import java.util.Date
 import kotlin.time.Duration.Companion.milliseconds
 
 class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
@@ -207,11 +206,7 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
             etaCardList.forEachIndexed { index, etaCard ->
                 val temp = etaCard.etaList.filter { eta: TransportEta ->
                     eta.eta?.let { etaDate ->
-                        val currentDate = Date()
-                        DateUtil.getTimeDiffInMin(
-                            etaDate,
-                            currentDate
-                        ) > 0
+                        getTimeDiffFromNowInMin(etaDate) > 0
                     } ?: run {
                         false
                     }

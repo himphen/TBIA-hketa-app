@@ -12,6 +12,8 @@ import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.databinding.ItemRouteDetailsStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteDetailsStopExpandedBinding
+import hibernate.v2.sunshine.model.getColor
+import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.bookmark.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.view.setEtaTimeFlexManager
@@ -24,7 +26,7 @@ class RouteDetailsAdapter(
     private val onItemExpanding: (RouteDetailsStop) -> Unit,
     private val onItemCollapsing: () -> Unit,
     private val onAddButtonClicked: (Int, Card.RouteStopAddCard) -> Unit,
-    private val onRemoveButtonClicked: (Int, Long) -> Unit,
+    private val onRemoveButtonClicked: (Int, Int) -> Unit,
     private val onNavigationButtonClicked: (RouteDetailsStop) -> Unit,
     private val onStreetViewButtonClicked: (RouteDetailsStop) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -114,7 +116,7 @@ class RouteDetailsAdapter(
         }
     }
 
-    fun setSavedBookmark(position: Int, savedEtaId: Long) {
+    fun setSavedBookmark(position: Int, savedEtaId: Int) {
         stopList.getOrNull(position)?.let {
             it.savedEtaId = savedEtaId
             notifyItemChanged(position)

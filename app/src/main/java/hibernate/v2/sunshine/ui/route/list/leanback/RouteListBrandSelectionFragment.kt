@@ -6,6 +6,7 @@ import androidx.leanback.widget.GuidanceStylist.Guidance
 import androidx.leanback.widget.GuidedAction
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.R
+import hibernate.v2.sunshine.model.name
 import hibernate.v2.sunshine.ui.route.list.leanback.RouteListActivity.Companion.ARG_ETA_TYPE
 import hibernate.v2.sunshine.util.putEnum
 

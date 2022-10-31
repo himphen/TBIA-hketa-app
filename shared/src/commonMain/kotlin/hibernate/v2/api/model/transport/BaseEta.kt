@@ -1,18 +1,21 @@
 package hibernate.v2.api.model.transport
 
+import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-enum class Bound(val value: String) {
-    @SerialName("inbound")
-    I("inbound"),
+@Parcelize
+enum class Bound(val value: String) : Parcelable {
+    @SerialName("I")
+    I("I"),
 
-    @SerialName("outbound")
-    O("outbound"),
+    @SerialName("O")
+    O("O"),
 
-    @SerialName("unknown")
-    UNKNOWN("unknown");
+    @SerialName("UNKNOWN")
+    UNKNOWN("UNKNOWN");
 
     companion object {
         fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
@@ -20,44 +23,50 @@ enum class Bound(val value: String) {
 }
 
 @Serializable
-enum class Company(val value: String) {
-    @SerialName("kmb")
-    KMB("kmb"),
+@Parcelize
+enum class Company(val value: String) : Parcelable {
+    @SerialName("KMB")
+    KMB("KMB"),
 
-    @SerialName("nwfb")
-    NWFB("nwfb"),
+    @SerialName("NWFB")
+    NWFB("NWFB"),
 
-    @SerialName("ctb")
-    CTB("ctb"),
+    @SerialName("CTB")
+    CTB("CTB"),
 
-    @SerialName("gmb")
-    GMB("gmb"),
+    @SerialName("GMB")
+    GMB("GMB"),
 
-    @SerialName("mtr")
-    MTR("mtr"),
+    @SerialName("MTR")
+    MTR("MTR"),
 
-    @SerialName("lrt")
-    LRT("lrt"),
+    @SerialName("LRT")
+    LRT("LRT"),
 
-    @SerialName("nlb")
-    NLB("nlb"),
+    @SerialName("NLB")
+    NLB("NLB"),
 
-    @SerialName("unknown")
-    UNKNOWN("unknown");
+    @SerialName("UNKNOWN")
+    UNKNOWN("UNKNOWN");
 
     companion object {
         fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN
     }
 }
 
+@Serializable
 enum class GmbRegion(val value: String, val ordering: Int) {
+    @SerialName("HKI")
     HKI("HKI", 0),
 
+    @SerialName("KLN")
     KLN("KLN", 1),
 
+    @SerialName("NT")
     NT("NT", 2),
 
-    UNKNOWN("unknown", -1);
+    @SerialName("UNKNOWN")
+    UNKNOWN("UNKNOWN", -1);
 
     companion object {
         fun from(type: String?) = values().find { it.value == type } ?: UNKNOWN

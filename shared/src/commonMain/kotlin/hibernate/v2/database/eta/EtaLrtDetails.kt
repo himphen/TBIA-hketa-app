@@ -19,7 +19,7 @@ data class EtaLrtDetails(
                 serviceType = item.saved_eta_service_type,
                 seq = item.saved_eta_seq.toInt(),
                 stopId = item.saved_eta_stop_id,
-                id = item.saved_eta_id,
+                id = item.saved_eta_id.toInt(),
                 company = item.saved_eta_company
             )
 

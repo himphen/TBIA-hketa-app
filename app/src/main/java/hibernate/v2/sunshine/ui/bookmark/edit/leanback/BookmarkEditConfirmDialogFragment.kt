@@ -8,6 +8,7 @@ import androidx.leanback.widget.GuidanceStylist.Guidance
 import androidx.leanback.widget.GuidedAction
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.BookmarkEdit
+import hibernate.v2.sunshine.model.getLocalisedName
 
 class BookmarkEditConfirmDialogFragment : GuidedStepSupportFragment() {
     private lateinit var currentBookmarkEdit: BookmarkEdit
@@ -15,8 +16,9 @@ class BookmarkEditConfirmDialogFragment : GuidedStepSupportFragment() {
     private var afterId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        currentBookmarkEdit =
-            arguments?.getParcelable(BookmarkEditConfirmDialogActivity.ARG_SELECTED_ETA)!!
+        // TODO
+//        currentBookmarkEdit =
+//            arguments?.getSerializable(BookmarkEditConfirmDialogActivity.ARG_SELECTED_ETA)!!
         beforeId = arguments?.getString(BookmarkEditConfirmDialogActivity.ARG_BEFORE_ETA_ID)
         afterId = arguments?.getString(BookmarkEditConfirmDialogActivity.ARG_AFTER_ETA_ID)
 

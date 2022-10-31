@@ -9,6 +9,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaClassicRouteNumberBinding
 import hibernate.v2.sunshine.databinding.ContentEtaCompactRouteNumberBinding
 import hibernate.v2.sunshine.databinding.ContentEtaStandardRouteNumberBinding
+import hibernate.v2.sunshine.model.getColor
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible

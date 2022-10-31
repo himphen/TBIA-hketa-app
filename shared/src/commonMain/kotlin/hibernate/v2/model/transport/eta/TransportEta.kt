@@ -7,14 +7,14 @@ import hibernate.v2.api.model.transport.nlb.NlbEta
 import hibernate.v2.model.transport.TransportStop
 import hibernate.v2.utils.TransportationLanguage
 import hibernate.v2.utils.getTimeDiffInMin
+import hibernate.v2.utils.hongKongTimezone
 import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
+import kotlinx.datetime.Instant
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 open class TransportEta(
-    val eta: LocalDateTime?,
+    val eta: Long?,
     val rmkEn: String?,
     val rmkSc: String?,
     val rmkTc: String?,
@@ -33,8 +33,7 @@ open class TransportEta(
 
     private val etaWithoutSecond by lazy {
         eta?.let {
-            // Ignore second and millisecond
-            LocalDateTime(it.year, it.month, it.dayOfMonth, it.hour, it.minute, it.second, 0)
+            it / 60 * 60
         }
     }
 
@@ -42,7 +41,7 @@ open class TransportEta(
         fun fromApiModel(eta: BusEta): TransportEta {
             return TransportEta(
                 // ISO_WITHOUT_MS
-                eta = eta.eta?.toInstant()?.toLocalDateTime(TimeZone.currentSystemDefault()),
+                eta = eta.eta?.toInstant()?.epochSeconds,
                 rmkEn = eta.rmkEn,
                 rmkSc = eta.rmkSc,
                 rmkTc = eta.rmkTc,
@@ -54,7 +53,7 @@ open class TransportEta(
         fun fromApiModel(eta: GmbEta): TransportEta {
             return TransportEta(
                 // ISO
-                eta = eta.timestamp?.toInstant()?.toLocalDateTime(TimeZone.currentSystemDefault()),
+                eta = eta.timestamp?.toInstant()?.toEpochMilliseconds(),
                 rmkEn = eta.rmkEn,
                 rmkSc = eta.rmkSc,
                 rmkTc = eta.rmkTc,
@@ -66,7 +65,13 @@ open class TransportEta(
         fun fromApiModel(eta: NlbEta, seq: Int?): TransportEta {
             return TransportEta(
                 // YYYY_MM_DD_HH_MM_SS
-                eta = eta.estimatedArrivalTime?.replaceFirst(' ', 'T')?.toLocalDateTime(),
+                eta = eta.estimatedArrivalTime
+                    ?.replaceFirst(' ', 'T')
+                    ?.toLocalDateTime()
+                    ?.toInstant(
+                        hongKongTimezone()
+                    )
+                    ?.epochSeconds,
                 rmkEn = "",
                 rmkSc = "",
                 rmkTc = "",
@@ -79,7 +84,7 @@ open class TransportEta(
     open fun getEtaMinuteText(default: String = ""): Pair<Boolean, String> {
         etaWithoutSecond?.let { etaWithoutSecond ->
             val minutes = getTimeDiffInMin(
-                etaWithoutSecond.toInstant(TimeZone.currentSystemDefault()),
+                Instant.fromEpochSeconds(etaWithoutSecond),
                 Clock.System.now()
             )
             if (minutes <= 0) {
