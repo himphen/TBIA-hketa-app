@@ -51,7 +51,7 @@ data class EtaGmbDetails(
                 savedEta = savedEtaEntity,
                 route = routeEntity,
                 stop = stopEntity,
-                order = SavedEtaOrderEntity(id = null, position = 0)
+                order = SavedEtaOrderEntity(id = null, position = item.position.toInt())
             )
         }
     }

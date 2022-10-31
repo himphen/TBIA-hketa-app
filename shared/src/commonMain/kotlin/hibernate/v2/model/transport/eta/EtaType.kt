@@ -1,7 +1,9 @@
 package hibernate.v2.model.transport.eta
 
 import hibernate.v2.api.model.transport.Company
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class EtaType {
     KMB,
     NWFB,
