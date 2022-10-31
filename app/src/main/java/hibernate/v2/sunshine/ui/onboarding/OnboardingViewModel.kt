@@ -7,6 +7,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Checksum
+import hibernate.v2.api.repository.CoreRepository
 import hibernate.v2.domain.ctb.CtbInteractor
 import hibernate.v2.domain.gmb.GmbInteractor
 import hibernate.v2.domain.kmb.KmbInteractor
@@ -14,7 +15,6 @@ import hibernate.v2.domain.lrt.LrtInteractor
 import hibernate.v2.domain.mtr.MtrInteractor
 import hibernate.v2.domain.nlb.NlbInteractor
 import hibernate.v2.sunshine.core.SharedPreferencesManager
-import hibernate.v2.sunshine.repository.CoreRepository
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

@@ -1,9 +1,8 @@
-package hibernate.v2.sunshine.repository
+package hibernate.v2.api.repository
 
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.Checksum
-import hibernate.v2.api.repository.DataRepository
 
 class CoreRepository : BaseRepository() {
 

@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import hibernate.v2.database.eta.SavedEtaOrderEntity
 import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
+import hibernate.v2.sunshine.dataholder.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel
 import hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditConfirmDialogActivity.Companion.ARG_RESULT_CODE
 import hibernate.v2.sunshine.ui.bookmark.edit.leanback.BookmarkEditConfirmDialogFragment.Companion.ACTION_ID_MOVE_DOWN

@@ -16,11 +16,11 @@ import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.model.transport.route.GmbTransportRoute
 import hibernate.v2.model.transport.route.LrtTransportRoute
 import hibernate.v2.model.transport.route.MtrTransportRoute
+import hibernate.v2.sunshine.dataholder.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.model.AddEtaRowItem
 import hibernate.v2.sunshine.model.getDirectionWithRouteText
 import hibernate.v2.sunshine.model.getLocalisedDest
 import hibernate.v2.sunshine.model.getLocalisedOrig
-import hibernate.v2.sunshine.repository.RouteAndStopListDataHolder
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
