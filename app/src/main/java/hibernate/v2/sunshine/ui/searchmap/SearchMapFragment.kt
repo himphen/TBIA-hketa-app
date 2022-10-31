@@ -20,7 +20,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.fonfon.kgeohash.GeoHash
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -38,18 +37,20 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCa
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.maps.android.ktx.awaitMap
 import com.himphen.logger.Logger
+import hibernate.v2.geohash.GeoHash
 import hibernate.v2.model.Card
+import hibernate.v2.model.searchmap.SearchMapStop
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentSearchMapBinding
 import hibernate.v2.sunshine.model.getLocalisedName
-import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.GeneralUtils.ETA_LAST_UPDATED_REFRESH_TIME
+import hibernate.v2.sunshine.util.GeneralUtils.getTransportationLanguage
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
@@ -563,7 +564,8 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         stopListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
         viewBinding?.let {
-            it.layoutRouteList.stopNameTv.text = stop.getLocalisedName(it.root.context)
+            it.layoutRouteList.stopNameTv.text =
+                stop.getLocalisedName(getTransportationLanguage(it.root.context))
         }
         routeListAdapter.setData(mutableListOf())
         routeListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED

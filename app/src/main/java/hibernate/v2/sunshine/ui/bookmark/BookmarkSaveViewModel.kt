@@ -5,8 +5,8 @@ import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.database.eta.SavedEtaEntity
 import hibernate.v2.database.eta.SavedEtaOrderEntity
+import hibernate.v2.domain.eta.EtaInteractor
 import hibernate.v2.model.Card
-import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow

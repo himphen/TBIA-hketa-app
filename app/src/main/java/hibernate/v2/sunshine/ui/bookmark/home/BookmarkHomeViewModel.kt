@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.domain.eta.EtaInteractor
 import hibernate.v2.model.Card
 import hibernate.v2.model.transport.eta.LRTTransportEta
 import hibernate.v2.model.transport.eta.MTRTransportEta
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.model.transport.eta.filterCircularStop
-import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers

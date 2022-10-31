@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import hibernate.v2.database.eta.SavedEtaEntity
 import hibernate.v2.database.eta.SavedEtaOrderEntity
+import hibernate.v2.domain.eta.EtaInteractor
 import hibernate.v2.model.Card
-import hibernate.v2.sunshine.domain.eta.EtaInteractor
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

@@ -7,14 +7,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import hibernate.v2.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.databinding.ItemBottomSheetStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteBadgeBinding
 import hibernate.v2.sunshine.model.color
 import hibernate.v2.sunshine.model.getColor
-import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.searchmap.item.RouteBadge
 import hibernate.v2.sunshine.ui.view.setStopRouteBadgeFlexManager
+import hibernate.v2.sunshine.util.GeneralUtils.getTransportationLanguage
 import hibernate.v2.sunshine.util.updateBackgroundColor
 
 class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
@@ -50,7 +51,7 @@ class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
         val item = getItem(position)
         holder.viewBinding.apply {
             stopCompanyColor.setBackgroundColor(item.etaType.color(holder.context))
-            stopNameTv.text = item.getLocalisedName(holder.context)
+            stopNameTv.text = item.getLocalisedName(getTransportationLanguage(holder.context))
 
             (routeNumberRecyclerView.adapter as RouteBadgeAdapter).apply {
                 setData(

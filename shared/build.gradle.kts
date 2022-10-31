@@ -72,6 +72,9 @@ kotlin {
                 implementation("com.github.himphen:logger:3.0.1")
 
                 implementation("com.squareup.sqldelight:android-driver:1.5.3")
+
+                implementation("com.google.maps.android:maps-ktx:3.3.0")
+                implementation("com.google.maps.android:maps-utils-ktx:3.3.0")
             }
         }
         val androidTest by getting

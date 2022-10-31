@@ -7,7 +7,7 @@ import com.google.android.gms.maps.Projection
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import com.google.maps.android.clustering.ClusterManager
-import hibernate.v2.sunshine.model.searchmap.SearchMapStop
+import hibernate.v2.model.searchmap.SearchMapStop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch

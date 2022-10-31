@@ -1,14 +1,14 @@
 package hibernate.v2.sunshine.core.koin
 
-import hibernate.v2.sunshine.domain.nlb.GetRouteEtaCardList
-import hibernate.v2.sunshine.domain.nlb.GetRouteListDb
-import hibernate.v2.sunshine.domain.nlb.GetRouteListFromStopId
-import hibernate.v2.sunshine.domain.nlb.GetRouteStopComponentListDb
-import hibernate.v2.sunshine.domain.nlb.GetStopListDb
-import hibernate.v2.sunshine.domain.nlb.InitDatabase
-import hibernate.v2.sunshine.domain.nlb.NlbInteractor
-import hibernate.v2.sunshine.domain.nlb.SaveData
-import hibernate.v2.sunshine.domain.nlb.SetMapRouteListIntoMapStop
+import hibernate.v2.domain.nlb.GetRouteEtaCardList
+import hibernate.v2.domain.nlb.GetRouteListDb
+import hibernate.v2.domain.nlb.GetRouteListFromStopId
+import hibernate.v2.domain.nlb.GetRouteStopComponentListDb
+import hibernate.v2.domain.nlb.GetStopListDb
+import hibernate.v2.domain.nlb.InitDatabase
+import hibernate.v2.domain.nlb.NlbInteractor
+import hibernate.v2.domain.nlb.SaveData
+import hibernate.v2.domain.nlb.SetMapRouteListIntoMapStop
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

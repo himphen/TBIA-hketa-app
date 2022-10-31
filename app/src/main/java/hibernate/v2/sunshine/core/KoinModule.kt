@@ -9,7 +9,7 @@ import hibernate.v2.database.kmb.KmbDao
 import hibernate.v2.database.lrt.LrtDao
 import hibernate.v2.database.mtr.MtrDao
 import hibernate.v2.database.nlb.NlbDao
-import hibernate.v2.sunshine.domain.GeneralInteractor
+import hibernate.v2.domain.GeneralInteractor
 import hibernate.v2.sunshine.repository.CoreRepository
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel
@@ -71,7 +71,7 @@ val koinRepositoryModule: Module = module {
 
 val koinInteractorModule: Module = module {
     single {
-        GeneralInteractor()
+        hibernate.v2.domain.GeneralInteractor()
     }
 }
 

@@ -1,14 +1,14 @@
 package hibernate.v2.sunshine.core.koin
 
-import hibernate.v2.sunshine.domain.mtr.GetRouteEtaCardList
-import hibernate.v2.sunshine.domain.mtr.GetRouteListDb
-import hibernate.v2.sunshine.domain.mtr.GetRouteListFromStopId
-import hibernate.v2.sunshine.domain.mtr.GetRouteStopComponentListDb
-import hibernate.v2.sunshine.domain.mtr.GetStopListDb
-import hibernate.v2.sunshine.domain.mtr.InitDatabase
-import hibernate.v2.sunshine.domain.mtr.MtrInteractor
-import hibernate.v2.sunshine.domain.mtr.SaveData
-import hibernate.v2.sunshine.domain.mtr.SetMapRouteListIntoMapStop
+import hibernate.v2.domain.mtr.GetRouteEtaCardList
+import hibernate.v2.domain.mtr.GetRouteListDb
+import hibernate.v2.domain.mtr.GetRouteListFromStopId
+import hibernate.v2.domain.mtr.GetRouteStopComponentListDb
+import hibernate.v2.domain.mtr.GetStopListDb
+import hibernate.v2.domain.mtr.InitDatabase
+import hibernate.v2.domain.mtr.MtrInteractor
+import hibernate.v2.domain.mtr.SaveData
+import hibernate.v2.domain.mtr.SetMapRouteListIntoMapStop
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

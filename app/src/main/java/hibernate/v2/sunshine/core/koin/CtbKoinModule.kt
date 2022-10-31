@@ -1,14 +1,13 @@
 package hibernate.v2.sunshine.core.koin
 
-import hibernate.v2.sunshine.domain.ctb.CtbInteractor
-import hibernate.v2.sunshine.domain.ctb.GetRouteEtaCardList
-import hibernate.v2.sunshine.domain.ctb.GetRouteListDb
-import hibernate.v2.sunshine.domain.ctb.GetRouteListFromStopId
-import hibernate.v2.sunshine.domain.ctb.GetRouteStopComponentListDb
-import hibernate.v2.sunshine.domain.ctb.GetStopListDb
-import hibernate.v2.sunshine.domain.ctb.InitDatabase
-import hibernate.v2.sunshine.domain.ctb.SaveData
-import hibernate.v2.sunshine.domain.ctb.SetMapRouteListIntoMapStop
+import hibernate.v2.domain.ctb.CtbInteractor
+import hibernate.v2.domain.ctb.GetRouteListDb
+import hibernate.v2.domain.ctb.GetRouteListFromStopId
+import hibernate.v2.domain.ctb.GetRouteStopComponentListDb
+import hibernate.v2.domain.ctb.GetStopListDb
+import hibernate.v2.domain.ctb.InitDatabase
+import hibernate.v2.domain.ctb.SaveData
+import hibernate.v2.domain.ctb.SetMapRouteListIntoMapStop
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -33,5 +32,5 @@ val koinCtbUseCaseModule: Module = module {
     single { GetStopListDb(get()) }
     single { GetRouteListFromStopId(get()) }
     single { SetMapRouteListIntoMapStop() }
-    single { GetRouteEtaCardList(get()) }
+    single { hibernate.v2.domain.ctb.GetRouteEtaCardList(get()) }
 }

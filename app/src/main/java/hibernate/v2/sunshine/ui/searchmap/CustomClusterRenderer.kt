@@ -5,9 +5,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
+import hibernate.v2.model.searchmap.SearchMapStop
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.util.GoogleMapsUtils
 
 class CustomClusterRenderer(
