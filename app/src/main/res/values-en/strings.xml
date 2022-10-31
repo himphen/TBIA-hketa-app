@@ -113,6 +113,8 @@
     <string name="dialog_eta_layout_cancel_btn">Cancel</string>
 
     <string name="add_card_route_text">Sheung Tak</string>
+    <string name="add_card_route_to_text">Towards</string>
+    <string name="add_card_route_from_text">From</string>
 
     <string name="demo_card_route_number">296A</string>
     <string name="demo_card_stop_name">Kwun Tong Town Centre (T4)</string>

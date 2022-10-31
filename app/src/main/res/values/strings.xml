@@ -116,6 +116,8 @@
     <string name="dialog_lang_title" translatable="false">@string/title_settings_language</string>
 
     <string name="add_card_route_text">尚德</string>
+    <string name="add_card_route_to_text">往</string>
+    <string name="add_card_route_from_text">由</string>
 
     <string name="demo_card_route_number">296A</string>
     <string name="demo_card_stop_name">觀塘市中心 (T4)</string>
