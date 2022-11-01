@@ -12,7 +12,7 @@ import hibernatev2database.Mtr_stop
 
 class MtrDao(databaseDriverFactory: DatabaseDriverFactory) {
     private val driver = databaseDriverFactory.createDriver()
-    private val database = DatabaseFactory.createDatabase(driver)
+    private val database = databaseDriverFactory.createDatabase()
     private val queries = database.mtrDaoQueries
 
     fun addStopList(list: List<MtrStop>) {
@@ -151,9 +151,9 @@ class MtrDao(databaseDriverFactory: DatabaseDriverFactory) {
             mainQuery += where
         }
 
-        val cursor = driver.executeQuery(1, mainQuery, bindArgs.size) {
+        val cursor = driver.executeQuery(null, mainQuery, bindArgs.size) {
             bindArgs.forEachIndexed { index, arg ->
-                bindString(index, arg)
+                bindString(index + 1, arg)
             }
         }
 

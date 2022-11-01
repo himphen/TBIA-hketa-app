@@ -29,15 +29,9 @@ data class NlbRoute(
     val serviceType = "1"
 
     override fun compareTo(other: NlbRoute): Int {
-        parseRouteNumber(routeId)
-        other.parseRouteNumber(other.routeId)
+        parseRouteNumber(routeNo)
+        other.parseRouteNumber(other.routeNo)
 
-        val routeCompare = routeComponent.compareTo(other.routeComponent)
-        if (routeCompare != 0) return routeCompare
-
-        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
-        if (serviceTypeCompare != 0) return serviceTypeCompare
-
-        return bound.compareTo(other.bound)
+        return routeComponent.compareTo(other.routeComponent)
     }
 }

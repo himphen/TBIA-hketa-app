@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 class NlbDao(databaseDriverFactory: DatabaseDriverFactory) {
     private val driver = databaseDriverFactory.createDriver()
-    private val database = DatabaseFactory.createDatabase(driver)
+    private val database = databaseDriverFactory.createDatabase()
     private val queries = database.nlbDaoQueries
 
     fun addStopList(list: List<NlbStop>) {
@@ -108,6 +108,7 @@ class NlbDao(databaseDriverFactory: DatabaseDriverFactory) {
 
     private fun convertFrom(item: NlbRoute) = Nlb_route(
         nlb_route_id = item.routeId,
+        nlb_route_no = item.routeNo,
         orig_en = item.origEn,
         orig_tc = item.origTc,
         orig_sc = item.origSc,
@@ -134,9 +135,9 @@ class NlbDao(databaseDriverFactory: DatabaseDriverFactory) {
             mainQuery += where
         }
 
-        val cursor = driver.executeQuery(1, mainQuery, bindArgs.size) {
+        val cursor = driver.executeQuery(null, mainQuery, bindArgs.size) {
             bindArgs.forEachIndexed { index, arg ->
-                bindString(index, arg)
+                bindString(index + 1, arg)
             }
         }
 
@@ -149,7 +150,8 @@ class NlbDao(databaseDriverFactory: DatabaseDriverFactory) {
                 orig_sc = cursor.getString(3)!!,
                 dest_en = cursor.getString(4)!!,
                 dest_tc = cursor.getString(5)!!,
-                dest_sc = cursor.getString(6)!!
+                dest_sc = cursor.getString(6)!!,
+                nlb_route_no = cursor.getString(7)!!,
             )
             result.add(NlbRouteEntity.convertFrom(nlbRoute))
         }

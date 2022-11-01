@@ -42,6 +42,9 @@ kotlin {
                 implementation("io.ktor:ktor-client-encoding:$ktorVersion")
                 implementation("ch.qos.logback:logback-classic:1.2.3")
 
+                // https://github.com/InsertKoinIO/koin
+                implementation("io.insert-koin:koin-core:3.1.6")
+
                 implementation("dev.gitlive:firebase-auth:1.6.2")
                 implementation("dev.gitlive:firebase-database:1.6.2")
                 implementation("dev.gitlive:firebase-config:1.6.2")
@@ -53,6 +56,9 @@ kotlin {
                 api("dev.icerock.moko:parcelize:0.8.0")
 
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+
+                // https://github.com/AAkira/Napier
+                implementation("io.github.aakira:napier:2.6.1")
             }
         }
         val commonTest by getting {

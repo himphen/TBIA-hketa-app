@@ -2,7 +2,6 @@ package hibernate.v2.sunshine.ui.searchmap
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.domain.GeneralInteractor
@@ -22,6 +21,7 @@ import hibernate.v2.model.transport.eta.MTRTransportEta
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.model.transport.eta.filterCircularStop
 import hibernate.v2.sunshine.ui.base.BaseViewModel
+import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -63,7 +63,7 @@ class SearchMapViewModel(
     }
 
     fun getRouteListFromStop() {
-        Logger.t("lifecycle").d("getRouteListFromStop")
+        logLifecycle("getRouteListFromStop")
         viewModelScope.launch(Dispatchers.IO) {
             val stop = selectedStop.value ?: return@launch
             val result = when (stop.etaType) {
@@ -155,7 +155,7 @@ class SearchMapViewModel(
 
     fun updateEtaList(): Job {
         return viewModelScope.launch(Dispatchers.IO + etaExceptionHandler) {
-            Logger.t("lifecycle").d("getEtaList")
+            logLifecycle("getEtaList")
             val etaCardList = routeListForBottomSheet.value
             if (etaCardList == null || etaCardList.isEmpty()) return@launch
 
@@ -308,7 +308,7 @@ class SearchMapViewModel(
                 }
             }.awaitAll()
 
-            Logger.t("lifecycle").d("getEtaList done")
+            logLifecycle("getEtaList done")
             routeListForBottomSheet.postValue(result.values.toList())
         }
     }

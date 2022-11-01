@@ -17,7 +17,7 @@ data class CtbRouteEntity(
     val destEn: String,
     val destTc: String,
     val destSc: String,
-) : TransportHashable, Comparable<CtbRouteEntity>, BaseRouteEntity() {
+) : TransportHashable, BaseRouteEntity() {
     val serviceType = "1"
 
     companion object {
@@ -53,17 +53,4 @@ data class CtbRouteEntity(
     }
 
     fun routeHashId() = routeHashId(company, routeId, bound, serviceType)
-
-    override fun compareTo(other: CtbRouteEntity): Int {
-        parseRouteNumber(routeId)
-        other.parseRouteNumber(other.routeId)
-
-        val companyCompare = company.compareTo(other.company)
-        if (companyCompare != 0) return companyCompare
-
-        val routeCompare = routeComponent.compareTo(other.routeComponent)
-        if (routeCompare != 0) return routeCompare
-
-        return bound.compareTo(other.bound)
-    }
 }

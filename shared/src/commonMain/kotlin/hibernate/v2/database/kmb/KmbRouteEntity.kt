@@ -27,7 +27,7 @@ data class KmbRouteEntity(
     val destTc: String,
     @SerialName("dest_sc")
     val destSc: String,
-) : TransportHashable, Comparable<KmbRouteEntity>, BaseRouteEntity() {
+) : TransportHashable, BaseRouteEntity() {
 
     fun isSpecialRoute(): Boolean = serviceType != "1"
 
@@ -64,17 +64,4 @@ data class KmbRouteEntity(
     }
 
     fun routeHashId() = routeHashId(Company.KMB, routeId, bound, serviceType)
-
-    override fun compareTo(other: KmbRouteEntity): Int {
-        parseRouteNumber(routeId)
-        other.parseRouteNumber(other.routeId)
-
-        val routeCompare = routeComponent.compareTo(other.routeComponent)
-        if (routeCompare != 0) return routeCompare
-
-        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
-        if (serviceTypeCompare != 0) return serviceTypeCompare
-
-        return bound.compareTo(other.bound)
-    }
 }

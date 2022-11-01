@@ -1,6 +1,8 @@
 package hibernate.v2.geohash
 
 import kotlin.jvm.JvmOverloads
+import kotlin.math.ceil
+import kotlin.math.min
 
 open class GeoHash {
 
@@ -144,7 +146,7 @@ open class GeoHash {
     @JvmOverloads
     constructor(lat: Double, lon: Double, charsCount: Int = MAX_CHARACTER_PRECISION) {
         val desiredPrecision = precisionFromCharCount(charsCount)
-        val precision = Math.min(desiredPrecision, MAX_BIT_PRECISION)
+        val precision = min(desiredPrecision, MAX_BIT_PRECISION)
 
         var isEvenBit = true
         val latRange = doubleArrayOf(-LATITUDE_MAX_ABS, LATITUDE_MAX_ABS)
@@ -171,7 +173,7 @@ open class GeoHash {
         val latRange = doubleArrayOf(-LATITUDE_MAX_ABS, LATITUDE_MAX_ABS)
         val lonRange = doubleArrayOf(-LONGITUDE_MAX_ABS, LONGITUDE_MAX_ABS)
 
-        var binStr = java.lang.Long.toBinaryString(hashVal)
+        var binStr = hashVal.toUInt().toString(radix = 2)
 
         while (binStr.length < MAX_BIT_PRECISION) {
             binStr = "0$binStr"
@@ -254,7 +256,7 @@ open class GeoHash {
         val buf = StringBuilder()
         val firstBitFlag = -0x800000000000000L
         var bitsCopy = bits
-        val partialChunks = Math.ceil((significantBits / BASE32_BITS).toDouble()).toInt()
+        val partialChunks = ceil((significantBits / BASE32_BITS).toDouble()).toInt()
         for (i in 0 until partialChunks) {
             buf.append(base32[(bitsCopy.and(firstBitFlag)).ushr(59).toInt()])
             bitsCopy = bitsCopy shl BASE32_BITS
@@ -353,7 +355,7 @@ open class GeoHash {
         const val LATITUDE_MAX_ABS = 90.0
         const val LONGITUDE_MAX_ABS = 180.0
 
-        val MAX_BIT_PRECISION = java.lang.Long.bitCount(Long.MAX_VALUE) + 1// max - 64;
+        val MAX_BIT_PRECISION = Long.MAX_VALUE.countOneBits() + 1// max - 64;
         val BITS = intArrayOf(16, 8, 4, 2, 1)
     }
 }

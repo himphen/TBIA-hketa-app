@@ -41,7 +41,7 @@ open class TransportEta(
         fun fromApiModel(eta: BusEta): TransportEta {
             return TransportEta(
                 // ISO_WITHOUT_MS
-                eta = eta.eta?.toInstant()?.epochSeconds,
+                eta = eta.getEta()?.toInstant()?.epochSeconds,
                 rmkEn = eta.rmkEn,
                 rmkSc = eta.rmkSc,
                 rmkTc = eta.rmkTc,

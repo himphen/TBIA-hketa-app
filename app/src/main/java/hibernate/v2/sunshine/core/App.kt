@@ -8,15 +8,19 @@ import com.google.android.gms.ads.RequestConfiguration
 import com.himphen.logger.AndroidLogAdapter
 import com.himphen.logger.Logger
 import com.himphen.logger.PrettyFormatStrategy
+import hibernate.v2.di.koinCtbUseCaseModule
+import hibernate.v2.di.koinEtaUseCaseModule
+import hibernate.v2.di.koinGmbUseCaseModule
+import hibernate.v2.di.koinInteractorModule
+import hibernate.v2.di.koinKmbUseCaseModule
+import hibernate.v2.di.koinLrtUseCaseModule
+import hibernate.v2.di.koinMtrUseCaseModule
+import hibernate.v2.di.koinNlbUseCaseModule
+import hibernate.v2.di.koinRepositoryModule
+import hibernate.v2.di.koinUseCaseModule
 import hibernate.v2.sunshine.BuildConfig
-import hibernate.v2.sunshine.core.koin.koinCtbUseCaseModule
-import hibernate.v2.sunshine.core.koin.koinEtaUseCaseModule
-import hibernate.v2.sunshine.core.koin.koinGmbUseCaseModule
-import hibernate.v2.sunshine.core.koin.koinKmbUseCaseModule
-import hibernate.v2.sunshine.core.koin.koinLrtUseCaseModule
-import hibernate.v2.sunshine.core.koin.koinMtrUseCaseModule
-import hibernate.v2.sunshine.core.koin.koinNlbUseCaseModule
 import hibernate.v2.sunshine.util.getAdMobDeviceID
+import hibernate.v2.utils.initCommonLogger
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -44,6 +48,8 @@ class App : Application() {
                 return BuildConfig.DEBUG
             }
         })
+
+        initCommonLogger()
     }
 
     private fun initKoin() {
@@ -51,11 +57,12 @@ class App : Application() {
             androidLogger(level = if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
             androidContext(this@App)
             modules(
-                koinServiceModule,
-                koinRepositoryModule,
-                koinUIModule,
+                koinAndroidServiceModule,
+                koinAndroidRepositoryModule,
+                koinAndroidUIModule,
                 koinUseCaseModule,
                 koinInteractorModule,
+                koinRepositoryModule,
                 koinKmbUseCaseModule,
                 koinCtbUseCaseModule,
                 koinGmbUseCaseModule,

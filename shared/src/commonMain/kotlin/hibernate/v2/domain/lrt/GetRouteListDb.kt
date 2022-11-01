@@ -5,9 +5,9 @@ import hibernate.v2.database.lrt.LrtDao
 class GetRouteListDb(
     private val lrtDao: LrtDao
 ) {
-    suspend operator fun invoke() =
+    operator fun invoke() =
         lrtDao.getRouteList()
 
-    suspend operator fun invoke(enabled: Boolean) =
+    operator fun invoke(enabled: Boolean) =
         lrtDao.getRouteList()
 }

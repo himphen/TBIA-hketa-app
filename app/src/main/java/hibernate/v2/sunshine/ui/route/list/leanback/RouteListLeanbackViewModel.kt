@@ -22,6 +22,7 @@ import hibernate.v2.sunshine.model.getDirectionWithRouteText
 import hibernate.v2.sunshine.model.getLocalisedDest
 import hibernate.v2.sunshine.model.getLocalisedOrig
 import hibernate.v2.sunshine.ui.base.BaseViewModel
+import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -136,7 +137,7 @@ class RouteListLeanbackViewModel(
 
             RouteAndStopListDataHolder.setData(etaType, transportRouteList)
 
-            Logger.t("lifecycle").d("getTransportRouteList done")
+            logLifecycle("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 
@@ -190,7 +191,7 @@ class RouteListLeanbackViewModel(
                 transportRouteList
             )
 
-            Logger.t("lifecycle").d("getTransportRouteList done")
+            logLifecycle("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 
@@ -254,7 +255,7 @@ class RouteListLeanbackViewModel(
                 transportRouteList
             )
 
-            Logger.t("lifecycle").d("getTransportRouteList done")
+            logLifecycle("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 
@@ -315,7 +316,7 @@ class RouteListLeanbackViewModel(
                 transportRouteList
             )
 
-            Logger.t("lifecycle").d("getTransportRouteList done")
+            logLifecycle("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 
@@ -376,7 +377,7 @@ class RouteListLeanbackViewModel(
                 transportRouteList
             )
 
-            Logger.t("lifecycle").d("getTransportRouteList done")
+            logLifecycle("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 
@@ -431,7 +432,7 @@ class RouteListLeanbackViewModel(
 
             RouteAndStopListDataHolder.setData(etaType, transportRouteList)
 
-            Logger.t("lifecycle").d("getTransportRouteList done")
+            logLifecycle("getTransportRouteList done")
         } catch (e: Exception) {
             RouteAndStopListDataHolder.setData(etaType, mutableListOf())
 

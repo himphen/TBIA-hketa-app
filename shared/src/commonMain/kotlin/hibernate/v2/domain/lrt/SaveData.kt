@@ -1,12 +1,12 @@
 package hibernate.v2.domain.lrt
 
-import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.lrt.LrtRoute
 import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.database.lrt.LrtDao
-import kotlinx.coroutines.Dispatchers
+import hibernate.v2.utils.CommonLogger
+import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
@@ -25,7 +25,7 @@ class SaveData(
 
         supervisorScope {
             listOf(
-                async(Dispatchers.IO) {
+                async {
                     data.route?.let { list ->
                         list.toMutableList()
                             .apply { sortWith(LrtRoute::compareTo) }
@@ -33,19 +33,19 @@ class SaveData(
                                 lrtDao.addRouteList(it)
                             }
                     }
-                    Logger.t("lifecycle").d("LrtInteractor saveRouteList done")
+                    logLifecycle("LrtInteractor saveRouteList done")
                 },
-                async(Dispatchers.IO) {
+                async {
                     data.routeStop?.let { list ->
                         lrtDao.addRouteStopList(list)
                     }
-                    Logger.t("lifecycle").d("LrtInteractor saveRouteStopList done")
+                    logLifecycle("LrtInteractor saveRouteStopList done")
                 },
-                async(Dispatchers.IO) {
+                async {
                     data.stop?.let { list ->
                         lrtDao.addStopList(list)
                     }
-                    Logger.t("lifecycle").d("LrtInteractor saveStopList done")
+                    logLifecycle("LrtInteractor saveStopList done")
                 }
             ).awaitAll()
         }

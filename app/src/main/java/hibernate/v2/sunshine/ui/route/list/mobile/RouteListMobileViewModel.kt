@@ -18,6 +18,7 @@ import hibernate.v2.sunshine.dataholder.RouteListDataHolder
 import hibernate.v2.sunshine.model.getLocalisedDest
 import hibernate.v2.sunshine.model.getLocalisedOrig
 import hibernate.v2.sunshine.ui.base.BaseViewModel
+import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -63,7 +64,7 @@ class RouteListMobileViewModel(
     private suspend fun getKmbRouteList() {
         val etaType = EtaType.KMB
         if (RouteListDataHolder.hasData(etaType)) {
-            Logger.t("lifecycle").d("getKmbRouteList hasData")
+            logLifecycle("getKmbRouteList hasData")
             return
         }
 
@@ -72,7 +73,7 @@ class RouteListMobileViewModel(
                 .map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.t("lifecycle").d("getKmbRouteList done")
+            logLifecycle("getKmbRouteList done")
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
@@ -82,7 +83,7 @@ class RouteListMobileViewModel(
 
     private suspend fun getCtbRouteList(etaType: EtaType) {
         if (RouteListDataHolder.hasData(etaType)) {
-            Logger.t("lifecycle").d("getCtbRouteList hasData")
+            logLifecycle("getCtbRouteList hasData")
             return
         }
 
@@ -91,7 +92,7 @@ class RouteListMobileViewModel(
                 .map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.t("lifecycle").d("getCtbRouteList done")
+            logLifecycle("getCtbRouteList done")
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
@@ -101,7 +102,7 @@ class RouteListMobileViewModel(
 
     private suspend fun getGmbRouteList(etaType: EtaType) {
         if (RouteListDataHolder.hasData(etaType)) {
-            Logger.t("lifecycle").d("getGmbRouteList hasData")
+            logLifecycle("getGmbRouteList hasData")
             return
         }
 
@@ -116,7 +117,7 @@ class RouteListMobileViewModel(
             val allRouteList = gmbInteractor.getRouteListDb(region).map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.t("lifecycle").d("getGmbRouteList done")
+            logLifecycle("getGmbRouteList done")
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
@@ -127,7 +128,7 @@ class RouteListMobileViewModel(
     private suspend fun getMTRRouteList() {
         val etaType = EtaType.MTR
         if (RouteListDataHolder.hasData(etaType)) {
-            Logger.t("lifecycle").d("getMTRRouteList hasData")
+            logLifecycle("getMTRRouteList hasData")
             return
         }
 
@@ -135,7 +136,7 @@ class RouteListMobileViewModel(
             val allRouteList = mtrInteractor.getRouteListDb(true).map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.t("lifecycle").d("getMTRRouteList done")
+            logLifecycle("getMTRRouteList done")
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
@@ -146,7 +147,7 @@ class RouteListMobileViewModel(
     private suspend fun getLRTRouteList() {
         val etaType = EtaType.LRT
         if (RouteListDataHolder.hasData(etaType)) {
-            Logger.t("lifecycle").d("getLRTRouteList hasData")
+            logLifecycle("getLRTRouteList hasData")
             return
         }
 
@@ -154,7 +155,7 @@ class RouteListMobileViewModel(
             val allRouteList = lrtInteractor.getRouteListDb(true).map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.t("lifecycle").d("getLRTRouteList done")
+            logLifecycle("getLRTRouteList done")
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
@@ -165,7 +166,7 @@ class RouteListMobileViewModel(
     private suspend fun getNlbRouteList() {
         val etaType = EtaType.NLB
         if (RouteListDataHolder.hasData(etaType)) {
-            Logger.t("lifecycle").d("getNLBRouteList hasData")
+            logLifecycle("getNLBRouteList hasData")
             return
         }
 
@@ -174,7 +175,7 @@ class RouteListMobileViewModel(
                 .map { it.toTransportModel() }
             RouteListDataHolder.setData(etaType, allRouteList)
 
-            Logger.t("lifecycle").d("getNLBRouteList done")
+            logLifecycle("getNLBRouteList done")
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 

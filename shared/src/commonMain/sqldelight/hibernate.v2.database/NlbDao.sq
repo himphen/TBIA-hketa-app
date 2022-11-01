@@ -28,7 +28,8 @@ CREATE TABLE nlb_route (
     orig_sc     TEXT NOT NULL,
     dest_en     TEXT NOT NULL,
     dest_tc     TEXT NOT NULL,
-    dest_sc     TEXT NOT NULL
+    dest_sc     TEXT NOT NULL,
+    nlb_route_no TEXT NOT NULL
 );
 
 getRoute:
@@ -38,7 +39,7 @@ getAllRouteList:
 SELECT * FROM nlb_route;
 
 addRouteList:
-INSERT INTO nlb_route(nlb_route_id, orig_en, orig_tc, orig_sc, dest_en, dest_tc, dest_sc)
+INSERT INTO nlb_route(nlb_route_id, orig_en, orig_tc, orig_sc, dest_en, dest_tc, dest_sc, nlb_route_no)
 VALUES ?;
 
 clearRouteList:

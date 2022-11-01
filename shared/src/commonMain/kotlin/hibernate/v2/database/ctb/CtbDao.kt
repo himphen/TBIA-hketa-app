@@ -13,7 +13,7 @@ import hibernatev2database.Ctb_stop
 
 class CtbDao(databaseDriverFactory: DatabaseDriverFactory) {
     private val driver = databaseDriverFactory.createDriver()
-    private val database = DatabaseFactory.createDatabase(driver)
+    private val database = databaseDriverFactory.createDatabase()
     private val queries = database.ctbDaoQueries
 
     fun addStopList(list: List<CtbStop>) {
@@ -129,10 +129,10 @@ class CtbDao(databaseDriverFactory: DatabaseDriverFactory) {
         routeStopList.forEachIndexed { index, it ->
             bindArgs.add(it.routeId)
             bindArgs.add(it.bound.value)
-            bindArgs.add(it.serviceType)
+            bindArgs.add(it.company.value)
 
             var where =
-                "(ctb_route_id = (?) AND ctb_route_bound = (?) AND ctb_route_service_type = (?))"
+                "(ctb_route_id = (?) AND ctb_route_bound = (?) AND ctb_route_company = (?))"
 
             if (routeStopList.lastIndex != index) {
                 where += " OR "
@@ -141,9 +141,9 @@ class CtbDao(databaseDriverFactory: DatabaseDriverFactory) {
             mainQuery += where
         }
 
-        val cursor = driver.executeQuery(1, mainQuery, bindArgs.size) {
+        val cursor = driver.executeQuery(null, mainQuery, bindArgs.size) {
             bindArgs.forEachIndexed { index, arg ->
-                bindString(index, arg)
+                bindString(index + 1, arg)
             }
         }
 

@@ -2,7 +2,6 @@ package hibernate.v2.sunshine.ui.bookmark.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.domain.eta.EtaInteractor
@@ -12,6 +11,7 @@ import hibernate.v2.model.transport.eta.MTRTransportEta
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.model.transport.eta.filterCircularStop
 import hibernate.v2.sunshine.ui.base.BaseViewModel
+import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -74,7 +74,7 @@ class BookmarkHomeViewModel(
 
     fun updateEtaList(): Job {
         return viewModelScope.launch(Dispatchers.IO + etaExceptionHandler) {
-            Logger.t("lifecycle").d("getEtaList")
+            logLifecycle("getEtaList")
             val etaCardList = savedEtaCardList.value
             if (etaCardList == null || etaCardList.isEmpty()) return@launch
 
@@ -227,7 +227,7 @@ class BookmarkHomeViewModel(
                 }
             }.awaitAll()
 
-            Logger.t("lifecycle").d("getEtaList done")
+            logLifecycle("getEtaList done")
             savedEtaCardList.postValue(result.values.toList())
         }
     }

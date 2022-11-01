@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.model.Card
 import hibernate.v2.sunshine.databinding.ItemBottomSheetRouteBinding
 import hibernate.v2.sunshine.model.getDestDirectionText
+import hibernate.v2.sunshine.model.getLocalisedOrig
 import hibernate.v2.sunshine.ui.bookmark.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.bookmark.home.mobile.view.BaseEtaViewHolder
 import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView
@@ -62,7 +63,8 @@ class RouteListAdapter(val onRouteSelected: (Card.EtaCard) -> Unit) :
             viewBinding.apply {
                 applyRouteNumberContainer(card, routeNumberContainer)
 
-                routeDirectionTv.text = card.route.getDestDirectionText(context)
+                routeDestTv.text = card.route.getDestDirectionText(context)
+                routeOrigTv.text = card.route.getLocalisedOrig(context)
 
                 (etaTimeRv.adapter as EtaTimeAdapter).apply {
                     val etaListWithoutFirstItem = card.etaList.toMutableList().apply {

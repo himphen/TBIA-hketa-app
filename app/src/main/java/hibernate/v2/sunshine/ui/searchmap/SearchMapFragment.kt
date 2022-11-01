@@ -57,6 +57,7 @@ import hibernate.v2.sunshine.util.launchPeriodicAsync
 import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.visible
 import hibernate.v2.utils.getTimeDiffFromNowInMin
+import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -139,7 +140,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            Logger.t("lifecycle").d("locationCallback")
+            logLifecycle("locationCallback")
             zoomToMyLocation(locationResult.lastLocation)
         }
     }
@@ -160,7 +161,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
     private fun initEvent() {
         viewModel.startRefreshEtaJob.onEach {
-            Logger.t("lifecycle").d("startRefreshEtaJob onEach")
+            logLifecycle("startRefreshEtaJob onEach")
             startRefreshEtaJob()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -231,6 +232,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
         }
 
         viewModel.etaUpdateError.onEach {
+            Logger.e(it, "etaUpdateError")
             Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -244,7 +246,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                Logger.t("lifecycle").d("repeatOnLifecycle viewModel.lastUpdatedTime")
+                logLifecycle("repeatOnLifecycle viewModel.lastUpdatedTime")
                 tickerFlow(ETA_LAST_UPDATED_REFRESH_TIME.milliseconds).collect {
                     viewModel.lastUpdatedTime.value?.let { lastUpdatedTime ->
                         if (lastUpdatedTime > 0) {
@@ -273,7 +275,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private fun getCurrentLocationInMap() {
-        Logger.t("lifecycle").d("getCurrentLocationInMap")
+        logLifecycle("getCurrentLocationInMap")
         val activity = activity ?: return
 
         val fineLocationPermissionGranted = ActivityCompat.checkSelfPermission(
@@ -296,10 +298,10 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
             return
         }
 
-        Logger.t("lifecycle").d("getCurrentLocationInMap has permission")
+        logLifecycle("getCurrentLocationInMap has permission")
 
         fusedLocationClient?.lastLocation?.addOnSuccessListener(activity) {
-            Logger.t("lifecycle").d("lastLocation?.addOnSuccessListener")
+            logLifecycle("lastLocation?.addOnSuccessListener")
             zoomToMyLocation(it)
         }
 
@@ -582,13 +584,13 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private fun showStopListOnBottomSheet(list: List<SearchMapStop>?) {
-        Logger.t("lifecycle").d("showStopListOnBottomSheet")
+        logLifecycle("showStopListOnBottomSheet")
         stopListAdapter.submitList(null)
         stopListAdapter.submitList(list)
     }
 
     private fun showRouteListOnBottomSheet(list: List<Card.EtaCard>) {
-        Logger.t("lifecycle").d("showRouteListOnBottomSheet")
+        logLifecycle("showRouteListOnBottomSheet")
         val temp = list.map { etaCard ->
             val temp = etaCard.etaList.filter { eta: TransportEta ->
                 eta.eta?.let { etaDate ->
@@ -642,13 +644,13 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private fun stopRequestLocation() {
-        Logger.t("lifecycle").d("stopLocationUpdates")
+        logLifecycle("stopLocationUpdates")
         fusedLocationClient?.removeLocationUpdates(locationCallback)
     }
 
     private fun startRefreshEtaJob() {
         if (routeListAdapter.list.isNotEmpty()) {
-            Logger.t("lifecycle").d("startRefreshEtaJob")
+            logLifecycle("startRefreshEtaJob")
             refreshEtaJob = lifecycleScope.launchPeriodicAsync(GeneralUtils.ETA_REFRESH_TIME) {
                 lifecycleScope.launch {
                     viewModel.etaRequested.emit(true)
@@ -685,7 +687,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     }
 
     private fun zoomToMyLocation(location: Location?) {
-        Logger.t("lifecycle").d("zoomToMyLocation location: $location")
+        logLifecycle("zoomToMyLocation location: $location")
         if (location == null) return
         googleMap?.animateCamera(
             CameraUpdateFactory.newLatLng(LatLng(location.latitude, location.longitude)),

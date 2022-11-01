@@ -25,6 +25,7 @@ data class EtaNlbDetails(
 
             val routeEntity = NlbRouteEntity(
                 routeId = item.nlb_route_id!!,
+                routeNo = item.nlb_route_no!!,
                 origEn = item.orig_en!!,
                 origTc = item.orig_tc!!,
                 origSc = item.orig_sc!!,

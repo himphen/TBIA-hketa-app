@@ -31,8 +31,8 @@
 
     <string name="text_eta_card_classic_mtr_station">%1$s站</string>
 
-    <string name="text_settings_eta_destination">➔ %1$s</string>
-    <string name="text_settings_eta_destination_with_sp">➔ %1$s (%2$s)</string>
+    <string name="text_settings_eta_destination">%1$s</string>
+    <string name="text_settings_eta_destination_with_sp">%1$s (%2$s)</string>
 
     <string name="text_add_eta_destination">%1$s號線 - %2$s ➔ %3$s</string>
     <string name="text_add_eta_destination_with_sp">%1$s號線 (特別線 %2$s) - %3$s ➔ %4$s</string>
@@ -116,7 +116,7 @@
     <string name="dialog_lang_title" translatable="false">@string/title_settings_language</string>
 
     <string name="add_card_route_text">尚德</string>
-    <string name="add_card_route_to_text">往</string>
+    <string name="add_card_route_to_text">➔</string>
     <string name="add_card_route_from_text">由</string>
 
     <string name="demo_card_route_number">296A</string>

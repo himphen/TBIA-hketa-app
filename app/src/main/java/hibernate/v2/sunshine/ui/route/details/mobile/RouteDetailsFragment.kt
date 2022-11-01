@@ -32,7 +32,6 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.SphericalUtil
 import com.google.maps.android.ktx.awaitMap
-import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.model.transport.RouteDetailsStop
 import hibernate.v2.model.transport.TransportStop
@@ -53,6 +52,7 @@ import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import hibernate.v2.sunshine.util.smoothSnapToPosition
 import hibernate.v2.sunshine.util.visible
+import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -111,7 +111,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
     }
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            Logger.t("lifecycle").d("locationCallback")
+            logLifecycle("locationCallback")
             zoomToNearestStop(locationResult.lastLocation)
 
             stopRequestLocation()
@@ -295,7 +295,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
 
         viewModel.etaUpdateError.onEach {
             adapter.setEtaData(emptyList())
-            Logger.t("lifecycle").d("etaUpdateError: " + it.message)
+            logLifecycle("etaUpdateError: " + it.message)
             Toast.makeText(
                 context,
                 getString(R.string.text_eta_loading_failed, 400),
@@ -319,7 +319,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
 
     private fun startRefreshEtaJob() {
         if (refreshEtaJob == null) {
-            Logger.t("lifecycle").d("startRefreshEtaJob")
+            logLifecycle("startRefreshEtaJob")
             refreshEtaJob = lifecycleScope.launchPeriodicAsync(GeneralUtils.ETA_REFRESH_TIME) {
                 lifecycleScope.launch {
                     viewModel.etaRequested.emit(true)
@@ -329,7 +329,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
     }
 
     private fun stopRefreshEtaJob() {
-        Logger.t("lifecycle").d("stopRefreshEtaJob")
+        logLifecycle("stopRefreshEtaJob")
         lifecycleScope.launch {
             viewModel.etaRequested.emit(false)
         }
@@ -439,7 +439,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
     }
 
     private fun getCurrentLocationInMap(isTry: Boolean) {
-        Logger.t("lifecycle").d("getCurrentLocationInMap")
+        logLifecycle("getCurrentLocationInMap")
         val activity = activity ?: return
 
         val fineLocationPermissionGranted = ActivityCompat.checkSelfPermission(
@@ -464,7 +464,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
             return
         }
 
-        Logger.t("lifecycle").d("getCurrentLocationInMap has permission")
+        logLifecycle("getCurrentLocationInMap has permission")
         fusedLocationClient?.requestLocationUpdates(
             locationRequest,
             locationCallback,
@@ -475,7 +475,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
     }
 
     private fun zoomToNearestStop(location: Location?) {
-        Logger.t("lifecycle").d("zoomToMyLocation location: $location")
+        logLifecycle("zoomToMyLocation location: $location")
         if (location == null) return
 
         var shortestDistance = 500.0

@@ -22,7 +22,7 @@ data class LrtRouteEntity(
     val destSc: String,
     val routeInfoColor: String,
     val routeInfoIsEnabled: Boolean,
-) : TransportHashable, Comparable<LrtRouteEntity>, BaseRouteEntity() {
+) : TransportHashable, BaseRouteEntity() {
     companion object {
         fun convertFrom(item: Lrt_route): LrtRouteEntity {
             return LrtRouteEntity(
@@ -65,17 +65,4 @@ data class LrtRouteEntity(
     }
 
     fun routeHashId() = routeHashId(Company.LRT, routeId, bound, serviceType)
-
-    override fun compareTo(other: LrtRouteEntity): Int {
-        parseRouteNumber(routeId)
-        other.parseRouteNumber(other.routeId)
-
-        val routeCompare = routeComponent.compareTo(other.routeComponent)
-        if (routeCompare != 0) return routeCompare
-
-        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
-        if (serviceTypeCompare != 0) return serviceTypeCompare
-
-        return bound.compareTo(other.bound)
-    }
 }

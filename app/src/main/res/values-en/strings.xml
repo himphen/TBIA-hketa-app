@@ -30,8 +30,8 @@
 
     <string name="text_eta_card_classic_mtr_station">%1$s</string>
 
-    <string name="text_settings_eta_destination">➔ %1$s</string>
-    <string name="text_settings_eta_destination_with_sp">➔ %1$s (%2$s)</string>
+    <string name="text_settings_eta_destination">%1$s</string>
+    <string name="text_settings_eta_destination_with_sp">%1$s (%2$s)</string>
 
     <string name="text_add_eta_destination">No. %1$s - %2$s ➔ %3$s</string>
     <string name="text_add_eta_destination_with_sp">No. %1$s (Special Route %2$s) - %3$s ➔ %4$s</string>

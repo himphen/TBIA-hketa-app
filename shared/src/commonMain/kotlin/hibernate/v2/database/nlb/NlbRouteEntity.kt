@@ -9,13 +9,14 @@ import hibernatev2database.Nlb_route
 
 data class NlbRouteEntity(
     val routeId: String,
+    val routeNo: String,
     val origEn: String,
     val origTc: String,
     val origSc: String,
     val destEn: String,
     val destTc: String,
     val destSc: String,
-) : TransportHashable, Comparable<NlbRouteEntity>, BaseRouteEntity() {
+) : TransportHashable, BaseRouteEntity() {
     val bound = Bound.UNKNOWN
 
     val serviceType = "1"
@@ -26,6 +27,7 @@ data class NlbRouteEntity(
         fun convertFrom(item: Nlb_route): NlbRouteEntity {
             return NlbRouteEntity(
                 routeId = item.nlb_route_id,
+                routeNo = item.nlb_route_no,
                 origEn = item.orig_en,
                 origTc = item.orig_tc,
                 origSc = item.orig_sc,
@@ -39,7 +41,7 @@ data class NlbRouteEntity(
     fun toTransportModel(): TransportRoute {
         return TransportRoute(
             routeId = routeId,
-            routeNo = routeId,
+            routeNo = routeNo,
             bound = bound,
             serviceType = serviceType,
             origEn = origEn,
@@ -53,17 +55,4 @@ data class NlbRouteEntity(
     }
 
     fun routeHashId() = routeHashId(Company.NLB, routeId, bound, serviceType)
-
-    override fun compareTo(other: NlbRouteEntity): Int {
-        parseRouteNumber(routeId)
-        other.parseRouteNumber(other.routeId)
-
-        val routeCompare = routeComponent.compareTo(other.routeComponent)
-        if (routeCompare != 0) return routeCompare
-
-        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
-        if (serviceTypeCompare != 0) return serviceTypeCompare
-
-        return bound.compareTo(other.bound)
-    }
 }

@@ -5,7 +5,6 @@ import hibernate.v2.api.model.transport.kmb.KmbRoute
 import hibernate.v2.api.model.transport.kmb.KmbRouteStop
 import hibernate.v2.api.model.transport.kmb.KmbStop
 import hibernate.v2.database.DatabaseDriverFactory
-import hibernate.v2.database.DatabaseFactory
 import hibernatev2database.Kmb_route
 import hibernatev2database.Kmb_route_stop
 import hibernatev2database.Kmb_stop
@@ -14,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 class KmbDao(databaseDriverFactory: DatabaseDriverFactory) {
     private val driver = databaseDriverFactory.createDriver()
-    private val database = DatabaseFactory.createDatabase(driver)
+    private val database = databaseDriverFactory.createDatabase()
     private val queries = database.kmbDaoQueries
 
     fun addStopList(list: List<KmbStop>) {
@@ -144,9 +143,9 @@ class KmbDao(databaseDriverFactory: DatabaseDriverFactory) {
             mainQuery += where
         }
 
-        val cursor = driver.executeQuery(1, mainQuery, bindArgs.size) {
+        val cursor = driver.executeQuery(null, mainQuery, bindArgs.size) {
             bindArgs.forEachIndexed { index, arg ->
-                bindString(index, arg)
+                bindString(index + 1, arg)
             }
         }
 

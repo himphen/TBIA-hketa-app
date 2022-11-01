@@ -16,7 +16,7 @@ data class BusEta(
     @SerialName("dir")
     val bound: Bound? = null,
     @SerialName("eta")
-    val eta: String? = null,
+    private val eta: String? = null,
     @SerialName("rmk_en")
     val rmkEn: String? = null,
     @SerialName("rmk_sc")
@@ -29,4 +29,10 @@ data class BusEta(
     val seq: Int? = null,
     @SerialName("service_type")
     val serviceType: Int? = null
-)
+) {
+    fun getEta(): String? {
+        if (eta == "") return null
+
+        return eta
+    }
+}

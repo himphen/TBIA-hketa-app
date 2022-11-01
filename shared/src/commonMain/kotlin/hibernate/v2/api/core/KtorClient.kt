@@ -46,6 +46,6 @@ object KtorClient {
 
 class KtorLogger : Logger {
     override fun log(message: String) {
-        CommonLogger.log(CommonLogger.INFO, "api", message, null)
+        CommonLogger.i(tag = "api") { message }
     }
 }

@@ -25,7 +25,7 @@ data class MtrRouteEntity(
     val routeInfoNameSc: String,
     val routeInfoColor: String,
     val routeInfoIsEnabled: Boolean,
-) : TransportHashable, Comparable<MtrRouteEntity>, BaseRouteEntity() {
+) : TransportHashable, BaseRouteEntity() {
     companion object {
         fun convertFrom(route: Mtr_route): MtrRouteEntity {
             return MtrRouteEntity(
@@ -73,14 +73,4 @@ data class MtrRouteEntity(
     }
 
     fun routeHashId() = routeHashId(Company.MTR, routeId, bound, serviceType)
-
-    override fun compareTo(other: MtrRouteEntity): Int {
-        val routeIdCompare = routeId.compareTo(other.routeId)
-        if (routeIdCompare != 0) return routeIdCompare
-
-        val boundCompare = bound.compareTo(other.bound)
-        if (boundCompare != 0) return boundCompare
-
-        return serviceType.compareTo(other.serviceType)
-    }
 }

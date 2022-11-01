@@ -1,4 +1,4 @@
-package hibernate.v2.sunshine.core.koin
+package hibernate.v2.di
 
 import hibernate.v2.domain.gmb.GetRouteEtaCardList
 import hibernate.v2.domain.gmb.GetRouteListDb

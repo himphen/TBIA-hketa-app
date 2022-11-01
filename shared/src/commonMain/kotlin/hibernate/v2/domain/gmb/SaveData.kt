@@ -1,12 +1,12 @@
 package hibernate.v2.domain.gmb
 
-import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.gmb.GmbRoute
 import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.database.gmb.GmbDao
-import kotlinx.coroutines.Dispatchers
+import hibernate.v2.utils.CommonLogger
+import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
@@ -25,7 +25,7 @@ class SaveData(
 
         supervisorScope {
             listOf(
-                async(Dispatchers.IO) {
+                async {
                     data.route?.let { list ->
                         list.toMutableList()
                             .apply { sortWith(GmbRoute::compareTo) }
@@ -33,19 +33,19 @@ class SaveData(
                                 gmbDao.addRouteList(it)
                             }
                     }
-                    Logger.t("lifecycle").d("GmbRepository saveRouteList done")
+                    logLifecycle("GmbRepository saveRouteList done")
                 },
-                async(Dispatchers.IO) {
+                async {
                     data.routeStop?.let { list ->
                         gmbDao.addRouteStopList(list)
                     }
-                    Logger.t("lifecycle").d("GmbRepository saveRouteStopList done")
+                    logLifecycle("GmbRepository saveRouteStopList done")
                 },
-                async(Dispatchers.IO) {
+                async {
                     data.stop?.let { list ->
                         gmbDao.addStopList(list)
                     }
-                    Logger.t("lifecycle").d("GmbRepository saveStopList done")
+                    logLifecycle("GmbRepository saveStopList done")
                 }
             ).awaitAll()
         }

@@ -9,7 +9,7 @@ import hibernate.v2.database.runGettingLastId
 class EtaDao(databaseDriverFactory: DatabaseDriverFactory) {
 
     private val driver = databaseDriverFactory.createDriver()
-    private val database = DatabaseFactory.createDatabase(driver)
+    private val database = databaseDriverFactory.createDatabase()
     private val queries = database.etaDaoQueries
 
     fun getAllKmbEtaWithOrdering(): List<EtaKmbDetails> {

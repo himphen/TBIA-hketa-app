@@ -34,6 +34,7 @@ import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.toggleSlideUp
 import hibernate.v2.sunshine.util.visible
 import hibernate.v2.utils.getTimeDiffFromNowInMin
+import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -130,7 +131,7 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                Logger.t("lifecycle").d("repeatOnLifecycle ETA_REFRESH_TIME")
+                logLifecycle("repeatOnLifecycle ETA_REFRESH_TIME")
                 tickerFlow(ETA_REFRESH_TIME.milliseconds).collect {
                     viewModel.etaRequested.emit(true)
                 }
@@ -139,7 +140,7 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                Logger.t("lifecycle").d("repeatOnLifecycle viewModel.lastUpdatedTime")
+                logLifecycle("repeatOnLifecycle viewModel.lastUpdatedTime")
                 tickerFlow(ETA_LAST_UPDATED_REFRESH_TIME.milliseconds).collect {
                     viewModel.lastUpdatedTime.value?.let { lastUpdatedTime ->
                         viewBinding?.lastUpdatedTv?.text = getString(

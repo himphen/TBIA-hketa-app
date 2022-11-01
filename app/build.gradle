@@ -115,6 +115,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation "com.google.firebase:firebase-config-ktx"
     implementation 'com.google.android.gms:play-services-ads:20.6.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.0'
 
     // https://github.com/InsertKoinIO/koin
     implementation "io.insert-koin:koin-android:$koin_version"

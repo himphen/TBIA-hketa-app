@@ -20,7 +20,7 @@ data class GmbRouteEntity(
     val destSc: String,
     val serviceType: String,
     val region: GmbRegion,
-) : TransportHashable, Comparable<GmbRouteEntity>, BaseRouteEntity() {
+) : TransportHashable, BaseRouteEntity() {
 
     companion object {
         fun convertFrom(item: Gmb_route): GmbRouteEntity {
@@ -58,17 +58,4 @@ data class GmbRouteEntity(
     }
 
     fun routeHashId() = routeHashId(Company.GMB, routeId, bound, serviceType)
-
-    override fun compareTo(other: GmbRouteEntity): Int {
-        parseRouteNumber(routeNo)
-        other.parseRouteNumber(routeNo)
-
-        val routeCompare = routeComponent.compareTo(other.routeComponent)
-        if (routeCompare != 0) return routeCompare
-
-        val serviceTypeCompare = serviceType.compareTo(other.serviceType)
-        if (serviceTypeCompare != 0) return serviceTypeCompare
-
-        return bound.compareTo(other.bound)
-    }
 }

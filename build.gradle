@@ -4,7 +4,6 @@ buildscript {
         kotlin_version = '1.7.20'
         lifecycle_version = '2.4.1'
         koin_version = '3.1.6'
-        room_version = '2.4.2'
         leanback_version = '1.2.0-alpha02'
         leanback_preference_version = '1.2.0-alpha02'
     }

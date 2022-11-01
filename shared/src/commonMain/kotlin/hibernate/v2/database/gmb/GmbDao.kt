@@ -11,9 +11,9 @@ import hibernatev2database.Gmb_route
 import hibernatev2database.Gmb_route_stop
 import hibernatev2database.Gmb_stop
 
-class GmbDao(val databaseDriverFactory: DatabaseDriverFactory) {
+class GmbDao(databaseDriverFactory: DatabaseDriverFactory) {
     private val driver = databaseDriverFactory.createDriver()
-    private val database = DatabaseFactory.createDatabase(driver)
+    private val database = databaseDriverFactory.createDatabase()
     private val queries = database.gmbDaoQueries
 
     fun addStopList(list: List<GmbStop>) {
@@ -143,9 +143,9 @@ class GmbDao(val databaseDriverFactory: DatabaseDriverFactory) {
             mainQuery += where
         }
 
-        val cursor = driver.executeQuery(1, mainQuery, bindArgs.size) {
+        val cursor = driver.executeQuery(null, mainQuery, bindArgs.size) {
             bindArgs.forEachIndexed { index, arg ->
-                bindString(index, arg)
+                bindString(index + 1, arg)
             }
         }
 
@@ -153,15 +153,15 @@ class GmbDao(val databaseDriverFactory: DatabaseDriverFactory) {
         while (cursor.next()) {
             val gmbRoute = Gmb_route(
                 gmb_route_id = cursor.getString(0)!!,
-                gmb_route_bound = Bound.from(cursor.getString(1)),
-                gmb_route_service_type = cursor.getString(2)!!,
-                orig_en = cursor.getString(3)!!,
-                orig_tc = cursor.getString(4)!!,
-                orig_sc = cursor.getString(5)!!,
-                dest_en = cursor.getString(6)!!,
-                dest_tc = cursor.getString(7)!!,
-                dest_sc = cursor.getString(8)!!,
-                gmb_route_no = cursor.getString(9)!!,
+                gmb_route_no = cursor.getString(1)!!,
+                gmb_route_bound = Bound.from(cursor.getString(2)),
+                gmb_route_service_type = cursor.getString(3)!!,
+                orig_en = cursor.getString(4)!!,
+                orig_tc = cursor.getString(5)!!,
+                orig_sc = cursor.getString(6)!!,
+                dest_en = cursor.getString(7)!!,
+                dest_tc = cursor.getString(8)!!,
+                dest_sc = cursor.getString(9)!!,
                 region = GmbRegion.from(cursor.getString(10)),
             )
             result.add(GmbRouteEntity.convertFrom(gmbRoute))

@@ -1,12 +1,12 @@
 package hibernate.v2.domain.kmb
 
-import com.himphen.logger.Logger
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.kmb.KmbRoute
 import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.database.kmb.KmbDao
-import kotlinx.coroutines.Dispatchers
+import hibernate.v2.utils.CommonLogger
+import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
@@ -25,7 +25,7 @@ class SaveData(
 
         supervisorScope {
             listOf(
-                async(Dispatchers.IO) {
+                async {
                     data.route?.let { list ->
                         list.toMutableList()
                             .apply { sortWith(KmbRoute::compareTo) }
@@ -33,19 +33,19 @@ class SaveData(
                                 kmbDao.addRouteList(it)
                             }
                     }
-                    Logger.t("lifecycle").d("KmbRepository saveRouteList done")
+                    logLifecycle("KmbRepository saveRouteList done")
                 },
-                async(Dispatchers.IO) {
+                async {
                     data.routeStop?.let { list ->
                         kmbDao.addRouteStopList(list)
                     }
-                    Logger.t("lifecycle").d("KmbRepository saveRouteStopList done")
+                    logLifecycle("KmbRepository saveRouteStopList done")
                 },
-                async(Dispatchers.IO) {
+                async {
                     data.stop?.let { list ->
                         kmbDao.addStopList(list)
                     }
-                    Logger.t("lifecycle").d("KmbRepository saveStopList done")
+                    logLifecycle("KmbRepository saveStopList done")
                 }
             ).awaitAll()
         }

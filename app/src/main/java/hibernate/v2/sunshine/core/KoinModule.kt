@@ -1,15 +1,6 @@
 package hibernate.v2.sunshine.core
 
-import hibernate.v2.api.repository.CoreRepository
 import hibernate.v2.database.DatabaseDriverFactory
-import hibernate.v2.database.ctb.CtbDao
-import hibernate.v2.database.eta.EtaDao
-import hibernate.v2.database.eta.EtaOrderDao
-import hibernate.v2.database.gmb.GmbDao
-import hibernate.v2.database.kmb.KmbDao
-import hibernate.v2.database.lrt.LrtDao
-import hibernate.v2.database.mtr.MtrDao
-import hibernate.v2.database.nlb.NlbDao
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel
 import hibernate.v2.sunshine.ui.bookmark.home.BookmarkHomeViewModel
@@ -25,12 +16,12 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-val koinServiceModule: Module = module {
+val koinAndroidServiceModule: Module = module {
     single { SharedPreferencesManager(androidContext()) }
     single { AdManager(get()) }
 }
 
-val koinUIModule: Module = module {
+val koinAndroidUIModule: Module = module {
     viewModel { BookmarkHomeViewModel(get()) }
     viewModel { OnboardingViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { BookmarkEditViewModel(get()) }
@@ -55,17 +46,21 @@ val koinUIModule: Module = module {
     }
 }
 
-val koinRepositoryModule: Module = module {
-    single { DatabaseDriverFactory(androidContext()) }
-    single { KmbDao(get()) }
-    single { CtbDao(get()) }
-    single { GmbDao(get()) }
-    single { MtrDao(get()) }
-    single { LrtDao(get()) }
-    single { NlbDao(get()) }
-    single { EtaDao(get()) }
-    single { EtaOrderDao(get()) }
-    single { CoreRepository() }
+val koinAndroidRepositoryModule: Module = module {
+    single {
+        val db = DatabaseDriverFactory(androidContext())
+        db.migrateCallbacks = hashMapOf(
+            2 to {
+                val manager = get<SharedPreferencesManager>()
+                manager.transportDataChecksum =
+                    manager.transportDataChecksum?.apply {
+                        nlb = null
+                    }
+            }
+        )
+
+        return@single db
+    }
 }
 
 val koinInteractorModule: Module = module {

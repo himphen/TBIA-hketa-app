@@ -16,6 +16,7 @@ import hibernate.v2.domain.mtr.MtrInteractor
 import hibernate.v2.domain.nlb.NlbInteractor
 import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.ui.base.BaseViewModel
+import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -203,37 +204,37 @@ class OnboardingViewModel(
     }
 
     private suspend fun downloadKmbTransportData() {
-        Logger.t("lifecycle").d("downloadKmbTransportData start")
+        logLifecycle("downloadKmbTransportData start")
         kmbInteractor.initDatabase()
         kmbInteractor.saveData()
     }
 
     private suspend fun downloadCtbTransportData() {
-        Logger.t("lifecycle").d("downloadNCTransportData start")
+        logLifecycle("downloadNCTransportData start")
         ctbInteractor.initDatabase()
         ctbInteractor.saveData()
     }
 
     private suspend fun downloadGmbTransportData() {
-        Logger.t("lifecycle").d("downloadGmbTransportData start")
+        logLifecycle("downloadGmbTransportData start")
         gmbInteractor.initDatabase()
         gmbInteractor.saveData()
     }
 
     private suspend fun downloadMtrTransportData() {
-        Logger.t("lifecycle").d("downloadMTRTransportData start")
+        logLifecycle("downloadMTRTransportData start")
         mtrInteractor.initDatabase()
         mtrInteractor.saveData()
     }
 
     private suspend fun downloadLrtTransportData() {
-        Logger.t("lifecycle").d("downloadLRTTransportData start")
+        logLifecycle("downloadLRTTransportData start")
         lrtInteractor.initDatabase()
         lrtInteractor.saveData()
     }
 
     private suspend fun downloadNlbTransportData() {
-        Logger.t("lifecycle").d("downloadNLBTransportData start")
+        logLifecycle("downloadNLBTransportData start")
         nlbRepository.initDatabase()
         nlbRepository.saveData()
     }
