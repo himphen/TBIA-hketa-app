@@ -5,17 +5,17 @@ import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.ctb.CtbRoute
 import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.database.ctb.CtbDao
-import hibernate.v2.utils.CommonLogger
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
 
 class SaveData(
+    private val dataRepository: DataRepository,
     private val ctbDao: CtbDao
 ) {
     suspend operator fun invoke() {
-        val result = ApiSafeCall { DataRepository.getCtbData() }
+        val result = ApiSafeCall { dataRepository.getCtbData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

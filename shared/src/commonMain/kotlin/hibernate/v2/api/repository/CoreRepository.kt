@@ -4,10 +4,12 @@ import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
 import hibernate.v2.api.model.transport.Checksum
 
-class CoreRepository : BaseRepository() {
+class CoreRepository(
+    private val dataRepository: DataRepository,
+) : BaseRepository() {
 
     suspend fun getChecksum(): Checksum {
-        val result = ApiSafeCall { DataRepository.getChecksum() }
+        val result = ApiSafeCall { dataRepository.getChecksum() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

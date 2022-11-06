@@ -48,4 +48,6 @@ xcuserdata/
 Pods/
 !Podfile.lock
 
-# End of http:s://www.gitignore.io/api/cocoapods
+*.xcworkspace/
+.idea/
+*GoogleService-Info.plist

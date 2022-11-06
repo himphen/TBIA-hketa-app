@@ -11,10 +11,11 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
 
 class SaveData(
+    private val dataRepository: DataRepository,
     private val nlbDao: NlbDao
 ) {
     suspend operator fun invoke() {
-        val result = ApiSafeCall { DataRepository.getNlbData() }
+        val result = ApiSafeCall { dataRepository.getNlbData() }
 
         val data = when (result) {
             is Resource.Success -> result.getData()

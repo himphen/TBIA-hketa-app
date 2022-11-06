@@ -8,50 +8,59 @@ import hibernate.v2.api.response.data.KmbDataResponse
 import hibernate.v2.api.response.data.LrtDataResponse
 import hibernate.v2.api.response.data.MtrDataResponse
 import hibernate.v2.api.response.data.NlbDataResponse
+import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
 
-object DataRepository {
-    private val client by lazy {
-        var dataServiceBaseUrl: String = FirebaseRemoteConfigRepository.apiBaseUrl
+class DataRepository(
+    private val firebaseRemoteConfigRepository: FirebaseRemoteConfigRepository
+) {
+    private var _client: HttpClient? = null
 
-        if (dataServiceBaseUrl.isEmpty()) {
-            dataServiceBaseUrl = "https://localhost/"
-        }
+    private suspend fun getClient(): HttpClient {
+        return _client ?: run {
+            var dataServiceBaseUrl: String = firebaseRemoteConfigRepository.apiBaseUrl()
 
-        KtorClient.initClient().config {
-            defaultRequest {
-                url(dataServiceBaseUrl)
+            if (dataServiceBaseUrl.isEmpty()) {
+                dataServiceBaseUrl = "https://localhost/"
             }
+
+            _client = KtorClient.initClient().config {
+                defaultRequest {
+                    url(dataServiceBaseUrl)
+                }
+            }
+
+            _client!!
         }
     }
 
     suspend fun getChecksum(): ChecksumResponse {
-        return client.get("checksum.json").body()
+        return getClient().get("checksum.json").body()
     }
 
     suspend fun getKmbData(): KmbDataResponse {
-        return client.get("kmb.json").body()
+        return getClient().get("kmb.json").body()
     }
 
     suspend fun getCtbData(): CtbDataResponse {
-        return client.get("ctb.json").body()
+        return getClient().get("ctb.json").body()
     }
 
     suspend fun getGmbData(): GmbDataResponse {
-        return client.get("gmb.json").body()
+        return getClient().get("gmb.json").body()
     }
 
     suspend fun getLrtData(): LrtDataResponse {
-        return client.get("lrt.json").body()
+        return getClient().get("lrt.json").body()
     }
 
     suspend fun getMtrData(): MtrDataResponse {
-        return client.get("mtr.json").body()
+        return getClient().get("mtr.json").body()
     }
 
     suspend fun getNlbData(): NlbDataResponse {
-        return client.get("nlb.json").body()
+        return getClient().get("nlb.json").body()
     }
 }

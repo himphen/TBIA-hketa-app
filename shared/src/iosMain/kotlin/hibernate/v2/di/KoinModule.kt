@@ -1,9 +1,11 @@
 package hibernate.v2.di
 
 import org.koin.core.context.startKoin
+import org.koin.core.module.Module
+import org.koin.dsl.module
 
 fun initKoin() {
-    startKoin {
+    val koinApp = startKoin {
         modules(
             koinUseCaseModule,
             koinInteractorModule,
@@ -14,7 +16,11 @@ fun initKoin() {
             koinMtrUseCaseModule,
             koinLrtUseCaseModule,
             koinNlbUseCaseModule,
-            koinEtaUseCaseModule
+            koinEtaUseCaseModule,
+            koinIOSViewModelModule
         )
-    }
+    }.koin
+}
+
+val koinIOSViewModelModule: Module = module {
 }

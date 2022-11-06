@@ -30,6 +30,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -93,6 +94,8 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
 
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.1.1")
+
                 implementation("io.ktor:ktor-client-darwin:$ktorVersion")
 
                 implementation("com.squareup.sqldelight:native-driver:1.5.3")

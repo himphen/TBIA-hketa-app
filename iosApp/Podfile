@@ -4,4 +4,6 @@ target 'iosApp' do
   pod 'shared', :path => '../shared'
   pod("FirebaseAuth")
   pod("FirebaseDatabase")
+  pod("FirebaseRemoteConfig")
+  pod 'lottie-ios'
 end

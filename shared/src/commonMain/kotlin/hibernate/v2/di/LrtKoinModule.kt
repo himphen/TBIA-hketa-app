@@ -26,7 +26,7 @@ val koinLrtUseCaseModule: Module = module {
         )
     }
 
-    single { SaveData(get()) }
+    single { SaveData(get(), get()) }
     single { GetRouteListDb(get()) }
     single { GetRouteStopComponentListDb(get()) }
     single { InitDatabase(get()) }
