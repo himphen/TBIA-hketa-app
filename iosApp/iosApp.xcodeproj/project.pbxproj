@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,6 +15,8 @@
 		36E96FE04BAA7B3092669C7E /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9641751F4042B3E7A9576 /* OnboardingView.swift */; };
 		8A3BFB8929180D1300104DD9 /* lottie_spaghetti_loader.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A3BFB8829180D1300104DD9 /* lottie_spaghetti_loader.json */; };
 		8A7AEC3B2917806300F24CF9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A7AEC3A2917803D00F24CF9 /* GoogleService-Info.plist */; };
+		8AFAF1442919A55A0061340A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8AFAF1432919A55A0061340A /* Localizable.strings */; };
+		8AFAF1462919A8920061340A /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFAF1452919A8920061340A /* R.generated.swift */; };
 		8F7FC384874B3168512FE11C /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78846ECAEE77D4322A8EC28B /* Pods_iosApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +34,8 @@
 		85CCEE3FCD6E225E240A7751 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
 		8A3BFB8829180D1300104DD9 /* lottie_spaghetti_loader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = lottie_spaghetti_loader.json; path = ../../../../app/src/main/res/raw/lottie_spaghetti_loader.json; sourceTree = "<group>"; };
 		8A7AEC3A2917803D00F24CF9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "/Users/himphen/Hibernate/android-tv/iosApp/iosApp/GoogleService-Info.plist"; sourceTree = "<absolute>"; };
+		8AFAF1432919A55A0061340A /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		8AFAF1452919A8920061340A /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,7 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				8AFAF1422919A5320061340A /* Resources */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				8A7AEC3A2917803D00F24CF9 /* GoogleService-Info.plist */,
@@ -129,6 +134,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8AFAF1422919A5320061340A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8AFAF1452919A8920061340A /* R.generated.swift */,
+				8AFAF1432919A55A0061340A /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -137,6 +151,7 @@
 			buildConfigurationList = 7555FFA5242A565B00829871 /* Build configuration list for PBXNativeTarget "iosApp" */;
 			buildPhases = (
 				FA04EA070C4B90414C8385C9 /* [CP] Check Pods Manifest.lock */,
+				8AFAF14129198D0F0061340A /* R.Swift */,
 				7555FF77242A565900829871 /* Sources */,
 				7555FF79242A565900829871 /* Resources */,
 				97374110B21A6A94C34879D3 /* Frameworks */,
@@ -189,6 +204,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AFAF1442919A55A0061340A /* Localizable.strings in Resources */,
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
 				058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */,
 				8A7AEC3B2917806300F24CF9 /* GoogleService-Info.plist in Resources */,
@@ -215,6 +231,27 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		8AFAF14129198D0F0061340A /* R.Swift */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$TEMP_DIR/rswift-lastrun",
+			);
+			name = R.Swift;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				$SRCROOT/R.generated.swift,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n";
 		};
 		FA04EA070C4B90414C8385C9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -247,6 +284,7 @@
 			files = (
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				36E96FE04BAA7B3092669C7E /* OnboardingView.swift in Sources */,
+				8AFAF1462919A8920061340A /* R.generated.swift in Sources */,
 				36E96887CC0E3A1798FBF9D0 /* OnboardingVM.swift in Sources */,
 				36E96679E4BEDC47A42B4F47 /* LottieView.swift in Sources */,
 			);

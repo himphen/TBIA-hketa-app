@@ -1,6 +1,8 @@
 import SwiftUI
 import shared
+import Rswift
 
+@MainActor
 class OnboardingVM: ObservableObject {
     private var viewModel: OnboardingViewModel? = nil
     
@@ -38,9 +40,14 @@ class OnboardingVM: ObservableObject {
                 )
                 
                 if (viewModel?.fetchTransportDataFailedList.count != 0) {
-                    let first = viewModel?.fetchTransportDataFailedList.first
+                    let first: FailedCheckType = viewModel?.fetchTransportDataFailedList.firstObject as! FailedCheckType
+                    switch (first) {
+                    case FailedCheckType.kmb:
+                        loadingString = R.string.localizable.test_onboarding_loading_failed_kmb()
                     
-                    loadingString = "載入九巴／龍運路線數據失敗，請重新再試。"
+                    default:
+                        loadingString = R.string.localizable.test_onboarding_loading_failed_other()
+                    }
                 } else {
                     
                     loadingString = "載入完成。"
@@ -55,7 +62,7 @@ class OnboardingVM: ObservableObject {
                 )
                 let fetchTransportDataRequiredCount = viewModel?.fetchTransportDataRequiredCount ?? 0
                 
-                loadingString = "正載入路線數據 （\(it.intValue)/\(fetchTransportDataRequiredCount)"
+                loadingString = "正載入路線數據 （\(it.intValue)/\(fetchTransportDataRequiredCount))"
             }
         )
         
