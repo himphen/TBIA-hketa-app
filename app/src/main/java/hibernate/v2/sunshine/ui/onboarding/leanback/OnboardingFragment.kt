@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import hibernate.v2.model.checksum.FailedCheckType
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.LbFragmentOnboardingBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.leanback.MainActivity
-import hibernate.v2.sunshine.ui.onboarding.FailedCheckType
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible

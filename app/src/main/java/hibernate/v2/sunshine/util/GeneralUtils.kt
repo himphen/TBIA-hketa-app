@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
-import hibernate.v2.sunshine.core.SharedPreferencesManager
+import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.utils.TransportationLanguage
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

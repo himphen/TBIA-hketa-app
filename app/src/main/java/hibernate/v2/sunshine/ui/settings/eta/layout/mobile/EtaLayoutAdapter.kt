@@ -3,8 +3,9 @@ package hibernate.v2.sunshine.ui.settings.eta.layout.mobile
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import hibernate.v2.model.transport.card.EtaCardViewType
 import hibernate.v2.sunshine.databinding.ItemEtaLayoutSelectionBinding
-import hibernate.v2.sunshine.ui.bookmark.EtaCardViewType
+import hibernate.v2.sunshine.ui.base.getTitle
 
 class EtaLayoutAdapter(
     defaultType: EtaCardViewType,

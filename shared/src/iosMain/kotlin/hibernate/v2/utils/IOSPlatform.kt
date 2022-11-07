@@ -1,6 +1,7 @@
 package hibernate.v2.utils
 
 import platform.UIKit.UIDevice
+import platform.darwin.NSObject
 
 class IOSPlatform : Platform {
     override val name: String =
@@ -12,3 +13,5 @@ actual fun getPlatform(): Platform = IOSPlatform()
 actual fun isDebugBuild(): Boolean {
     return true
 }
+
+actual typealias KMMContext = NSObject

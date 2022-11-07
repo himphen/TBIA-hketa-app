@@ -15,8 +15,8 @@ import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.model.transport.eta.EtaType
-import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentRouteListViewPagerBinding
 import hibernate.v2.sunshine.model.color
 import hibernate.v2.sunshine.ui.base.BaseActivity

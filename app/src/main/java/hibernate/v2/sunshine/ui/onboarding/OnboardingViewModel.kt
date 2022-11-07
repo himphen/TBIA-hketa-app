@@ -2,26 +2,24 @@ package hibernate.v2.sunshine.ui.onboarding
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.Checksum
 import hibernate.v2.api.repository.CoreRepository
+import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.domain.ctb.CtbInteractor
 import hibernate.v2.domain.gmb.GmbInteractor
 import hibernate.v2.domain.kmb.KmbInteractor
 import hibernate.v2.domain.lrt.LrtInteractor
 import hibernate.v2.domain.mtr.MtrInteractor
 import hibernate.v2.domain.nlb.NlbInteractor
-import hibernate.v2.sunshine.core.SharedPreferencesManager
+import hibernate.v2.model.checksum.FailedCheckType
+import hibernate.v2.model.checksum.UpdateCheck
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 class OnboardingViewModel(
     private val sharedPreferencesManager: SharedPreferencesManager,
@@ -43,8 +41,6 @@ class OnboardingViewModel(
     fun checkDbTransportData() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                initRemoteConfig()
-
                 var dataLoadingCount = 0
 
                 val serverChecksum = try {
@@ -101,7 +97,7 @@ class OnboardingViewModel(
                                 downloadKmbTransportData()
                                 newChecksum.kmb = serverChecksum.kmb
                             } catch (e: Exception) {
-                                Logger.t("lifecycle").e(e, "downloadKmbTransportData error")
+                                logLifecycle(e, "downloadKmbTransportData error")
                                 fetchTransportDataFailedList.add(FailedCheckType.KMB)
                             }
                             fetchTransportDataCompletedCount.postValue(
@@ -115,7 +111,7 @@ class OnboardingViewModel(
                                 downloadCtbTransportData()
                                 newChecksum.ctb = serverChecksum.ctb
                             } catch (e: Exception) {
-                                Logger.t("lifecycle").e(e, "downloadNCTransportData error")
+                                logLifecycle(e, "downloadNCTransportData error")
                                 fetchTransportDataFailedList.add(FailedCheckType.CTB)
                             }
                             fetchTransportDataCompletedCount.postValue(
@@ -129,7 +125,7 @@ class OnboardingViewModel(
                                 downloadGmbTransportData()
                                 newChecksum.gmb = serverChecksum.gmb
                             } catch (e: Exception) {
-                                Logger.t("lifecycle").e(e, "downloadGmbTransportData error")
+                                logLifecycle(e, "downloadGmbTransportData error")
                                 fetchTransportDataFailedList.add(FailedCheckType.GMB)
                             }
                             fetchTransportDataCompletedCount.postValue(
@@ -143,7 +139,7 @@ class OnboardingViewModel(
                                 downloadMtrTransportData()
                                 newChecksum.mtr = serverChecksum.mtr
                             } catch (e: Exception) {
-                                Logger.t("lifecycle").e(e, "downloadMTRTransportData error")
+                                logLifecycle(e, "downloadMTRTransportData error")
                                 fetchTransportDataFailedList.add(FailedCheckType.MTR)
                             }
                             fetchTransportDataCompletedCount.postValue(
@@ -157,7 +153,7 @@ class OnboardingViewModel(
                                 downloadLrtTransportData()
                                 newChecksum.lrt = serverChecksum.lrt
                             } catch (e: Exception) {
-                                Logger.t("lifecycle").e(e, "downloadLRTTransportData error")
+                                logLifecycle(e, "downloadLRTTransportData error")
                                 fetchTransportDataFailedList.add(FailedCheckType.LRT)
                             }
                             fetchTransportDataCompletedCount.postValue(
@@ -171,7 +167,7 @@ class OnboardingViewModel(
                                 downloadNlbTransportData()
                                 newChecksum.nlb = serverChecksum.nlb
                             } catch (e: Exception) {
-                                Logger.t("lifecycle").e(e, "downloadNLBTransportData error")
+                                logLifecycle(e, "downloadNLBTransportData error")
                                 fetchTransportDataFailedList.add(FailedCheckType.NLB)
                             }
                             fetchTransportDataCompletedCount.postValue(
@@ -192,15 +188,6 @@ class OnboardingViewModel(
                 fetchTransportDataCompleted.postValue(Unit)
             }
         }
-    }
-
-    private suspend fun initRemoteConfig() {
-        val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 3600
-        }
-        Firebase.remoteConfig.setConfigSettingsAsync(configSettings).await()
-        Firebase.remoteConfig.setDefaultsAsync(mapOf("api_base_url_v1" to "")).await()
-        Firebase.remoteConfig.fetchAndActivate().await()
     }
 
     private suspend fun downloadKmbTransportData() {
@@ -249,16 +236,3 @@ class OnboardingViewModel(
         nlbRepository.initDatabase()
     }
 }
-
-enum class FailedCheckType {
-    KMB, CTB, GMB, MTR, LRT, NLB, OTHER, CHECKSUM
-}
-
-class UpdateCheck(
-    var kmb: Boolean = true,
-    var ctb: Boolean = true,
-    var gmb: Boolean = true,
-    var nlb: Boolean = true,
-    var mtr: Boolean = true,
-    var lrt: Boolean = true,
-)

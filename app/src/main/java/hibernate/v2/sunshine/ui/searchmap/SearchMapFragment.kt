@@ -37,12 +37,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCa
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.maps.android.ktx.awaitMap
 import com.himphen.logger.Logger
+import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.geohash.GeoHash
 import hibernate.v2.model.Card
 import hibernate.v2.model.searchmap.SearchMapStop
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentSearchMapBinding
 import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.ui.base.BaseFragment
@@ -58,6 +58,8 @@ import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.visible
 import hibernate.v2.utils.getTimeDiffFromNowInMin
 import hibernate.v2.utils.logLifecycle
+import hibernate.v2.utils.toGoogleMapLatLng
+import hibernate.v2.utils.toLatLng
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -444,7 +446,12 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 )
             )
             setPadding(dpToPx(12), dpToPx(12), dpToPx(12), dpToPx(116))
-            moveCamera(CameraUpdateFactory.newLatLngZoom(preferences.lastLatLng, 15f))
+            moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    preferences.lastLatLng.toGoogleMapLatLng(),
+                    15f
+                )
+            )
             // set default zoom
             setUpClusterer(this)
 
@@ -501,7 +508,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                         viewBinding?.currentMarker?.setBackgroundResource(R.drawable.map_marker_current_moving)
                     } else {
                         // Save last position for next launch
-                        preferences.lastLatLng = map.cameraPosition.target
+                        preferences.lastLatLng = map.cameraPosition.target.toLatLng()
 
                         viewBinding?.currentMarkerText?.apply {
                             setTextColor(context.getColor(R.color.map_marker))

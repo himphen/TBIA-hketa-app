@@ -9,7 +9,7 @@ import hibernate.v2.utils.CommonLogger
 
 actual class DatabaseDriverFactory(private val context: Context) {
 
-    var migrateCallbacks = hashMapOf<Int, () -> Unit>()
+    actual var migrateCallbacks = hashMapOf<Int, () -> Unit>()
 
     actual var driver: SqlDriver? = null
     actual var database: MyDatabase? = null

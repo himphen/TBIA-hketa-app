@@ -21,7 +21,7 @@ val koinInteractorModule: Module = module {
     single { FirebaseRemoteConfigRepository() }
 }
 
-val koinUseCaseModule: Module = module {
+val koinServiceModule: Module = module {
 }
 
 val koinRepositoryModule: Module = module {

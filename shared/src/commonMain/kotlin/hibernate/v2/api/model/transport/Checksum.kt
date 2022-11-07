@@ -5,6 +5,7 @@ import hibernate.v2.api.response.data.ChecksumResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Serializable
 data class Checksum(
     var kmb: ChecksumDetail? = null,
     var ctb: ChecksumDetail? = null,

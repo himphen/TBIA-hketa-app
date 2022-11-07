@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.himphen.logger.Logger
+import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.model.Card
+import hibernate.v2.model.transport.card.EtaCardViewType
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.AdManager
-import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.databinding.FragmentBookmarkHomeBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.bookmark.EtaCardViewType
 import hibernate.v2.sunshine.ui.bookmark.edit.mobile.BookmarkEditActivity
 import hibernate.v2.sunshine.ui.bookmark.home.BookmarkHomeViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity

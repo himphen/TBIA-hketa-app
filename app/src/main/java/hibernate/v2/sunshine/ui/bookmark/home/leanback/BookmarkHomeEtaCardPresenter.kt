@@ -6,9 +6,9 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.leanback.widget.BaseCardView
 import androidx.viewbinding.ViewBinding
 import hibernate.v2.model.Card
+import hibernate.v2.model.transport.card.EtaCardViewType
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.ui.base.BaseCardPresenter
-import hibernate.v2.sunshine.ui.bookmark.EtaCardViewType
 import hibernate.v2.sunshine.ui.bookmark.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.bookmark.home.leanback.view.BaseEtaCardView
 import hibernate.v2.sunshine.ui.bookmark.home.leanback.view.EtaCardViewClassic

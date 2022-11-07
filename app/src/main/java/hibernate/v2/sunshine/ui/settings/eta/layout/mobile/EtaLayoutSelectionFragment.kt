@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.cardview.widget.CardView
-import hibernate.v2.sunshine.core.SharedPreferencesManager
+import hibernate.v2.core.SharedPreferencesManager
+import hibernate.v2.model.transport.card.EtaCardViewType
 import hibernate.v2.sunshine.databinding.FragmentEtaLayoutSelectionBinding
 import hibernate.v2.sunshine.ui.base.BaseFragment
-import hibernate.v2.sunshine.ui.bookmark.EtaCardViewType
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
 import org.koin.android.ext.android.inject

@@ -83,6 +83,8 @@ kotlin {
 
                 implementation("com.google.maps.android:maps-ktx:3.3.0")
                 implementation("com.google.maps.android:maps-utils-ktx:3.3.0")
+
+                implementation("androidx.preference:preference-ktx:1.2.0")
             }
         }
         val androidTest by getting
@@ -94,7 +96,7 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
 
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:1.1.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4-native-mt")
 
                 implementation("io.ktor:ktor-client-darwin:$ktorVersion")
 

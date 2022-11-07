@@ -1,5 +1,6 @@
 package hibernate.v2.domain.eta
 
+import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.repository.TransportRepository
 import hibernate.v2.api.request.eta.NlbRequest
 import hibernate.v2.api.response.eta.NlbEtaResponse
@@ -9,7 +10,7 @@ class GetNlbStopEtaApi {
         stopId: String,
         routeId: String
     ): NlbEtaResponse {
-        val result = hibernate.v2.api.core.ApiSafeCall {
+        val result = ApiSafeCall {
             TransportRepository.getNlbStopEta(
                 NlbRequest(
                     routeId = routeId,

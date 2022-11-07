@@ -11,9 +11,9 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.AdManager
-import hibernate.v2.sunshine.core.SharedPreferencesManager
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel
 import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.ui.onboarding.mobile.OnboardingActivity
@@ -148,10 +148,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun CheckBoxPreference.setAdSummaryOnText(value: Long) {
-        summaryOn = getString(R.string.settings_hide_ad_summary, Date().run {
-            time = value
-            SimpleDateFormat("yyyy-MM-dd HH:mm").format(this)
-        })
+        summaryOn = getString(
+            R.string.settings_hide_ad_summary,
+            Date().run {
+                time = value
+                SimpleDateFormat("yyyy-MM-dd HH:mm").format(this)
+            }
+        )
     }
 
     private fun Preference.updateDefaultCompany() {

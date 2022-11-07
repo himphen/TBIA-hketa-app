@@ -1,5 +1,6 @@
 package hibernate.v2.sunshine.core
 
+import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.database.DatabaseDriverFactory
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel
@@ -11,13 +12,14 @@ import hibernate.v2.sunshine.ui.route.list.leanback.RouteListLeanbackViewModel
 import hibernate.v2.sunshine.ui.route.list.mobile.RouteListMobileViewModel
 import hibernate.v2.sunshine.ui.searchmap.SearchMapViewModel
 import hibernate.v2.sunshine.ui.traffic.TrafficViewModel
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 val koinAndroidServiceModule: Module = module {
-    single { SharedPreferencesManager(androidContext()) }
+    single { SharedPreferencesManager(androidApplication()) }
     single { AdManager(get()) }
 }
 

@@ -9,9 +9,9 @@ import androidx.leanback.app.GuidedStepSupportFragment
 import androidx.leanback.widget.GuidanceStylist
 import androidx.leanback.widget.GuidanceStylist.Guidance
 import androidx.leanback.widget.GuidedAction
+import hibernate.v2.core.SharedPreferencesManager
+import hibernate.v2.model.transport.card.EtaCardViewType
 import hibernate.v2.sunshine.R
-import hibernate.v2.sunshine.core.SharedPreferencesManager
-import hibernate.v2.sunshine.ui.bookmark.EtaCardViewType
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
 import org.koin.android.ext.android.inject

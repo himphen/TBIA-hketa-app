@@ -6,10 +6,15 @@ struct OnboardingView: View {
     
     var body: some View {
         VStack {
-            Text("Checksum: \(viewModel.checksumString)")
-                    .onAppear(perform: {
-                        viewModel.activate()
-            })
+            if viewModel.isFetchTransportDataRequired {
+                LottieView(name: "lottie_spaghetti_loader")
+                        .frame(width: 200, height: 200)
+                Text("\(viewModel.loadingString)")
+            } else {
+                Text("Welcome").task({
+                    await viewModel.activate()
+                })
+            }
         }
     }
 }

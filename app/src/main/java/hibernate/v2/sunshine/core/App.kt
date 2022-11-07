@@ -17,7 +17,7 @@ import hibernate.v2.di.koinLrtUseCaseModule
 import hibernate.v2.di.koinMtrUseCaseModule
 import hibernate.v2.di.koinNlbUseCaseModule
 import hibernate.v2.di.koinRepositoryModule
-import hibernate.v2.di.koinUseCaseModule
+import hibernate.v2.di.koinServiceModule
 import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.sunshine.util.getAdMobDeviceID
 import hibernate.v2.utils.initCommonLogger
@@ -60,7 +60,7 @@ class App : Application() {
                 koinAndroidServiceModule,
                 koinAndroidRepositoryModule,
                 koinAndroidUIModule,
-                koinUseCaseModule,
+                koinServiceModule,
                 koinInteractorModule,
                 koinRepositoryModule,
                 koinKmbUseCaseModule,
