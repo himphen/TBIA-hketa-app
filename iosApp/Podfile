@@ -1,4 +1,4 @@
-target 'iosApp' do
+target 'MyApp' do
   use_frameworks!
   platform :ios, '15'
   pod 'shared', :path => '../shared'
@@ -7,4 +7,5 @@ target 'iosApp' do
   pod("FirebaseRemoteConfig")
   pod 'lottie-ios'
   pod 'R.swift'
+  pod 'SwiftLint'
 end

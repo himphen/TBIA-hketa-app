@@ -12,16 +12,16 @@ class OnboardingVM: ObservableObject {
     
     func activate() async {
         viewModel = OnboardingViewModel(
-            fetchTransportDataRequired: { [self] it in
+            fetchTransportDataRequired: { [self] data in
                 CommonLoggerUtilsKt.logD(
                     message: "fetchTransportDataRequired"
                 )
                 
-                if (it.intValue < 0) {
+                if (data.intValue < 0) {
                     return
                 }
                 
-                if (it.intValue > 0) {
+                if (data.intValue > 0) {
                     isFetchTransportDataRequired = true
                 } else {
                     CommonLoggerUtilsKt.logD(message:
@@ -29,18 +29,20 @@ class OnboardingVM: ObservableObject {
                     )
                 }
             },
-            fetchTransportDataCannotInit: { [self] it in
+            fetchTransportDataCannotInit: { [self] data in
                 CommonLoggerUtilsKt.logD(message:
                 "fetchTransportDataCannotInit"
                 )
             },
-            fetchTransportDataCompleted: { [self] it in
+            fetchTransportDataCompleted: { [self] data in
                 CommonLoggerUtilsKt.logD(message:
                 "fetchTransportDataCompleted"
                 )
                 
-                if (viewModel?.fetchTransportDataFailedList.count != 0) {
-                    let first: FailedCheckType = viewModel?.fetchTransportDataFailedList.firstObject as! FailedCheckType
+                let list = viewModel!.fetchTransportDataFailedList as NSArray as! [FailedCheckType]
+                
+                if (!list.isEmpty) {
+                    let first: FailedCheckType = list.first!
                     switch (first) {
                     case FailedCheckType.kmb:
                         loadingString = R.string.localizable.test_onboarding_loading_failed_kmb()
@@ -56,13 +58,13 @@ class OnboardingVM: ObservableObject {
                     )
                 }
             },
-            fetchTransportDataCompletedCount: { [self] it in
+            fetchTransportDataCompletedCount: { [self] data in
                 CommonLoggerUtilsKt.logD(message:
                 "fetchTransportDataCompletedCount"
                 )
                 let fetchTransportDataRequiredCount = viewModel?.fetchTransportDataRequiredCount ?? 0
                 
-                loadingString = "正載入路線數據 （\(it.intValue)/\(fetchTransportDataRequiredCount))"
+                loadingString = "正載入路線數據 （\(data.intValue)/\(fetchTransportDataRequiredCount))"
             }
         )
         
