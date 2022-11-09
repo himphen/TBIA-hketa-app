@@ -2,6 +2,7 @@ package hibernate.v2.sunshine.ui.bookmark.view
 
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.model.Card
 import hibernate.v2.model.transport.route.LrtTransportRoute
 import hibernate.v2.model.transport.route.MtrTransportRoute
@@ -9,7 +10,6 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaClassicRouteNumberBinding
 import hibernate.v2.sunshine.databinding.ContentEtaCompactRouteNumberBinding
 import hibernate.v2.sunshine.databinding.ContentEtaStandardRouteNumberBinding
-import hibernate.v2.sunshine.model.getColor
 import hibernate.v2.sunshine.util.dpToPx
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.visible
@@ -20,9 +20,8 @@ interface EtaRouteView {
         card: Card.EtaCard,
         routeNumberContainer: ContentEtaClassicRouteNumberBinding
     ) {
-        val context = routeNumberContainer.root.context
         val route = card.route
-        val color = route.getColor(context, false)
+        val color = route.getColor(false).colorInt()
 
         routeNumberContainer.apply {
             when (route) {
@@ -75,9 +74,8 @@ interface EtaRouteView {
         card: Card.EtaCard,
         routeNumberContainer: ContentEtaCompactRouteNumberBinding
     ) {
-        val context = routeNumberContainer.root.context
         val route = card.route
-        val color = route.getColor(context, false)
+        val color = route.getColor(false).colorInt()
 
         routeNumberContainer.apply {
             when (route) {
@@ -126,9 +124,8 @@ interface EtaRouteView {
         card: Card.EtaCard,
         routeNumberContainer: ContentEtaStandardRouteNumberBinding
     ) {
-        val context = routeNumberContainer.root.context
         val route = card.route
-        val color = route.getColor(context, false)
+        val color = route.getColor(false).colorInt()
 
         routeNumberContainer.apply {
             when (route) {
@@ -177,9 +174,8 @@ interface EtaRouteView {
         card: Card.SettingsEtaItemCard,
         routeNumberContainer: ContentEtaClassicRouteNumberBinding
     ) {
-        val context = routeNumberContainer.root.context
         val route = card.route
-        val color = route.getColor(context, false)
+        val color = route.getColor(false).colorInt()
 
         routeNumberContainer.apply {
             when (route) {

@@ -6,7 +6,6 @@ import hibernate.v2.api.model.transport.gmb.GmbRoute
 import hibernate.v2.api.model.transport.gmb.GmbRouteStop
 import hibernate.v2.api.model.transport.gmb.GmbStop
 import hibernate.v2.database.DatabaseDriverFactory
-import hibernate.v2.database.DatabaseFactory
 import hibernatev2database.Gmb_route
 import hibernatev2database.Gmb_route_stop
 import hibernatev2database.Gmb_stop

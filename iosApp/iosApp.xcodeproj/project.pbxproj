@@ -12,6 +12,8 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		36E96679E4BEDC47A42B4F47 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E965220AE6AF5E8A07549E /* LottieView.swift */; };
 		36E96887CC0E3A1798FBF9D0 /* OnboardingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E964114EC7B7C2A8E7208B /* OnboardingVM.swift */; };
+		36E96EDD4E561E9DF4B5AA8C /* BookmarkHomeVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9635DDCD9227C3AFA20AB /* BookmarkHomeVM.swift */; };
+		36E96FB20464402C5689F2E6 /* BookmarkHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96937F3009767569C1E3F /* BookmarkHomeView.swift */; };
 		36E96FE04BAA7B3092669C7E /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9641751F4042B3E7A9576 /* OnboardingView.swift */; };
 		8A3BFB8929180D1300104DD9 /* lottie_spaghetti_loader.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A3BFB8829180D1300104DD9 /* lottie_spaghetti_loader.json */; };
 		8A7AEC3B2917806300F24CF9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A7AEC3A2917803D00F24CF9 /* GoogleService-Info.plist */; };
@@ -24,9 +26,11 @@
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
+		36E9635DDCD9227C3AFA20AB /* BookmarkHomeVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkHomeVM.swift; sourceTree = "<group>"; };
 		36E964114EC7B7C2A8E7208B /* OnboardingVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingVM.swift; sourceTree = "<group>"; };
 		36E9641751F4042B3E7A9576 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		36E965220AE6AF5E8A07549E /* LottieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		36E96937F3009767569C1E3F /* BookmarkHomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkHomeView.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78846ECAEE77D4322A8EC28B /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,11 +79,21 @@
 			path = common;
 			sourceTree = "<group>";
 		};
+		36E9647DE4EA9856AA7E91E4 /* home */ = {
+			isa = PBXGroup;
+			children = (
+				36E9635DDCD9227C3AFA20AB /* BookmarkHomeVM.swift */,
+				36E96937F3009767569C1E3F /* BookmarkHomeView.swift */,
+			);
+			path = home;
+			sourceTree = "<group>";
+		};
 		36E965197F84FA1330CABC51 /* ui */ = {
 			isa = PBXGroup;
 			children = (
 				36E96D89B5DE2CD89C33EEF7 /* onborading */,
 				36E9633D543BCF77C83D7CA5 /* common */,
+				36E96DAD6825B4A4404D319F /* bookmark */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -92,6 +106,14 @@
 				36E964114EC7B7C2A8E7208B /* OnboardingVM.swift */,
 			);
 			path = onborading;
+			sourceTree = "<group>";
+		};
+		36E96DAD6825B4A4404D319F /* bookmark */ = {
+			isa = PBXGroup;
+			children = (
+				36E9647DE4EA9856AA7E91E4 /* home */,
+			);
+			path = bookmark;
 			sourceTree = "<group>";
 		};
 		7555FF72242A565900829871 = {
@@ -157,6 +179,7 @@
 				7555FF79242A565900829871 /* Resources */,
 				97374110B21A6A94C34879D3 /* Frameworks */,
 				00E1AE1517BE68714E9F9630 /* [CP] Embed Pods Frameworks */,
+				8A056421291C10CB004FB026 /* mokoResources */,
 			);
 			buildRules = (
 			);
@@ -233,6 +256,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8A056421291C10CB004FB026 /* mokoResources */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = mokoResources;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/../gradlew\" -p \"$SRCROOT/../\" :shared:copyFrameworkResourcesToApp \\\n    -Pmoko.resources.PLATFORM_NAME=$PLATFORM_NAME \\\n    -Pmoko.resources.CONFIGURATION=$CONFIGURATION \\\n    -Pmoko.resources.BUILT_PRODUCTS_DIR=$BUILT_PRODUCTS_DIR \\\n    -Pmoko.resources.CONTENTS_FOLDER_PATH=$CONTENTS_FOLDER_PATH\\\n    -Pkotlin.native.cocoapods.platform=$PLATFORM_NAME \\\n    -Pkotlin.native.cocoapods.archs=\"$ARCHS\" \\\n    -Pkotlin.native.cocoapods.configuration=$CONFIGURATION \n";
+		};
 		8AFAF14129198D0F0061340A /* R.Swift */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -306,6 +348,8 @@
 				8AFAF1462919A8920061340A /* R.generated.swift in Sources */,
 				36E96887CC0E3A1798FBF9D0 /* OnboardingVM.swift in Sources */,
 				36E96679E4BEDC47A42B4F47 /* LottieView.swift in Sources */,
+				36E96EDD4E561E9DF4B5AA8C /* BookmarkHomeVM.swift in Sources */,
+				36E96FB20464402C5689F2E6 /* BookmarkHomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +489,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = hibernate.v2.sunshine;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -467,6 +512,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = hibernate.v2.sunshine;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

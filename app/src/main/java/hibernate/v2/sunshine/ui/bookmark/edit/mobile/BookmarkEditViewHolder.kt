@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.model.Card
 import hibernate.v2.sunshine.databinding.ItemBookmarkEditBinding
-import hibernate.v2.sunshine.model.getDestDirectionText
-import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView
 
 class BookmarkEditViewHolder(

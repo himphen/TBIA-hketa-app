@@ -29,12 +29,12 @@ class OnboardingVM: ObservableObject {
                     )
                 }
             },
-            fetchTransportDataCannotInit: { [self] data in
+            fetchTransportDataCannotInit: { [self] in
                 CommonLoggerUtilsKt.logD(message:
                 "fetchTransportDataCannotInit"
                 )
             },
-            fetchTransportDataCompleted: { [self] data in
+            fetchTransportDataCompleted: { [self] in
                 CommonLoggerUtilsKt.logD(message:
                 "fetchTransportDataCompleted"
                 )
@@ -53,9 +53,7 @@ class OnboardingVM: ObservableObject {
                 } else {
                     
                     loadingString = "載入完成。"
-                    CommonLoggerUtilsKt.logD(message:
-                    "Go next screen!"
-                    )
+                    CommonLoggerUtilsKt.logD(message: "Go next screen!")
                 }
             },
             fetchTransportDataCompletedCount: { [self] data in

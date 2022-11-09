@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hibernate.v2.model.Card
 import hibernate.v2.sunshine.databinding.ItemBottomSheetRouteBinding
-import hibernate.v2.sunshine.model.getDestDirectionText
-import hibernate.v2.sunshine.model.getLocalisedOrig
 import hibernate.v2.sunshine.ui.bookmark.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.bookmark.home.mobile.view.BaseEtaViewHolder
 import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView

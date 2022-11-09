@@ -5,7 +5,6 @@ import hibernate.v2.api.model.transport.lrt.LrtRoute
 import hibernate.v2.api.model.transport.lrt.LrtRouteStop
 import hibernate.v2.api.model.transport.lrt.LrtStop
 import hibernate.v2.database.DatabaseDriverFactory
-import hibernate.v2.database.DatabaseFactory
 import hibernatev2database.Lrt_route
 import hibernatev2database.Lrt_route_stop
 import hibernatev2database.Lrt_stop

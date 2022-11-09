@@ -11,16 +11,13 @@ import hibernate.v2.domain.kmb.KmbInteractor
 import hibernate.v2.domain.lrt.LrtInteractor
 import hibernate.v2.domain.mtr.MtrInteractor
 import hibernate.v2.domain.nlb.NlbInteractor
+import hibernate.v2.model.dataholder.AddEtaRowItem
+import hibernate.v2.model.dataholder.RouteAndStopListDataHolder
 import hibernate.v2.model.transport.TransportRouteStopList
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.model.transport.route.GmbTransportRoute
 import hibernate.v2.model.transport.route.LrtTransportRoute
 import hibernate.v2.model.transport.route.MtrTransportRoute
-import hibernate.v2.sunshine.dataholder.RouteAndStopListDataHolder
-import hibernate.v2.sunshine.model.AddEtaRowItem
-import hibernate.v2.sunshine.model.getDirectionWithRouteText
-import hibernate.v2.sunshine.model.getLocalisedDest
-import hibernate.v2.sunshine.model.getLocalisedOrig
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +45,7 @@ class RouteListLeanbackViewModel(
             when (etaType) {
                 EtaType.KMB -> getKmbRouteList(context)
                 EtaType.NWFB,
-                EtaType.CTB -> getCtbouteList(context, etaType)
+                EtaType.CTB -> getCtbRouteList(context, etaType)
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
                 EtaType.GMB_NT -> getGmbRouteList(context, etaType)
@@ -145,7 +142,7 @@ class RouteListLeanbackViewModel(
         }
     }
 
-    private suspend fun getCtbouteList(context: Context, etaType: EtaType) {
+    private suspend fun getCtbRouteList(context: Context, etaType: EtaType) {
         if (RouteAndStopListDataHolder.hasData(etaType)) {
             return
         }

@@ -44,7 +44,6 @@ import hibernate.v2.model.searchmap.SearchMapStop
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentSearchMapBinding
-import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.main.mobile.MainViewModel

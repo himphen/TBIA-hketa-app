@@ -4,12 +4,10 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RotateDrawable
 import android.view.View
 import androidx.core.content.ContextCompat
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemEtaCardStandardBinding
-import hibernate.v2.sunshine.model.getColor
-import hibernate.v2.sunshine.model.getDestDirectionText
-import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 
@@ -20,16 +18,15 @@ class EtaViewHolderStandard(viewBinding: ItemEtaCardStandardBinding) :
     override fun onBind(card: Card.EtaCard) {
         viewBinding.content.apply {
             val route = card.route
-            val color = route.getColor(context, false)
+            val color = route.getColor(false).colorInt()
 
-            (
-                ContextCompat.getDrawable(
-                    context,
-                    R.drawable.eta_card_line_arrow
-                ) as? RotateDrawable?
-                ).let { arrowDrawable ->
-                arrowDrawable?.mutate()
-                (arrowDrawable?.drawable as? GradientDrawable)?.setColor(color)
+            val arrowDrawable = ContextCompat.getDrawable(
+                context,
+                R.drawable.eta_card_line_arrow
+            ) as? RotateDrawable?
+            arrowDrawable?.let {
+                arrowDrawable.mutate()
+                (arrowDrawable.drawable as? GradientDrawable)?.setColor(color)
                 lineBgView.setBackgroundColor(color)
             }
 

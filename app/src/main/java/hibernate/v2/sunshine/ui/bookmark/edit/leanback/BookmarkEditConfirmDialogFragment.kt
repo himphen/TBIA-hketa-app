@@ -8,7 +8,6 @@ import androidx.leanback.widget.GuidanceStylist.Guidance
 import androidx.leanback.widget.GuidedAction
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.model.BookmarkEdit
-import hibernate.v2.sunshine.model.getLocalisedName
 
 class BookmarkEditConfirmDialogFragment : GuidedStepSupportFragment() {
     private lateinit var currentBookmarkEdit: BookmarkEdit

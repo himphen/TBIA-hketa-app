@@ -4,7 +4,6 @@ import hibernate.v2.api.model.transport.nlb.NlbRoute
 import hibernate.v2.api.model.transport.nlb.NlbRouteStop
 import hibernate.v2.api.model.transport.nlb.NlbStop
 import hibernate.v2.database.DatabaseDriverFactory
-import hibernate.v2.database.DatabaseFactory
 import hibernatev2database.Nlb_route
 import hibernatev2database.Nlb_route_stop
 import hibernatev2database.Nlb_stop

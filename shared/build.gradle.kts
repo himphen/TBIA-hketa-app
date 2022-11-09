@@ -5,6 +5,7 @@ plugins {
     id("com.android.library")
     id("com.squareup.sqldelight")
     id("kotlin-parcelize")
+    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 val coroutinesVersion = "1.6.4"
@@ -13,16 +14,25 @@ val sqlDelightVersion = "1.5.4"
 
 kotlin {
     android()
-    iosArm64()
-    iosSimulatorArm64()
+    listOf(
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "shared"
+            export("dev.icerock.moko:resources:0.20.1")
+            export("dev.icerock.moko:graphics:0.9.0") // toUIColor here
+        }
+    }
 
     cocoapods {
         summary = "Niseko"
         homepage = "https://github.com/himphen"
         version = "1.0"
-        ios.deploymentTarget = "14.1"
+        ios.deploymentTarget = "15.0"
         podfile = project.file("../iosApp/Podfile")
         framework {
+            isStatic = true
             baseName = "shared"
         }
     }
@@ -55,6 +65,7 @@ kotlin {
 
                 api("dev.icerock.moko:graphics:0.9.0")
                 api("dev.icerock.moko:parcelize:0.8.0")
+                api("dev.icerock.moko:resources:0.20.1")
 
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
@@ -111,14 +122,25 @@ kotlin {
             iosSimulatorArm64Test.dependsOn(this)
         }
     }
+
+    // export correct artifact to use all classes of moko-resources directly from Swift
+    targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java).all {
+        binaries.withType(org.jetbrains.kotlin.gradle.plugin.mpp.Framework::class.java).all {
+            export("dev.icerock.moko:resources:0.20.1")
+        }
+    }
 }
 
 android {
-    namespace = "hibernate.v2.api"
+    namespace = "hibernate.v2"
     compileSdk = 31
     defaultConfig {
         minSdk = 24
         targetSdk = 31
+    }
+    sourceSets["main"].apply {
+        assets.srcDir(File(buildDir, "generated/moko/androidMain/assets"))
+        res.srcDir(File(buildDir, "generated/moko/androidMain/res"))
     }
 }
 
@@ -126,4 +148,9 @@ sqldelight {
     database("MyDatabase") {
         packageName = "hibernate.v2.database"
     }
+}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "hibernate.v2" // required
+    iosBaseLocalizationRegion = "zh-tw" // optional, default "en"
 }

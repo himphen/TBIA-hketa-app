@@ -8,7 +8,9 @@ expect fun getPlatform(): Platform
 
 expect fun isDebugBuild(): Boolean
 
-expect class KMMContext
+expect abstract class KMMContext
+
+expect class KMMLocale
 
 enum class TransportationLanguage {
     TC,

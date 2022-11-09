@@ -15,11 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import hibernate.v2.database.eta.SavedEtaOrderEntity
 import hibernate.v2.model.Card
+import hibernate.v2.model.dataholder.RouteAndStopListDataHolder
 import hibernate.v2.model.transport.route.MtrTransportRoute
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentBookmarkEditBinding
-import hibernate.v2.sunshine.dataholder.RouteAndStopListDataHolder
-import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.base.ItemTouchHelperCallback
 import hibernate.v2.sunshine.ui.bookmark.edit.BookmarkEditViewModel

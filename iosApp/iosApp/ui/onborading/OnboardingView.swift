@@ -11,7 +11,7 @@ struct OnboardingView: View {
                         .frame(width: 200, height: 200)
                 Text("\(viewModel.loadingString)")
             } else {
-                Text("Welcome").task({
+                Text(MR.strings().test_onboarding_loading_failed_kmb.desc().localized()).task({
                     await viewModel.activate()
                 })
             }

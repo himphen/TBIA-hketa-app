@@ -71,7 +71,7 @@ class MainActivity : BaseFragmentActivity<ActivityMainBinding>() {
         bottomBar.apply {
             onItemSelectedListener = { _, menuItem, byUser ->
                 if (menuItem.id == R.id.menu_search) {
-                    etaUpdatedLauncher?.launch(
+                    etaUpdatedLauncher.launch(
                         Intent(
                             context,
                             RouteListActivity::class.java

@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.SphericalUtil
 import com.google.maps.android.ktx.awaitMap
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.model.transport.RouteDetailsStop
@@ -40,9 +41,6 @@ import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentRouteDetailsBinding
 import hibernate.v2.sunshine.model.RouteDetailsMarkerItem
-import hibernate.v2.sunshine.model.color
-import hibernate.v2.sunshine.model.getColor
-import hibernate.v2.sunshine.model.getDirectionSubtitleText
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.util.GeneralUtils
@@ -52,6 +50,7 @@ import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import hibernate.v2.sunshine.util.smoothSnapToPosition
 import hibernate.v2.sunshine.util.visible
+import hibernate.v2.utils.colorInt
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
@@ -142,14 +141,15 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         viewBinding.recyclerView.edgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
             override fun createEdgeEffect(view: RecyclerView, direction: Int) =
                 EdgeEffect(view.context).apply {
-                    color = viewModel.selectedEtaType.color(context!!)
+                    color = viewModel.selectedEtaType.color()
+                        .colorInt(view.context)
                 }
         }
 
         val selectedRoute = viewModel.selectedRoute
 
         (activity as? RouteDetailsActivity)?.let { activity ->
-            val color = selectedRoute.getColor(requireContext())
+            val color = selectedRoute.getColor().colorInt()
             activity.window?.statusBarColor = color
 
             activity.supportActionBar?.let {

@@ -1,6 +1,6 @@
-target 'MyApp' do
+target 'iosApp' do
   use_frameworks!
-  platform :ios, '15'
+  platform :ios, '15.0'
   pod 'shared', :path => '../shared'
   pod("FirebaseAuth")
   pod("FirebaseDatabase")

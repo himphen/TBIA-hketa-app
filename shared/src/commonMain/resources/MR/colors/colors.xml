@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand_color_kmb">#D32F2F</color>
+    <color name="brand_color_ctb">#FBC02D</color>
+    <color name="brand_color_nwfb">#F47920</color>
+    <color name="brand_color_gmb">#2E7D32</color>
+    <color name="brand_color_mtr">#00234F</color>
+    <color name="brand_color_lrt">#CD9700</color>
+    <color name="brand_color_nlb">#149425</color>
+</resources>

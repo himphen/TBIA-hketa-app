@@ -5,7 +5,6 @@ import hibernate.v2.api.model.transport.mtr.MtrRoute
 import hibernate.v2.api.model.transport.mtr.MtrRouteStop
 import hibernate.v2.api.model.transport.mtr.MtrStop
 import hibernate.v2.database.DatabaseDriverFactory
-import hibernate.v2.database.DatabaseFactory
 import hibernatev2database.Mtr_route
 import hibernatev2database.Mtr_route_stop
 import hibernatev2database.Mtr_stop

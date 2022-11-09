@@ -11,12 +11,10 @@ import hibernate.v2.domain.kmb.KmbInteractor
 import hibernate.v2.domain.lrt.LrtInteractor
 import hibernate.v2.domain.mtr.MtrInteractor
 import hibernate.v2.domain.nlb.NlbInteractor
+import hibernate.v2.model.dataholder.RouteListDataHolder
 import hibernate.v2.model.transport.TransportStop
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.model.transport.route.TransportRoute
-import hibernate.v2.sunshine.dataholder.RouteListDataHolder
-import hibernate.v2.sunshine.model.getLocalisedDest
-import hibernate.v2.sunshine.model.getLocalisedOrig
 import hibernate.v2.sunshine.ui.base.BaseViewModel
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Dispatchers

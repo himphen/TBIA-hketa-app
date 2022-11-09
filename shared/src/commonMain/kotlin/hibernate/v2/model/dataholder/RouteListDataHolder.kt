@@ -1,14 +1,13 @@
-package hibernate.v2.sunshine.dataholder
+package hibernate.v2.model.dataholder
 
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.model.transport.route.TransportRoute
-import java.util.EnumMap
 
 enum class RouteListDataHolder {
     INSTANCE;
 
-    private var hashMap: EnumMap<EtaType, List<TransportRoute>> =
-        EnumMap(EtaType::class.java)
+    private val hashMap: MutableMap<EtaType, List<TransportRoute>> =
+        mutableMapOf()
 
     companion object {
         fun hasData(etaType: EtaType) = !getData(etaType).isNullOrEmpty()
@@ -22,7 +21,7 @@ enum class RouteListDataHolder {
         }
 
         fun cleanData() {
-            INSTANCE.hashMap = EnumMap(EtaType::class.java)
+            INSTANCE.hashMap.clear()
         }
     }
 }

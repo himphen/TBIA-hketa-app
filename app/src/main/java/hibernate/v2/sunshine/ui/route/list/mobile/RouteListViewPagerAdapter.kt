@@ -8,8 +8,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.TabAddEtaBinding
-import hibernate.v2.sunshine.model.color
-import hibernate.v2.sunshine.model.name
+import hibernate.v2.utils.colorInt
+import hibernate.v2.utils.localized
 
 class RouteListViewPagerAdapter(
     private val fragment: Fragment,
@@ -43,7 +43,7 @@ class RouteListViewPagerAdapter(
         val context = fragment.requireContext()
         val etaType = list[position]
         val viewBinding = TabAddEtaBinding.inflate(LayoutInflater.from(context))
-        viewBinding.tabTitleTv.text = etaType.name(context)
+        viewBinding.tabTitleTv.text = etaType.name().localized(context)
 
         when (etaType) {
             EtaType.KMB,
@@ -64,7 +64,7 @@ class RouteListViewPagerAdapter(
                 null
             )
             viewBinding.tabTitleTv.compoundDrawablesRelative[0]?.setTint(
-                etaType.color(context)
+                etaType.color().colorInt(context)
             )
         }
 

@@ -2,7 +2,6 @@ package hibernate.v2.ui.onboarding
 
 import hibernate.v2.api.model.transport.Checksum
 import hibernate.v2.api.repository.CoreRepository
-import hibernate.v2.core.IOSMainScope
 import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.domain.ctb.CtbInteractor
 import hibernate.v2.domain.gmb.GmbInteractor
@@ -14,7 +13,6 @@ import hibernate.v2.model.checksum.FailedCheckType
 import hibernate.v2.model.checksum.UpdateCheck
 import hibernate.v2.utils.CommonLogger
 import hibernate.v2.utils.logLifecycle
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
@@ -23,8 +21,8 @@ import org.koin.core.component.inject
 
 class OnboardingViewModel(
     private val fetchTransportDataRequired: (Int) -> Unit,
-    private val fetchTransportDataCannotInit: (Unit) -> Unit,
-    private val fetchTransportDataCompleted: (Unit) -> Unit,
+    private val fetchTransportDataCannotInit: () -> Unit,
+    private val fetchTransportDataCompleted: () -> Unit,
     private val fetchTransportDataCompletedCount: (Int) -> Unit
 ) : KoinComponent {
 
@@ -36,8 +34,6 @@ class OnboardingViewModel(
     private val mtrInteractor: MtrInteractor by inject()
     private val lrtInteractor: LrtInteractor by inject()
     private val nlbRepository: NlbInteractor by inject()
-
-    private val ioScope = IOSMainScope(Dispatchers.Main)
 
     val fetchTransportDataFailedList = mutableListOf<FailedCheckType>()
     var fetchTransportDataCompletedCountSum = 0
@@ -186,13 +182,13 @@ class OnboardingViewModel(
 
             sharedPreferencesManager.transportDataChecksum = newChecksum
 
-            fetchTransportDataCompleted(Unit)
+            fetchTransportDataCompleted()
         } catch (e: Exception) {
             CommonLogger.e(e) { "Fetch transport data failed" }
             if (fetchTransportDataFailedList.isEmpty()) {
                 fetchTransportDataFailedList.add(FailedCheckType.OTHER)
             }
-            fetchTransportDataCompleted(Unit)
+            fetchTransportDataCompleted()
         }
     }
 

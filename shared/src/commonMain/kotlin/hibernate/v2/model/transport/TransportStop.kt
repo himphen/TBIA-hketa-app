@@ -1,6 +1,12 @@
 package hibernate.v2.model.transport
 
+import dev.icerock.moko.resources.desc.ResourceFormatted
+import dev.icerock.moko.resources.desc.StringDesc
+import hibernate.v2.MR
 import hibernate.v2.api.model.transport.Company
+import hibernate.v2.utils.KMMContext
+import hibernate.v2.utils.LanguageUtils.isLangEnglish
+import hibernate.v2.utils.localized
 
 data class TransportStop(
     val company: Company,
@@ -23,5 +29,22 @@ data class TransportStop(
             nameTc = "-",
             stopId = "",
         )
+    }
+
+    fun getLocalisedName(context: KMMContext): String {
+        val localisedName = if (isLangEnglish(context)) {
+            nameEn
+        } else {
+            nameTc
+        }
+
+        if (company == Company.MTR || company == Company.LRT) {
+            return StringDesc.ResourceFormatted(
+                MR.strings.text_eta_card_classic_mtr_station,
+                localisedName
+            ).localized(context)
+        }
+
+        return localisedName
     }
 }

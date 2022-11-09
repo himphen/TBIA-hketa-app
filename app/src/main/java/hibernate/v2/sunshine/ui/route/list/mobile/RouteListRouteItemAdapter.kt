@@ -8,15 +8,13 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.model.transport.route.LrtTransportRoute
 import hibernate.v2.model.transport.route.MtrTransportRoute
 import hibernate.v2.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ItemRouteListBinding
-import hibernate.v2.sunshine.model.getColor
-import hibernate.v2.sunshine.model.getLocalisedDest
-import hibernate.v2.sunshine.model.getLocalisedOrig
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.route.list.mobile.RouteListRouteItemAdapter.RouteItemViewHolder
 import hibernate.v2.sunshine.util.dpToPx
@@ -91,7 +89,7 @@ class RouteListRouteItemAdapter(
                 routeNumberContainer.apply {
                     when (route) {
                         is LrtTransportRoute -> {
-                            val color = route.getColor(context, false)
+                            val color = route.getColor(false).colorInt()
                             routeLRTNumberTv.apply {
                                 text = route.routeNo
                                 visible()
@@ -105,7 +103,7 @@ class RouteListRouteItemAdapter(
                             }
                         }
                         is MtrTransportRoute -> {
-                            val color = route.getColor(context, false)
+                            val color = route.getColor(false).colorInt()
                             routeCompanyColor.setBackgroundColor(color)
                             routeBusNumberTv.apply {
                                 text = route.getCardRouteText()

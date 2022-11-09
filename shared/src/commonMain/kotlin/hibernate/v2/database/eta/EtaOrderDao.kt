@@ -1,7 +1,6 @@
 package hibernate.v2.database.eta
 
 import hibernate.v2.database.DatabaseDriverFactory
-import hibernate.v2.database.DatabaseFactory
 
 class EtaOrderDao(databaseDriverFactory: DatabaseDriverFactory) {
     private val driver = databaseDriverFactory.createDriver()

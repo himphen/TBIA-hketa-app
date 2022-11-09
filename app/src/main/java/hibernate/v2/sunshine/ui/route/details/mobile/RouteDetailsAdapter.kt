@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.model.Card
 import hibernate.v2.model.transport.RouteDetailsStop
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.model.transport.route.TransportRoute
 import hibernate.v2.sunshine.databinding.ItemRouteDetailsStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteDetailsStopExpandedBinding
-import hibernate.v2.sunshine.model.getColor
-import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.bookmark.EtaTimeAdapter
 import hibernate.v2.sunshine.ui.view.setEtaTimeFlexManager
@@ -138,7 +137,7 @@ class RouteDetailsAdapter(
             val isFirst = absoluteAdapterPosition == 0
             val isLast = absoluteAdapterPosition == stopList.lastIndex
             val stop = item.transportStop
-            val color = route.getColor(context)
+            val color = route.getColor().colorInt()
             viewBinding.apply {
                 contentRouteDetailsStop.stopNameTv.text = stop.getLocalisedName(context)
                 contentRouteDetailsStop.stopSeqTv.text = String.format("%02d", stop.seq)
@@ -163,7 +162,7 @@ class RouteDetailsAdapter(
     ) : BaseViewHolder<ItemRouteDetailsStopExpandedBinding>(viewBinding) {
 
         fun onBind(item: RouteDetailsStop) {
-            val color = route.getColor(context)
+            val color = route.getColor().colorInt()
             val isFirst = absoluteAdapterPosition == 0
             val isLast = absoluteAdapterPosition == stopList.lastIndex
             val stop = item.transportStop

@@ -1,7 +1,8 @@
 package hibernate.v2.utils
 
-import android.app.Application
-import hibernate.v2.api.BuildConfig
+import android.content.Context
+import hibernate.v2.BuildConfig
+import java.util.Locale
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${android.os.Build.VERSION.SDK_INT}"
@@ -13,7 +14,8 @@ actual fun isDebugBuild(): Boolean {
     return BuildConfig.DEBUG
 }
 
-actual typealias KMMContext = Application
+actual typealias KMMContext = Context
+actual typealias KMMLocale = Locale
 
 fun LatLng.toGoogleMapLatLng(): com.google.android.gms.maps.model.LatLng {
     return com.google.android.gms.maps.model.LatLng(latitude, longitude)

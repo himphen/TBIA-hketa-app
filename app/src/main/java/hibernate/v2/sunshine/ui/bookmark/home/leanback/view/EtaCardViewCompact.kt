@@ -6,12 +6,10 @@ import android.graphics.drawable.RotateDrawable
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ContentEtaCompactBinding
-import hibernate.v2.sunshine.model.getColor
-import hibernate.v2.sunshine.model.getDestDirectionText
-import hibernate.v2.sunshine.model.getLocalisedName
 import hibernate.v2.sunshine.ui.bookmark.view.EtaRouteView
 import hibernate.v2.sunshine.util.gone
 
@@ -24,7 +22,7 @@ class EtaCardViewCompact(context: Context) :
 
     override fun onBind(card: Card.EtaCard) {
         viewBinding.apply {
-            val color = card.route.getColor(context)
+            val color = card.route.getColor().colorInt()
 
             val drawable = ContextCompat.getDrawable(
                 context,

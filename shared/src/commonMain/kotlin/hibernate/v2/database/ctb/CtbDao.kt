@@ -6,7 +6,6 @@ import hibernate.v2.api.model.transport.ctb.CtbRoute
 import hibernate.v2.api.model.transport.ctb.CtbRouteStop
 import hibernate.v2.api.model.transport.ctb.CtbStop
 import hibernate.v2.database.DatabaseDriverFactory
-import hibernate.v2.database.DatabaseFactory
 import hibernatev2database.Ctb_route
 import hibernatev2database.Ctb_route_stop
 import hibernatev2database.Ctb_stop

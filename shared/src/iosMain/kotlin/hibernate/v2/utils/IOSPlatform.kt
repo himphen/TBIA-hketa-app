@@ -14,4 +14,9 @@ actual fun isDebugBuild(): Boolean {
     return true
 }
 
-actual typealias KMMContext = NSObject
+abstract class AbstractIOSContext
+
+class IOSContext : AbstractIOSContext()
+
+actual typealias KMMContext = AbstractIOSContext
+actual typealias KMMLocale = NSObject

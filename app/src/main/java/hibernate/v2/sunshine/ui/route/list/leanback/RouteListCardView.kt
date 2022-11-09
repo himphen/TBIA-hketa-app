@@ -6,7 +6,6 @@ import androidx.leanback.widget.BaseCardView
 import hibernate.v2.model.Card
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.LbCardAddEtaStopBinding
-import hibernate.v2.sunshine.model.getLocalisedName
 
 class RouteListCardView(context: Context) : BaseCardView(
     context,

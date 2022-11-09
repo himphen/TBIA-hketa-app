@@ -17,7 +17,6 @@ import com.himphen.logger.Logger
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentRouteListBinding
-import hibernate.v2.sunshine.model.color
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.ui.main.mobile.MainActivity
 import hibernate.v2.sunshine.ui.route.details.mobile.RouteDetailsActivity
@@ -25,6 +24,7 @@ import hibernate.v2.sunshine.util.getEnum
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.putEnum
 import hibernate.v2.sunshine.util.visible
+import hibernate.v2.utils.colorInt
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -89,7 +89,7 @@ class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
 
         viewBinding.recyclerView.edgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
             override fun createEdgeEffect(view: RecyclerView, direction: Int) =
-                EdgeEffect(view.context).apply { color = etaType.color(context!!) }
+                EdgeEffect(view.context).apply { color = etaType.color().colorInt(view.context) }
         }
     }
 

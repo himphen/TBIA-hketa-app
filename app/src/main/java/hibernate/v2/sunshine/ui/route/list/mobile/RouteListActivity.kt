@@ -5,9 +5,9 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityContainerBinding
-import hibernate.v2.sunshine.model.color
-import hibernate.v2.sunshine.model.name
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
+import hibernate.v2.utils.colorInt
+import hibernate.v2.utils.localized
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RouteListActivity : BaseFragmentActivity<ActivityContainerBinding>() {
@@ -26,14 +26,14 @@ class RouteListActivity : BaseFragmentActivity<ActivityContainerBinding>() {
 
     private fun initEvent() {
         viewModel.tabItemSelectedLiveData.observe(this) { item ->
-            val color = item.color(this)
+            val color = item.color().colorInt(this)
 
             window?.statusBarColor = color
 
             supportActionBar?.let {
                 it.title = getString(
                     R.string.title_activity_add_eta_with_company_name,
-                    item.name(this)
+                    item.name().localized(this)
                 )
             }
 

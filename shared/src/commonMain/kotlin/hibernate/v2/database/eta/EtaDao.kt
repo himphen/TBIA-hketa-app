@@ -3,7 +3,6 @@ package hibernate.v2.database.eta
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.database.DatabaseDriverFactory
-import hibernate.v2.database.DatabaseFactory
 import hibernate.v2.database.runGettingLastId
 
 class EtaDao(databaseDriverFactory: DatabaseDriverFactory) {

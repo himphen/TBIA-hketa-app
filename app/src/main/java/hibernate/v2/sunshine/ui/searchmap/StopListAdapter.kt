@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.model.searchmap.SearchMapStop
 import hibernate.v2.sunshine.databinding.ItemBottomSheetStopBinding
 import hibernate.v2.sunshine.databinding.ItemRouteBadgeBinding
-import hibernate.v2.sunshine.model.color
-import hibernate.v2.sunshine.model.getColor
 import hibernate.v2.sunshine.ui.base.BaseViewHolder
 import hibernate.v2.sunshine.ui.searchmap.item.RouteBadge
 import hibernate.v2.sunshine.ui.view.setStopRouteBadgeFlexManager
 import hibernate.v2.sunshine.util.GeneralUtils.getTransportationLanguage
 import hibernate.v2.sunshine.util.updateBackgroundColor
+import hibernate.v2.utils.colorInt
 
 class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
     ListAdapter<SearchMapStop, StopListAdapter.ItemVH>(DiffCallback()) {
@@ -50,13 +50,13 @@ class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
     override fun onBindViewHolder(holder: ItemVH, position: Int) {
         val item = getItem(position)
         holder.viewBinding.apply {
-            stopCompanyColor.setBackgroundColor(item.etaType.color(holder.context))
+            stopCompanyColor.setBackgroundColor(item.etaType.color().colorInt(holder.context))
             stopNameTv.text = item.getLocalisedName(getTransportationLanguage(holder.context))
 
             (routeNumberRecyclerView.adapter as RouteBadgeAdapter).apply {
                 setData(
                     item.mapRouteList
-                        .map { RouteBadge(it.route.routeNo, it.route.getColor(holder.context)) }
+                        .map { RouteBadge(it.route.routeNo, it.route.getColor().colorInt()) }
                 )
             }
 

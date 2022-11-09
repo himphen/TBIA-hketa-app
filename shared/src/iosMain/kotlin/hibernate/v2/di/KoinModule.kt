@@ -2,10 +2,10 @@ package hibernate.v2.di
 
 import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.database.DatabaseDriverFactory
+import hibernate.v2.utils.IOSContext
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import platform.darwin.NSObject
 
 fun initKoin() {
     val koinApp = startKoin {
@@ -28,7 +28,7 @@ fun initKoin() {
 }
 
 val koinIOSServiceModule: Module = module {
-    single { SharedPreferencesManager(NSObject()) }
+    single { SharedPreferencesManager(IOSContext()) }
 }
 
 val koinIOSViewModelModule: Module = module {
