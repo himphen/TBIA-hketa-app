@@ -5,6 +5,7 @@ import dev.icerock.moko.resources.ColorResource
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.desc.ResourceFormattedStringDesc
 import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.resources.format
 import dev.icerock.moko.resources.getColor
 
 actual fun StringResource.localized(context: KMMContext): String {
@@ -13,6 +14,10 @@ actual fun StringResource.localized(context: KMMContext): String {
 
 actual fun ResourceFormattedStringDesc.localized(context: KMMContext): String {
     return toString(context)
+}
+
+actual fun StringResource.formatString(context: KMMContext, args: List<Any>): String {
+    return format(args).localized(context)
 }
 
 fun ColorResource.colorInt(context: KMMContext): Int {

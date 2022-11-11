@@ -77,7 +77,7 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
                     val item = adapter.list[tab.position]
 
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.tabItemSelectedLiveData.postValue(item)
+                        viewModel.tabItemSelectedLiveData.emit(item)
                     }
                 }
 
@@ -146,7 +146,7 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
             afterTextChanged()
                 .debounce(searchDelay)
                 .onEach {
-                    viewModel.searchRouteKeyword.value = it
+                    viewModel.searchRouteKeyword = it
                     viewModel.searchRoute(context, etaType)
                 }
                 .launchIn(lifecycleScope)
@@ -163,13 +163,13 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
     }
 
     private fun initEvent() {
-        viewModel.tabItemSelectedLiveData.observe(viewLifecycleOwner) {
+        viewModel.tabItemSelectedLiveData.onEach {
             context?.let { context ->
                 val color = it.color().colorInt(context)
                 viewBinding?.tabLayout?.setSelectedTabIndicatorColor(color)
                 viewBinding?.searchCl?.setBackgroundColor(color)
             }
-        }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun updateCloseButton() {

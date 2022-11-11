@@ -10,9 +10,16 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
+		36E9614E77C8F5B2F4908BEC /* RouteListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E965453F2978D257C60D9E /* RouteListView.swift */; };
+		36E9631C9CC2D2FD9AD0CE26 /* ItemRouteListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E964A67822C8EB5AE843F0 /* ItemRouteListView.swift */; };
+		36E963998EB72C622E8343AB /* MeowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96FA3800DF0697F2A2FD1 /* MeowView.swift */; };
 		36E96679E4BEDC47A42B4F47 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E965220AE6AF5E8A07549E /* LottieView.swift */; };
+		36E966EBF347F55A47BF1785 /* ItemRouteStopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96F63A3FC0C3E2D343650 /* ItemRouteStopView.swift */; };
+		36E9677FE3A195867B132D56 /* RouteDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96DCD91B508DCC16821F9 /* RouteDetailsVM.swift */; };
 		36E96887CC0E3A1798FBF9D0 /* OnboardingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E964114EC7B7C2A8E7208B /* OnboardingVM.swift */; };
+		36E96E975C5CFA2F83B8C369 /* RouteListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E967797918802594F3FB13 /* RouteListVM.swift */; };
 		36E96EDD4E561E9DF4B5AA8C /* BookmarkHomeVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9635DDCD9227C3AFA20AB /* BookmarkHomeVM.swift */; };
+		36E96F8A7C4970E3B733DD9D /* RouteDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E965A47E074656938C397E /* RouteDetailsView.swift */; };
 		36E96FB20464402C5689F2E6 /* BookmarkHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96937F3009767569C1E3F /* BookmarkHomeView.swift */; };
 		36E96FE04BAA7B3092669C7E /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9641751F4042B3E7A9576 /* OnboardingView.swift */; };
 		8A3BFB8929180D1300104DD9 /* lottie_spaghetti_loader.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A3BFB8829180D1300104DD9 /* lottie_spaghetti_loader.json */; };
@@ -29,8 +36,15 @@
 		36E9635DDCD9227C3AFA20AB /* BookmarkHomeVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkHomeVM.swift; sourceTree = "<group>"; };
 		36E964114EC7B7C2A8E7208B /* OnboardingVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingVM.swift; sourceTree = "<group>"; };
 		36E9641751F4042B3E7A9576 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		36E964A67822C8EB5AE843F0 /* ItemRouteListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemRouteListView.swift; sourceTree = "<group>"; };
 		36E965220AE6AF5E8A07549E /* LottieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		36E965453F2978D257C60D9E /* RouteListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteListView.swift; sourceTree = "<group>"; };
+		36E965A47E074656938C397E /* RouteDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteDetailsView.swift; sourceTree = "<group>"; };
+		36E967797918802594F3FB13 /* RouteListVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteListVM.swift; sourceTree = "<group>"; };
 		36E96937F3009767569C1E3F /* BookmarkHomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkHomeView.swift; sourceTree = "<group>"; };
+		36E96DCD91B508DCC16821F9 /* RouteDetailsVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteDetailsVM.swift; sourceTree = "<group>"; };
+		36E96F63A3FC0C3E2D343650 /* ItemRouteStopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemRouteStopView.swift; sourceTree = "<group>"; };
+		36E96FA3800DF0697F2A2FD1 /* MeowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeowView.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78846ECAEE77D4322A8EC28B /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -94,8 +108,28 @@
 				36E96D89B5DE2CD89C33EEF7 /* onborading */,
 				36E9633D543BCF77C83D7CA5 /* common */,
 				36E96DAD6825B4A4404D319F /* bookmark */,
+				36E9662AE5EC37DC98500B80 /* route */,
 			);
 			path = ui;
+			sourceTree = "<group>";
+		};
+		36E9662AE5EC37DC98500B80 /* route */ = {
+			isa = PBXGroup;
+			children = (
+				36E96EC4A545899FD640E4B0 /* list */,
+				36E96A858B466F9E407F916D /* details */,
+			);
+			path = route;
+			sourceTree = "<group>";
+		};
+		36E96A858B466F9E407F916D /* details */ = {
+			isa = PBXGroup;
+			children = (
+				36E96F63A3FC0C3E2D343650 /* ItemRouteStopView.swift */,
+				36E965A47E074656938C397E /* RouteDetailsView.swift */,
+				36E96DCD91B508DCC16821F9 /* RouteDetailsVM.swift */,
+			);
+			path = details;
 			sourceTree = "<group>";
 		};
 		36E96D89B5DE2CD89C33EEF7 /* onborading */ = {
@@ -114,6 +148,17 @@
 				36E9647DE4EA9856AA7E91E4 /* home */,
 			);
 			path = bookmark;
+			sourceTree = "<group>";
+		};
+		36E96EC4A545899FD640E4B0 /* list */ = {
+			isa = PBXGroup;
+			children = (
+				36E965453F2978D257C60D9E /* RouteListView.swift */,
+				36E967797918802594F3FB13 /* RouteListVM.swift */,
+				36E964A67822C8EB5AE843F0 /* ItemRouteListView.swift */,
+				36E96FA3800DF0697F2A2FD1 /* MeowView.swift */,
+			);
+			path = list;
 			sourceTree = "<group>";
 		};
 		7555FF72242A565900829871 = {
@@ -178,8 +223,8 @@
 				7555FF77242A565900829871 /* Sources */,
 				7555FF79242A565900829871 /* Resources */,
 				97374110B21A6A94C34879D3 /* Frameworks */,
-				00E1AE1517BE68714E9F9630 /* [CP] Embed Pods Frameworks */,
 				8A056421291C10CB004FB026 /* mokoResources */,
+				666839FF078F8C2900ED6322 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -239,7 +284,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		00E1AE1517BE68714E9F9630 /* [CP] Embed Pods Frameworks */ = {
+		666839FF078F8C2900ED6322 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -350,6 +395,13 @@
 				36E96679E4BEDC47A42B4F47 /* LottieView.swift in Sources */,
 				36E96EDD4E561E9DF4B5AA8C /* BookmarkHomeVM.swift in Sources */,
 				36E96FB20464402C5689F2E6 /* BookmarkHomeView.swift in Sources */,
+				36E9614E77C8F5B2F4908BEC /* RouteListView.swift in Sources */,
+				36E96E975C5CFA2F83B8C369 /* RouteListVM.swift in Sources */,
+				36E9631C9CC2D2FD9AD0CE26 /* ItemRouteListView.swift in Sources */,
+				36E966EBF347F55A47BF1785 /* ItemRouteStopView.swift in Sources */,
+				36E96F8A7C4970E3B733DD9D /* RouteDetailsView.swift in Sources */,
+				36E9677FE3A195867B132D56 /* RouteDetailsVM.swift in Sources */,
+				36E963998EB72C622E8343AB /* MeowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,6 +536,7 @@
 				DEVELOPMENT_TEAM = 86F47XZ54D;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -507,6 +560,7 @@
 				DEVELOPMENT_TEAM = 86F47XZ54D;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

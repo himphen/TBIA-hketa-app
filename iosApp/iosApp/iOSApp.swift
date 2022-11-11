@@ -4,17 +4,18 @@ import FirebaseCore
 
 @main
 struct iOSApp: App {
-
+    
     init() {
         IOSCommonLoggerKt.doInitLogger()
         FirebaseApp.configure()
         KoinModuleKt.doInitKoin()
     }
-
-	var body: some Scene {
-		WindowGroup {
+    
+    var body: some Scene {
+        WindowGroup {
+            RouteListView()
 //            BookmarkHomeView()
-            OnboardingView()
-		}
-	}
+//            OnboardingView()
+        }
+    }
 }

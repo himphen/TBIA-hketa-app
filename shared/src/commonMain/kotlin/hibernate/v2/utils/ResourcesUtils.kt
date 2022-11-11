@@ -6,3 +6,5 @@ import dev.icerock.moko.resources.desc.ResourceFormattedStringDesc
 expect fun StringResource.localized(context: KMMContext): String
 
 expect fun ResourceFormattedStringDesc.localized(context: KMMContext): String
+
+expect fun StringResource.formatString(context: KMMContext, args: List<Any>): String

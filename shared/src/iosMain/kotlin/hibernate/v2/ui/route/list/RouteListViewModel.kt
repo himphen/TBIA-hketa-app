@@ -1,8 +1,5 @@
-package hibernate.v2.sunshine.ui.route.list.mobile
+package hibernate.v2.ui.route.list
 
-import android.content.Context
-import androidx.lifecycle.viewModelScope
-import com.himphen.logger.Logger
 import hibernate.v2.api.model.transport.GmbRegion
 import hibernate.v2.domain.ctb.CtbInteractor
 import hibernate.v2.domain.gmb.GmbInteractor
@@ -13,46 +10,44 @@ import hibernate.v2.domain.nlb.NlbInteractor
 import hibernate.v2.model.dataholder.RouteListDataHolder
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.model.transport.route.TransportRoute
-import hibernate.v2.sunshine.ui.base.BaseViewModel
+import hibernate.v2.utils.CommonLogger
+import hibernate.v2.utils.IOSContext
 import hibernate.v2.utils.logLifecycle
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.launch
-import java.util.EnumMap
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class RouteListMobileViewModel(
-    private val kmbInteractor: KmbInteractor,
-    private val ctbInteractor: CtbInteractor,
-    private val gmbInteractor: GmbInteractor,
-    private val mtrInteractor: MtrInteractor,
-    private val lrtInteractor: LrtInteractor,
-    private val nlbRepository: NlbInteractor,
-) : BaseViewModel() {
+class RouteListViewModel(
+    private val filteredTransportRouteList: (EtaType, List<TransportRoute>) -> Unit,
+    private val tabItemSelectedUpdated: () -> Unit,
+    private val selectedEtaTypeUpdated: () -> Unit,
+) : KoinComponent {
 
-    val filteredTransportRouteList = MutableSharedFlow<Pair<EtaType, List<TransportRoute>>>()
-    val tabItemSelectedLiveData = MutableSharedFlow<EtaType>()
+    private val kmbInteractor: KmbInteractor by inject()
+    private val ctbInteractor: CtbInteractor by inject()
+    private val gmbInteractor: GmbInteractor by inject()
+    private val mtrInteractor: MtrInteractor by inject()
+    private val lrtInteractor: LrtInteractor by inject()
+    private val nlbRepository: NlbInteractor by inject()
 
-    var searchRouteKeyword: String = ""
+    val tabItemSelected: EtaType? = null
+    var selectedEtaType: EtaType = EtaType.KMB
 
-    private var executingSearchJob: EnumMap<EtaType, Job?> = EnumMap(EtaType::class.java)
+    val searchRouteKeyword: String = ""
 
-    fun getTransportRouteList(context: Context, etaType: EtaType) {
-        viewModelScope.launch(Dispatchers.IO) {
-            when (etaType) {
-                EtaType.KMB -> getKmbRouteList()
-                EtaType.NWFB,
-                EtaType.CTB -> getCtbRouteList(etaType)
-                EtaType.GMB_HKI,
-                EtaType.GMB_KLN,
-                EtaType.GMB_NT -> getGmbRouteList(etaType)
-                EtaType.MTR -> getMTRRouteList()
-                EtaType.LRT -> getLRTRouteList()
-                EtaType.NLB -> getNlbRouteList()
-            }
-
-            searchRoute(context, etaType)
+    suspend fun getTransportRouteList(etaType: EtaType) {
+        when (etaType) {
+            EtaType.KMB -> getKmbRouteList()
+            EtaType.NWFB,
+            EtaType.CTB -> getCtbRouteList(etaType)
+            EtaType.GMB_HKI,
+            EtaType.GMB_KLN,
+            EtaType.GMB_NT -> getGmbRouteList(etaType)
+            EtaType.MTR -> getMTRRouteList()
+            EtaType.LRT -> getLRTRouteList()
+            EtaType.NLB -> getNlbRouteList()
         }
+
+        searchRoute(etaType)
     }
 
     private suspend fun getKmbRouteList() {
@@ -71,7 +66,7 @@ class RouteListMobileViewModel(
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getKmbRouteList error")
+            logLifecycle(e, "lifecycle getKmbRouteList error")
         }
     }
 
@@ -90,7 +85,7 @@ class RouteListMobileViewModel(
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getCtbRouteList error")
+            logLifecycle(e, "lifecycle getCtbRouteList error")
         }
     }
 
@@ -115,7 +110,7 @@ class RouteListMobileViewModel(
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getGmbRouteList error")
+            logLifecycle(e, "lifecycle getGmbRouteList error")
         }
     }
 
@@ -134,7 +129,7 @@ class RouteListMobileViewModel(
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getMTRRouteList error")
+            logLifecycle(e, "lifecycle getMTRRouteList error")
         }
     }
 
@@ -153,7 +148,7 @@ class RouteListMobileViewModel(
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getLRTRouteList error")
+            logLifecycle(e, "lifecycle getLRTRouteList error")
         }
     }
 
@@ -173,40 +168,33 @@ class RouteListMobileViewModel(
         } catch (e: Exception) {
             RouteListDataHolder.setData(etaType, listOf())
 
-            Logger.e(e, "lifecycle getNLBRouteList error")
+            logLifecycle(e, "lifecycle getNLBRouteList error")
         }
     }
 
-    fun searchRoute(context: Context, etaType: EtaType) {
-        executingSearchJob[etaType]?.cancel()
-
+    fun searchRoute(etaType: EtaType) {
         if (!RouteListDataHolder.hasData(etaType)) {
-            executingSearchJob[etaType] = viewModelScope.launch(Dispatchers.IO) {
-                filteredTransportRouteList.emit(Pair(etaType, emptyList()))
-            }
+            filteredTransportRouteList(etaType, emptyList())
             return
         }
 
         val keyword = searchRouteKeyword
-        Logger.d(String.format("Search text changed: %s", keyword))
+        CommonLogger.d("Search text changed: $keyword")
 
         val allTransportRouteList = RouteListDataHolder.getData(etaType)!!
 
         if (keyword.isBlank()) {
-            executingSearchJob[etaType] = viewModelScope.launch(Dispatchers.IO) {
-                filteredTransportRouteList.emit(Pair(etaType, allTransportRouteList))
-            }
+            filteredTransportRouteList(etaType, allTransportRouteList)
             return
         }
 
-        executingSearchJob[etaType] = viewModelScope.launch(Dispatchers.IO) {
-            val result = allTransportRouteList.filter { transportRoute ->
-                transportRoute.routeNo.startsWith(keyword, true) ||
-                    transportRoute.getLocalisedDest(context).startsWith(keyword, true) ||
-                    transportRoute.getLocalisedOrig(context).startsWith(keyword, true)
-            }
-
-            filteredTransportRouteList.emit(Pair(etaType, result))
+        val result = allTransportRouteList.filter { transportRoute ->
+            transportRoute.routeNo.startsWith(keyword, true) ||
+                transportRoute.getLocalisedDest(IOSContext()).startsWith(keyword, true) ||
+                transportRoute.getLocalisedOrig(IOSContext()).startsWith(keyword, true)
         }
+
+        filteredTransportRouteList(etaType, result)
     }
+
 }

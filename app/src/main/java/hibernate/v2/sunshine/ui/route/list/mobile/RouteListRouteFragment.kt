@@ -55,8 +55,6 @@ class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
     private val viewModel: RouteListMobileViewModel by sharedViewModel()
     private val adapter: RouteListRouteItemAdapter by lazy {
         RouteListRouteItemAdapter(etaType) { route ->
-            viewModel.selectedEtaType.value = etaType
-
             etaAddedLauncher.launch(RouteDetailsActivity.getLaunchIntent(context, route, etaType))
         }
     }

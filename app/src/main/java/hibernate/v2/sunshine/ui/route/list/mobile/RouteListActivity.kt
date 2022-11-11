@@ -3,11 +3,14 @@ package hibernate.v2.sunshine.ui.route.list.mobile
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityContainerBinding
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
 import hibernate.v2.utils.colorInt
 import hibernate.v2.utils.localized
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RouteListActivity : BaseFragmentActivity<ActivityContainerBinding>() {
@@ -25,7 +28,7 @@ class RouteListActivity : BaseFragmentActivity<ActivityContainerBinding>() {
     }
 
     private fun initEvent() {
-        viewModel.tabItemSelectedLiveData.observe(this) { item ->
+        viewModel.tabItemSelectedLiveData.onEach { item ->
             val color = item.color().colorInt(this)
 
             window?.statusBarColor = color
@@ -39,7 +42,7 @@ class RouteListActivity : BaseFragmentActivity<ActivityContainerBinding>() {
 
             viewBinding.appBarLayout.elevation = 0f
             viewBinding.toolbar.root.setBackgroundColor(color)
-        }
+        }.launchIn(lifecycleScope)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

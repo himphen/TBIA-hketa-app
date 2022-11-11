@@ -10,6 +10,7 @@ import Rswift
 class BookmarkHomeVM: ObservableObject {
     private var viewModel: BookmarkHomeViewModel? = nil
     
+    @Published var hasData = false
     
     func activate() async {
         viewModel = BookmarkHomeViewModel(
@@ -17,6 +18,8 @@ class BookmarkHomeVM: ObservableObject {
                 CommonLoggerUtilsKt.logD(
                     message: "savedEtaCardListUpdated"
                 )
+    
+                hasData = viewModel?.savedEtaCardList.count != 0
             },
             etaUpdateError: { [self] in
                 CommonLoggerUtilsKt.logD(
