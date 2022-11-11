@@ -13,6 +13,8 @@
 		36E9614E77C8F5B2F4908BEC /* RouteListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E965453F2978D257C60D9E /* RouteListView.swift */; };
 		36E9631C9CC2D2FD9AD0CE26 /* ItemRouteListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E964A67822C8EB5AE843F0 /* ItemRouteListView.swift */; };
 		36E963998EB72C622E8343AB /* MeowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96FA3800DF0697F2A2FD1 /* MeowView.swift */; };
+		36E964A7DB10FE436E88B10A /* ItemRouteStopExpandedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96507891DEA7B14972281 /* ItemRouteStopExpandedView.swift */; };
+		36E96503309460796794AD7B /* RResourceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E966030B133DAEC82E3DCB /* RResourceExtension.swift */; };
 		36E96679E4BEDC47A42B4F47 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E965220AE6AF5E8A07549E /* LottieView.swift */; };
 		36E966EBF347F55A47BF1785 /* ItemRouteStopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96F63A3FC0C3E2D343650 /* ItemRouteStopView.swift */; };
 		36E9677FE3A195867B132D56 /* RouteDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96DCD91B508DCC16821F9 /* RouteDetailsVM.swift */; };
@@ -37,9 +39,11 @@
 		36E964114EC7B7C2A8E7208B /* OnboardingVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingVM.swift; sourceTree = "<group>"; };
 		36E9641751F4042B3E7A9576 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		36E964A67822C8EB5AE843F0 /* ItemRouteListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemRouteListView.swift; sourceTree = "<group>"; };
+		36E96507891DEA7B14972281 /* ItemRouteStopExpandedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemRouteStopExpandedView.swift; sourceTree = "<group>"; };
 		36E965220AE6AF5E8A07549E /* LottieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		36E965453F2978D257C60D9E /* RouteListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteListView.swift; sourceTree = "<group>"; };
 		36E965A47E074656938C397E /* RouteDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteDetailsView.swift; sourceTree = "<group>"; };
+		36E966030B133DAEC82E3DCB /* RResourceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RResourceExtension.swift; sourceTree = "<group>"; };
 		36E967797918802594F3FB13 /* RouteListVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteListVM.swift; sourceTree = "<group>"; };
 		36E96937F3009767569C1E3F /* BookmarkHomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkHomeView.swift; sourceTree = "<group>"; };
 		36E96DCD91B508DCC16821F9 /* RouteDetailsVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteDetailsVM.swift; sourceTree = "<group>"; };
@@ -109,6 +113,7 @@
 				36E9633D543BCF77C83D7CA5 /* common */,
 				36E96DAD6825B4A4404D319F /* bookmark */,
 				36E9662AE5EC37DC98500B80 /* route */,
+				36E96D746D48C19C44AB4A69 /* utils */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -128,8 +133,17 @@
 				36E96F63A3FC0C3E2D343650 /* ItemRouteStopView.swift */,
 				36E965A47E074656938C397E /* RouteDetailsView.swift */,
 				36E96DCD91B508DCC16821F9 /* RouteDetailsVM.swift */,
+				36E96507891DEA7B14972281 /* ItemRouteStopExpandedView.swift */,
 			);
 			path = details;
+			sourceTree = "<group>";
+		};
+		36E96D746D48C19C44AB4A69 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				36E966030B133DAEC82E3DCB /* RResourceExtension.swift */,
+			);
+			path = utils;
 			sourceTree = "<group>";
 		};
 		36E96D89B5DE2CD89C33EEF7 /* onborading */ = {
@@ -402,6 +416,8 @@
 				36E96F8A7C4970E3B733DD9D /* RouteDetailsView.swift in Sources */,
 				36E9677FE3A195867B132D56 /* RouteDetailsVM.swift in Sources */,
 				36E963998EB72C622E8343AB /* MeowView.swift in Sources */,
+				36E964A7DB10FE436E88B10A /* ItemRouteStopExpandedView.swift in Sources */,
+				36E96503309460796794AD7B /* RResourceExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,7 +19,7 @@ class RouteDetailsVM: ObservableObject {
     
     private var viewModel: RouteDetailsViewModel? = nil
     
-    @Published var routeDetailsStopListUpdated: [RouteDetailsStop] = []
+    @Published var routeDetailsStopListUpdated: [RouteDetailsStopItem] = []
     
     func activate() async {
         viewModel = RouteDetailsViewModel(
@@ -32,10 +32,13 @@ class RouteDetailsVM: ObservableObject {
                     return
                 }
                 
-                routeDetailsStopListUpdated = routeDetailsStopList
+                routeDetailsStopListUpdated = routeDetailsStopList.map { item in
+                    RouteDetailsStopItem(item: item, isExpanded: false, etaList: [])
+                }
             },
             etaListUpdated: { [self] data in
                 CommonLoggerUtilsKt.logD(message: "etaListUpdated")
+                convertEtaList(etaList: data)
             },
             selectedStopUpdated: { [self] in
                 CommonLoggerUtilsKt.logD(message: "selectedStopUpdated")
@@ -65,4 +68,49 @@ class RouteDetailsVM: ObservableObject {
         } catch {
         }
     }
+    
+    func collapsedItem() {
+        routeDetailsStopListUpdated = routeDetailsStopListUpdated.enumerated().map { (index, element) in
+            RouteDetailsStopItem(
+                item: element.item,
+                isExpanded: false,
+                etaList: []
+            )
+        }
+        viewModel?.selectedStop = nil
+    }
+    
+    func expandedItem(expandedPosition: Int, selectedStop: TransportStop) {
+        routeDetailsStopListUpdated = routeDetailsStopListUpdated.enumerated().map { (index, element) in
+            RouteDetailsStopItem(
+                item: element.item,
+                isExpanded: index == expandedPosition,
+                etaList: element.etaList
+            )
+        }
+        viewModel?.selectedStop = selectedStop
+        viewModel?.updateEtaList(completionHandler: { _ in
+        
+        })
+    }
+    
+    func convertEtaList(etaList: [TransportEta]) {
+        routeDetailsStopListUpdated = routeDetailsStopListUpdated.map { element in
+            if (element.isExpanded) {
+                return RouteDetailsStopItem(
+                    item: element.item,
+                    isExpanded: true,
+                    etaList: etaList
+                )
+            } else {
+                return element
+            }
+        }
+    }
+}
+
+struct RouteDetailsStopItem: Hashable {
+    var item: RouteDetailsStop
+    var isExpanded: Bool
+    var etaList: [TransportEta]
 }

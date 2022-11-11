@@ -23,9 +23,28 @@ struct RouteDetailsView: View {
     }
     
     var body: some View {
-        List(viewModel.routeDetailsStopListUpdated, id: \.self) { item in
-            ItemRouteStopView(route: selectedRoute, routeDetailsStop: item)
-            .listRowInsets(EdgeInsets())
+        List {
+            ForEach(Array(viewModel.routeDetailsStopListUpdated.enumerated()), id: \.element) { index, item in
+                if (item.isExpanded) {
+                    ItemRouteStopExpandedView(
+                        route: selectedRoute,
+                        routeDetailsStop: item.item,
+                        etaList: item.etaList
+                    )
+                    .listRowInsets(EdgeInsets())
+                    .onTapGesture {
+                        print("meow collapse \(index)")
+                        viewModel.collapsedItem()
+                    }
+                } else {
+                    ItemRouteStopView(route: selectedRoute, routeDetailsStop: item.item)
+                    .listRowInsets(EdgeInsets())
+                    .onTapGesture {
+                        print("meow expand \(index)")
+                        viewModel.expandedItem(expandedPosition: index, selectedStop: item.item.transportStop)
+                    }
+                }
+            }
         }
         .navigationBarTitle(selectedRoute.routeNo + "號線")
         .listStyle(PlainListStyle())

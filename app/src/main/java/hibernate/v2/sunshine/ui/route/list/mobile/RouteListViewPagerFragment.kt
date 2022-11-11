@@ -61,8 +61,8 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initUi()
         initEvent()
+        initUi()
     }
 
     private fun initUi() {

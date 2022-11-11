@@ -27,7 +27,7 @@ struct ItemRouteListView: View {
                     .font(.system(size: 20, weight: .bold))
                 }
                 .frame(
-                    width: 60,
+                    width: 80,
                     alignment: .leading
                 )
                 
