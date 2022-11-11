@@ -51,6 +51,10 @@ class RouteDetailsViewModel(
     var routeDetailsStopList: List<RouteDetailsStop>? = null
 
     var selectedStop: TransportStop? = null
+        set(value) {
+            field = value
+            selectedStopUpdated()
+        }
 
     var requestedLocationUpdates = false
 

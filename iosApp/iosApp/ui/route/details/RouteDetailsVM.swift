@@ -12,6 +12,8 @@ class RouteDetailsVM: ObservableObject {
     var selectedRoute: TransportRoute
     var selectedEtaType: EtaType
     
+    var selectedStop: TransportStop? = nil
+    
     init(selectedRoute: TransportRoute, selectedEtaType: EtaType) {
         self.selectedRoute = selectedRoute
         self.selectedEtaType = selectedEtaType
@@ -42,6 +44,7 @@ class RouteDetailsVM: ObservableObject {
             },
             selectedStopUpdated: { [self] in
                 CommonLoggerUtilsKt.logD(message: "selectedStopUpdated")
+                selectedStop = viewModel?.selectedStop
             },
             isSavedEtaBookmarkUpdated: { [self] data1, data2 in
                 CommonLoggerUtilsKt.logD(message: "isSavedEtaBookmarkUpdated")
@@ -89,6 +92,9 @@ class RouteDetailsVM: ObservableObject {
             )
         }
         viewModel?.selectedStop = selectedStop
+    }
+    
+    func updateEtaList() {
         viewModel?.updateEtaList(completionHandler: { _ in
         
         })

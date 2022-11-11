@@ -12,6 +12,8 @@ struct RouteDetailsView: View {
     @State var selectedEtaType: EtaType
     @ObservedObject var viewModel: RouteDetailsVM
     
+    @State var timer: Timer? = nil
+    
     init(selectedRoute: TransportRoute, selectedEtaType: EtaType) {
         self.selectedRoute = selectedRoute
         self.selectedEtaType = selectedEtaType
@@ -35,6 +37,7 @@ struct RouteDetailsView: View {
                     .onTapGesture {
                         print("meow collapse \(index)")
                         viewModel.collapsedItem()
+                        etaRequested(value: false)
                     }
                 } else {
                     ItemRouteStopView(route: selectedRoute, routeDetailsStop: item.item)
@@ -42,6 +45,7 @@ struct RouteDetailsView: View {
                     .onTapGesture {
                         print("meow expand \(index)")
                         viewModel.expandedItem(expandedPosition: index, selectedStop: item.item.transportStop)
+                        etaRequested(value: true)
                     }
                 }
             }
@@ -50,6 +54,24 @@ struct RouteDetailsView: View {
         .listStyle(PlainListStyle())
         .task {
             await viewModel.activate()
+        }
+        .onDisappear {
+            timer?.invalidate()
+        }
+    }
+    
+    func etaRequested(value: Bool) {
+        timer?.invalidate()
+        if (value) {
+            timer = Timer.scheduledTimer(
+                withTimeInterval: 60,
+                repeats: true
+            ) { [self] (timer) in
+                viewModel.updateEtaList()
+    
+                print("meow expand \(viewModel.selectedStop?.nameTc)")
+            }
+            timer?.fire()
         }
     }
 }
