@@ -67,7 +67,7 @@ struct ItemRouteListView: View {
                     VStack {
                         Text(MR.strings().text_add_eta_destination_sp_mobile
                         .formatString(args: [route.serviceType]))
-                    }
+                    }.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 12))
                 }
                 
             }

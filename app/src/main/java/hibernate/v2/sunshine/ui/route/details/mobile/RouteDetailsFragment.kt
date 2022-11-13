@@ -268,7 +268,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
                 activity?.setResult(MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK)
                 Toast.makeText(
                     context,
-                    getString(R.string.toast_eta_removed),
+                    getString(R.string.toast_eta_added),
                     Toast.LENGTH_SHORT
                 ).show()
             }

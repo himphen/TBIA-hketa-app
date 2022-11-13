@@ -42,9 +42,10 @@ struct ItemRouteStopView: View {
             }
             .padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 8))
             
-            HStack(spacing: 0) {
+            HStack(alignment: .lastTextBaseline, spacing: 0) {
                 Text(String(routeDetailsStop.transportStop.seq?.intValue ?? 0))
                 .font(.system(size: 12, weight: .bold))
+                // TODO color
                 .foregroundColor(.gray)
                 
                 Text(routeDetailsStop.transportStop.nameTc)

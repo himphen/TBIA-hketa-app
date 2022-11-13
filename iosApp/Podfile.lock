@@ -1,4 +1,5 @@
 PODS:
+  - AlertToast (1.3.7)
   - FirebaseABTesting (7.11.0):
     - FirebaseCore (~> 7.0)
   - FirebaseAuth (7.11.0):
@@ -64,6 +65,7 @@ PODS:
   - SwiftLint (0.49.1)
 
 DEPENDENCIES:
+  - AlertToast
   - FirebaseAuth
   - FirebaseDatabase
   - FirebaseRemoteConfig
@@ -74,6 +76,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AlertToast
     - FirebaseABTesting
     - FirebaseAuth
     - FirebaseCore
@@ -97,6 +100,7 @@ EXTERNAL SOURCES:
     :path: "../shared"
 
 SPEC CHECKSUMS:
+  AlertToast: 8c9d5efb2df6ea728b32b62bce99d876ec3e5393
   FirebaseABTesting: e66f1f80747792630d9b292966de206d5df9853b
   FirebaseAuth: 5fe4585c2ed847319f0ea68bd1d82c77e49ff9a0
   FirebaseCore: 99c06e5a1e8d6952e75cb1f0a6d0b23c0f5ccdcf
@@ -116,6 +120,6 @@ SPEC CHECKSUMS:
   shared: 57a860ee0fd8d8445c196bb2e326489461cb8d33
   SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
 
-PODFILE CHECKSUM: 9aaeb4045d9e2d9f9cc10bbef425c84622c2dcdf
+PODFILE CHECKSUM: b70806092337ab13c809609482789369cb20e303
 
 COCOAPODS: 1.11.3

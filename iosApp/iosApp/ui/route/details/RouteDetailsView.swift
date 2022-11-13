@@ -6,6 +6,7 @@
 import SwiftUI
 import shared
 import Rswift
+import AlertToast
 
 struct RouteDetailsView: View {
     @State var selectedRoute: TransportRoute
@@ -26,14 +27,20 @@ struct RouteDetailsView: View {
     
     var body: some View {
         List {
-            ForEach(Array(viewModel.routeDetailsStopListUpdated.enumerated()), id: \.element) { index, item in
+            ForEach(Array(viewModel.routeDetailsStopListUpdated.enumerated()), id: \.element.identifier) { index, item in
                 if (item.isExpanded) {
                     ItemRouteStopExpandedView(
+                        index: index,
                         route: selectedRoute,
                         routeDetailsStop: item.item,
-                        etaList: item.etaList
+                        etaList: item.etaList,
+                        viewModel: viewModel
+                    )
+                    .frame(
+                        maxWidth: .infinity
                     )
                     .listRowInsets(EdgeInsets())
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         print("meow collapse \(index)")
                         viewModel.collapsedItem()
@@ -41,7 +48,11 @@ struct RouteDetailsView: View {
                     }
                 } else {
                     ItemRouteStopView(route: selectedRoute, routeDetailsStop: item.item)
+                    .frame(
+                        maxWidth: .infinity
+                    )
                     .listRowInsets(EdgeInsets())
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         print("meow expand \(index)")
                         viewModel.expandedItem(expandedPosition: index, selectedStop: item.item.transportStop)
@@ -58,6 +69,11 @@ struct RouteDetailsView: View {
         .onDisappear {
             timer?.invalidate()
         }
+        .toast(isPresenting: $viewModel.showSavedEtaBookmarkToast, duration: 3, alert: {
+            AlertToast(displayMode: .banner(.slide), type: .regular, title: "Done")
+        }, completion: {
+            viewModel.showSavedEtaBookmarkToast = false
+        })
     }
     
     func etaRequested(value: Bool) {
@@ -68,7 +84,7 @@ struct RouteDetailsView: View {
                 repeats: true
             ) { [self] (timer) in
                 viewModel.updateEtaList()
-    
+                
                 print("meow expand \(viewModel.selectedStop?.nameTc)")
             }
             timer?.fire()

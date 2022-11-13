@@ -22,6 +22,7 @@ class RouteDetailsVM: ObservableObject {
     private var viewModel: RouteDetailsViewModel? = nil
     
     @Published var routeDetailsStopListUpdated: [RouteDetailsStopItem] = []
+    @Published var showSavedEtaBookmarkToast: Bool = false
     
     func activate() async {
         viewModel = RouteDetailsViewModel(
@@ -40,7 +41,7 @@ class RouteDetailsVM: ObservableObject {
             },
             etaListUpdated: { [self] data in
                 CommonLoggerUtilsKt.logD(message: "etaListUpdated")
-                convertEtaList(etaList: data)
+                setEtaListIntoDataList(etaList: data)
             },
             selectedStopUpdated: { [self] in
                 CommonLoggerUtilsKt.logD(message: "selectedStopUpdated")
@@ -48,9 +49,19 @@ class RouteDetailsVM: ObservableObject {
             },
             isSavedEtaBookmarkUpdated: { [self] data1, data2 in
                 CommonLoggerUtilsKt.logD(message: "isSavedEtaBookmarkUpdated")
+                
+                if (data2.intValue > 0) {
+                    setSavedBookmark(position: data1.intValue, savedEtaId: data2.intValue)
+                }
+                
+                showSavedEtaBookmarkToast = true
             },
             isRemovedEtaBookmarkUpdated: { [self] data in
                 CommonLoggerUtilsKt.logD(message: "isRemovedEtaBookmarkUpdated")
+                
+                if (data.intValue > 0) {
+                    setSavedBookmark(position: data.intValue, savedEtaId: nil)
+                }
             },
             etaRequested: { [self] data in
                 CommonLoggerUtilsKt.logD(message: "etaRequested")
@@ -100,7 +111,24 @@ class RouteDetailsVM: ObservableObject {
         })
     }
     
-    func convertEtaList(etaList: [TransportEta]) {
+    func saveBookmark(position: Int) {
+        guard let selectedStop = selectedStop else {
+            return
+        }
+        let card = Card.RouteStopAddCard(
+            route: selectedRoute,
+            stop: selectedStop
+        )
+        viewModel?.saveBookmark(position: Int32(position), card: card, completionHandler: { _ in
+        
+        })
+    }
+    
+    func removeBookmark(position: Int, savedEtaId: Int) {
+        viewModel?.removeBookmark(position: Int32(position), entityId: Int32(savedEtaId))
+    }
+    
+    func setEtaListIntoDataList(etaList: [TransportEta]) {
         routeDetailsStopListUpdated = routeDetailsStopListUpdated.map { element in
             if (element.isExpanded) {
                 return RouteDetailsStopItem(
@@ -113,9 +141,32 @@ class RouteDetailsVM: ObservableObject {
             }
         }
     }
+    
+    func setSavedBookmark(position: Int, savedEtaId: Int?) {
+        routeDetailsStopListUpdated = routeDetailsStopListUpdated.enumerated().map { index, element in
+            if (index == position) {
+                let newItem = RouteDetailsStopItem(
+                    item: element.item,
+                    isExpanded: element.isExpanded,
+                    etaList: element.etaList
+                )
+                
+                if let savedEtaId = savedEtaId {
+                    newItem.item.savedEtaId = KotlinInt(integerLiteral: savedEtaId)
+                } else {
+                    newItem.item.savedEtaId = nil
+                }
+                
+                return newItem
+            } else {
+                return element
+            }
+        }
+    }
 }
 
 struct RouteDetailsStopItem: Hashable {
+    let identifier = UUID()
     var item: RouteDetailsStop
     var isExpanded: Bool
     var etaList: [TransportEta]
