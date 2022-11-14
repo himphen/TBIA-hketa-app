@@ -13,7 +13,7 @@ struct ItemRouteListView: View {
     
     var body: some View {
         ZStack {
-            HStack {
+            HStack(spacing: 0) {
                 let color = route.getColor(combineNC: false)
                 
                 HStack {

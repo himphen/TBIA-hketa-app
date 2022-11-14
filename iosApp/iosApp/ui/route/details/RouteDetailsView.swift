@@ -13,7 +13,7 @@ struct RouteDetailsView: View {
     @State var selectedEtaType: EtaType
     @ObservedObject var viewModel: RouteDetailsVM
     
-    @State var timer: Timer? = nil
+    @State var etaUpdateTimer: Timer? = nil
     
     init(selectedRoute: TransportRoute, selectedEtaType: EtaType) {
         self.selectedRoute = selectedRoute
@@ -67,7 +67,7 @@ struct RouteDetailsView: View {
             await viewModel.activate()
         }
         .onDisappear {
-            timer?.invalidate()
+            etaUpdateTimer?.invalidate()
         }
         .toast(isPresenting: $viewModel.showSavedEtaBookmarkToast, duration: 3, alert: {
             AlertToast(displayMode: .banner(.slide), type: .regular, title: "Done")
@@ -77,9 +77,9 @@ struct RouteDetailsView: View {
     }
     
     func etaRequested(value: Bool) {
-        timer?.invalidate()
+        etaUpdateTimer?.invalidate()
         if (value) {
-            timer = Timer.scheduledTimer(
+            etaUpdateTimer = Timer.scheduledTimer(
                 withTimeInterval: 60,
                 repeats: true
             ) { [self] (timer) in
@@ -87,7 +87,7 @@ struct RouteDetailsView: View {
                 
                 print("meow expand \(viewModel.selectedStop?.nameTc)")
             }
-            timer?.fire()
+            etaUpdateTimer?.fire()
         }
     }
 }

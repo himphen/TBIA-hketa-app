@@ -13,9 +13,9 @@ struct iOSApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RouteListView().environment(\.colorScheme, .light)
-//            BookmarkHomeView()
-//            OnboardingView()
+//            RouteListView().environment(\.colorScheme, .light)
+            BookmarkHomeView().environment(\.colorScheme, .light)
+//            OnboardingView().environment(\.colorScheme, .light)
         }
     }
 }

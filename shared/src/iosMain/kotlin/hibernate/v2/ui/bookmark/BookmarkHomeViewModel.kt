@@ -16,18 +16,14 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class BookmarkHomeViewModel(
-    private val savedEtaCardListUpdated: () -> Unit,
-    private val etaUpdateError: () -> Unit,
-    private val etaRequested: (Boolean) -> Unit,
-    private val lastUpdatedTimeUpdated: () -> Unit
+    private val savedEtaCardListUpdated: () -> Unit
 ) : KoinComponent {
 
     private val etaInteractor: EtaInteractor by inject()
 
     var savedEtaCardList = mutableListOf<Card.EtaCard>()
-    var lastUpdatedTime = 0
 
-    fun getEtaListFromDb() {
+    suspend fun getEtaListFromDb() {
         val convertedEtaCardList = mutableListOf<Card.EtaCard>()
         convertedEtaCardList.addAll(
             etaInteractor.getSavedKmbEtaList().map { it.toEtaCard() }
