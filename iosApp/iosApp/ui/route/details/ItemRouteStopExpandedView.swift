@@ -25,15 +25,17 @@ struct ItemRouteStopExpandedView: View {
                         green: (Double(color.green) / 255),
                         blue: (Double(color.blue) / 255)
                     ).frame(
-                        width: 4,
-                        height: .infinity
+                        maxWidth: 4,
+                        maxHeight: .infinity
                     )
                 }
+                .frame(maxHeight: .infinity)
                 .padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 8))
                 
                 HStack {
                     if (routeDetailsStop.savedEtaId?.intValue == nil) {
                         Button(action: {
+                            viewModel.saveBookmark(position: index)
                         }) {
                             // TODO color
                             HStack {
@@ -46,11 +48,11 @@ struct ItemRouteStopExpandedView: View {
                             .cornerRadius(40)
                         }
                         .padding(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 4))
-                        .onTapGesture(perform: {
-                            viewModel.saveBookmark(position: index)
-                        })
                     } else {
                         Button(action: {
+                            if let savedEtaId = routeDetailsStop.savedEtaId {
+                                viewModel.removeBookmark(position: index, savedEtaId: savedEtaId.intValue)
+                            }
                         }) {
                             // TODO color
                             HStack {
@@ -66,11 +68,6 @@ struct ItemRouteStopExpandedView: View {
                             .cornerRadius(40)
                         }
                         .padding(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 4))
-                        .onTapGesture(perform: {
-                            if let savedEtaId = routeDetailsStop.savedEtaId {
-                                viewModel.removeBookmark(position: index, savedEtaId: savedEtaId.intValue)
-                            }
-                        })
                     }
                     
                     Spacer()
@@ -80,7 +77,7 @@ struct ItemRouteStopExpandedView: View {
                             if let value = etaList.first?.getEtaMinuteText(default: "-") {
                                 Text(String(value.second ?? "-"))
                                 .font(.system(size: 24, weight: .bold))
-//                            .foregroundColor(color: MR.colors().eta_card_minutes_text)
+                                .foregroundColor(MR.colors().eta_card_minutes_text.toColor())
                                 
                                 if (value.first == true) {
                                     Text(MR.strings().demo_card_eta_minute_classic_unit.desc().localized())
@@ -89,7 +86,7 @@ struct ItemRouteStopExpandedView: View {
                             } else {
                                 Text("-")
                                 .font(.system(size: 24, weight: .bold))
-//                            .foregroundColor(color: MR.colors.eta_card_minutes_text)
+                                .foregroundColor(MR.colors().eta_card_minutes_text.toColor())
                             }
                         }
                         
@@ -116,7 +113,9 @@ struct ItemRouteStopExpandedView: View {
                         }
                     }
                 }
+                .frame(maxHeight: .infinity)
             }
+            .fixedSize(horizontal: false, vertical: true)
             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 12))
         }
         .frame(

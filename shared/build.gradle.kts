@@ -35,6 +35,8 @@ kotlin {
             isStatic = true
             baseName = "shared"
         }
+
+        xcodeConfigurationToNativeBuildType["Stage"] = org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
     }
 
     sourceSets {
@@ -153,4 +155,5 @@ sqldelight {
 multiplatformResources {
     multiplatformResourcesPackage = "hibernate.v2" // required
     iosBaseLocalizationRegion = "zh-tw" // optional, default "en"
+    disableStaticFrameworkWarning = true
 }

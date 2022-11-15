@@ -135,17 +135,44 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 2 images.
+  /// This `R.image` struct is generated, and contains static references to 5 images.
   struct image {
+    /// Image `ic_bus_24`.
+    static let ic_bus_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_bus_24")
+    /// Image `ic_edit_24`.
+    static let ic_edit_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_edit_24")
     /// Image `ic_empty_list`.
     static let ic_empty_list = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_empty_list")
+    /// Image `ic_search_24`.
+    static let ic_search_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_search_24")
     /// Image `ic_streetview_24`.
     static let ic_streetview_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_streetview_24")
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "ic_bus_24", bundle: ..., traitCollection: ...)`
+    static func ic_bus_24(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.ic_bus_24, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "ic_edit_24", bundle: ..., traitCollection: ...)`
+    static func ic_edit_24(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.ic_edit_24, compatibleWith: traitCollection)
+    }
+    #endif
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "ic_empty_list", bundle: ..., traitCollection: ...)`
     static func ic_empty_list(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.ic_empty_list, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "ic_search_24", bundle: ..., traitCollection: ...)`
+    static func ic_search_24(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.ic_search_24, compatibleWith: traitCollection)
     }
     #endif
 

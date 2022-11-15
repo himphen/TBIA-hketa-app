@@ -50,7 +50,6 @@ import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import hibernate.v2.sunshine.util.smoothSnapToPosition
 import hibernate.v2.sunshine.util.visible
-import hibernate.v2.utils.colorInt
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
@@ -142,7 +141,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
             override fun createEdgeEffect(view: RecyclerView, direction: Int) =
                 EdgeEffect(view.context).apply {
                     color = viewModel.selectedEtaType.color()
-                        .colorInt(view.context)
+                        .colorInt()
                 }
         }
 

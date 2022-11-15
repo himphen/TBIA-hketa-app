@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.himphen.logger.Logger
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.FragmentRouteListBinding
@@ -24,7 +25,6 @@ import hibernate.v2.sunshine.util.getEnum
 import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.putEnum
 import hibernate.v2.sunshine.util.visible
-import hibernate.v2.utils.colorInt
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -87,7 +87,7 @@ class RouteListRouteFragment : BaseFragment<FragmentRouteListBinding>() {
 
         viewBinding.recyclerView.edgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
             override fun createEdgeEffect(view: RecyclerView, direction: Int) =
-                EdgeEffect(view.context).apply { color = etaType.color().colorInt(view.context) }
+                EdgeEffect(view.context).apply { color = etaType.color().colorInt() }
         }
     }
 

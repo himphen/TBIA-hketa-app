@@ -20,8 +20,8 @@ struct ItemRouteStopView: View {
                     green: (Double(color.green) / 255),
                     blue: (Double(color.blue) / 255)
                 ).frame(
-                    width: 4,
-                    height: .infinity
+                    maxWidth: 4,
+                    maxHeight: .infinity
                 )
                 Color(
                     red: (Double(color.red) / 255),
@@ -36,8 +36,8 @@ struct ItemRouteStopView: View {
                     green: (Double(color.green) / 255),
                     blue: (Double(color.blue) / 255)
                 ).frame(
-                    width: 4,
-                    height: .infinity
+                    maxWidth: 4,
+                    maxHeight: .infinity
                 )
             }
             .padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 8))

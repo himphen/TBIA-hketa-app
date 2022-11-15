@@ -5,10 +5,10 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.TabAddEtaBinding
-import hibernate.v2.utils.colorInt
 import hibernate.v2.utils.localized
 
 class RouteListViewPagerAdapter(
@@ -64,7 +64,7 @@ class RouteListViewPagerAdapter(
                 null
             )
             viewBinding.tabTitleTv.compoundDrawablesRelative[0]?.setTint(
-                etaType.color().colorInt(context)
+                etaType.color().colorInt()
             )
         }
 

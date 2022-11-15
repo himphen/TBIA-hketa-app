@@ -19,7 +19,8 @@ struct ItemBookmarkHomeView: View {
                     red: (Double(color.red) / 255),
                     green: (Double(color.green) / 255),
                     blue: (Double(color.blue) / 255)
-                ).frame(width: 4, height: .infinity)
+                )
+                .frame(maxWidth: 4, maxHeight: .infinity)
                 
                 Text(card.route.routeNo)
                 .font(.system(size: 20, weight: .bold))

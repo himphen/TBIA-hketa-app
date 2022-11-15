@@ -2,6 +2,7 @@
 // Created by Himphen on 2022-11-08.
 // Copyright (c) 2022. All rights reserved.
 //
+
 import SwiftUI
 import shared
 import Rswift
@@ -12,13 +13,23 @@ class RouteListVM: ObservableObject {
     
     @Published var filteredTransportRouteList: [TransportRoute] = []
     
-    func activate() async {
+    let list: [EtaType] = [
+        EtaType.kmb,
+        EtaType.nwfb,
+        EtaType.ctb,
+        EtaType.nlb,
+        EtaType.gmbHki,
+        EtaType.gmbKln,
+        EtaType.gmbNt
+    ]
+    
+    init() {
         viewModel = RouteListViewModel(
             filteredTransportRouteList: { [self] (etaType, list) in
                 CommonLoggerUtilsKt.logD(
                     message: "filteredTransportRouteList"
                 )
-    
+                
                 filteredTransportRouteList = list
             },
             tabItemSelectedUpdated: { [self] in
@@ -32,10 +43,43 @@ class RouteListVM: ObservableObject {
                 )
             }
         )
-        
+    }
+    
+    func getTransportRouteList(etaType: EtaType) async {
         do {
-            try await viewModel?.getTransportRouteList(etaType: EtaType.kmb)
+            try await viewModel?.getTransportRouteList(etaType: etaType)
         } catch {
+            CommonLoggerUtilsKt.logD(
+                message: error.localizedDescription
+            )
         }
+    }
+    
+    func getTabViewData() -> [Tab] {
+        return list.map { element in
+            var image: Image
+            switch (element) {
+            case EtaType.kmb:
+                image = R.image.ic_bus_24.image
+                break
+            default:
+                image = R.image.ic_bus_24.image
+            }
+            
+            let color = element.color()
+            
+            return Tab.init(
+                etaType: element,
+                icon: image,
+                title: element.name().localized(context: IOSContext()),
+                color: Color(
+                    red: (Double(color.red) / 255),
+                    green: (Double(color.green) / 255),
+                    blue: (Double(color.blue) / 255)
+                )
+            )
+        }
+        
+        
     }
 }

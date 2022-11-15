@@ -15,11 +15,13 @@
 		36E963998EB72C622E8343AB /* MeowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96FA3800DF0697F2A2FD1 /* MeowView.swift */; };
 		36E964A7DB10FE436E88B10A /* ItemRouteStopExpandedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96507891DEA7B14972281 /* ItemRouteStopExpandedView.swift */; };
 		36E96503309460796794AD7B /* RResourceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E966030B133DAEC82E3DCB /* RResourceExtension.swift */; };
+		36E965EEBC02B80381886214 /* MRExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E968C9EA1E3990C94D0CBE /* MRExtension.swift */; };
 		36E966360E32BEE12817026F /* ItemBookmarkHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96277B4646A861F5E6C8E /* ItemBookmarkHomeView.swift */; };
 		36E96679E4BEDC47A42B4F47 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E965220AE6AF5E8A07549E /* LottieView.swift */; };
 		36E966EBF347F55A47BF1785 /* ItemRouteStopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96F63A3FC0C3E2D343650 /* ItemRouteStopView.swift */; };
 		36E9677FE3A195867B132D56 /* RouteDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E96DCD91B508DCC16821F9 /* RouteDetailsVM.swift */; };
 		36E96887CC0E3A1798FBF9D0 /* OnboardingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E964114EC7B7C2A8E7208B /* OnboardingVM.swift */; };
+		36E96E921F7088AE474F28B5 /* SlidingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9662E4BCB06717666FD3B /* SlidingTabView.swift */; };
 		36E96E975C5CFA2F83B8C369 /* RouteListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E967797918802594F3FB13 /* RouteListVM.swift */; };
 		36E96EDD4E561E9DF4B5AA8C /* BookmarkHomeVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9635DDCD9227C3AFA20AB /* BookmarkHomeVM.swift */; };
 		36E96F0D1CC58F4AA64F55B4 /* TaskExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9678879D7C8D131A8C508 /* TaskExtension.swift */; };
@@ -47,8 +49,10 @@
 		36E965453F2978D257C60D9E /* RouteListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteListView.swift; sourceTree = "<group>"; };
 		36E965A47E074656938C397E /* RouteDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteDetailsView.swift; sourceTree = "<group>"; };
 		36E966030B133DAEC82E3DCB /* RResourceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RResourceExtension.swift; sourceTree = "<group>"; };
+		36E9662E4BCB06717666FD3B /* SlidingTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlidingTabView.swift; sourceTree = "<group>"; };
 		36E967797918802594F3FB13 /* RouteListVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteListVM.swift; sourceTree = "<group>"; };
 		36E9678879D7C8D131A8C508 /* TaskExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskExtension.swift; sourceTree = "<group>"; };
+		36E968C9EA1E3990C94D0CBE /* MRExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRExtension.swift; sourceTree = "<group>"; };
 		36E96937F3009767569C1E3F /* BookmarkHomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkHomeView.swift; sourceTree = "<group>"; };
 		36E96DCD91B508DCC16821F9 /* RouteDetailsVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteDetailsVM.swift; sourceTree = "<group>"; };
 		36E96F63A3FC0C3E2D343650 /* ItemRouteStopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemRouteStopView.swift; sourceTree = "<group>"; };
@@ -97,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				36E965220AE6AF5E8A07549E /* LottieView.swift */,
+				36E9662E4BCB06717666FD3B /* SlidingTabView.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -148,6 +153,7 @@
 			children = (
 				36E966030B133DAEC82E3DCB /* RResourceExtension.swift */,
 				36E9678879D7C8D131A8C508 /* TaskExtension.swift */,
+				36E968C9EA1E3990C94D0CBE /* MRExtension.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -363,6 +369,7 @@
 		};
 		8AFAF1472919AC370061340A /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -377,7 +384,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+			shellScript = "#\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		FA04EA070C4B90414C8385C9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -426,6 +433,8 @@
 				36E96503309460796794AD7B /* RResourceExtension.swift in Sources */,
 				36E966360E32BEE12817026F /* ItemBookmarkHomeView.swift in Sources */,
 				36E96F0D1CC58F4AA64F55B4 /* TaskExtension.swift in Sources */,
+				36E96E921F7088AE474F28B5 /* SlidingTabView.swift in Sources */,
+				36E965EEBC02B80381886214 /* MRExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,6 +564,7 @@
 			baseConfigurationReference = 7DF92A412C991EFB9F3966C1 /* Pods-iosApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 86F47XZ54D;
@@ -569,6 +579,7 @@
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = hibernate.v2.sunshine;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -579,6 +590,7 @@
 			baseConfigurationReference = 85CCEE3FCD6E225E240A7751 /* Pods-iosApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 86F47XZ54D;
@@ -593,6 +605,7 @@
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = hibernate.v2.sunshine;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

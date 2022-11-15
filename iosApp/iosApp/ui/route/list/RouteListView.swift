@@ -9,25 +9,70 @@ import Rswift
 
 struct RouteListView: View {
     @ObservedObject var viewModel: RouteListVM = RouteListVM()
+    @State private var selectedTabIndex = 0
+    
+    init() {
+//        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
+    }
     
     var body: some View {
-        VStack {
+        let tabs = viewModel.getTabViewData()
+        VStack(spacing: 0) {
             SearchBar(text: .constant(""))
-            
-            NavigationView {
-                VStack {
-                    List(viewModel.filteredTransportRouteList, id: \.self) { item in
-                        ItemRouteListView(route: item, etaType: EtaType.kmb)
-                        .listRowInsets(EdgeInsets())
+            GeometryReader { geo in
+                VStack(spacing: 0) {
+                    // Tabs
+                    Tabs(
+                        fixed: false,
+                        tabs: tabs,
+                        geoWidth: geo.size.width,
+                        selectedTab: $selectedTabIndex
+                    )
+                    
+                    // Views
+                    TabView(
+                        selection: $selectedTabIndex,
+                        content: {
+                            ForEach(Array(tabs.enumerated()), id: \.element.identifier) { index, item in
+                                TabRouteListView(viewModel: viewModel, tab: item)
+                                .tag(index)
+                            }
+                        }
+                    )
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                    .onChange(of: selectedTabIndex, perform: { value in
+                        Task {
+                            await viewModel.getTransportRouteList(etaType: tabs[selectedTabIndex].etaType)
+                        }
+                    })
+                    .onAppear {
+                        Task {
+                            await viewModel.getTransportRouteList(etaType: tabs[0].etaType)
+                        }
                     }
-                    .listStyle(PlainListStyle())
-                    .navigationBarTitle("九巴")
-                    .task {
-                        await viewModel.activate()
-                    }
+                }
+                .ignoresSafeArea()
+            }
+        }
+    }
+}
+
+struct TabRouteListView: View {
+    @ObservedObject var viewModel: RouteListVM
+    @State var tab: Tab
+    
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(viewModel.filteredTransportRouteList, id: \.self) { item in
+                    ItemRouteListView(route: item, etaType: tab.etaType)
+                    Divider()
                 }
             }
         }
+        .navigationBarTitle(
+            MR.strings.shared.title_activity_add_eta_with_company_name.formatString(context: IOSContext(), args: [tab.title]),
+            displayMode: .inline)
     }
 }
 

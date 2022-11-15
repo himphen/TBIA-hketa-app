@@ -1,6 +1,6 @@
 package hibernate.v2.model.transport.eta
 
-import dev.icerock.moko.resources.ColorResource
+import dev.icerock.moko.graphics.Color
 import dev.icerock.moko.resources.StringResource
 import hibernate.v2.MR
 import hibernate.v2.api.model.transport.Company
@@ -42,15 +42,15 @@ enum class EtaType {
         }
     }
 
-    fun color(): ColorResource = when (this) {
-        KMB -> MR.colors.brand_color_kmb
-        NWFB -> MR.colors.brand_color_nwfb
+    fun color(): Color = when (this) {
+        KMB -> MR.colors.brand_color_kmb.color
+        NWFB -> MR.colors.brand_color_nwfb.color
         GMB_HKI,
         GMB_KLN,
-        GMB_NT -> MR.colors.brand_color_gmb
-        CTB -> MR.colors.brand_color_ctb
-        MTR -> MR.colors.brand_color_mtr
-        LRT -> MR.colors.brand_color_lrt
-        NLB -> MR.colors.brand_color_nlb
+        GMB_NT -> MR.colors.brand_color_gmb.color
+        CTB -> MR.colors.brand_color_ctb.color
+        MTR -> MR.colors.brand_color_mtr.color
+        LRT -> MR.colors.brand_color_lrt.color
+        NLB -> MR.colors.brand_color_nlb.color
     }
 }

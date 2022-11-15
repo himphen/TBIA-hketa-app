@@ -7,6 +7,5 @@ target 'iosApp' do
   pod("FirebaseRemoteConfig")
   pod 'lottie-ios'
   pod 'R.swift'
-  pod 'SwiftLint'
   pod 'AlertToast'
 end

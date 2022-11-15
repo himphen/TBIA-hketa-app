@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.databinding.ActivityContainerBinding
 import hibernate.v2.sunshine.ui.base.BaseFragmentActivity
-import hibernate.v2.utils.colorInt
 import hibernate.v2.utils.localized
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -29,7 +29,7 @@ class RouteListActivity : BaseFragmentActivity<ActivityContainerBinding>() {
 
     private fun initEvent() {
         viewModel.tabItemSelectedLiveData.onEach { item ->
-            val color = item.color().colorInt(this)
+            val color = item.color().colorInt()
 
             window?.statusBarColor = color
 

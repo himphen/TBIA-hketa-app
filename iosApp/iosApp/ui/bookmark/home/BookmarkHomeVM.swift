@@ -11,7 +11,7 @@ import Rswift
 class BookmarkHomeVM: ObservableObject {
     private var viewModel: BookmarkHomeViewModel? = nil
     
-    @Published var hasData = false
+    @Published var hasData: Bool? = nil
     @Published var savedEtaCardList: [CardEtaCardItem]?
     @Published var lastUpdatedAgo: Int? = nil
     private var lastUpdatedTime: Int? = nil
@@ -70,6 +70,9 @@ class BookmarkHomeVM: ObservableObject {
     
     func updateEtaList() -> Task<Void, Error> {
         tickerTask(period: 60_000_000_000) { [self] in
+            CommonLoggerUtilsKt.logD(
+                message: "updateEtaList tickerTask"
+            )
             do {
                 try await viewModel?.updateEtaList()
             } catch {

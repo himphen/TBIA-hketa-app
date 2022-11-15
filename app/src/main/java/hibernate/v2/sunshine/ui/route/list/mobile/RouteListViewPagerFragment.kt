@@ -15,6 +15,7 @@ import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.sunshine.databinding.FragmentRouteListViewPagerBinding
@@ -22,7 +23,6 @@ import hibernate.v2.sunshine.ui.base.BaseActivity
 import hibernate.v2.sunshine.ui.base.BaseFragment
 import hibernate.v2.sunshine.util.afterTextChanged
 import hibernate.v2.sunshine.util.onTextChanged
-import hibernate.v2.utils.colorInt
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -165,7 +165,7 @@ class RouteListViewPagerFragment : BaseFragment<FragmentRouteListViewPagerBindin
     private fun initEvent() {
         viewModel.tabItemSelectedLiveData.onEach {
             context?.let { context ->
-                val color = it.color().colorInt(context)
+                val color = it.color().colorInt()
                 viewBinding?.tabLayout?.setSelectedTabIndicatorColor(color)
                 viewBinding?.searchCl?.setBackgroundColor(color)
             }

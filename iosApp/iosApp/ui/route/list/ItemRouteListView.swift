@@ -8,21 +8,24 @@ import SwiftUI
 import shared
 
 struct ItemRouteListView: View {
+    @State private var action: Int? = 0
+    
     @State var route: TransportRoute
-    @State var etaType: EtaType
+    var etaType: EtaType
     
     var body: some View {
-        ZStack {
+        HStack {
+            NavigationLink(
+                destination: RouteDetailsView(
+                    selectedRoute: route,
+                    selectedEtaType: etaType
+                ),
+                tag: 1, selection: $action
+            ) {
+            }
+            
             HStack(spacing: 0) {
-                let color = route.getColor(combineNC: false)
-                
                 HStack {
-                    Color(
-                        red: (Double(color.red) / 255),
-                        green: (Double(color.green) / 255),
-                        blue: (Double(color.blue) / 255)
-                    ).frame(width: 4, height: .infinity)
-                    
                     Text(route.routeNo)
                     .font(.system(size: 20, weight: .bold))
                 }
@@ -30,6 +33,7 @@ struct ItemRouteListView: View {
                     width: 80,
                     alignment: .leading
                 )
+                .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
                 
                 VStack {
                     HStack {
@@ -39,7 +43,6 @@ struct ItemRouteListView: View {
                         
                     }
                     .frame(
-                        minWidth: 0,
                         maxWidth: .infinity,
                         alignment: .leading
                     )
@@ -51,14 +54,12 @@ struct ItemRouteListView: View {
                         .font(.system(size: 12))
                     }
                     .frame(
-                        minWidth: 0,
                         maxWidth: .infinity,
                         alignment: .leading
                     )
                     
                 }
                 .frame(
-                    minWidth: 0,
                     maxWidth: .infinity,
                     alignment: .leading
                 ).padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 10))
@@ -67,26 +68,20 @@ struct ItemRouteListView: View {
                     VStack {
                         Text(MR.strings().text_add_eta_destination_sp_mobile
                         .formatString(args: [route.serviceType]))
-                    }.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 12))
+                    }
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 12))
                 }
                 
             }
             .frame(
-                minWidth: 0,
                 maxWidth: .infinity,
                 minHeight: 48,
                 alignment: .leading
             )
-            
-            NavigationLink(
-                destination: RouteDetailsView(
-                    selectedRoute: route,
-                    selectedEtaType: etaType
-                )
-            ) {
-                EmptyView()
+            .contentShape(Rectangle())
+            .onTapGesture {
+                self.action = 1
             }
-            .opacity(0.0)
         }
     }
 }

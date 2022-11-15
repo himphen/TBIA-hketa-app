@@ -26,43 +26,44 @@ struct RouteDetailsView: View {
     }
     
     var body: some View {
-        List {
-            ForEach(Array(viewModel.routeDetailsStopListUpdated.enumerated()), id: \.element.identifier) { index, item in
-                if (item.isExpanded) {
-                    ItemRouteStopExpandedView(
-                        index: index,
-                        route: selectedRoute,
-                        routeDetailsStop: item.item,
-                        etaList: item.etaList,
-                        viewModel: viewModel
-                    )
-                    .frame(
-                        maxWidth: .infinity
-                    )
-                    .listRowInsets(EdgeInsets())
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        print("meow collapse \(index)")
-                        viewModel.collapsedItem()
-                        etaRequested(value: false)
-                    }
-                } else {
-                    ItemRouteStopView(route: selectedRoute, routeDetailsStop: item.item)
-                    .frame(
-                        maxWidth: .infinity
-                    )
-                    .listRowInsets(EdgeInsets())
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        print("meow expand \(index)")
-                        viewModel.expandedItem(expandedPosition: index, selectedStop: item.item.transportStop)
-                        etaRequested(value: true)
+        VStack {
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(Array(viewModel.routeDetailsStopListUpdated.enumerated()), id: \.element.identifier) { index, item in
+                        if (item.isExpanded) {
+                            ItemRouteStopExpandedView(
+                                index: index,
+                                route: selectedRoute,
+                                routeDetailsStop: item.item,
+                                etaList: item.etaList,
+                                viewModel: viewModel
+                            )
+                            .frame(
+                                maxWidth: .infinity
+                            )
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                print("meow collapse \(index)")
+                                viewModel.collapsedItem()
+                                etaRequested(value: false)
+                            }
+                        } else {
+                            ItemRouteStopView(route: selectedRoute, routeDetailsStop: item.item)
+                            .frame(
+                                maxWidth: .infinity
+                            )
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                print("meow expand \(index)")
+                                viewModel.expandedItem(expandedPosition: index, selectedStop: item.item.transportStop)
+                                etaRequested(value: true)
+                            }
+                        }
                     }
                 }
             }
         }
         .navigationBarTitle(selectedRoute.routeNo + "號線")
-        .listStyle(PlainListStyle())
         .task {
             await viewModel.activate()
         }
