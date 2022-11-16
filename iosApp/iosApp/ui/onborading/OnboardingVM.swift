@@ -2,13 +2,13 @@ import SwiftUI
 import shared
 import Rswift
 
-@MainActor
-class OnboardingVM: ObservableObject {
+@MainActor class OnboardingVM: ObservableObject {
     private var viewModel: OnboardingViewModel? = nil
     
     @Published var loadingString: String = "正載入路線數據"
     @Published var isFetchTransportDataRequired = false
     @Published var isFetchTransportDataCompleted = false
+    @Published var isCompleted = false
     
     func activate() async {
         viewModel = OnboardingViewModel(
@@ -24,9 +24,9 @@ class OnboardingVM: ObservableObject {
                 if (data.intValue > 0) {
                     isFetchTransportDataRequired = true
                 } else {
-                    CommonLoggerUtilsKt.logD(message:
-                    "Go next screen!!!"
-                    )
+                    CommonLoggerUtilsKt.logD(message: "Go next screen!!!")
+                    
+                    isCompleted = true
                 }
             },
             fetchTransportDataCannotInit: { [self] in
@@ -51,9 +51,9 @@ class OnboardingVM: ObservableObject {
                         loadingString = R.string.localizable.test_onboarding_loading_failed_other()
                     }
                 } else {
-                    
-                    loadingString = "載入完成。"
                     CommonLoggerUtilsKt.logD(message: "Go next screen!")
+                    
+                    isCompleted = true
                 }
             },
             fetchTransportDataCompletedCount: { [self] data in

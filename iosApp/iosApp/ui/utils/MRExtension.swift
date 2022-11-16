@@ -18,3 +18,15 @@ extension ColorResource.Single {
         )
     }
 }
+
+// MARK: - Color
+
+extension GraphicsColor {
+    func toColor() -> Color {
+        Color(
+            red: (Double(red) / 255),
+            green: (Double(green) / 255),
+            blue: (Double(blue) / 255)
+        )
+    }
+}

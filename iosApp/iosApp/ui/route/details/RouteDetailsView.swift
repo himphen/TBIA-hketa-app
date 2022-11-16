@@ -33,6 +33,8 @@ struct RouteDetailsView: View {
                         if (item.isExpanded) {
                             ItemRouteStopExpandedView(
                                 index: index,
+                                firstItem: (index == viewModel.routeDetailsStopListUpdated.startIndex),
+                                lastItem: (index == viewModel.routeDetailsStopListUpdated.endIndex - 1),
                                 route: selectedRoute,
                                 routeDetailsStop: item.item,
                                 etaList: item.etaList,
@@ -48,7 +50,12 @@ struct RouteDetailsView: View {
                                 etaRequested(value: false)
                             }
                         } else {
-                            ItemRouteStopView(route: selectedRoute, routeDetailsStop: item.item)
+                            ItemRouteStopView(
+                                firstItem: (index == viewModel.routeDetailsStopListUpdated.startIndex),
+                                lastItem: (index == viewModel.routeDetailsStopListUpdated.endIndex - 1),
+                                route: selectedRoute,
+                                routeDetailsStop: item.item
+                            )
                             .frame(
                                 maxWidth: .infinity
                             )

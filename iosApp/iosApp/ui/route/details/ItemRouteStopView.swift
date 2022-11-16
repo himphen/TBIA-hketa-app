@@ -8,45 +8,50 @@ import SwiftUI
 import shared
 
 struct ItemRouteStopView: View {
+    @State var firstItem: Bool
+    @State var lastItem: Bool
+    
     @State var route: TransportRoute
     @State var routeDetailsStop: RouteDetailsStop
     
     var body: some View {
         HStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                let color = route.getColor(combineNC: false)
-                Color(
-                    red: (Double(color.red) / 255),
-                    green: (Double(color.green) / 255),
-                    blue: (Double(color.blue) / 255)
-                ).frame(
-                    maxWidth: 4,
-                    maxHeight: .infinity
-                )
-                Color(
-                    red: (Double(color.red) / 255),
-                    green: (Double(color.green) / 255),
-                    blue: (Double(color.blue) / 255)
-                ).frame(
+                let color = route.getColor(combineNC: false).toColor()
+                if (firstItem) {
+                    Color.clear.frame(
+                        maxWidth: 4,
+                        maxHeight: .infinity
+                    )
+                } else {
+                    color.frame(
+                        maxWidth: 4,
+                        maxHeight: .infinity
+                    )
+                }
+                color.frame(
                     width: 12,
                     height: 4
                 )
-                Color(
-                    red: (Double(color.red) / 255),
-                    green: (Double(color.green) / 255),
-                    blue: (Double(color.blue) / 255)
-                ).frame(
-                    maxWidth: 4,
-                    maxHeight: .infinity
-                )
+                if (lastItem) {
+                    Color.clear.frame(
+                        maxWidth: 4,
+                        maxHeight: .infinity
+                    )
+                } else {
+                    color.frame(
+                        maxWidth: 4,
+                        maxHeight: .infinity
+                    )
+                }
+                
             }
             .padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 8))
             
-            HStack(alignment: .lastTextBaseline, spacing: 0) {
+            HStack(alignment: .firstTextBaseline, spacing: 0) {
                 Text(String(routeDetailsStop.transportStop.seq?.intValue ?? 0))
                 .font(.system(size: 12, weight: .bold))
-                // TODO color
-                .foregroundColor(.gray)
+                .foregroundColor(MR.colors().common_text_secondary.toColor())
                 
                 Text(routeDetailsStop.transportStop.nameTc)
                 .font(.system(size: 16, weight: .bold))

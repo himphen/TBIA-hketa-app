@@ -7,8 +7,7 @@ import SwiftUI
 import shared
 import Rswift
 
-@MainActor
-class RouteDetailsVM: ObservableObject {
+@MainActor class RouteDetailsVM: ObservableObject {
     var selectedRoute: TransportRoute
     var selectedEtaType: EtaType
     

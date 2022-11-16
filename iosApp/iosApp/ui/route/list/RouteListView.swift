@@ -34,13 +34,19 @@ struct RouteListView: View {
                         selection: $selectedTabIndex,
                         content: {
                             ForEach(Array(tabs.enumerated()), id: \.element.identifier) { index, item in
-                                TabRouteListView(viewModel: viewModel, tab: item)
+                                TabRouteListView(
+                                    tab: item,
+                                    routeList: viewModel.filteredTransportRouteList[tabs[index].etaType] ?? []
+                                )
                                 .tag(index)
                             }
                         }
                     )
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                     .onChange(of: selectedTabIndex, perform: { value in
+                        CommonLoggerUtilsKt.logD(
+                            message: "onChange"
+                        )
                         Task {
                             await viewModel.getTransportRouteList(etaType: tabs[selectedTabIndex].etaType)
                         }
@@ -58,13 +64,13 @@ struct RouteListView: View {
 }
 
 struct TabRouteListView: View {
-    @ObservedObject var viewModel: RouteListVM
     @State var tab: Tab
+    @State var routeList: [TransportRoute]
     
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
-                ForEach(viewModel.filteredTransportRouteList, id: \.self) { item in
+                ForEach(routeList, id: \.self) { item in
                     ItemRouteListView(route: item, etaType: tab.etaType)
                     Divider()
                 }

@@ -7,8 +7,7 @@ import SwiftUI
 import shared
 import Rswift
 
-@MainActor
-class BookmarkHomeVM: ObservableObject {
+@MainActor class BookmarkHomeVM: ObservableObject {
     private var viewModel: BookmarkHomeViewModel? = nil
     
     @Published var hasData: Bool? = nil

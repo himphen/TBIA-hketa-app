@@ -7,11 +7,10 @@ import SwiftUI
 import shared
 import Rswift
 
-@MainActor
-class RouteListVM: ObservableObject {
+@MainActor class RouteListVM: ObservableObject {
     private var viewModel: RouteListViewModel? = nil
     
-    @Published var filteredTransportRouteList: [TransportRoute] = []
+    @Published var filteredTransportRouteList = [EtaType: [TransportRoute]]()
     
     let list: [EtaType] = [
         EtaType.kmb,
@@ -30,7 +29,7 @@ class RouteListVM: ObservableObject {
                     message: "filteredTransportRouteList"
                 )
                 
-                filteredTransportRouteList = list
+                filteredTransportRouteList[etaType] = list
             },
             tabItemSelectedUpdated: { [self] in
                 CommonLoggerUtilsKt.logD(

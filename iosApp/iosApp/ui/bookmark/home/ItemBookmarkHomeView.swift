@@ -33,7 +33,8 @@ struct ItemBookmarkHomeView: View {
             VStack {
                 HStack {
                     Text(card.stop.getLocalisedName(context: IOSContext()))
-                    .font(.system(size: 16, weight: .bold))
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(MR.colors().common_text_primary.toColor())
                 }
                 .frame(
                     minWidth: 0,
@@ -43,7 +44,8 @@ struct ItemBookmarkHomeView: View {
                 
                 HStack {
                     Text(card.route.getDestDirectionText(context: IOSContext()))
-                    .font(.system(size: 12))
+                    .font(.system(size: 14))
+                    .foregroundColor(MR.colors().common_text_primary.toColor())
                 }
                 .frame(
                     minWidth: 0,
@@ -56,51 +58,13 @@ struct ItemBookmarkHomeView: View {
                 minWidth: 0,
                 maxWidth: .infinity,
                 alignment: .leading
-            ).padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 10))
+            ).padding(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 10))
             
             Spacer()
-            
-            VStack(alignment: .trailing, spacing: 0) {
-                HStack(alignment: .lastTextBaseline, spacing: 0) {
-                    if let value = etaList().first?.getEtaMinuteText(default: "-") {
-                        Text(String(value.second ?? "-"))
-                        .font(.system(size: 24, weight: .bold))
-//                            .foregroundColor(color: MR.colors().eta_card_minutes_text)
-                        
-                        if (value.first == true) {
-                            Text(MR.strings().demo_card_eta_minute_classic_unit.desc().localized())
-                            .font(.system(size: 12))
-                        }
-                    } else {
-                        Text("-")
-                        .font(.system(size: 24, weight: .bold))
-//                            .foregroundColor(color: MR.colors.eta_card_minutes_text)
-                    }
-                }
-                
-                let etaListWithoutFirst = etaListWithoutFirst()
-                
-                if (!etaListWithoutFirst.isEmpty) {
-                    HStack(spacing: 0) {
-                        ForEach(Array(etaListWithoutFirst.enumerated()), id: \.element) { index, item in
-                            if let value = item.getEtaMinuteText(default: "-") {
-                                Text(String(value.second ?? "-"))
-                                .font(.system(size: 16))
-                                .padding(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 0))
-                            }
-                            
-                            if (index == etaListWithoutFirst.count - 1) {
-                                Text(MR.strings().demo_card_eta_minute_classic_unit.desc().localized())
-                                .font(.system(size: 12))
-                            } else {
-                                Text(MR.strings().demo_card_eta_minute_classic_comma.desc().localized())
-                                .font(.system(size: 12))
-                            }
-                        }
-                    }
-                }
-            }
+    
+            EtaListView(etaList: etaList())
         }
+        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 12))
         .frame(
             minWidth: 0,
             maxWidth: .infinity,
@@ -113,17 +77,5 @@ struct ItemBookmarkHomeView: View {
         let etaList = card.etaList as! [TransportEta]
         
         return etaList
-    }
-    
-    func etaListWithoutFirst() -> [TransportEta] {
-        let etaList = card.etaList as! [TransportEta]
-        
-        if (etaList.isEmpty) {
-            return etaList
-        }
-        var etaListWithoutFirst = etaList
-        etaListWithoutFirst.removeFirst()
-        
-        return etaListWithoutFirst
     }
 }
