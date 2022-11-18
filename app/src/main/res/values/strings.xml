@@ -68,8 +68,8 @@
         <item>@string/add_eta_brand_selection_lrt_btn</item>
     </string-array>
 
-    <string name="text_eta_loading_failed_retry">載入數據失敗，按此重新再試。（錯誤碼：%d）</string>
-    <string name="text_eta_loading_failed">載入數據失敗，請重新再試。（錯誤碼：%d）</string>
+    <string name="text_eta_loading_failed_retry">載入數據失敗，按此重試。（錯誤碼：%d）</string>
+    <string name="text_eta_loading_failed">載入數據失敗，正在重試中。（錯誤碼：%d）</string>
     <string name="text_edit_eta_invalid_hint">已移除主頁無效的車站。</string>
 
     <string name="text_add_eta_hint_stop">%1$s</string>

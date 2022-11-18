@@ -26,7 +26,9 @@ import Rswift
                 } else {
                     CommonLoggerUtilsKt.logD(message: "Go next screen!!!")
                     
-                    isCompleted = true
+                    DispatchQueue.main.async { [self] in
+                        isCompleted = true
+                    }
                 }
             },
             fetchTransportDataCannotInit: { [self] in

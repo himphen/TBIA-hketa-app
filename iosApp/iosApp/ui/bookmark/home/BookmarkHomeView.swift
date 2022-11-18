@@ -3,6 +3,7 @@
 // Copyright (c) 2022. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 import shared
 import Rswift
@@ -12,20 +13,24 @@ struct BookmarkHomeView: View {
     
     @ObservedObject var viewModel: BookmarkHomeVM = BookmarkHomeVM()
     
-    @State var etaUpdateTask: Task<Void, Error>? = nil
-    @State var etaLastUpdatedTimeTask: Task<Void, Error>? = nil
+    @State var etaUpdateTask: Combine.Cancellable? = nil
+    @State var etaLastUpdatedTimeTask: Combine.Cancellable? = nil
     
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
                 if (viewModel.hasData == true) {
-                    if let lastUpdatedAgo = viewModel.lastUpdatedAgo {
-                        Text(MR.strings().eta_last_updated_at.formatString(
-                            context: IOSContext(),
-                            args: [lastUpdatedAgo]
-                        ))
+                    if (viewModel.etaError) {
+                        Text(MR.strings().text_eta_loading_failed.desc().localized())
                     } else {
-                        Text(MR.strings().eta_last_updated_at_init.desc().localized())
+                        if let lastUpdatedAgo = viewModel.lastUpdatedAgo {
+                            Text(MR.strings().eta_last_updated_at.formatString(
+                                context: IOSContext(),
+                                args: [lastUpdatedAgo]
+                            ))
+                        } else {
+                            Text(MR.strings().eta_last_updated_at_init.desc().localized())
+                        }
                     }
                     BookmarkHomeListView(
                         viewModel: viewModel
@@ -61,6 +66,19 @@ struct BookmarkHomeView: View {
             if newPhase == .active {
                 Task {
                     await viewModel.getEtaListFromDb()
+                }
+            }
+        }
+        .onReceive(viewModel.$etaError) { data in
+            if (data) {
+                etaRequested(value: false)
+                
+                Task {
+                    do {
+                        try await Task.sleep(nanoseconds: 5_000_000_000)
+                        etaRequested(value: true)
+                    } catch {
+                    }
                 }
             }
         }
