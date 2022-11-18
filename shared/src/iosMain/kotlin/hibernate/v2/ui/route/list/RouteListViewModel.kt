@@ -17,9 +17,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class RouteListViewModel(
-    private val filteredTransportRouteList: (EtaType, List<TransportRoute>) -> Unit,
-    private val tabItemSelectedUpdated: () -> Unit,
-    private val selectedEtaTypeUpdated: () -> Unit,
+    private val filteredTransportRouteList: (EtaType, List<TransportRoute>) -> Unit
 ) : KoinComponent {
 
     private val kmbInteractor: KmbInteractor by inject()
@@ -29,10 +27,7 @@ class RouteListViewModel(
     private val lrtInteractor: LrtInteractor by inject()
     private val nlbRepository: NlbInteractor by inject()
 
-    val tabItemSelected: EtaType? = null
-    var selectedEtaType: EtaType = EtaType.KMB
-
-    val searchRouteKeyword: String = ""
+    var searchRouteKeyword: String = ""
 
     suspend fun getTransportRouteList(etaType: EtaType) {
         when (etaType) {

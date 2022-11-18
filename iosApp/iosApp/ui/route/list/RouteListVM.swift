@@ -30,18 +30,12 @@ import Rswift
                 )
                 
                 filteredTransportRouteList[etaType] = list
-            },
-            tabItemSelectedUpdated: { [self] in
-                CommonLoggerUtilsKt.logD(
-                    message: "tabItemSelectedUpdated"
-                )
-            },
-            selectedEtaTypeUpdated: { [self] in
-                CommonLoggerUtilsKt.logD(
-                    message: "selectedEtaTypeUpdated"
-                )
             }
         )
+    }
+    
+    func updateSearchText(searchRouteKeyword: String) {
+        viewModel?.searchRouteKeyword = searchRouteKeyword
     }
     
     func getTransportRouteList(etaType: EtaType) async {
@@ -55,7 +49,7 @@ import Rswift
     }
     
     func getTabViewData() -> [Tab] {
-        return list.map { element in
+        list.map { element in
             var image: Image
             switch (element) {
             case EtaType.kmb:

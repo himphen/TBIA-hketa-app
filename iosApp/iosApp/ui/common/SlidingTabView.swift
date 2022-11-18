@@ -1,7 +1,7 @@
 import SwiftUI
 import shared
 
-struct Tab {
+struct Tab : Equatable {
     let identifier = UUID()
     var etaType: EtaType
     var icon: Image?
