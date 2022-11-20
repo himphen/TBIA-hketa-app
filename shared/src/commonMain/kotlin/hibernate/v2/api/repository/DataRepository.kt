@@ -8,9 +8,12 @@ import hibernate.v2.api.response.data.KmbDataResponse
 import hibernate.v2.api.response.data.LrtDataResponse
 import hibernate.v2.api.response.data.MtrDataResponse
 import hibernate.v2.api.response.data.NlbDataResponse
+import hibernate.v2.utils.isDebugBuild
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
 
 class DataRepository(
@@ -29,6 +32,14 @@ class DataRepository(
             _client = KtorClient.initClient().config {
                 defaultRequest {
                     url(dataServiceBaseUrl)
+                }
+
+                install(Logging) {
+                    level = if (isDebugBuild()) {
+                        LogLevel.INFO
+                    } else {
+                        LogLevel.NONE
+                    }
                 }
             }
 

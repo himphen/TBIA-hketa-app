@@ -9,9 +9,10 @@ import hibernate.v2.model.transport.eta.MTRTransportEta
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.model.transport.eta.filterCircularStop
 import hibernate.v2.utils.logLifecycle
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -27,7 +28,7 @@ class BookmarkHomeViewModel(
 
     suspend fun getEtaListFromDb() {
         try {
-            supervisorScope {
+            withContext(Dispatchers.Default) {
                 val convertedEtaCardList = mutableListOf<Card.EtaCard>()
                 convertedEtaCardList.addAll(
                     etaInteractor.getSavedKmbEtaList().map { it.toEtaCard() }
@@ -64,11 +65,11 @@ class BookmarkHomeViewModel(
     }
 
     suspend fun updateEtaList() {
-        try {
-            supervisorScope {
+        withContext(Dispatchers.Default) {
+            try {
                 logLifecycle("getEtaList")
                 val etaCardList = savedEtaCardList
-                if (etaCardList.isEmpty()) return@supervisorScope
+                if (etaCardList.isEmpty()) return@withContext
                 val result = mutableMapOf<Int, Card.EtaCard>()
 
                 etaCardList.mapIndexed { index, etaCard ->
@@ -222,9 +223,9 @@ class BookmarkHomeViewModel(
                 logLifecycle("getEtaList done")
                 savedEtaCardList = result.values.toMutableList()
                 savedEtaCardListUpdated()
+            } catch (e: Exception) {
+                updateEtaListFailed()
             }
-        } catch (e: Exception) {
-            updateEtaListFailed()
         }
     }
 }

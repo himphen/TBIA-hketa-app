@@ -35,8 +35,6 @@ kotlin {
             isStatic = true
             baseName = "shared"
         }
-
-        xcodeConfigurationToNativeBuildType["Stage"] = org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
     }
 
     sourceSets {

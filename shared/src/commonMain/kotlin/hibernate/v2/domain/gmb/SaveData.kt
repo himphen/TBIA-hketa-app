@@ -8,7 +8,7 @@ import hibernate.v2.database.gmb.GmbDao
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.coroutineScope
 
 class SaveData(
     private val dataRepository: DataRepository,
@@ -23,9 +23,10 @@ class SaveData(
             is Resource.OtherError -> throw result.getThrowable()
         }
 
-        supervisorScope {
+        coroutineScope {
             listOf(
                 async {
+                    logLifecycle("GmbRepository saveRouteList start")
                     data.route?.let { list ->
                         list.toMutableList()
                             .apply { sortWith(GmbRoute::compareTo) }
@@ -36,12 +37,14 @@ class SaveData(
                     logLifecycle("GmbRepository saveRouteList done")
                 },
                 async {
+                    logLifecycle("GmbRepository saveRouteStopList start")
                     data.routeStop?.let { list ->
                         gmbDao.addRouteStopList(list)
                     }
                     logLifecycle("GmbRepository saveRouteStopList done")
                 },
                 async {
+                    logLifecycle("GmbRepository saveStopList start")
                     data.stop?.let { list ->
                         gmbDao.addStopList(list)
                     }

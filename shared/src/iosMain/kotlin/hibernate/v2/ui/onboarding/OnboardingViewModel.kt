@@ -13,9 +13,10 @@ import hibernate.v2.model.checksum.FailedCheckType
 import hibernate.v2.model.checksum.UpdateCheck
 import hibernate.v2.utils.CommonLogger
 import hibernate.v2.utils.logLifecycle
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -40,58 +41,58 @@ class OnboardingViewModel(
     var fetchTransportDataRequiredCount = 0
 
     suspend fun checkDbTransportData() {
-        try {
-            var dataLoadingCount = 0
+        withContext(Dispatchers.Default) {
+            try {
+                var dataLoadingCount = 0
 
-            val serverChecksum = try {
-                coreRepository.getChecksum()
-            } catch (e: Exception) {
-                fetchTransportDataFailedList.add(FailedCheckType.CHECKSUM)
-                throw e
-            }
-
-            var newChecksum = Checksum()
-
-            val existingChecksum = sharedPreferencesManager.transportDataChecksum
-
-            val updateCheck = UpdateCheck()
-
-            if (existingChecksum != null) {
-                if (serverChecksum.isValid() && serverChecksum == existingChecksum) {
-                    fetchTransportDataRequired(dataLoadingCount)
-                    return
+                val serverChecksum = try {
+                    coreRepository.getChecksum()
+                } catch (e: Exception) {
+                    fetchTransportDataFailedList.add(FailedCheckType.CHECKSUM)
+                    throw e
                 }
 
-                updateCheck.kmb =
-                    serverChecksum.kmb == null || serverChecksum.kmb != existingChecksum.kmb
-                updateCheck.ctb =
-                    serverChecksum.ctb == null || serverChecksum.ctb != existingChecksum.ctb
-                updateCheck.gmb =
-                    serverChecksum.gmb == null || serverChecksum.gmb != existingChecksum.gmb
-                updateCheck.mtr =
-                    serverChecksum.mtr == null || serverChecksum.mtr != existingChecksum.mtr
-                updateCheck.lrt =
-                    serverChecksum.lrt == null || serverChecksum.lrt != existingChecksum.lrt
-                updateCheck.nlb =
-                    serverChecksum.nlb == null || serverChecksum.nlb != existingChecksum.nlb
+                var newChecksum = Checksum()
 
-                newChecksum = existingChecksum.copy()
+                val existingChecksum: Checksum? = sharedPreferencesManager.transportDataChecksum
 
-                if (updateCheck.kmb) dataLoadingCount++
-                if (updateCheck.ctb) dataLoadingCount++
-                if (updateCheck.gmb) dataLoadingCount++
-                if (updateCheck.mtr) dataLoadingCount++
-                if (updateCheck.lrt) dataLoadingCount++
-                if (updateCheck.nlb) dataLoadingCount++
-            } else {
-                dataLoadingCount = 6
-            }
+                val updateCheck = UpdateCheck()
 
-            fetchTransportDataRequiredCount = dataLoadingCount
-            fetchTransportDataRequired(dataLoadingCount)
-            fetchTransportDataCompletedCount(0)
+                if (existingChecksum != null) {
+                    if (serverChecksum.isValid() && serverChecksum == existingChecksum) {
+                        fetchTransportDataRequired(dataLoadingCount)
+                        return@withContext
+                    }
 
-            supervisorScope {
+                    updateCheck.kmb =
+                        serverChecksum.kmb == null || serverChecksum.kmb != existingChecksum.kmb
+                    updateCheck.ctb =
+                        serverChecksum.ctb == null || serverChecksum.ctb != existingChecksum.ctb
+                    updateCheck.gmb =
+                        serverChecksum.gmb == null || serverChecksum.gmb != existingChecksum.gmb
+                    updateCheck.mtr =
+                        serverChecksum.mtr == null || serverChecksum.mtr != existingChecksum.mtr
+                    updateCheck.lrt =
+                        serverChecksum.lrt == null || serverChecksum.lrt != existingChecksum.lrt
+                    updateCheck.nlb =
+                        serverChecksum.nlb == null || serverChecksum.nlb != existingChecksum.nlb
+
+                    newChecksum = existingChecksum.copy()
+
+                    if (updateCheck.kmb) dataLoadingCount++
+                    if (updateCheck.ctb) dataLoadingCount++
+                    if (updateCheck.gmb) dataLoadingCount++
+                    if (updateCheck.mtr) dataLoadingCount++
+                    if (updateCheck.lrt) dataLoadingCount++
+                    if (updateCheck.nlb) dataLoadingCount++
+                } else {
+                    dataLoadingCount = 6
+                }
+
+                fetchTransportDataRequiredCount = dataLoadingCount
+                fetchTransportDataRequired(dataLoadingCount)
+                fetchTransportDataCompletedCount(0)
+
                 listOf(
                     async {
                         if (updateCheck.kmb) {
@@ -178,17 +179,17 @@ class OnboardingViewModel(
                         }
                     }
                 ).awaitAll()
-            }
 
-            sharedPreferencesManager.transportDataChecksum = newChecksum
+                sharedPreferencesManager.transportDataChecksum = newChecksum
 
-            fetchTransportDataCompleted()
-        } catch (e: Exception) {
-            CommonLogger.e(e) { "Fetch transport data failed" }
-            if (fetchTransportDataFailedList.isEmpty()) {
-                fetchTransportDataFailedList.add(FailedCheckType.OTHER)
+                fetchTransportDataCompleted()
+            } catch (e: Exception) {
+                CommonLogger.e(e) { "Fetch transport data failed" }
+                if (fetchTransportDataFailedList.isEmpty()) {
+                    fetchTransportDataFailedList.add(FailedCheckType.OTHER)
+                }
+                fetchTransportDataCompleted()
             }
-            fetchTransportDataCompleted()
         }
     }
 
@@ -196,36 +197,42 @@ class OnboardingViewModel(
         logLifecycle("downloadKmbTransportData start")
         kmbInteractor.initDatabase()
         kmbInteractor.saveData()
+        logLifecycle("downloadKmbTransportData end")
     }
 
     private suspend fun downloadCtbTransportData() {
         logLifecycle("downloadNCTransportData start")
         ctbInteractor.initDatabase()
         ctbInteractor.saveData()
+        logLifecycle("downloadNCTransportData end")
     }
 
     private suspend fun downloadGmbTransportData() {
         logLifecycle("downloadGmbTransportData start")
         gmbInteractor.initDatabase()
         gmbInteractor.saveData()
+        logLifecycle("downloadGmbTransportData end")
     }
 
     private suspend fun downloadMtrTransportData() {
         logLifecycle("downloadMTRTransportData start")
         mtrInteractor.initDatabase()
         mtrInteractor.saveData()
+        logLifecycle("downloadMTRTransportData end")
     }
 
     private suspend fun downloadLrtTransportData() {
         logLifecycle("downloadLRTTransportData start")
         lrtInteractor.initDatabase()
         lrtInteractor.saveData()
+        logLifecycle("downloadLRTTransportData end")
     }
 
     private suspend fun downloadNlbTransportData() {
         logLifecycle("downloadNLBTransportData start")
         nlbRepository.initDatabase()
         nlbRepository.saveData()
+        logLifecycle("downloadNLBTransportData end")
     }
 
     suspend fun resetTransportData() {

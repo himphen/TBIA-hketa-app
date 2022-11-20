@@ -17,47 +17,44 @@ struct BookmarkHomeView: View {
     @State var etaLastUpdatedTimeTask: Combine.Cancellable? = nil
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
-                if (viewModel.hasData == true) {
-                    if (viewModel.etaError) {
-                        Text(MR.strings().text_eta_loading_failed.desc().localized())
+        VStack(spacing: 0) {
+            if (viewModel.hasData == true) {
+                if (viewModel.etaError) {
+                    Text(MR.strings().text_eta_loading_failed.desc().localized())
+                } else {
+                    if let lastUpdatedAgo = viewModel.lastUpdatedAgo {
+                        Text(MR.strings().eta_last_updated_at.formatString(
+                            context: IOSContext(),
+                            args: [lastUpdatedAgo]
+                        ))
                     } else {
-                        if let lastUpdatedAgo = viewModel.lastUpdatedAgo {
-                            Text(MR.strings().eta_last_updated_at.formatString(
-                                context: IOSContext(),
-                                args: [lastUpdatedAgo]
-                            ))
-                        } else {
-                            Text(MR.strings().eta_last_updated_at_init.desc().localized())
-                        }
+                        Text(MR.strings().eta_last_updated_at_init.desc().localized())
                     }
-                    BookmarkHomeListView(
-                        viewModel: viewModel
-                    )
-                    .onAppear {
+                }
+                BookmarkHomeListView(
+                    viewModel: viewModel
+                )
+                .onAppear {
+                    etaRequested(value: true)
+                }
+                .onDisappear {
+                    etaRequested(value: false)
+                }
+                .onChange(of: scenePhase) { newPhase in
+                    if newPhase == .active {
                         etaRequested(value: true)
-                    }
-                    .onDisappear {
+                    } else if newPhase == .inactive {
                         etaRequested(value: false)
                     }
-                    .onChange(of: scenePhase) { newPhase in
-                        if newPhase == .active {
-                            etaRequested(value: true)
-                        } else if newPhase == .inactive {
-                            etaRequested(value: false)
-                        }
-                    }
-                    Spacer()
-                } else if (viewModel.hasData == false) {
-                    BookmarkHomeEmptyListView()
-                } else {
-                    Spacer()
                 }
+                Spacer()
+            } else if (viewModel.hasData == false) {
+                BookmarkHomeEmptyListView()
+            } else {
+                Spacer()
             }
-            .navigationBarHidden(true)
         }
-        .onAppear {
+        .onAppear { [self] in
             Task {
                 await viewModel.getEtaListFromDb()
             }
@@ -109,6 +106,8 @@ struct BookmarkHomeListView: View {
                     Divider()
                 }
                 BookmarkHomeListActionView()
+                Spacer()
+                .frame(height: 100)
             }
         }
     }
@@ -122,14 +121,14 @@ struct BookmarkHomeListActionView: View {
             NavigationLink(
                 destination: RouteListView(),
                 tag: 1, selection: $action
-            ) {}
-            .navigationBarTitle("加入", displayMode: .inline)
+            ) {
+            }
             
             NavigationLink(
                 destination: RouteListView(),
                 tag: 2, selection: $action
-            ) {}
-            .navigationBarTitle("加入", displayMode: .inline)
+            ) {
+            }
             
             Button(action: {
                 self.action = 1
@@ -148,6 +147,9 @@ struct BookmarkHomeListActionView: View {
                 )
                 .cornerRadius(32)
             }
+            
+            Spacer()
+            .frame(width: 8)
             
             Button(action: {
                 self.action = 2
@@ -172,8 +174,16 @@ struct BookmarkHomeListActionView: View {
 }
 
 struct BookmarkHomeEmptyListView: View {
+    @State private var action: Int? = 0
+    
     var body: some View {
         VStack {
+            NavigationLink(
+                destination: RouteListView(),
+                tag: 1, selection: $action
+            ) {
+            }
+            
             Image("ic_empty_list")
             .resizable() //it will sized so that it fills all the available space
             .aspectRatio(contentMode: .fill)
@@ -183,6 +193,7 @@ struct BookmarkHomeEmptyListView: View {
             
             Spacer().frame(height: 40)
             Button {
+                self.action = 1
             } label: {
                 HStack {
                     Image(systemName: "magnifyingglass")

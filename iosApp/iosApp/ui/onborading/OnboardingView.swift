@@ -18,7 +18,7 @@ struct OnboardingView: View {
                 }
             }
         } else {
-            BookmarkHomeView()
+            MainView()
         }
     }
 }

@@ -48,7 +48,7 @@ import Rswift
         }
     }
     
-    func getTabViewData() -> [Tab] {
+    func getTabViewData() -> [RouteListTab] {
         list.map { element in
             var image: Image
             switch (element) {
@@ -61,15 +61,15 @@ import Rswift
             
             let color = element.color()
             
-            return Tab.init(
-                etaType: element,
+            return RouteListTab.init(
                 icon: image,
                 title: element.name().localized(context: IOSContext()),
                 color: Color(
                     red: (Double(color.red) / 255),
                     green: (Double(color.green) / 255),
                     blue: (Double(color.blue) / 255)
-                )
+                ),
+                etaType: element
             )
         }
         

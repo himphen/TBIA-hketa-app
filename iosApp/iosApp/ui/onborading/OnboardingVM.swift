@@ -22,7 +22,9 @@ import Rswift
                 }
                 
                 if (data.intValue > 0) {
-                    isFetchTransportDataRequired = true
+                    DispatchQueue.main.async { [self] in
+                        isFetchTransportDataRequired = true
+                    }
                 } else {
                     CommonLoggerUtilsKt.logD(message: "Go next screen!!!")
                     
@@ -47,15 +49,21 @@ import Rswift
                     let first: FailedCheckType = list.first!
                     switch (first) {
                     case FailedCheckType.kmb:
-                        loadingString = R.string.localizable.test_onboarding_loading_failed_kmb()
+                        DispatchQueue.main.async { [self] in
+                            loadingString = R.string.localizable.test_onboarding_loading_failed_kmb()
+                        }
                     
                     default:
-                        loadingString = R.string.localizable.test_onboarding_loading_failed_other()
+                        DispatchQueue.main.async { [self] in
+                            loadingString = R.string.localizable.test_onboarding_loading_failed_other()
+                        }
                     }
                 } else {
                     CommonLoggerUtilsKt.logD(message: "Go next screen!")
                     
-                    isCompleted = true
+                    DispatchQueue.main.async { [self] in
+                        isCompleted = true
+                    }
                 }
             },
             fetchTransportDataCompletedCount: { [self] data in
@@ -63,8 +71,10 @@ import Rswift
                 "fetchTransportDataCompletedCount"
                 )
                 let fetchTransportDataRequiredCount = viewModel?.fetchTransportDataRequiredCount ?? 0
-                
-                loadingString = "正載入路線數據 （\(data.intValue)/\(fetchTransportDataRequiredCount))"
+    
+                DispatchQueue.main.async { [self] in
+                    loadingString = "正載入路線數據 （\(data.intValue)/\(fetchTransportDataRequiredCount))"
+                }
             }
         )
         

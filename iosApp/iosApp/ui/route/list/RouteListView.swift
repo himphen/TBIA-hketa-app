@@ -11,9 +11,9 @@ import Combine
 struct RouteListView: View {
     @ObservedObject var viewModel: RouteListVM = RouteListVM()
     @State private var selectedTabIndex = 0
-    @State private var selectedTab: Tab? = nil
+    @State private var selectedTab: RouteListTab? = nil
     
-    @State var tabs: [Tab] = []
+    @State var tabs: [RouteListTab] = []
     @State var searchRouteKeyword = ""
     
     init() {
@@ -70,7 +70,7 @@ struct RouteListView: View {
 
 struct TabRouteListView: View {
     @ObservedObject var viewModel: RouteListVM
-    @Binding var tab: Tab?
+    @Binding var tab: RouteListTab?
     
     var body: some View {
         ScrollView {

@@ -1,17 +1,24 @@
 import SwiftUI
 import shared
 
-struct Tab : Equatable {
-    let identifier = UUID()
-    var etaType: EtaType
+struct RouteListTab: BaseTab {
+    var identifier = UUID()
     var icon: Image?
     var title: String
     var color: Color
+    var etaType: EtaType
+}
+
+protocol BaseTab: Equatable {
+    var identifier: UUID { get }
+    var icon: Image? { get }
+    var title: String { get }
+    var color: Color { get }
 }
 
 struct Tabs: View {
     var fixed = true
-    var tabs: [Tab]
+    var tabs: [any BaseTab]
     var geoWidth: CGFloat
     @Binding var selectedTab: Int
     var body: some View {

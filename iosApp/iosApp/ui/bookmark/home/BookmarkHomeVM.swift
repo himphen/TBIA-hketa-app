@@ -102,7 +102,7 @@ import Rswift
                 do {
                     try await viewModel?.updateEtaList()
                 } catch {
-        
+                
                 }
             }
         }

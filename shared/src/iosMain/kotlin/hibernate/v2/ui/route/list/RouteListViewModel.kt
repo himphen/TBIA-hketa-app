@@ -13,6 +13,8 @@ import hibernate.v2.model.transport.route.TransportRoute
 import hibernate.v2.utils.CommonLogger
 import hibernate.v2.utils.IOSContext
 import hibernate.v2.utils.logLifecycle
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -30,19 +32,21 @@ class RouteListViewModel(
     var searchRouteKeyword: String = ""
 
     suspend fun getTransportRouteList(etaType: EtaType) {
-        when (etaType) {
-            EtaType.KMB -> getKmbRouteList()
-            EtaType.NWFB,
-            EtaType.CTB -> getCtbRouteList(etaType)
-            EtaType.GMB_HKI,
-            EtaType.GMB_KLN,
-            EtaType.GMB_NT -> getGmbRouteList(etaType)
-            EtaType.MTR -> getMTRRouteList()
-            EtaType.LRT -> getLRTRouteList()
-            EtaType.NLB -> getNlbRouteList()
-        }
+        withContext(Dispatchers.Default) {
+            when (etaType) {
+                EtaType.KMB -> getKmbRouteList()
+                EtaType.NWFB,
+                EtaType.CTB -> getCtbRouteList(etaType)
+                EtaType.GMB_HKI,
+                EtaType.GMB_KLN,
+                EtaType.GMB_NT -> getGmbRouteList(etaType)
+                EtaType.MTR -> getMTRRouteList()
+                EtaType.LRT -> getLRTRouteList()
+                EtaType.NLB -> getNlbRouteList()
+            }
 
-        searchRoute(etaType)
+            searchRoute(etaType)
+        }
     }
 
     private suspend fun getKmbRouteList() {
@@ -65,7 +69,7 @@ class RouteListViewModel(
         }
     }
 
-    private suspend fun getCtbRouteList(etaType: EtaType) {
+    private fun getCtbRouteList(etaType: EtaType) {
         if (RouteListDataHolder.hasData(etaType)) {
             logLifecycle("getCtbRouteList hasData")
             return
@@ -84,7 +88,7 @@ class RouteListViewModel(
         }
     }
 
-    private suspend fun getGmbRouteList(etaType: EtaType) {
+    private fun getGmbRouteList(etaType: EtaType) {
         if (RouteListDataHolder.hasData(etaType)) {
             logLifecycle("getGmbRouteList hasData")
             return
@@ -128,7 +132,7 @@ class RouteListViewModel(
         }
     }
 
-    private suspend fun getLRTRouteList() {
+    private fun getLRTRouteList() {
         val etaType = EtaType.LRT
         if (RouteListDataHolder.hasData(etaType)) {
             logLifecycle("getLRTRouteList hasData")

@@ -6,6 +6,6 @@ import hibernate.v2.database.gmb.GmbDao
 class GetRouteListDb(
     private val gmbDao: GmbDao
 ) {
-    suspend operator fun invoke(region: GmbRegion) =
+    operator fun invoke(region: GmbRegion) =
         gmbDao.getRouteList(region)
 }

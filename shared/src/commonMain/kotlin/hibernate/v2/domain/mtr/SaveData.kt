@@ -8,7 +8,7 @@ import hibernate.v2.database.mtr.MtrDao
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.coroutineScope
 
 class SaveData(
     private val dataRepository: DataRepository,
@@ -23,7 +23,7 @@ class SaveData(
             is Resource.OtherError -> throw result.getThrowable()
         }
 
-        supervisorScope {
+        coroutineScope {
             listOf(
                 async {
                     data.route?.let { list ->

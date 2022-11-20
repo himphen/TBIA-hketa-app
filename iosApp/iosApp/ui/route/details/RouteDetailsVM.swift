@@ -124,7 +124,12 @@ import Rswift
     }
     
     func removeBookmark(position: Int, savedEtaId: Int) {
-        viewModel?.removeBookmark(position: Int32(position), entityId: Int32(savedEtaId))
+        Task {
+            do {
+                try await viewModel?.removeBookmark(position: Int32(position), entityId: Int32(savedEtaId))
+            } catch {
+            }
+        }
     }
     
     func setEtaListIntoDataList(etaList: [TransportEta]) {
