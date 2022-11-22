@@ -17,5 +17,6 @@ struct SettingsView: View {
             Text("Meow3")
             Text("Meow4")
         }
+        .preferredColorScheme(.light)
     }
 }

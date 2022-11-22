@@ -12,18 +12,28 @@ struct MainBottomView: View {
     let tabBarItems: [MainTabItem]
     var height: CGFloat = 70
     var width: CGFloat = UIScreen.main.bounds.width - 32
-    @Binding var selectedIndex: Int
+    @Binding var selectedTabIndex: Int
+    @State var selectedRouteListTab: Bool?
     
     var body: some View {
         HStack {
+            NavigationLink(
+                destination: RouteListView(),
+                tag: true, selection: $selectedRouteListTab
+            ) {}
+                
             Spacer()
             
             ForEach(tabBarItems.indices) { index in
                 let item = tabBarItems[index]
                 Button {
-                    self.selectedIndex = index
+                    if (index == 1) {
+                        selectedRouteListTab = true
+                        return
+                    }
+                    self.selectedTabIndex = index
                 } label: {
-                    let isSelected = selectedIndex == index
+                    let isSelected = selectedTabIndex == index
                     MainTabItemView(data: item, isSelected: isSelected)
                 }
                 Spacer()

@@ -59,7 +59,7 @@ struct EtaListView: View {
     }
     
     func etaListWithoutFirst() -> [TransportEta] {
-        let etaList = etaList as! [TransportEta]
+        let etaList = etaList
         
         if (etaList.isEmpty) {
             return etaList

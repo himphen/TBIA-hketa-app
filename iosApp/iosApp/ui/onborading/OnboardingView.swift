@@ -12,9 +12,18 @@ struct OnboardingView: View {
                     .frame(width: 200, height: 200)
                     Text("\(viewModel.loadingString)")
                 } else {
-                    Text(MR.strings().test_onboarding_loading_failed_kmb.desc().localized()).task({
-                        await viewModel.activate()
-                    })
+                    R.image.app_icon.image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(
+                        width: 200,
+                        height: 200
+                        )
+                    .onAppear{
+                        Task {
+                            await viewModel.activate()
+                        }
+                    }
                 }
             }
         } else {

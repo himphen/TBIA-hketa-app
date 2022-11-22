@@ -34,6 +34,10 @@
 		36E96FE04BAA7B3092669C7E /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E9641751F4042B3E7A9576 /* OnboardingView.swift */; };
 		8A3BFB8929180D1300104DD9 /* lottie_spaghetti_loader.json in Resources */ = {isa = PBXBuildFile; fileRef = 8A3BFB8829180D1300104DD9 /* lottie_spaghetti_loader.json */; };
 		8A7AEC3B2917806300F24CF9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A7AEC3A2917803D00F24CF9 /* GoogleService-Info.plist */; };
+		8AA10D40292BDCE600DFB406 /* BookmarkEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA10D3F292BDCE600DFB406 /* BookmarkEditView.swift */; };
+		8AA10D44292C8A0D00DFB406 /* BookmarkHomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA10D43292C8A0D00DFB406 /* BookmarkHomeListView.swift */; };
+		8AA10D46292C8A4900DFB406 /* BookmarkHomeListActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA10D45292C8A4900DFB406 /* BookmarkHomeListActionView.swift */; };
+		8AA10D48292CE1A000DFB406 /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA10D47292CE1A000DFB406 /* MainVM.swift */; };
 		8AFAF1442919A55A0061340A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8AFAF1432919A55A0061340A /* Localizable.strings */; };
 		8AFAF1462919A8920061340A /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFAF1452919A8920061340A /* R.generated.swift */; };
 		8F7FC384874B3168512FE11C /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78846ECAEE77D4322A8EC28B /* Pods_iosApp.framework */; };
@@ -72,6 +76,10 @@
 		85CCEE3FCD6E225E240A7751 /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
 		8A3BFB8829180D1300104DD9 /* lottie_spaghetti_loader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = lottie_spaghetti_loader.json; path = ../../../../app/src/main/res/raw/lottie_spaghetti_loader.json; sourceTree = "<group>"; };
 		8A7AEC3A2917803D00F24CF9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "/Users/himphen/Hibernate/android-tv/iosApp/iosApp/GoogleService-Info.plist"; sourceTree = "<absolute>"; };
+		8AA10D3F292BDCE600DFB406 /* BookmarkEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEditView.swift; sourceTree = "<group>"; };
+		8AA10D43292C8A0D00DFB406 /* BookmarkHomeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkHomeListView.swift; sourceTree = "<group>"; };
+		8AA10D45292C8A4900DFB406 /* BookmarkHomeListActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkHomeListActionView.swift; sourceTree = "<group>"; };
+		8AA10D47292CE1A000DFB406 /* MainVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
 		8AFAF1432919A55A0061340A /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		8AFAF1452919A8920061340A /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -110,8 +118,6 @@
 			children = (
 				36E965220AE6AF5E8A07549E /* LottieView.swift */,
 				36E9662E4BCB06717666FD3B /* SlidingTabView.swift */,
-				36E96F90D3FE00E0F8DB7D40 /* MainBottomView.swift */,
-				36E96B022CC3F1F24C5E2E3D /* MainTabItemView.swift */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -119,9 +125,8 @@
 		36E9647DE4EA9856AA7E91E4 /* home */ = {
 			isa = PBXGroup;
 			children = (
-				36E9635DDCD9227C3AFA20AB /* BookmarkHomeVM.swift */,
-				36E96937F3009767569C1E3F /* BookmarkHomeView.swift */,
-				36E96277B4646A861F5E6C8E /* ItemBookmarkHomeView.swift */,
+				8AA10D42292C89DD00DFB406 /* viewmodel */,
+				8AA10D41292C89CA00DFB406 /* view */,
 			);
 			path = home;
 			sourceTree = "<group>";
@@ -129,14 +134,14 @@
 		36E965197F84FA1330CABC51 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				36E96D89B5DE2CD89C33EEF7 /* onborading */,
-				36E9633D543BCF77C83D7CA5 /* common */,
 				36E96DAD6825B4A4404D319F /* bookmark */,
-				36E9662AE5EC37DC98500B80 /* route */,
-				36E96D746D48C19C44AB4A69 /* utils */,
+				36E9633D543BCF77C83D7CA5 /* common */,
 				36E96D06313FBFF437168D89 /* eta */,
 				36E96BE94AD2A4EF550D068D /* main */,
+				36E96D89B5DE2CD89C33EEF7 /* onborading */,
+				36E9662AE5EC37DC98500B80 /* route */,
 				36E96FEAD31F9E6B37CDE84B /* settings */,
+				36E96D746D48C19C44AB4A69 /* utils */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -164,7 +169,10 @@
 		36E96BE94AD2A4EF550D068D /* main */ = {
 			isa = PBXGroup;
 			children = (
+				36E96F90D3FE00E0F8DB7D40 /* MainBottomView.swift */,
+				36E96B022CC3F1F24C5E2E3D /* MainTabItemView.swift */,
 				36E968BCDEF41149F02D8D7D /* MainView.swift */,
+				8AA10D47292CE1A000DFB406 /* MainVM.swift */,
 			);
 			path = main;
 			sourceTree = "<group>";
@@ -200,6 +208,7 @@
 		36E96DAD6825B4A4404D319F /* bookmark */ = {
 			isa = PBXGroup;
 			children = (
+				8AA10D3E292BDCC900DFB406 /* edit */,
 				36E9647DE4EA9856AA7E91E4 /* home */,
 			);
 			path = bookmark;
@@ -244,12 +253,12 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
-				8AFAF1422919A5320061340A /* Resources */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
-				7555FF8C242A565B00829871 /* Info.plist */,
 				8A7AEC3A2917803D00F24CF9 /* GoogleService-Info.plist */,
+				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
+				8AFAF1422919A5320061340A /* Resources */,
 				36E965197F84FA1330CABC51 /* ui */,
 			);
 			path = iosApp;
@@ -261,6 +270,33 @@
 				78846ECAEE77D4322A8EC28B /* Pods_iosApp.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8AA10D3E292BDCC900DFB406 /* edit */ = {
+			isa = PBXGroup;
+			children = (
+				8AA10D3F292BDCE600DFB406 /* BookmarkEditView.swift */,
+			);
+			path = edit;
+			sourceTree = "<group>";
+		};
+		8AA10D41292C89CA00DFB406 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				36E96277B4646A861F5E6C8E /* ItemBookmarkHomeView.swift */,
+				36E96937F3009767569C1E3F /* BookmarkHomeView.swift */,
+				8AA10D43292C8A0D00DFB406 /* BookmarkHomeListView.swift */,
+				8AA10D45292C8A4900DFB406 /* BookmarkHomeListActionView.swift */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		8AA10D42292C89DD00DFB406 /* viewmodel */ = {
+			isa = PBXGroup;
+			children = (
+				36E9635DDCD9227C3AFA20AB /* BookmarkHomeVM.swift */,
+			);
+			path = viewmodel;
 			sourceTree = "<group>";
 		};
 		8AFAF1422919A5320061340A /* Resources */ = {
@@ -458,19 +494,23 @@
 				36E96679E4BEDC47A42B4F47 /* LottieView.swift in Sources */,
 				36E96EDD4E561E9DF4B5AA8C /* BookmarkHomeVM.swift in Sources */,
 				36E96FB20464402C5689F2E6 /* BookmarkHomeView.swift in Sources */,
+				8AA10D48292CE1A000DFB406 /* MainVM.swift in Sources */,
 				36E9614E77C8F5B2F4908BEC /* RouteListView.swift in Sources */,
 				36E96E975C5CFA2F83B8C369 /* RouteListVM.swift in Sources */,
+				8AA10D46292C8A4900DFB406 /* BookmarkHomeListActionView.swift in Sources */,
 				36E9631C9CC2D2FD9AD0CE26 /* ItemRouteListView.swift in Sources */,
 				36E966EBF347F55A47BF1785 /* ItemRouteStopView.swift in Sources */,
 				36E96F8A7C4970E3B733DD9D /* RouteDetailsView.swift in Sources */,
 				36E9677FE3A195867B132D56 /* RouteDetailsVM.swift in Sources */,
 				36E964A7DB10FE436E88B10A /* ItemRouteStopExpandedView.swift in Sources */,
 				36E96503309460796794AD7B /* RResourceExtension.swift in Sources */,
+				8AA10D40292BDCE600DFB406 /* BookmarkEditView.swift in Sources */,
 				36E966360E32BEE12817026F /* ItemBookmarkHomeView.swift in Sources */,
 				36E96F0D1CC58F4AA64F55B4 /* TaskExtension.swift in Sources */,
 				36E96E921F7088AE474F28B5 /* SlidingTabView.swift in Sources */,
 				36E965EEBC02B80381886214 /* MRExtension.swift in Sources */,
 				36E9681DE78ABA411624BB10 /* EtaListView.swift in Sources */,
+				8AA10D44292C8A0D00DFB406 /* BookmarkHomeListView.swift in Sources */,
 				36E96A7BC962893F8F87D5C2 /* MainBottomView.swift in Sources */,
 				36E962398E094AEF013BDAE8 /* MainTabItemView.swift in Sources */,
 				36E967A98B9880DE01898063 /* MainView.swift in Sources */,

@@ -19,18 +19,6 @@ struct BookmarkHomeView: View {
     var body: some View {
         VStack(spacing: 0) {
             if (viewModel.hasData == true) {
-                if (viewModel.etaError) {
-                    Text(MR.strings().text_eta_loading_failed.desc().localized())
-                } else {
-                    if let lastUpdatedAgo = viewModel.lastUpdatedAgo {
-                        Text(MR.strings().eta_last_updated_at.formatString(
-                            context: IOSContext(),
-                            args: [lastUpdatedAgo]
-                        ))
-                    } else {
-                        Text(MR.strings().eta_last_updated_at_init.desc().localized())
-                    }
-                }
                 BookmarkHomeListView(
                     viewModel: viewModel
                 )
@@ -47,7 +35,6 @@ struct BookmarkHomeView: View {
                         etaRequested(value: false)
                     }
                 }
-                Spacer()
             } else if (viewModel.hasData == false) {
                 BookmarkHomeEmptyListView()
             } else {
@@ -92,84 +79,6 @@ struct BookmarkHomeView: View {
             etaUpdateTask = viewModel.updateEtaList()
             etaLastUpdatedTimeTask = viewModel.updateLastUpdatedTime()
         }
-    }
-}
-
-struct BookmarkHomeListView: View {
-    @ObservedObject var viewModel: BookmarkHomeVM
-    
-    var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                ForEach(viewModel.savedEtaCardList ?? [], id: \.identifier) { item in
-                    ItemBookmarkHomeView(card: item.item)
-                    Divider()
-                }
-                BookmarkHomeListActionView()
-                Spacer()
-                .frame(height: 100)
-            }
-        }
-    }
-}
-
-struct BookmarkHomeListActionView: View {
-    @State private var action: Int? = 0
-    
-    var body: some View {
-        HStack(spacing: 0) {
-            NavigationLink(
-                destination: RouteListView(),
-                tag: 1, selection: $action
-            ) {
-            }
-            
-            NavigationLink(
-                destination: RouteListView(),
-                tag: 2, selection: $action
-            ) {
-            }
-            
-            Button(action: {
-                self.action = 1
-            }) {
-                HStack {
-                    Image("ic_search_24")
-                    .foregroundColor(Color.blue)
-                    Text(MR.strings().eta_button_add.desc().localized())
-                    .font(.system(size: 18))
-                    .foregroundColor(Color.blue)
-                }
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 32)
-                    .stroke(Color.gray, lineWidth: 2)
-                )
-                .cornerRadius(32)
-            }
-            
-            Spacer()
-            .frame(width: 8)
-            
-            Button(action: {
-                self.action = 2
-            }) {
-                HStack {
-                    Image("ic_edit_24")
-                    .foregroundColor(Color.blue)
-                    Text(MR.strings().eta_button_edit.desc().localized())
-                    .font(.system(size: 18))
-                    .foregroundColor(Color.blue)
-                }
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 32)
-                    .stroke(Color.gray, lineWidth: 2)
-                )
-                .cornerRadius(32)
-            }
-        }
-        .padding(12)
     }
 }
 

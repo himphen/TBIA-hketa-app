@@ -10,26 +10,31 @@ import Rswift
 struct MainView: View {
     @Environment(\.scenePhase) var scenePhase
     
+    @ObservedObject var viewModel: MainVM = MainVM()
+    
     @State var selectedTabIndex: Int = 0
+    @State var hideBottomMenu = false
     
     var tabs = MainTabType.allCases.map({ $0.tabItem })
     
     var body: some View {
         NavigationView {
             ZStack {
-                VStack {
-                    TabView(selection: $selectedTabIndex) {
-                        BookmarkHomeView().tag(0)
-                        SettingsView().tag(1)
+                VStack(spacing: 0) {
+                    if (selectedTabIndex == 0) {
+                        BookmarkHomeView()
+                    } else if (selectedTabIndex == 2) {
+                        SettingsView()
                     }
+                    
                     Spacer()
                 }
                 
-                VStack {
+                VStack(spacing: 0) {
                     Spacer()
                     MainBottomView(
-                        tabBarItems: MainTabType.allCases.map({ $0.tabItem }),
-                        selectedIndex: $selectedTabIndex
+                        tabBarItems: tabs,
+                        selectedTabIndex: $selectedTabIndex
                     )
                 }
                 .padding(.bottom, 8)
@@ -39,3 +44,19 @@ struct MainView: View {
         }
     }
 }
+
+//struct MainSearchTabView: View {
+//
+//    var body: some View {
+//        VStack {
+//            NavigationLink(
+//                destination: RouteListView()
+//            ) {
+//
+//            }
+//
+//            EmptyView()
+//        }
+//
+//    }
+//}

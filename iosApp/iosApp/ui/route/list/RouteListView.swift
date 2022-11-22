@@ -10,15 +10,12 @@ import Combine
 
 struct RouteListView: View {
     @ObservedObject var viewModel: RouteListVM = RouteListVM()
+    
     @State private var selectedTabIndex = 0
     @State private var selectedTab: RouteListTab? = nil
     
     @State var tabs: [RouteListTab] = []
     @State var searchRouteKeyword = ""
-    
-    init() {
-//        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
-    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -65,6 +62,7 @@ struct RouteListView: View {
                 await viewModel.getTransportRouteList(etaType: selectedTab!.etaType)
             }
         }
+        .preferredColorScheme(.light)
     }
 }
 
@@ -81,7 +79,10 @@ struct TabRouteListView: View {
                         Divider()
                     }
                 }
+                Spacer()
+                    .frame(height: 200)
             }
+            .frame(maxHeight: .infinity)
         }
         .navigationBarTitle(
             MR.strings.shared.title_activity_add_eta_with_company_name.formatString(context: IOSContext(), args: [tab?.title ?? ""]),
@@ -91,9 +92,11 @@ struct TabRouteListView: View {
 
 struct SearchBar: View {
     @Binding var text: String
+    @State var isEditing: Bool = false
+    
     @StateObject var debounceObject = DebounceObject()
     
-    @State private var isEditing = false
+    @FocusState private var searchIsFocused: Bool
     
     var body: some View {
         HStack {
@@ -103,14 +106,17 @@ struct SearchBar: View {
             .background(Color(.systemGray6))
             .cornerRadius(22)
             .onTapGesture {
+                self.searchIsFocused = true
                 self.isEditing = true
             }
             .onChange(of: debounceObject.debouncedText) { newText in
                 text = newText
             }
+            .focused($searchIsFocused)
             
             if isEditing {
                 Button(action: {
+                    self.searchIsFocused = false
                     self.isEditing = false
                     self.text = ""
                 }) {
@@ -121,6 +127,7 @@ struct SearchBar: View {
                 .animation(.default)
             }
         }
+        .padding(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12))
     }
 }
 

@@ -88,31 +88,6 @@ struct R: Rswift.Validatable {
     try intern.validate()
   }
 
-  /// This `R.color` struct is generated, and contains static references to 1 colors.
-  struct color {
-    /// Color `AccentColor`.
-    static let accentColor = Rswift.ColorResource(bundle: R.hostingBundle, name: "AccentColor")
-
-    #if os(iOS) || os(tvOS)
-    /// `UIColor(named: "AccentColor", bundle: ..., traitCollection: ...)`
-    @available(tvOS 11.0, *)
-    @available(iOS 11.0, *)
-    static func accentColor(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIColor? {
-      return UIKit.UIColor(resource: R.color.accentColor, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(watchOS)
-    /// `UIColor(named: "AccentColor", bundle: ..., traitCollection: ...)`
-    @available(watchOSApplicationExtension 4.0, *)
-    static func accentColor(_: Void = ()) -> UIKit.UIColor? {
-      return UIKit.UIColor(named: R.color.accentColor.name)
-    }
-    #endif
-
-    fileprivate init() {}
-  }
-
   /// This `R.file` struct is generated, and contains static references to 2 files.
   struct file {
     /// Resource file `GoogleService-Info.plist`.
@@ -135,8 +110,10 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.image` struct is generated, and contains static references to 5 images.
+  /// This `R.image` struct is generated, and contains static references to 7 images.
   struct image {
+    /// Image `app_icon`.
+    static let app_icon = Rswift.ImageResource(bundle: R.hostingBundle, name: "app_icon")
     /// Image `ic_bus_24`.
     static let ic_bus_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_bus_24")
     /// Image `ic_edit_24`.
@@ -145,8 +122,17 @@ struct R: Rswift.Validatable {
     static let ic_empty_list = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_empty_list")
     /// Image `ic_search_24`.
     static let ic_search_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_search_24")
+    /// Image `ic_settings_24`.
+    static let ic_settings_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_settings_24")
     /// Image `ic_streetview_24`.
     static let ic_streetview_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_streetview_24")
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "app_icon", bundle: ..., traitCollection: ...)`
+    static func app_icon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.app_icon, compatibleWith: traitCollection)
+    }
+    #endif
 
     #if os(iOS) || os(tvOS)
     /// `UIImage(named: "ic_bus_24", bundle: ..., traitCollection: ...)`
@@ -173,6 +159,13 @@ struct R: Rswift.Validatable {
     /// `UIImage(named: "ic_search_24", bundle: ..., traitCollection: ...)`
     static func ic_search_24(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
       return UIKit.UIImage(resource: R.image.ic_search_24, compatibleWith: traitCollection)
+    }
+    #endif
+
+    #if os(iOS) || os(tvOS)
+    /// `UIImage(named: "ic_settings_24", bundle: ..., traitCollection: ...)`
+    static func ic_settings_24(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
+      return UIKit.UIImage(resource: R.image.ic_settings_24, compatibleWith: traitCollection)
     }
     #endif
 

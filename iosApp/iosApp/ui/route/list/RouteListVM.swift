@@ -29,12 +29,18 @@ import Rswift
                     message: "filteredTransportRouteList"
                 )
                 
-                filteredTransportRouteList[etaType] = list
+                DispatchQueue.main.async { [self] in
+                    filteredTransportRouteList[etaType] = list
+                }
             }
         )
     }
     
     func updateSearchText(searchRouteKeyword: String) {
+        CommonLoggerUtilsKt.logD(
+            message: "updateSearchText"
+        )
+        
         viewModel?.searchRouteKeyword = searchRouteKeyword
     }
     

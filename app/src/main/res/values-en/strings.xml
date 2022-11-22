@@ -30,8 +30,8 @@
 
     <string name="text_eta_card_classic_mtr_station">%1$s</string>
 
-    <string name="text_settings_eta_destination">%1$s</string>
-    <string name="text_settings_eta_destination_with_sp">%1$s (%2$s)</string>
+    <string name="text_settings_eta_destination">➔ %1$s</string>
+    <string name="text_settings_eta_destination_with_sp">➔ %1$s (%2$s)</string>
 
     <string name="text_add_eta_destination">No. %1$s - %2$s ➔ %3$s</string>
     <string name="text_add_eta_destination_with_sp">No. %1$s (Special Route %2$s) - %3$s ➔ %4$s</string>
@@ -113,7 +113,7 @@
     <string name="dialog_eta_layout_cancel_btn">Cancel</string>
 
     <string name="add_card_route_text">Sheung Tak</string>
-    <string name="add_card_route_to_text">Towards</string>
+    <string name="add_card_route_to_text">➔</string>
     <string name="add_card_route_from_text">From</string>
 
     <string name="demo_card_route_number">296A</string>

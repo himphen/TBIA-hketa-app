@@ -44,7 +44,7 @@ struct ItemBookmarkHomeView: View {
                 
                 HStack {
                     Text(card.route.getDestDirectionText(context: IOSContext()))
-                    .font(.system(size: 14))
+                    .font(.system(size: 16))
                     .foregroundColor(MR.colors().common_text_primary.toColor())
                 }
                 .frame(

@@ -17,7 +17,6 @@ struct MainTabItemView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 32, height: 32)
-            .animation(.default)
             
             Spacer().frame(height: 4)
             
@@ -30,7 +29,8 @@ struct MainTabItemView: View {
 
 enum MainTabType: Int, CaseIterable {
     case bookmark = 0
-    case settings
+    case search = 1
+    case settings = 2
     
     var tabItem: MainTabItem {
         switch self {
@@ -42,9 +42,15 @@ enum MainTabType: Int, CaseIterable {
             )
         case .settings:
             return MainTabItem.init(
-                icon: R.image.ic_bus_24.image,
-                selectedIcon: R.image.ic_bus_24.image,
-                title: MR.strings().main_tab_title_bookmark.desc().localized()
+                icon: R.image.ic_settings_24.image,
+                selectedIcon: R.image.ic_settings_24.image,
+                title: MR.strings().main_tab_title_settings.desc().localized()
+            )
+        case .search:
+            return MainTabItem.init(
+                icon: R.image.ic_search_24.image,
+                selectedIcon: R.image.ic_search_24.image,
+                title: MR.strings().main_tab_title_search.desc().localized()
             )
         }
     }
