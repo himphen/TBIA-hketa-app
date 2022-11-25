@@ -72,24 +72,33 @@ struct BookmarkEditView: View {
         }
         .navigationBarTitle(
             MR.strings.shared.eta_button_edit.desc().localized(),
-            displayMode: .inline)
+            displayMode: .inline
+        )
         .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: Button(action : {
-            Task {
-                await viewModel.updateEtaOrderList()
-                presentationMode.wrappedValue.dismiss()
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    Task {
+                        await viewModel.updateEtaOrderList()
+                        dismiss()
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text(MR.strings().dialog_check_edit_eta_order_save_btn.desc().localized())
+                    }
+                }
             }
-        }){
-            HStack {
-                Image(systemName: "chevron.left")
-                Text(MR.strings().dialog_check_edit_eta_order_save_btn.desc().localized())
-            }
-        })
+        }
         .preferredColorScheme(.light)
     }
     
     func move(from source: IndexSet, to destination: Int) {        
         viewModel.savedEtaCardList.move(fromOffsets: source, toOffset: destination)
+    }
+    
+    private func dismiss() {
+        presentationMode.wrappedValue.dismiss()
     }
 }
 

@@ -66,6 +66,8 @@ struct RouteListView: View {
 }
 
 struct TabRouteListView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     @StateObject var viewModel: RouteListVM
     @Binding var tab: RouteListTab?
     
@@ -85,7 +87,24 @@ struct TabRouteListView: View {
         }
         .navigationBarTitle(
             MR.strings.shared.title_activity_add_eta_with_company_name.formatString(context: IOSContext(), args: [tab?.title ?? ""]),
-            displayMode: .inline)
+            displayMode: .inline
+        )
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                    }
+                }
+            }
+        }
+    }
+    
+    private func dismiss() {
+        presentationMode.wrappedValue.dismiss()
     }
 }
 
@@ -135,7 +154,7 @@ public final class DebounceObject: ObservableObject {
     @Published var debouncedText: String = ""
     private var bag = Set<AnyCancellable>()
     
-    public init(dueTime: TimeInterval = 0.5) {
+    public init(dueTime: TimeInterval = 0.2) {
         $text
         .removeDuplicates()
         .debounce(for: .seconds(dueTime), scheduler: DispatchQueue.main)

@@ -9,6 +9,8 @@ import Rswift
 import AlertToast
 
 struct RouteDetailsView: View {
+    @Environment(\.presentationMode) var presentationMode
+    
     @State var selectedRoute: TransportRoute
     @State var selectedEtaType: EtaType
     @StateObject var viewModel: RouteDetailsVM
@@ -16,8 +18,8 @@ struct RouteDetailsView: View {
     @State var etaUpdateTimer: Timer? = nil
     
     init(selectedRoute: TransportRoute, selectedEtaType: EtaType) {
-        self.selectedRoute = selectedRoute
-        self.selectedEtaType = selectedEtaType
+        _selectedRoute = State(initialValue: selectedRoute)
+        _selectedEtaType = State(initialValue: selectedEtaType)
         
         _viewModel = StateObject(wrappedValue: RouteDetailsVM(
             selectedRoute: selectedRoute,
@@ -70,7 +72,22 @@ struct RouteDetailsView: View {
                 }
             }
         }
-        .navigationBarTitle(selectedRoute.routeNo + "號線")
+        .navigationBarTitle(
+            selectedRoute.routeNo + " - " + selectedRoute.getDirectionSubtitleText(context: IOSContext()),
+            displayMode: .inline
+        )
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                    }
+                }
+            }
+        }
         .task {
             await viewModel.activate()
         }
@@ -97,5 +114,9 @@ struct RouteDetailsView: View {
             }
             etaUpdateTimer?.fire()
         }
+    }
+    
+    private func dismiss() {
+        presentationMode.wrappedValue.dismiss()
     }
 }

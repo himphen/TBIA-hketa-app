@@ -12,13 +12,11 @@ struct MainTabItemView: View {
     let isSelected: Bool
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             (isSelected ? data.selectedIcon : data.icon)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 32, height: 32)
-            
-            Spacer().frame(height: 4)
             
             Text(data.title)
             .foregroundColor(isSelected ? .black : .gray)
