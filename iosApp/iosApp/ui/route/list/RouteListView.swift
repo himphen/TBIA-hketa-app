@@ -9,7 +9,7 @@ import Rswift
 import Combine
 
 struct RouteListView: View {
-    @ObservedObject var viewModel: RouteListVM = RouteListVM()
+    @StateObject var viewModel: RouteListVM = RouteListVM()
     
     @State private var selectedTabIndex = 0
     @State private var selectedTab: RouteListTab? = nil
@@ -62,12 +62,11 @@ struct RouteListView: View {
                 await viewModel.getTransportRouteList(etaType: selectedTab!.etaType)
             }
         }
-        .preferredColorScheme(.light)
     }
 }
 
 struct TabRouteListView: View {
-    @ObservedObject var viewModel: RouteListVM
+    @StateObject var viewModel: RouteListVM
     @Binding var tab: RouteListTab?
     
     var body: some View {

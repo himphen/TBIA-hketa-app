@@ -17,6 +17,8 @@ import Rswift
     private var lastUpdatedTime: Int64? = nil
     @Published var etaError: Bool = false
     
+    private var waitFirstEta: Bool = false
+    
     init() {
         viewModel = BookmarkHomeViewModel(
             savedEtaCardListUpdated: { [self] in
@@ -41,7 +43,6 @@ import Rswift
                         CardEtaCardItem(item: element)
                     })
                     
-                    
                     DispatchQueue.main.async { [self] in
                         hasData = mSavedEtaCardList.count != 0
                         savedEtaCardList = mSavedEtaCardList
@@ -50,11 +51,17 @@ import Rswift
                     CommonLoggerUtilsKt.logD(
                         message: "savedEtaCardList == nil"
                     )
-                    hasData = data.count != 0
-                    savedEtaCardList = data.map { element in
-                        CardEtaCardItem(item: element)
-                    }
                     
+                    DispatchQueue.main.async { [self] in
+                        hasData = data.count != 0
+                        savedEtaCardList = data.map { element in
+                            CardEtaCardItem(item: element)
+                        }
+                    }
+                }
+                
+                if (waitFirstEta) {
+                    waitFirstEta = false
                     Task {
                         do {
                             try await viewModel?.updateEtaList()
@@ -84,6 +91,7 @@ import Rswift
     
     func getEtaListFromDb() async {
         do {
+            waitFirstEta = true
             try await viewModel?.getEtaListFromDb()
         } catch {
         }
@@ -114,9 +122,9 @@ import Rswift
         .schedule(after: DispatchQueue.SchedulerTimeType(.now()),
             interval: .seconds(1),
             tolerance: .seconds(1 / 5)) { [self] in
-            CommonLoggerUtilsKt.logD(
-                message: "updateLastUpdatedTime: \(lastUpdatedTime), \(DateUtilsKt.getCurrentTime().epochSeconds)"
-            )
+//            CommonLoggerUtilsKt.logD(
+//                message: "updateLastUpdatedTime: \(lastUpdatedTime), \(DateUtilsKt.getCurrentTime().epochSeconds)"
+//            )
             if let lastUpdatedTime = lastUpdatedTime {
                 DispatchQueue.main.async { [self] in
                     lastUpdatedAgo = Int((DateUtilsKt.getCurrentTime().epochSeconds - lastUpdatedTime))

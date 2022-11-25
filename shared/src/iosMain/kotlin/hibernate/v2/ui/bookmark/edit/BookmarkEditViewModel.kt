@@ -1,27 +1,26 @@
-package hibernate.v2.sunshine.ui.bookmark.edit
+package hibernate.v2.ui.bookmark.edit
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import hibernate.v2.database.eta.SavedEtaEntity
 import hibernate.v2.database.eta.SavedEtaOrderEntity
 import hibernate.v2.domain.eta.EtaInteractor
 import hibernate.v2.model.Card
-import hibernate.v2.sunshine.ui.base.BaseViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.coroutineScope
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class BookmarkEditViewModel(
-    private val etaInteractor: EtaInteractor,
-) : BaseViewModel() {
+    private val savedEtaCardListUpdated: () -> Unit
+) : KoinComponent {
 
-    val savedEtaCardList = MutableLiveData<MutableList<Card.SettingsEtaCard>>()
-    val editCard = MutableLiveData<Card.SettingsEtaCard>()
+    private val etaInteractor: EtaInteractor by inject()
 
-    fun getSavedEtaCardList() {
-        viewModelScope.launch(Dispatchers.IO) {
+    var savedEtaCardList = mutableListOf<Card.SettingsEtaCard>()
+
+    @Throws(Exception::class)
+    suspend fun getSavedEtaCardList() {
+        coroutineScope {
             val deferredList = listOf(
                 async {
                     etaInteractor.getSavedKmbEtaList()
@@ -54,28 +53,35 @@ class BookmarkEditViewModel(
 
             convertedEtaCardList.sort()
 
-            savedEtaCardList.postValue(convertedEtaCardList)
+            savedEtaCardList = convertedEtaCardList
+            savedEtaCardListUpdated()
         }
     }
 
+    @Throws(Exception::class)
     suspend fun removeEta(item: SavedEtaEntity) {
-        withContext(Dispatchers.IO) {
+        coroutineScope {
             etaInteractor.clearEta(item)
         }
     }
 
+    @Throws(Exception::class)
     suspend fun clearAllEta() {
-        withContext(Dispatchers.IO) {
+        coroutineScope {
             etaInteractor.clearAllEta()
         }
     }
 
-    fun getEtaOrderList(): List<SavedEtaOrderEntity> {
-        return etaInteractor.getEtaOrderList()
+    @Throws(Exception::class)
+    suspend fun getEtaOrderList(): List<SavedEtaOrderEntity> {
+        return coroutineScope {
+            return@coroutineScope etaInteractor.getEtaOrderList()
+        }
     }
 
+    @Throws(Exception::class)
     suspend fun updateEtaOrderList(entityList: List<SavedEtaOrderEntity>) {
-        withContext(Dispatchers.IO) {
+        coroutineScope {
             etaInteractor.updateEtaOrderList(entityList)
         }
     }

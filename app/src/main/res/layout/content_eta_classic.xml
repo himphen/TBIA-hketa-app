@@ -71,7 +71,7 @@
         <include
             android:id="@+id/etaMinuteLl"
             layout="@layout/content_eta_classic_minute"
-            android:layout_width="0dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

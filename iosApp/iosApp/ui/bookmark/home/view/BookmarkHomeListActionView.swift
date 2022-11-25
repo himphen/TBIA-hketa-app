@@ -13,6 +13,7 @@ import Rswift
 
 struct BookmarkHomeListActionView: View {
     @State private var action: Int? = 0
+    @Binding var selectedAppearance: Int
     
     var body: some View {
         HStack(spacing: 0) {
@@ -23,13 +24,14 @@ struct BookmarkHomeListActionView: View {
             }
             
             NavigationLink(
-                destination: RouteListView(),
+                destination: BookmarkEditView(),
                 tag: 2, selection: $action
             ) {
             }
             
             Button(action: {
                 self.action = 1
+                self.selectedAppearance = 1
             }) {
                 HStack {
                     Image("ic_search_24")
@@ -51,6 +53,7 @@ struct BookmarkHomeListActionView: View {
             
             Button(action: {
                 self.action = 2
+                self.selectedAppearance = 1
             }) {
                 HStack {
                     Image("ic_edit_24")

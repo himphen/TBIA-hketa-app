@@ -1,4 +1,4 @@
-package hibernate.v2.ui.bookmark
+package hibernate.v2.ui.bookmark.home
 
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
@@ -8,6 +8,7 @@ import hibernate.v2.model.transport.eta.LRTTransportEta
 import hibernate.v2.model.transport.eta.MTRTransportEta
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.model.transport.eta.filterCircularStop
+import hibernate.v2.utils.CommonLogger
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -51,13 +52,12 @@ class BookmarkHomeViewModel(
 
                 convertedEtaCardList.sort()
 
-                if (convertedEtaCardList.isEmpty()) {
-                    savedEtaCardList = mutableListOf()
-                    savedEtaCardListUpdated()
+                savedEtaCardList = if (convertedEtaCardList.isEmpty()) {
+                    mutableListOf()
                 } else {
-                    savedEtaCardList = convertedEtaCardList
-                    savedEtaCardListUpdated()
+                    convertedEtaCardList
                 }
+                savedEtaCardListUpdated()
             }
         } catch (e: Exception) {
             getEtaListFromDbFailed()
@@ -70,10 +70,11 @@ class BookmarkHomeViewModel(
                 logLifecycle("getEtaList")
                 val etaCardList = savedEtaCardList
                 if (etaCardList.isEmpty()) return@withContext
-                val result = mutableMapOf<Int, Card.EtaCard>()
+                val result = savedEtaCardList.toMutableList()
 
                 etaCardList.mapIndexed { index, etaCard ->
                     async {
+                        CommonLogger.d { "savedEtaCardList ${etaCard.route.routeId} + ${etaCard.position} + $index" }
                         when (etaCard.route.company) {
                             Company.KMB -> {
                                 val apiEtaResponse = etaInteractor.getKmbStopEtaApi(
@@ -88,11 +89,11 @@ class BookmarkHomeViewModel(
                                         .map { TransportEta.fromApiModel(it) }
                                         .filter { it.filterCircularStop(isCircular, etaCard.stop) }
 
-                                    etaCard.etaList.clear()
-                                    etaCard.etaList.addAll(temp)
+                                    result.getOrNull(index)?.apply {
+                                        this.etaList.clear()
+                                        this.etaList.addAll(temp)
+                                    }
                                 }
-
-                                result[index] = etaCard
                             }
                             Company.NWFB,
                             Company.CTB -> {
@@ -109,11 +110,11 @@ class BookmarkHomeViewModel(
                                         .map { TransportEta.fromApiModel(it) }
                                         .filter { it.filterCircularStop(isCircular, etaCard.stop) }
 
-                                    etaCard.etaList.clear()
-                                    etaCard.etaList.addAll(temp)
+                                    result.getOrNull(index)?.apply {
+                                        this.etaList.clear()
+                                        this.etaList.addAll(temp)
+                                    }
                                 }
-
-                                result[index] = etaCard
                             }
                             Company.GMB -> {
                                 val apiEtaResponse = etaInteractor.getGmbStopEtaApi(
@@ -131,11 +132,11 @@ class BookmarkHomeViewModel(
                                         ?.filter { it.filterCircularStop(isCircular, etaCard.stop) }
                                         ?: emptyList()
 
-                                    etaCard.etaList.clear()
-                                    etaCard.etaList.addAll(temp)
+                                    result.getOrNull(index)?.apply {
+                                        this.etaList.clear()
+                                        this.etaList.addAll(temp)
+                                    }
                                 }
-
-                                result[index] = etaCard
                             }
                             Company.MTR -> {
                                 val apiEtaResponse = etaInteractor.getMTRStopEtaApi(
@@ -144,8 +145,8 @@ class BookmarkHomeViewModel(
                                 )
                                 val matchedIndex = etaCard.route.routeId + "-" + etaCard.stop.stopId
                                 apiEtaResponse.data?.let { etaRouteStopMap ->
-                                    etaRouteStopMap.forEach { (index, etaRouteStop) ->
-                                        if (index != matchedIndex) return@forEach
+                                    etaRouteStopMap.forEach { (index2, etaRouteStop) ->
+                                        if (index2 != matchedIndex) return@forEach
 
                                         val temp = when (etaCard.route.bound) {
                                             Bound.O -> etaRouteStop.down
@@ -155,16 +156,16 @@ class BookmarkHomeViewModel(
                                             ?.map { MTRTransportEta.fromApiModel(it) }
                                             ?: emptyList()
 
-                                        etaCard.etaList.clear()
-                                        etaCard.etaList.addAll(temp)
+                                        result.getOrNull(index)?.apply {
+                                            this.platform =
+                                                (etaCard.etaList.getOrNull(0) as? MTRTransportEta)?.platform
+                                                    ?: "1"
 
-                                        etaCard.platform =
-                                            (etaCard.etaList.getOrNull(0) as? MTRTransportEta)?.platform
-                                                ?: "1"
+                                            this.etaList.clear()
+                                            this.etaList.addAll(temp)
+                                        }
                                     }
                                 }
-
-                                result[index] = etaCard
                             }
                             Company.LRT -> {
                                 val apiEtaResponse = etaInteractor.getLrtStopEtaApi(
@@ -189,12 +190,14 @@ class BookmarkHomeViewModel(
                                         }
                                     }
 
-                                    etaCard.etaList.clear()
-                                    etaCard.etaList.addAll(temp)
+                                    result.getOrNull(index)?.apply {
+                                        this.platform =
+                                            (etaCard.etaList.getOrNull(0) as? MTRTransportEta)?.platform
+                                                ?: "1"
 
-                                    etaCard.platform =
-                                        (etaCard.etaList.getOrNull(0) as? LRTTransportEta)?.platform
-                                            ?: "1"
+                                        this.etaList.clear()
+                                        this.etaList.addAll(temp)
+                                    }
                                 }
 
                                 result[index] = etaCard
@@ -208,11 +211,11 @@ class BookmarkHomeViewModel(
                                     val temp = etaList
                                         .map { TransportEta.fromApiModel(it, etaCard.stop.seq) }
 
-                                    etaCard.etaList.clear()
-                                    etaCard.etaList.addAll(temp)
+                                    result.getOrNull(index)?.apply {
+                                        this.etaList.clear()
+                                        this.etaList.addAll(temp)
+                                    }
                                 }
-
-                                result[index] = etaCard
                             }
                             Company.UNKNOWN -> {
                             }
@@ -221,7 +224,7 @@ class BookmarkHomeViewModel(
                 }.awaitAll()
 
                 logLifecycle("getEtaList done")
-                savedEtaCardList = result.values.toMutableList()
+                savedEtaCardList = result
                 savedEtaCardListUpdated()
             } catch (e: Exception) {
                 updateEtaListFailed()

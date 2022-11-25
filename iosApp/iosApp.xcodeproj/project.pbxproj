@@ -38,6 +38,8 @@
 		8AA10D44292C8A0D00DFB406 /* BookmarkHomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA10D43292C8A0D00DFB406 /* BookmarkHomeListView.swift */; };
 		8AA10D46292C8A4900DFB406 /* BookmarkHomeListActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA10D45292C8A4900DFB406 /* BookmarkHomeListActionView.swift */; };
 		8AA10D48292CE1A000DFB406 /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA10D47292CE1A000DFB406 /* MainVM.swift */; };
+		8AA10D4C292D066900DFB406 /* BookmarkEditVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA10D4B292D066900DFB406 /* BookmarkEditVM.swift */; };
+		8AA10D4E292D13BD00DFB406 /* ItemBookmarkEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA10D4D292D13BD00DFB406 /* ItemBookmarkEditView.swift */; };
 		8AFAF1442919A55A0061340A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8AFAF1432919A55A0061340A /* Localizable.strings */; };
 		8AFAF1462919A8920061340A /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFAF1452919A8920061340A /* R.generated.swift */; };
 		8F7FC384874B3168512FE11C /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78846ECAEE77D4322A8EC28B /* Pods_iosApp.framework */; };
@@ -80,6 +82,8 @@
 		8AA10D43292C8A0D00DFB406 /* BookmarkHomeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkHomeListView.swift; sourceTree = "<group>"; };
 		8AA10D45292C8A4900DFB406 /* BookmarkHomeListActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkHomeListActionView.swift; sourceTree = "<group>"; };
 		8AA10D47292CE1A000DFB406 /* MainVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
+		8AA10D4B292D066900DFB406 /* BookmarkEditVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEditVM.swift; sourceTree = "<group>"; };
+		8AA10D4D292D13BD00DFB406 /* ItemBookmarkEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemBookmarkEditView.swift; sourceTree = "<group>"; };
 		8AFAF1432919A55A0061340A /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		8AFAF1452919A8920061340A /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -275,7 +279,8 @@
 		8AA10D3E292BDCC900DFB406 /* edit */ = {
 			isa = PBXGroup;
 			children = (
-				8AA10D3F292BDCE600DFB406 /* BookmarkEditView.swift */,
+				8AA10D4A292D064F00DFB406 /* view */,
+				8AA10D49292D064900DFB406 /* viewmodel */,
 			);
 			path = edit;
 			sourceTree = "<group>";
@@ -297,6 +302,23 @@
 				36E9635DDCD9227C3AFA20AB /* BookmarkHomeVM.swift */,
 			);
 			path = viewmodel;
+			sourceTree = "<group>";
+		};
+		8AA10D49292D064900DFB406 /* viewmodel */ = {
+			isa = PBXGroup;
+			children = (
+				8AA10D4B292D066900DFB406 /* BookmarkEditVM.swift */,
+			);
+			path = viewmodel;
+			sourceTree = "<group>";
+		};
+		8AA10D4A292D064F00DFB406 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				8AA10D3F292BDCE600DFB406 /* BookmarkEditView.swift */,
+				8AA10D4D292D13BD00DFB406 /* ItemBookmarkEditView.swift */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 		8AFAF1422919A5320061340A /* Resources */ = {
@@ -355,6 +377,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hant",
 			);
 			mainGroup = 7555FF72242A565900829871;
 			productRefGroup = 7555FF7C242A565900829871 /* Products */;
@@ -489,10 +512,12 @@
 			files = (
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				36E96FE04BAA7B3092669C7E /* OnboardingView.swift in Sources */,
+				8AA10D4C292D066900DFB406 /* BookmarkEditVM.swift in Sources */,
 				8AFAF1462919A8920061340A /* R.generated.swift in Sources */,
 				36E96887CC0E3A1798FBF9D0 /* OnboardingVM.swift in Sources */,
 				36E96679E4BEDC47A42B4F47 /* LottieView.swift in Sources */,
 				36E96EDD4E561E9DF4B5AA8C /* BookmarkHomeVM.swift in Sources */,
+				8AA10D4E292D13BD00DFB406 /* ItemBookmarkEditView.swift in Sources */,
 				36E96FB20464402C5689F2E6 /* BookmarkHomeView.swift in Sources */,
 				8AA10D48292CE1A000DFB406 /* MainVM.swift in Sources */,
 				36E9614E77C8F5B2F4908BEC /* RouteListView.swift in Sources */,

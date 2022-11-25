@@ -1,14 +1,16 @@
 //
-// Created by Himphen on 2022-11-10.
-// Copyright (c) 2022 orgName. All rights reserved.
+//  ItemBookmarkEditView.swift
+//  iosApp
+//
+//  Created by Himphen on 2022-11-22.
+//  Copyright © 2022 orgName. All rights reserved.
 //
 
-import Foundation
 import SwiftUI
 import shared
 
-struct ItemBookmarkHomeView: View {
-    @State var card: Card.EtaCard
+struct ItemBookmarkEditView: View {
+    @State var card: Card.SettingsEtaItemCard
     
     var body: some View {
         HStack(spacing: 0) {
@@ -42,9 +44,6 @@ struct ItemBookmarkHomeView: View {
                     alignment: .leading
                 )
                 
-                Spacer()
-                .frame(height: 4)
-                
                 HStack {
                     Text(card.route.getDestDirectionText(context: IOSContext()))
                     .font(.system(size: 16))
@@ -62,14 +61,6 @@ struct ItemBookmarkHomeView: View {
                 maxWidth: .infinity,
                 alignment: .leading
             ).padding(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 10))
-            
-            Spacer()
-    
-            EtaListView(etaList: etaList())
-            .frame(
-                width: 100,
-                alignment: .trailing
-            )
         }
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 12))
         .frame(
@@ -78,11 +69,5 @@ struct ItemBookmarkHomeView: View {
             minHeight: 48,
             alignment: .leading
         )
-    }
-    
-    func etaList() -> [TransportEta] {
-        let etaList = card.etaList as! [TransportEta]
-        
-        return etaList
     }
 }

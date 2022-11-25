@@ -11,7 +11,7 @@ import AlertToast
 struct RouteDetailsView: View {
     @State var selectedRoute: TransportRoute
     @State var selectedEtaType: EtaType
-    @ObservedObject var viewModel: RouteDetailsVM
+    @StateObject var viewModel: RouteDetailsVM
     
     @State var etaUpdateTimer: Timer? = nil
     
@@ -19,10 +19,10 @@ struct RouteDetailsView: View {
         self.selectedRoute = selectedRoute
         self.selectedEtaType = selectedEtaType
         
-        viewModel = RouteDetailsVM(
+        _viewModel = StateObject(wrappedValue: RouteDetailsVM(
             selectedRoute: selectedRoute,
             selectedEtaType: selectedEtaType
-        )
+        ))
     }
     
     var body: some View {

@@ -2,7 +2,7 @@ import SwiftUI
 import shared
 
 struct OnboardingView: View {
-    @ObservedObject var viewModel: OnboardingVM = OnboardingVM()
+    @StateObject var viewModel: OnboardingVM = OnboardingVM()
     
     var body: some View {
         if (!viewModel.isCompleted) {

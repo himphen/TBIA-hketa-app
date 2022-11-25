@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
@@ -111,6 +112,8 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
     private val viewModel by inject<BookmarkEditViewModel>()
     private var savedEtaCardList: MutableList<Card.SettingsEtaCard> = mutableListOf()
 
+    var invalidCardList = mutableListOf<Card.SettingsEtaItemCard>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         title = getString(R.string.title_activity_settings_eta)
@@ -129,7 +132,17 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
         viewModel.savedEtaCardList.observe(viewLifecycleOwner) {
             savedEtaCardList.clear()
             savedEtaCardList.add(Card.SettingsEtaAddCard())
-            savedEtaCardList.addAll(it)
+
+            val cardList = it.mapNotNull { card1 ->
+                val card = card1 as Card.SettingsEtaItemCard
+                if (!card.isValid) {
+                    invalidCardList.add(card)
+                    return@mapNotNull null
+                }
+                return@mapNotNull card
+            }.toMutableList()
+
+            savedEtaCardList.addAll(cardList)
             updateRows()
         }
     }
@@ -206,5 +219,15 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
     private fun updateRows() {
         mAdapter?.clear()
         mAdapter?.addAll(0, savedEtaCardList)
+
+        if (invalidCardList.isNotEmpty()) {
+            Toast.makeText(context!!, R.string.text_edit_eta_invalid_hint, Toast.LENGTH_LONG).show()
+
+            lifecycleScope.launch {
+                invalidCardList.forEach {
+                    viewModel.removeEta(it.entity)
+                }
+            }
+        }
     }
 }

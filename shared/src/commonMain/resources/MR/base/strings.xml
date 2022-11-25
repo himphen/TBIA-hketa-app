@@ -32,8 +32,8 @@
 
     <string name="text_eta_card_classic_mtr_station">%1$s站</string>
 
-    <string name="text_settings_eta_destination">%1$s</string>
-    <string name="text_settings_eta_destination_with_sp">%1$s (%2$s)</string>
+    <string name="text_settings_eta_destination">➔ %1$s</string>
+    <string name="text_settings_eta_destination_with_sp">➔ %1$s (%2$s)</string>
 
     <string name="text_add_eta_destination">%1$s號線 - %2$s ➔ %3$s</string>
     <string name="text_add_eta_destination_with_sp">%1$s號線 (特別線 %2$s) - %3$s ➔ %4$s</string>
@@ -141,6 +141,10 @@
     <string name="eta_button_edit">編輯</string>
     <string name="eta_button_add">加入</string>
     <string name="eta_button_remove">從主頁移除</string>
+
+    <string name="eta_edit_order_button">更改排序</string>
+    <string name="eta_edit_order_button_done">完成</string>
+
     <string name="eta_last_updated_at">班次時間已於 %d 秒前更新</string>
     <string name="eta_last_updated_at_init">正在載入班次時間……</string>
 

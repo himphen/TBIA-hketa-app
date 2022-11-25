@@ -5,20 +5,24 @@
 //  Created by Himphen on 2022-11-22.
 //  Copyright © 2022 orgName. All rights reserved.
 //
+
 import Combine
 import SwiftUI
 import shared
 import Rswift
 
 struct BookmarkHomeListView: View {
-    @ObservedObject var viewModel: BookmarkHomeVM
+    @Environment(\.scenePhase) var scenePhase
+    @State var selectedAppearance = 1
+    
+    @StateObject var viewModel: BookmarkHomeVM
     
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
                 if (viewModel.etaError) {
                     Text(MR.strings().text_eta_loading_failed.desc().localized())
-                        .foregroundColor(MR.colors().eta_update_failed_text.toColor())
+                    .foregroundColor(MR.colors().eta_update_failed_text.toColor())
                 } else {
                     if let lastUpdatedAgo = viewModel.lastUpdatedAgo {
                         Text(MR.strings().eta_last_updated_at.formatString(
@@ -28,7 +32,7 @@ struct BookmarkHomeListView: View {
                         .foregroundColor(MR.colors().eta_update_failed_text.toColor())
                     } else {
                         Text(MR.strings().eta_last_updated_at_init.desc().localized())
-                            .foregroundColor(MR.colors().eta_update_failed_text.toColor())
+                        .foregroundColor(MR.colors().eta_update_failed_text.toColor())
                     }
                 }
             }
@@ -42,7 +46,7 @@ struct BookmarkHomeListView: View {
                         ItemBookmarkHomeView(card: item.item)
                         Divider()
                     }
-                    BookmarkHomeListActionView()
+                    BookmarkHomeListActionView(selectedAppearance: $selectedAppearance)
                     Spacer()
                     .frame(height: 100)
                 }
@@ -50,8 +54,15 @@ struct BookmarkHomeListView: View {
             
             Spacer()
         }
+        .onAppear { [self] in
+            self.selectedAppearance = 2
+        }
+        .onDisappear { [self] in
+            self.selectedAppearance = 1
+        }
         .navigationBarHidden(true)
         .navigationBarTitle("", displayMode: .inline)
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(selectedAppearance == 1 ? .light : selectedAppearance == 2 ? .dark : nil)
+        
     }
 }

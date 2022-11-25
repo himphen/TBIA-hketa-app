@@ -11,7 +11,7 @@ import Rswift
 struct BookmarkHomeView: View {
     @Environment(\.scenePhase) var scenePhase
     
-    @ObservedObject var viewModel: BookmarkHomeVM = BookmarkHomeVM()
+    @StateObject var viewModel: BookmarkHomeVM = BookmarkHomeVM()
     
     @State var etaUpdateTask: Combine.Cancellable? = nil
     @State var etaLastUpdatedTimeTask: Combine.Cancellable? = nil
@@ -22,19 +22,6 @@ struct BookmarkHomeView: View {
                 BookmarkHomeListView(
                     viewModel: viewModel
                 )
-                .onAppear {
-                    etaRequested(value: true)
-                }
-                .onDisappear {
-                    etaRequested(value: false)
-                }
-                .onChange(of: scenePhase) { newPhase in
-                    if newPhase == .active {
-                        etaRequested(value: true)
-                    } else if newPhase == .inactive {
-                        etaRequested(value: false)
-                    }
-                }
             } else if (viewModel.hasData == false) {
                 BookmarkHomeEmptyListView()
             } else {
@@ -51,6 +38,8 @@ struct BookmarkHomeView: View {
                 Task {
                     await viewModel.getEtaListFromDb()
                 }
+            } else if newPhase == .inactive {
+                etaRequested(value: false)
             }
         }
         .onReceive(viewModel.$etaError) { data in
@@ -86,7 +75,7 @@ struct BookmarkHomeEmptyListView: View {
     @State private var action: Int? = 0
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             NavigationLink(
                 destination: RouteListView(),
                 tag: 1, selection: $action
@@ -112,5 +101,6 @@ struct BookmarkHomeEmptyListView: View {
             .frame(width: 100)
             .buttonStyle(.borderedProminent)
         }
+        .frame(maxHeight: .infinity)
     }
 }

@@ -10,7 +10,7 @@ import Rswift
 struct MainView: View {
     @Environment(\.scenePhase) var scenePhase
     
-    @ObservedObject var viewModel: MainVM = MainVM()
+    @StateObject var viewModel: MainVM = MainVM()
     
     @State var selectedTabIndex: Int = 0
     @State var hideBottomMenu = false
@@ -44,19 +44,3 @@ struct MainView: View {
         }
     }
 }
-
-//struct MainSearchTabView: View {
-//
-//    var body: some View {
-//        VStack {
-//            NavigationLink(
-//                destination: RouteListView()
-//            ) {
-//
-//            }
-//
-//            EmptyView()
-//        }
-//
-//    }
-//}
