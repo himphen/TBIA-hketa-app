@@ -2,7 +2,7 @@ package hibernate.v2.api.core
 
 import hibernate.v2.utils.isDebugBuild
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.cio.CIO
+import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.compression.ContentEncoding
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -13,8 +13,14 @@ import kotlinx.serialization.json.Json
 
 actual object KtorClient {
     actual fun initClient(): HttpClient {
-        return HttpClient(CIO) {
+        return HttpClient(OkHttp) {
             expectSuccess = true
+
+            engine {
+                config {
+                    followRedirects(true)
+                }
+            }
 
             install(Resources)
             install(ContentNegotiation) {
@@ -35,8 +41,8 @@ actual object KtorClient {
                 }
             }
             install(ContentEncoding) {
-                deflate(1.0F)
                 gzip(0.9F)
+                deflate(1.0F)
             }
         }
     }

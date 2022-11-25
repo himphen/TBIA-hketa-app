@@ -5,10 +5,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NlbRouteStop(
-    @SerialName("route_id")
+    @SerialName("r")
     var routeId: String = "",
-    @SerialName("seq")
+    @SerialName("s")
     var seq: Int = 0,
-    @SerialName("stop")
+    @SerialName("p")
     var stopId: String = "",
 )

@@ -9,23 +9,23 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GmbRoute(
     val bound: Bound = Bound.O,
-    @SerialName("dest_en")
+    @SerialName("de")
     var destEn: String = "",
-    @SerialName("dest_sc")
+    @SerialName("ds")
     var destSc: String = "",
-    @SerialName("dest_tc")
+    @SerialName("dt")
     var destTc: String = "",
-    @SerialName("orig_en")
+    @SerialName("oe")
     var origEn: String = "",
-    @SerialName("orig_sc")
+    @SerialName("os")
     var origSc: String = "",
-    @SerialName("orig_tc")
+    @SerialName("ot")
     var origTc: String = "",
-    @SerialName("route_id")
+    @SerialName("r")
     var routeId: Long = 0,
-    @SerialName("route_no")
+    @SerialName("no")
     var routeNo: String = "",
-    @SerialName("service_type")
+    @SerialName("st")
     var serviceType: Long = 0,
     @SerialName("region")
     var region: GmbRegion = GmbRegion.UNKNOWN,

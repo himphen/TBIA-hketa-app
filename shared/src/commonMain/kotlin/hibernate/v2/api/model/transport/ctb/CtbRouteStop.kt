@@ -7,14 +7,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CtbRouteStop(
-    @SerialName("co")
+    @SerialName("c")
     var company: Company = Company.UNKNOWN,
-    @SerialName("route")
+    @SerialName("r")
     var routeId: String = "",
-    @SerialName("bound")
+    @SerialName("b")
     var bound: Bound = Bound.O,
-    @SerialName("seq")
+    @SerialName("s")
     var seq: Int = 0,
-    @SerialName("stop")
+    @SerialName("p")
     var stopId: String = "",
 )

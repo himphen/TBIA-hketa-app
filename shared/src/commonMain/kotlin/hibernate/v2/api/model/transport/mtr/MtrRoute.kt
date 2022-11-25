@@ -8,25 +8,25 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MtrRoute(
     var bound: Bound = Bound.UNKNOWN,
-    @SerialName("dest_en")
+    @SerialName("de")
     var destEn: String = "",
-    @SerialName("dest_sc")
+    @SerialName("ds")
     var destSc: String = "",
-    @SerialName("dest_tc")
+    @SerialName("dt")
     var destTc: String = "",
-    @SerialName("orig_en")
+    @SerialName("oe")
     var origEn: String = "",
-    @SerialName("orig_sc")
+    @SerialName("os")
     var origSc: String = "",
-    @SerialName("orig_tc")
+    @SerialName("ot")
     var origTc: String = "",
-    @SerialName("route_id")
+    @SerialName("r")
     var routeId: String = "",
-    @SerialName("route_no")
+    @SerialName("no")
     var routeNo: String = "",
-    @SerialName("route_info")
+    @SerialName("in")
     var routeInfo: MTRRouteInfo = MTRRouteInfo(),
-    @SerialName("service_type")
+    @SerialName("st")
     var serviceType: String = "",
 ) : Comparable<MtrRoute>, BaseRouteEntity() {
 
@@ -43,9 +43,9 @@ data class MtrRoute(
 
 @Serializable
 data class MTRRouteInfo(
-    @SerialName("name_en")
+    @SerialName("ne")
     var nameEn: String = "",
-    @SerialName("name_tc")
+    @SerialName("nt")
     var nameTc: String = "",
     var color: String = "",
     @SerialName("isEnabled")

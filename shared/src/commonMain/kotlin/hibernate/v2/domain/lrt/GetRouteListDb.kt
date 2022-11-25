@@ -8,6 +8,7 @@ class GetRouteListDb(
     operator fun invoke() =
         lrtDao.getRouteList()
 
+    @Suppress("UNUSED_PARAMETER")
     operator fun invoke(enabled: Boolean) =
-        lrtDao.getRouteList()
+        lrtDao.getEnabledRouteList()
 }

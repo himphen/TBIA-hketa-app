@@ -9,17 +9,18 @@ data class CtbStop(
      * Document shows this is double type
      * However, API return string instead of double
      */
-    @SerialName("lat") var lat: String = "",
-    @SerialName("long")
+    @SerialName("la")
+    var lat: String = "",
+    @SerialName("lg")
     var lng: String = "",
-    @SerialName("name_en")
+    @SerialName("ne")
     var nameEn: String = "",
-    @SerialName("name_sc")
+    @SerialName("ns")
     var nameSc: String = "",
-    @SerialName("name_tc")
+    @SerialName("nt")
     var nameTc: String = "",
-    @SerialName("stop")
+    @SerialName("p")
     var stopId: String = "",
-    @SerialName("geohash")
+    @SerialName("gh")
     var geohash: String = "",
 )

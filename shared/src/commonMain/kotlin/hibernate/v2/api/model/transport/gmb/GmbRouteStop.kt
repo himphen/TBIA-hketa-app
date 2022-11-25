@@ -10,11 +10,11 @@ data class GmbRouteStop(
     val bound: Bound = Bound.O,
     @SerialName("region")
     var region: GmbRegion = GmbRegion.UNKNOWN,
-    @SerialName("route_id")
+    @SerialName("r")
     var routeId: Long = 0,
     var seq: Int = 0,
-    @SerialName("stop")
+    @SerialName("p")
     var stopId: Long = 0,
-    @SerialName("service_type")
+    @SerialName("st")
     var serviceType: Long = 0,
 )

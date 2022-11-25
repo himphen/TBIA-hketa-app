@@ -5,18 +5,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MtrStop(
-    @SerialName("lat")
+    @SerialName("la")
     var lat: Double = 0.0,
-    @SerialName("long")
+    @SerialName("lg")
     var lng: Double = 0.0,
-    @SerialName("name_en")
+    @SerialName("ne")
     var nameEn: String = "",
-    @SerialName("name_sc")
+    @SerialName("ns")
     var nameSc: String = "",
-    @SerialName("name_tc")
+    @SerialName("nt")
     var nameTc: String = "",
-    @SerialName("stop")
+    @SerialName("p")
     var stopId: String = "",
-    @SerialName("geohash")
+    @SerialName("gh")
     var geohash: String = "",
 )

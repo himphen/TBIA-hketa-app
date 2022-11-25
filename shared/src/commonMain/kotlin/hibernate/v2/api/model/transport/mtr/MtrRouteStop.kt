@@ -6,14 +6,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MtrRouteStop(
-    @SerialName("bound")
+    @SerialName("b")
     var bound: Bound = Bound.UNKNOWN,
-    @SerialName("route_id")
+    @SerialName("r")
     var routeId: String = "",
-    @SerialName("seq")
+    @SerialName("s")
     var seq: Int = 0,
-    @SerialName("service_type")
+    @SerialName("st")
     var serviceType: String = "",
-    @SerialName("stop")
+    @SerialName("p")
     var stopId: String = "",
 )

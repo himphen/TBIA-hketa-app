@@ -7,23 +7,23 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class KmbRoute(
-    @SerialName("bound")
+    @SerialName("b")
     var bound: String = Bound.O.value,
-    @SerialName("dest_en")
+    @SerialName("de")
     var destEn: String = "",
-    @SerialName("dest_sc")
+    @SerialName("ds")
     var destSc: String = "",
-    @SerialName("dest_tc")
+    @SerialName("dt")
     var destTc: String = "",
-    @SerialName("orig_en")
+    @SerialName("oe")
     var origEn: String = "",
-    @SerialName("orig_sc")
+    @SerialName("os")
     var origSc: String = "",
-    @SerialName("orig_tc")
+    @SerialName("ot")
     var origTc: String = "",
-    @SerialName("route")
+    @SerialName("r")
     var routeId: String = "",
-    @SerialName("service_type")
+    @SerialName("st")
     var serviceType: String = "",
 ) : Comparable<KmbRoute>, BaseRouteEntity() {
 

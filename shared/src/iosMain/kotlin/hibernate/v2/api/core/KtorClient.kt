@@ -41,8 +41,8 @@ actual object KtorClient {
                 }
             }
             install(ContentEncoding) {
-                deflate(1.0F)
                 gzip(0.9F)
+                deflate(1.0F)
             }
         }
     }

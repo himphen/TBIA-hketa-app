@@ -80,7 +80,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-android:$ktorVersion")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
 
                 implementation(project.dependencies.platform("com.google.firebase:firebase-bom:30.5.0"))
