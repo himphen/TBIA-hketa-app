@@ -4,6 +4,8 @@ import shared
 struct OnboardingView: View {
     @StateObject var viewModel: OnboardingVM = OnboardingVM()
     
+    @State var resetData: Bool = false
+    
     var body: some View {
         if (!viewModel.isCompleted) {
             VStack {
@@ -13,13 +15,13 @@ struct OnboardingView: View {
                     Text("\(viewModel.loadingString)")
                 } else {
                     R.image.app_icon.image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(
+                    .resizable()
+                    .scaledToFit()
+                    .frame(
                         width: 200,
                         height: 200
-                        )
-                    .onAppear{
+                    )
+                    .onAppear {
                         Task {
                             await viewModel.activate()
                         }
@@ -27,7 +29,13 @@ struct OnboardingView: View {
                 }
             }
         } else {
-            MainView()
+            MainView(resetData: $resetData)
+            .onChange(of: resetData) { newValue in
+                if (newValue) {
+                    resetData = false
+                    viewModel.isCompleted = false
+                }
+            }
         }
     }
 }

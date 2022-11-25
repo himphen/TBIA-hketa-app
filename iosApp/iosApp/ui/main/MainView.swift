@@ -15,6 +15,8 @@ struct MainView: View {
     @State var selectedTabIndex: Int = 0
     @State var hideBottomMenu = false
     
+    @Binding var resetData: Bool
+    
     var tabs = MainTabType.allCases.map({ $0.tabItem })
     
     var body: some View {
@@ -24,7 +26,7 @@ struct MainView: View {
                     if (selectedTabIndex == 0) {
                         BookmarkHomeView()
                     } else if (selectedTabIndex == 2) {
-                        SettingsView()
+                        SettingsView(resetData: $resetData)
                     }
                     
                     Spacer()
