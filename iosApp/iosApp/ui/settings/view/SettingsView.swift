@@ -41,7 +41,7 @@ struct SettingsView: View {
             }
             
             Section(header: Text(MR.strings().settings_category_debug_title.desc().localized())) {
-                Text(MR.strings().title_settings_reset.desc().localized())
+                ItemSettingsRowView(title: MR.strings().title_settings_reset.desc().localized())
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
                     showingResetConfirmation = true

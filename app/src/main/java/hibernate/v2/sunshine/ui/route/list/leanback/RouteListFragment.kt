@@ -3,13 +3,14 @@ package hibernate.v2.sunshine.ui.route.list.leanback
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.leanback.app.SearchSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
+import hibernate.v2.MR
 import hibernate.v2.model.Card
 import hibernate.v2.model.dataholder.AddEtaRowItem
 import hibernate.v2.model.transport.eta.EtaType
@@ -17,6 +18,7 @@ import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.sunshine.ui.route.list.leanback.RouteListActivity.Companion.ARG_ETA_TYPE
 import hibernate.v2.sunshine.util.getEnum
+import hibernate.v2.utils.localized
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -63,18 +65,12 @@ class RouteListFragment : SearchSupportFragment(), SearchSupportFragment.SearchR
         bookmarkSaveViewModel.isAddEtaSuccessful.onEach {
             if (it) {
                 activity?.setResult(Activity.RESULT_OK)
-                Toast.makeText(
-                    context,
-                    getString(R.string.toast_eta_added),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    context,
-                    getString(R.string.toast_eta_already_added),
-                    Toast.LENGTH_SHORT
-                ).show()
             }
+            Snackbar.make(
+                requireView(),
+                MR.strings.toast_eta_added.localized(requireContext()),
+                Snackbar.LENGTH_LONG
+            ).show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 

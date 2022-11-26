@@ -2,11 +2,15 @@ package hibernate.v2.sunshine.util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
+import hibernate.v2.MR
 import hibernate.v2.core.SharedPreferencesManager
+import hibernate.v2.sunshine.BuildConfig
 import hibernate.v2.utils.TransportationLanguage
+import hibernate.v2.utils.localized
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.math.BigInteger
@@ -15,6 +19,9 @@ import java.util.Collections
 import java.util.Locale
 
 object GeneralUtils : KoinComponent {
+
+    const val ETA_REFRESH_TIME = 10 * 1000L
+    const val ETA_LAST_UPDATED_REFRESH_TIME = 1 * 1000L
 
     private val sharedPreferencesManager: SharedPreferencesManager by inject()
 
@@ -78,8 +85,19 @@ object GeneralUtils : KoinComponent {
         return getLanguage(context)?.language == Locale.TRADITIONAL_CHINESE.language
     }
 
-    const val ETA_REFRESH_TIME = 60 * 1000L
-    const val ETA_LAST_UPDATED_REFRESH_TIME = 1 * 1000L
+    fun report(context: Context) {
+        val intent = Intent(Intent.ACTION_SEND)
+        var text = "Android Version: " + Build.VERSION.RELEASE + "\n"
+        text += "SDK Level: " + Build.VERSION.SDK_INT + "\n"
+        text += "Version: " + getAppVersionName(context) + "\n"
+        text += "Brand: " + Build.BRAND + "\n"
+        text += "Model: " + Build.MODEL + "\n\n\n"
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(BuildConfig.CONTACT_EMAIL))
+        intent.putExtra(Intent.EXTRA_SUBJECT, MR.strings.report_title.localized(context))
+        intent.putExtra(Intent.EXTRA_TEXT, text)
+        context.startActivity(intent)
+    }
 }
 
 fun <T> MutableList<T>.moveAt(oldIndex: Int, newIndex: Int) {

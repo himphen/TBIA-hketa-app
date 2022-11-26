@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EdgeEffect
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,8 +29,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.SphericalUtil
 import com.google.maps.android.ktx.awaitMap
+import com.himphen.logger.Logger
 import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.core.SharedPreferencesManager
@@ -50,14 +51,18 @@ import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import hibernate.v2.sunshine.util.smoothSnapToPosition
 import hibernate.v2.sunshine.util.visible
+import hibernate.v2.utils.getEtaUpdateErrorMessage
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedStateViewModel
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
 
@@ -256,21 +261,8 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
 
         viewModel.isSavedEtaBookmark.onEach {
             adapter.setSavedBookmark(it.first, it.second)
-            if (it.second > 0) {
-                activity?.setResult(MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK)
-                Toast.makeText(
-                    context,
-                    getString(R.string.toast_eta_added),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                activity?.setResult(MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK)
-                Toast.makeText(
-                    context,
-                    getString(R.string.toast_eta_added),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            activity?.setResult(MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK)
+            Snackbar.make(requireView(), getString(R.string.toast_eta_added), Snackbar.LENGTH_LONG).show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.isRemovedEtaBookmark.onEach {
@@ -293,13 +285,21 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.etaUpdateError.onEach {
+            Logger.e(it, "etaUpdateError")
             adapter.setEtaData(emptyList())
-            logLifecycle("etaUpdateError: " + it.message)
-            Toast.makeText(
-                context,
-                getString(R.string.text_eta_loading_failed, 400),
-                Toast.LENGTH_LONG
-            ).show()
+
+            if (isResumed) {
+                Snackbar
+                    .make(
+                        requireView(),
+                        getEtaUpdateErrorMessage(it, requireContext()),
+                        Snackbar.LENGTH_LONG
+                    )
+                    .show()
+
+                delay(3.toDuration(DurationUnit.SECONDS))
+                viewModel.etaRequested.emit(true)
+            }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.onChangedTrafficLayerToggle.onEach {

@@ -40,6 +40,7 @@ android {
             buildConfigField "String", "ADMOB_BANNER_ID", properties.getProperty('admob.banner_id')
             buildConfigField "String", "ADMOB_APP_ID", properties.getProperty("admob.app_id")
             resValue "string", "ADMOB_APP_ID", properties.getProperty("admob.app_id")
+            buildConfigField "String", "CONTACT_EMAIL", properties.getProperty("key.contact_email")
         }
 
         release {
@@ -52,6 +53,7 @@ android {
             buildConfigField "String", "ADMOB_BANNER_ID", properties.getProperty('admob.banner_id')
             buildConfigField "String", "ADMOB_APP_ID", properties.getProperty("admob.app_id")
             resValue "string", "ADMOB_APP_ID", properties.getProperty("admob.app_id")
+            buildConfigField "String", "CONTACT_EMAIL", properties.getProperty("key.contact_email")
         }
     }
 
@@ -134,7 +136,7 @@ dependencies {
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     // https://github.com/airbnb/lottie-android
-    implementation 'com.airbnb.android:lottie:4.2.2'
+    implementation 'com.airbnb.android:lottie:5.2.0'
 
     // https://github.com/marcoscgdev/Licenser
     implementation 'com.github.marcoscgdev:Licenser:2.0.0'

@@ -11,6 +11,7 @@ import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.VerticalGridPresenter
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import hibernate.v2.database.eta.SavedEtaOrderEntity
 import hibernate.v2.model.Card
 import hibernate.v2.model.dataholder.RouteAndStopListDataHolder
@@ -221,7 +222,7 @@ class BookmarkEditFragment : VerticalGridSupportFragment() {
         mAdapter?.addAll(0, savedEtaCardList)
 
         if (invalidCardList.isNotEmpty()) {
-            Toast.makeText(context!!, R.string.text_edit_eta_invalid_hint, Toast.LENGTH_LONG).show()
+            Snackbar.make(requireView(), R.string.text_edit_eta_invalid_hint, Toast.LENGTH_LONG).show()
 
             lifecycleScope.launch {
                 invalidCardList.forEach {

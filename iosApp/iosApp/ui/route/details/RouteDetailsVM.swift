@@ -33,9 +33,11 @@ import Rswift
                 guard let routeDetailsStopList = viewModel?.routeDetailsStopList else {
                     return
                 }
-                
-                routeDetailsStopListUpdated = routeDetailsStopList.map { item in
-                    RouteDetailsStopItem(item: item, isExpanded: false, etaList: [])
+    
+                DispatchQueue.main.async { [self] in
+                    routeDetailsStopListUpdated = routeDetailsStopList.map { item in
+                        RouteDetailsStopItem(item: item, isExpanded: false, etaList: [])
+                    }
                 }
             },
             etaListUpdated: { [self] data in

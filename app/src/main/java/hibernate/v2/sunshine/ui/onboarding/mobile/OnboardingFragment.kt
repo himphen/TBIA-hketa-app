@@ -111,6 +111,15 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
     }
 
     fun initUI() {
+        viewBinding?.retryButton?.setOnClickListener {
+            startActivity(Intent(activity, OnboardingActivity::class.java))
+            activity?.finish()
+        }
+
+        viewBinding?.reportButton?.setOnClickListener {
+            startActivity(Intent(activity, OnboardingActivity::class.java))
+            activity?.finish()
+        }
     }
 
     fun initData() {
@@ -124,6 +133,10 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
             visible()
             playAnimation()
         }
+    }
+
+    private fun showRetryButton() {
+        viewBinding?.failedButtonLl?.visible(true)
     }
 
     private fun goToMainActivity() {

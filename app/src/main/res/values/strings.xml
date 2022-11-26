@@ -8,6 +8,7 @@
     <string name="title_settings_language" translatable="false">語言 Language</string>
     <string name="title_settings_maps_traffic_toggle">地圖上顯示交通圖層</string>
     <string name="title_settings_reset">重設數據</string>
+    <string name="title_settings_report">回報問題</string>
     <string name="title_activity_add_eta">路線列表</string>
     <string name="title_activity_add_eta_with_company_name">%s路線列表</string>
     <string name="settings_acknowledgement_title1">聲明 1</string>
@@ -70,6 +71,8 @@
 
     <string name="text_eta_loading_failed_retry">載入數據失敗，按此重試。（錯誤碼：%d）</string>
     <string name="text_eta_loading_failed">載入數據失敗，正在重試中。（錯誤碼：%d）</string>
+
+
     <string name="text_edit_eta_invalid_hint">已移除主頁無效的車站。</string>
 
     <string name="text_add_eta_hint_stop">%1$s</string>
@@ -161,6 +164,9 @@
     <string name="eta_button_remove">從主頁移除</string>
     <string name="eta_last_updated_at">班次時間已於 %d 秒前更新</string>
     <string name="eta_last_updated_at_init">正在載入班次時間……</string>
+
+    <string name="onboarding_retry_btn">重試</string>
+    <string name="onboarding_report_btn">回報問題</string>
 
     <string name="dialog_location_permission_title">注意</string>
     <string name="dialog_location_permission_message">需要定位權限才能繼續使用。</string>

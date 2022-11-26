@@ -12,6 +12,7 @@ import androidx.leanback.widget.FocusHighlight
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.himphen.logger.Logger
 import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.model.Card
 import hibernate.v2.model.transport.eta.TransportEta
@@ -24,8 +25,10 @@ import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.toggleSlideDown
 import hibernate.v2.sunshine.util.visible
+import hibernate.v2.utils.getEtaUpdateErrorMessage
 import hibernate.v2.utils.getTimeDiffFromNowInMin
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -33,6 +36,8 @@ import org.koin.android.ext.android.inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 /**
  * TODO: auto scroll feature using setSelectedPosition
@@ -86,12 +91,16 @@ class BookmarkHomeFragment : VerticalGridSupportFragment() {
             }
         }
         viewModel.etaUpdateError.onEach {
-            rootViewBinding?.updateEtaFailedTv?.apply {
-                toggleSlideDown(true)
-                text = getString(R.string.text_eta_loading_failed, 400)
-            }
+            Logger.e(it, "etaUpdateError")
+            if (isResumed) {
+                rootViewBinding?.updateEtaFailedTv?.apply {
+                    toggleSlideDown(true)
+                    text = getEtaUpdateErrorMessage(it, requireContext())
+                }
 
-//            Firebase.crashlytics.recordException(it)
+                delay(3.toDuration(DurationUnit.SECONDS))
+                viewModel.etaRequested.emit(true)
+            }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.etaRequested.onEach {

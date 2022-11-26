@@ -4,13 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.AdManager
@@ -19,6 +19,7 @@ import hibernate.v2.sunshine.ui.onboarding.OnboardingViewModel
 import hibernate.v2.sunshine.ui.onboarding.mobile.OnboardingActivity
 import hibernate.v2.sunshine.ui.settings.eta.layout.mobile.EtaLayoutSelectionActivity
 import hibernate.v2.sunshine.util.GeneralUtils
+import hibernate.v2.sunshine.util.GeneralUtils.report
 import hibernate.v2.sunshine.util.dpToPx
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -86,8 +87,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 } else {
                     preferences.hideAdBannerUntil = 0
                 }
-                Toast.makeText(context, R.string.settings_hide_ad_toast_message, Toast.LENGTH_LONG)
-                    .show()
+
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.settings_hide_ad_toast_message),
+                    Snackbar.LENGTH_LONG
+                ).show()
                 true
             }
         }
@@ -95,6 +100,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
         findPreference<Preference>("pref_settings_lang")?.apply {
             setOnPreferenceClickListener {
                 openDialogLanguage()
+
+                true
+            }
+        }
+
+        findPreference<Preference>("pref_settings_report")?.apply {
+            setOnPreferenceClickListener {
+                report(context)
 
                 true
             }

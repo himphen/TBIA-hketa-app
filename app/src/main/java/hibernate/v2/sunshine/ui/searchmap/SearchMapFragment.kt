@@ -11,7 +11,6 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
@@ -35,6 +34,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.maps.android.ktx.awaitMap
 import com.himphen.logger.Logger
 import hibernate.v2.core.SharedPreferencesManager
@@ -55,12 +55,14 @@ import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.launchPeriodicAsync
 import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.visible
+import hibernate.v2.utils.getEtaUpdateErrorMessage
 import hibernate.v2.utils.getTimeDiffFromNowInMin
 import hibernate.v2.utils.logLifecycle
 import hibernate.v2.utils.toGoogleMapLatLng
 import hibernate.v2.utils.toLatLng
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -69,6 +71,8 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.coroutines.resume
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
@@ -184,18 +188,9 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
                 lifecycleScope.launchWhenResumed {
                     mainViewModel.onUpdatedEtaList.emit(Unit)
                 }
-                Toast.makeText(
-                    context,
-                    getString(R.string.toast_eta_added),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    context,
-                    getString(R.string.toast_eta_already_added),
-                    Toast.LENGTH_SHORT
-                ).show()
             }
+            Snackbar.make(requireView(), getString(R.string.toast_eta_added), Snackbar.LENGTH_LONG)
+                .show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         mainViewModel.onRequestedCloseBottomSheet.onEach {
@@ -234,7 +229,18 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
         viewModel.etaUpdateError.onEach {
             Logger.e(it, "etaUpdateError")
-            Toast.makeText(context, it.localizedMessage, Toast.LENGTH_LONG).show()
+            if (isResumed) {
+                Snackbar
+                    .make(
+                        requireView(),
+                        getEtaUpdateErrorMessage(it, requireContext()),
+                        Snackbar.LENGTH_LONG
+                    )
+                    .show()
+
+                delay(3.toDuration(DurationUnit.SECONDS))
+                viewModel.etaRequested.emit(true)
+            }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.etaRequested.onEach {

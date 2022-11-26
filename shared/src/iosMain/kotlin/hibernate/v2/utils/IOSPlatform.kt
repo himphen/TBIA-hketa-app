@@ -1,14 +1,6 @@
 package hibernate.v2.utils
 
-import platform.UIKit.UIDevice
 import platform.darwin.NSObject
-
-class IOSPlatform : Platform {
-    override val name: String =
-        UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
-}
-
-actual fun getPlatform(): Platform = IOSPlatform()
 
 actual fun isDebugBuild(): Boolean {
     return true
@@ -19,4 +11,7 @@ abstract class AbstractIOSContext
 class IOSContext : AbstractIOSContext()
 
 actual typealias KMMContext = AbstractIOSContext
+
 actual typealias KMMLocale = NSObject
+
+actual typealias KtorUnknownHostException = NSObject

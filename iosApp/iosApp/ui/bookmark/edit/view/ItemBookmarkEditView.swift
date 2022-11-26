@@ -61,6 +61,9 @@ struct ItemBookmarkEditView: View {
                 maxWidth: .infinity,
                 alignment: .leading
             ).padding(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 10))
+            
+            R.image.ic_order_24.image
+                .foregroundColor(MR.colors().md_grey_500.toColor())
         }
         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 12))
         .frame(

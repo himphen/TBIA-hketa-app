@@ -33,15 +33,19 @@ import hibernate.v2.sunshine.util.gone
 import hibernate.v2.sunshine.util.tickerFlow
 import hibernate.v2.sunshine.util.toggleSlideUp
 import hibernate.v2.sunshine.util.visible
+import hibernate.v2.utils.getEtaUpdateErrorMessage
 import hibernate.v2.utils.getTimeDiffFromNowInMin
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
 
@@ -111,14 +115,18 @@ class BookmarkHomeFragment : BaseFragment<FragmentBookmarkHomeBinding>() {
             initAdapter()
             updateAdapterData()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
-        viewModel.etaUpdateError.onEach {
-            viewBinding?.updateEtaFailedTv?.apply {
-                toggleSlideUp(true)
-                text = getString(R.string.text_eta_loading_failed, 400)
-                Logger.e(it, "Error")
-            }
 
-//            Firebase.crashlytics.recordException(it)
+        viewModel.etaUpdateError.onEach {
+            Logger.e(it, "etaUpdateError")
+            if (isResumed) {
+                viewBinding?.updateEtaFailedTv?.apply {
+                    toggleSlideUp(true)
+                    text = getEtaUpdateErrorMessage(it, requireContext())
+                }
+
+                delay(3.toDuration(DurationUnit.SECONDS))
+                viewModel.etaRequested.emit(true)
+            }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.etaRequested.onEach {
