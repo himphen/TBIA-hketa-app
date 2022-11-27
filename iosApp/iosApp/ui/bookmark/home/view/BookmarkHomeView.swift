@@ -32,6 +32,7 @@ struct BookmarkHomeView: View {
             Task {
                 await viewModel.getEtaListFromDb()
             }
+            etaRequested(value: true)
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
