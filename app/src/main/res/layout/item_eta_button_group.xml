@@ -27,7 +27,7 @@
 
     <View
         android:layout_width="20dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/editStopButton"

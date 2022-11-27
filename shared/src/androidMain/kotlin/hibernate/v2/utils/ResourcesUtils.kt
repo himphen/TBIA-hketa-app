@@ -8,16 +8,15 @@ import dev.icerock.moko.resources.desc.desc
 import dev.icerock.moko.resources.format
 import dev.icerock.moko.resources.getColor
 
-actual fun StringResource.localized(context: KMMContext): String {
+actual fun StringResource.localized(context: KMMContext, vararg args: Any): String {
+    if (args.isNotEmpty()) {
+        return format(args).localized(context)
+    }
     return desc().toString(context)
 }
 
 actual fun ResourceFormattedStringDesc.localized(context: KMMContext): String {
     return toString(context)
-}
-
-actual fun StringResource.formatString(context: KMMContext, args: List<Any>): String {
-    return format(args).localized(context)
 }
 
 fun ColorResource.colorInt(context: KMMContext): Int {

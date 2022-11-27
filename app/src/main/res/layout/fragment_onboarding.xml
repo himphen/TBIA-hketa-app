@@ -39,19 +39,20 @@
             app:layout_constraintTop_toBottomOf="@id/animationView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/failedButtonLl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:gravity="center"
         android:orientation="horizontal"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/loadingCl">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/retryButton"
             style="@style/PrimaryButton"
             android:layout_width="wrap_content"
@@ -59,7 +60,11 @@
             android:text="@string/onboarding_retry_btn"
             android:textSize="18sp" />
 
-        <Button
+        <View
+            android:layout_width="20dp"
+            android:layout_height="0dp" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/reportButton"
             style="@style/PrimaryBorderButton"
             android:layout_width="wrap_content"

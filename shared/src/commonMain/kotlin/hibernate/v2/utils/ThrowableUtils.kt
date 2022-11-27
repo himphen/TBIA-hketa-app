@@ -9,7 +9,7 @@ class KtorThrowable(
     private val _code: Int?,
 ) : Throwable() {
 
-    fun getCode() : Int {
+    fun getCode(): Int {
         return _code ?: 700
     }
 
@@ -27,25 +27,25 @@ fun getEtaUpdateErrorMessage(throwable: Throwable, context: KMMContext): String 
             KtorThrowable.Error.LOST_CONNECTION ->
                 MR.strings.text_eta_loading_ktor_lost_connection.localized(context)
             KtorThrowable.Error.SERVER_ERROR ->
-                MR.strings.text_eta_loading_ktor_server_error.formatString(
+                MR.strings.text_eta_loading_ktor_server_error.localized(
                     context,
                     listOf(throwable.getCode())
                 )
             KtorThrowable.Error.CLIENT_ERROR ->
-                MR.strings.text_eta_loading_ktor_client_error.formatString(
+                MR.strings.text_eta_loading_ktor_client_error.localized(
                     context,
                     listOf(throwable.getCode())
                 )
             KtorThrowable.Error.OTHER,
             null ->
-                MR.strings.text_eta_loading_ktor_other_error.formatString(
+                MR.strings.text_eta_loading_ktor_other_error.localized(
                     context,
                     listOf(throwable.getCode())
                 )
         }
     }
 
-    return MR.strings.text_eta_loading_ktor_other_error.formatString(
+    return MR.strings.text_eta_loading_ktor_other_error.localized(
         context,
         listOf(700)
     )

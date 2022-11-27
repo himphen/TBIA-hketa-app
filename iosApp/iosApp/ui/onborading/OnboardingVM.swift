@@ -73,7 +73,7 @@ import Rswift
                 let fetchTransportDataRequiredCount = viewModel?.fetchTransportDataRequiredCount ?? 0
             
                 DispatchQueue.main.async { [self] in
-                    loadingString = MR.strings().test_onboarding_loading.formatString(args: [String(data.intValue), String(fetchTransportDataRequiredCount)])
+                    loadingString = MR.strings().test_onboarding_loading.localized(args: [String(data.intValue), String(fetchTransportDataRequiredCount)])
                 }
             }
         )

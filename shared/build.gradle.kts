@@ -16,8 +16,7 @@ kotlin {
     android()
     listOf(
         iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
+        iosArm64()
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
@@ -45,11 +44,9 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-cio:$ktorVersion")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
-                implementation("io.ktor:ktor-client-auth:$ktorVersion")
                 implementation("io.ktor:ktor-client-resources:$ktorVersion")
                 implementation("io.ktor:ktor-client-encoding:$ktorVersion")
                 implementation("ch.qos.logback:logback-classic:1.2.3")
@@ -91,7 +88,7 @@ kotlin {
 
                 implementation("com.github.himphen:logger:3.0.1")
 
-                implementation("com.squareup.sqldelight:android-driver:1.5.3")
+                implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
 
                 implementation("com.google.maps.android:maps-ktx:3.3.0")
                 implementation("com.google.maps.android:maps-utils-ktx:3.3.0")
@@ -102,29 +99,25 @@ kotlin {
         val androidTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
         val iosMain by creating {
             dependsOn(commonMain)
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
 
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4-native-mt")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
                 implementation("io.ktor:ktor-client-darwin:$ktorVersion")
 
-                implementation("com.squareup.sqldelight:native-driver:1.5.3")
+                implementation("com.squareup.sqldelight:native-driver:$sqlDelightVersion")
             }
         }
         val iosX64Test by getting
         val iosArm64Test by getting
-        val iosSimulatorArm64Test by getting
         val iosTest by creating {
             dependsOn(commonTest)
             iosX64Test.dependsOn(this)
             iosArm64Test.dependsOn(this)
-            iosSimulatorArm64Test.dependsOn(this)
         }
     }
 

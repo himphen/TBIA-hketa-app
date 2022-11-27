@@ -12,6 +12,7 @@
     <string name="title_settings_language" translatable="false">語言 Language</string>
     <string name="title_settings_maps_traffic_toggle">地圖上顯示交通圖層</string>
     <string name="title_settings_reset">重設數據</string>
+    <string name="title_settings_report">回報問題</string>
     <string name="title_activity_add_eta">路線列表</string>
     <string name="title_activity_add_eta_with_company_name">%s路線列表</string>
     <string name="settings_acknowledgement_title1">聲明 1</string>
@@ -21,7 +22,7 @@
     <string name="settings_acknowledgement_title3">聲明 3</string>
     <string name="settings_acknowledgement_summary3">由於各交通營運商數據格式並不一致，現時無法自動合併聯營路線資訊。</string>
 
-    <string name="test_onboarding_loading">正載入路線數據 （%1$d/%2$d)</string>
+    <string name="test_onboarding_loading">正載入路線數據 （%1$s/%2$s)</string>
 
     <string name="test_onboarding_loading_failed_kmb">載入九巴／龍運路線數據失敗，請重新再試。</string>
     <string name="test_onboarding_loading_failed_ctb">載入新巴／城巴路線數據失敗，請重新再試。</string>
@@ -65,6 +66,9 @@
     <string name="text_edit_eta_invalid_hint">已移除主頁無效的車站。</string>
 
     <string name="text_add_eta_hint_stop">%1$s</string>
+
+    <string name="leanback_main_tab_title_home">主頁</string>
+    <string name="leanback_main_tab_title_settings">設定</string>
 
     <string name="menu_edit_eta_action_save_order">儲存</string>
     <string name="dialog_settings_eta_remove_title">注意</string>
@@ -168,5 +172,8 @@
     <string name="text_eta_loading_ktor_server_error">伺服器發生錯誤，正在重試中。（錯誤碼：%d）</string>
     <string name="text_eta_loading_ktor_client_error">載入數據失敗，正在重試中。（錯誤碼：%d）</string>
     <string name="text_eta_loading_ktor_other_error">載入數據失敗，正在重試中。（錯誤碼：%d）</string>
+
+    <string name="onboarding_retry_btn">重試</string>
+    <string name="onboarding_report_btn">回報問題</string>
 
 </resources>

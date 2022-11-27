@@ -86,7 +86,7 @@ struct TabRouteListView: View {
             .frame(maxHeight: .infinity)
         }
         .navigationBarTitle(
-            MR.strings.shared.title_activity_add_eta_with_company_name.formatString(context: IOSContext(), args: [tab?.title ?? ""]),
+            MR.strings.shared.title_activity_add_eta_with_company_name.localized(context: IOSContext(), args: [tab?.title ?? ""]),
             displayMode: .inline
         )
         .navigationBarBackButtonHidden(true)

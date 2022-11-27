@@ -25,8 +25,7 @@ struct BookmarkHomeListView: View {
                     .foregroundColor(MR.colors().eta_update_failed_text.toColor())
                 } else {
                     if let lastUpdatedAgo = viewModel.lastUpdatedAgo {
-                        Text(MR.strings().eta_last_updated_at.formatString(
-                            context: IOSContext(),
+                        Text(MR.strings().eta_last_updated_at.localized(
                             args: [lastUpdatedAgo]
                         ))
                         .foregroundColor(MR.colors().eta_update_failed_text.toColor())

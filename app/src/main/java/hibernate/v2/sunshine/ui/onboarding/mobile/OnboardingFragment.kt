@@ -75,6 +75,7 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
         viewModel.fetchTransportDataCompleted.observe(viewLifecycleOwner) {
             if (viewModel.fetchTransportDataFailedList.isNotEmpty()) {
                 showLoading()
+                showRetryButton()
                 when (viewModel.fetchTransportDataFailedList.first()) {
                     FailedCheckType.KMB -> {
                         viewBinding?.loadingTv?.setText(R.string.test_onboarding_loading_failed_kmb)
@@ -112,13 +113,16 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
 
     fun initUI() {
         viewBinding?.retryButton?.setOnClickListener {
-            startActivity(Intent(activity, OnboardingActivity::class.java))
-            activity?.finish()
+            hideLoading()
+            hideRetryButton()
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(1000L)
+                viewModel.checkDbTransportData()
+            }
         }
 
         viewBinding?.reportButton?.setOnClickListener {
-            startActivity(Intent(activity, OnboardingActivity::class.java))
-            activity?.finish()
+            // TODO
         }
     }
 
@@ -135,8 +139,21 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
         }
     }
 
+    private fun hideLoading() {
+        viewBinding?.logoIv?.visible(true)
+        viewBinding?.loadingCl?.gone(false)
+        viewBinding?.animationView?.apply {
+            gone(false)
+            cancelAnimation()
+        }
+    }
+
     private fun showRetryButton() {
         viewBinding?.failedButtonLl?.visible(true)
+    }
+
+    private fun hideRetryButton() {
+        viewBinding?.failedButtonLl?.gone(false)
     }
 
     private fun goToMainActivity() {

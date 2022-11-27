@@ -3,9 +3,12 @@
     <dimen name="eta_standard_stop_name">24sp</dimen>
     <dimen name="eta_standard_desc_name">16sp</dimen>
 
-    <dimen name="eta_classic_stop_name">16sp</dimen>
+    <dimen name="eta_classic_stop_name">18sp</dimen>
     <dimen name="eta_classic_desc_name">14sp</dimen>
-    <dimen name="eta_classic_minute_unit">10sp</dimen>
+    <dimen name="eta_classic_minute_unit">12sp</dimen>
+
+    <dimen name="item_route_list_desc_name">18sp</dimen>
+    <dimen name="item_route_list_orig_name">14sp</dimen>
 
     <item name="eta_stop_name_letter_spacing" format="float" type="dimen">0</item>
 </resources>

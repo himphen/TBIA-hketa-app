@@ -11,6 +11,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import hibernate.v2.MR
 import hibernate.v2.core.SharedPreferencesManager
 import hibernate.v2.sunshine.R
 import hibernate.v2.sunshine.core.AdManager
@@ -21,6 +22,7 @@ import hibernate.v2.sunshine.ui.settings.eta.layout.mobile.EtaLayoutSelectionAct
 import hibernate.v2.sunshine.util.GeneralUtils
 import hibernate.v2.sunshine.util.GeneralUtils.report
 import hibernate.v2.sunshine.util.dpToPx
+import hibernate.v2.utils.localized
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -37,7 +39,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val preferences by inject<SharedPreferencesManager>()
     private val adManager by inject<AdManager>()
 
-    private val defaultCompanyArray: Array<String> by lazy { resources.getStringArray(R.array.add_eta_brand_selections) }
+    private val defaultCompanyArray: Array<String> by lazy {
+        arrayListOf(
+            MR.strings.add_eta_brand_selection_kmb_btn,
+            MR.strings.add_eta_brand_selection_nwfb_btn,
+            MR.strings.add_eta_brand_selection_ctb_btn,
+            MR.strings.add_eta_brand_selection_gmb_btn,
+            MR.strings.add_eta_brand_selection_gmb_hki_btn,
+            MR.strings.add_eta_brand_selection_gmb_kln_btn,
+            MR.strings.add_eta_brand_selection_gmb_nt_btn,
+            MR.strings.add_eta_brand_selection_mtr_btn,
+            MR.strings.add_eta_brand_selection_lrt_btn,
+            MR.strings.add_eta_brand_selection_nlb_btn,
+        ).map { it.localized(requireContext()) }.toTypedArray()
+    }
 
     private var etaLayoutLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -63,13 +78,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             setOnPreferenceClickListener {
                 MaterialAlertDialogBuilder(it.context)
-                    .setTitle(R.string.title_settings_default_company)
+                    .setTitle(MR.strings.title_settings_default_company.localized(context))
                     .setItems(defaultCompanyArray) { dialog, which ->
                         preferences.defaultCompany = which
                         updateDefaultCompany()
                         dialog.dismiss()
                     }
-                    .setNegativeButton(R.string.dialog_cancel_btn) { dialog, _ ->
+                    .setNegativeButton(MR.strings.dialog_cancel_btn.localized(context)) { dialog, _ ->
                         dialog.dismiss()
                     }
                     .show()
@@ -90,7 +105,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
                 Snackbar.make(
                     requireView(),
-                    getString(R.string.settings_hide_ad_toast_message),
+                    MR.strings.settings_hide_ad_toast_message.localized(context),
                     Snackbar.LENGTH_LONG
                 ).show()
                 true
@@ -119,8 +134,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         findPreference<Preference>("pref_settings_reset")?.apply {
             setOnPreferenceClickListener {
                 MaterialAlertDialogBuilder(it.context)
-                    .setMessage(R.string.dialog_settings_reset_message)
-                    .setPositiveButton(R.string.dialog_confirm_btn) { dialog, _ ->
+                    .setMessage(MR.strings.dialog_settings_reset_message.localized(context))
+                    .setPositiveButton(MR.strings.dialog_confirm_btn.localized(context)) { dialog, _ ->
                         lifecycleScope.launch {
                             onboardingViewModel.resetTransportData()
                             dialog.dismiss()
@@ -128,7 +143,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                             activity?.finish()
                         }
                     }
-                    .setNegativeButton(R.string.dialog_cancel_btn) { dialog, _ ->
+                    .setNegativeButton(MR.strings.dialog_cancel_btn.localized(context)) { dialog, _ ->
                         dialog.dismiss()
                     }
                     .show()
@@ -161,8 +176,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun CheckBoxPreference.setAdSummaryOnText(value: Long) {
-        summaryOn = getString(
-            R.string.settings_hide_ad_summary,
+        summaryOn = MR.strings.settings_hide_ad_summary.localized(
+            requireContext(),
             Date().run {
                 time = value
                 SimpleDateFormat("yyyy-MM-dd HH:mm").format(this)
@@ -179,7 +194,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun openDialogLanguage() {
         val activity = activity ?: return
         MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.title_settings_language)
+            .setTitle(MR.strings.title_settings_language.localized(requireContext()))
             .setItems(R.array.language_choose) { dialog, index ->
                 dialog.dismiss()
                 val languageLocaleCodeArray = resources.getStringArray(R.array.language_locale_code)
@@ -194,7 +209,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     startActivity(intent)
                 }
             }
-            .setNegativeButton(R.string.dialog_cancel_btn, null)
+            .setNegativeButton(MR.strings.dialog_cancel_btn.localized(requireContext()), null)
             .show()
     }
 }
