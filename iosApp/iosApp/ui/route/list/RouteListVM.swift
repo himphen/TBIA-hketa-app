@@ -69,7 +69,7 @@ import Rswift
             
             return RouteListTab.init(
                 icon: image,
-                title: element.name().localized(context: IOSContext()),
+                title: element.name().localized(),
                 color: Color(
                     red: (Double(color.red) / 255),
                     green: (Double(color.green) / 255),

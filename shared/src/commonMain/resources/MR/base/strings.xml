@@ -9,7 +9,7 @@
     <string name="title_settings_version_leanback">版本 %1$s</string>
     <string name="title_settings_default_company">更改預設公共運輸機構</string>
     <string name="title_settings_version">版本</string>
-    <string name="title_settings_language" translatable="false">語言 Language</string>
+    <string name="title_settings_language">語言 Language</string>
     <string name="title_settings_maps_traffic_toggle">地圖上顯示交通圖層</string>
     <string name="title_settings_reset">重設數據</string>
     <string name="title_settings_report">回報問題</string>
@@ -109,7 +109,7 @@
     <string name="dialog_eta_layout_classic_btn">經典</string>
     <string name="dialog_eta_layout_cancel_btn">取消</string>
 
-    <string name="dialog_lang_title" translatable="false">@string/title_settings_language</string>
+    <string name="dialog_lang_title">@string/title_settings_language</string>
 
     <string name="add_card_route_text">尚德</string>
     <string name="add_card_route_to_text">➔</string>

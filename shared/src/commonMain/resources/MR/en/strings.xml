@@ -9,8 +9,10 @@
     <string name="title_settings_version_leanback">Version %1$s</string>
     <string name="title_settings_default_company">Choose Default Public Transport Company</string>
     <string name="title_settings_version">Version</string>
+    <string name="title_settings_language">語言 Language</string>
     <string name="title_settings_maps_traffic_toggle">Show Traffic on Google Maps</string>
     <string name="title_settings_reset">Reset Data</string>
+    <string name="title_settings_report">Report and Feedback</string>
     <string name="title_activity_add_eta">Route List</string>
     <string name="title_activity_add_eta_with_company_name">%s Route List</string>
     <string name="settings_acknowledgement_title1">Acknowledgement 1</string>
@@ -20,7 +22,7 @@
     <string name="settings_acknowledgement_title3">Acknowledgement 3</string>
     <string name="settings_acknowledgement_summary3">It is currently not possible to automatically merge the Joint-Operated Routes due to the inconsistent data formats of transport companies.</string>
 
-    <string name="test_onboarding_loading">Loading data (%1$d/%2$d)</string>
+    <string name="test_onboarding_loading">Loading data (%1$s/%2$s)</string>
 
     <string name="test_onboarding_loading_failed_kmb">Failed to load Kowloon Motor Bus/Long Win Bus data. Please try again later.</string>
     <string name="test_onboarding_loading_failed_ctb">Failed to load Citybus/New World First Bus data. Please try again later.</string>
@@ -106,6 +108,8 @@
     <string name="dialog_eta_layout_compact_btn">Compact</string>
     <string name="dialog_eta_layout_classic_btn">Classic</string>
     <string name="dialog_eta_layout_cancel_btn">Cancel</string>
+
+    <string name="dialog_lang_title">@string/title_settings_language</string>
 
     <string name="add_card_route_text">Sheung Tak</string>
     <string name="add_card_route_to_text">➔</string>

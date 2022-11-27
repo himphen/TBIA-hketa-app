@@ -55,7 +55,9 @@ import Rswift
                     setSavedBookmark(position: data1.intValue, savedEtaId: data2.intValue)
                 }
                 
-                showSavedEtaBookmarkToast = true
+                DispatchQueue.main.async { [self] in
+                    showSavedEtaBookmarkToast = true
+                }
             },
             isRemovedEtaBookmarkUpdated: { [self] data in
                 CommonLoggerUtilsKt.logD(message: "isRemovedEtaBookmarkUpdated")
@@ -135,7 +137,7 @@ import Rswift
     }
     
     func setEtaListIntoDataList(etaList: [TransportEta]) {
-        routeDetailsStopListUpdated = routeDetailsStopListUpdated.map { element in
+        let routeDetailsStopListUpdated = routeDetailsStopListUpdated.map { element in
             if (element.isExpanded) {
                 return RouteDetailsStopItem(
                     item: element.item,
@@ -146,10 +148,13 @@ import Rswift
                 return element
             }
         }
+        DispatchQueue.main.async { [self] in
+            self.routeDetailsStopListUpdated = routeDetailsStopListUpdated
+        }
     }
     
     func setSavedBookmark(position: Int, savedEtaId: Int?) {
-        routeDetailsStopListUpdated = routeDetailsStopListUpdated.enumerated().map { index, element in
+        let routeDetailsStopListUpdated = routeDetailsStopListUpdated.enumerated().map { index, element in
             if (index == position) {
                 let newItem = RouteDetailsStopItem(
                     item: element.item,
@@ -167,6 +172,9 @@ import Rswift
             } else {
                 return element
             }
+        }
+        DispatchQueue.main.async { [self] in
+            self.routeDetailsStopListUpdated = routeDetailsStopListUpdated
         }
     }
 }

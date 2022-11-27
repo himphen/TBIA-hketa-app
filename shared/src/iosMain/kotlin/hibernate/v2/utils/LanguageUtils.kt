@@ -1,5 +1,9 @@
 package hibernate.v2.utils
 
+import platform.Foundation.NSLocale
+import platform.Foundation.currentLocale
+import platform.Foundation.languageCode
+
 actual object LanguageUtils {
 
     actual fun getLanguage(context: KMMContext): KMMLocale? {
@@ -15,12 +19,10 @@ actual object LanguageUtils {
     }
 
     actual fun isLangEnglish(context: KMMContext): Boolean {
-        // TODO
-        return false
+        return NSLocale.currentLocale.languageCode.lowercase() == "en"
     }
 
     actual fun isLangTC(context: KMMContext): Boolean {
-        // TODO
-        return true
+        return NSLocale.currentLocale.languageCode.lowercase() == "zh_TW"
     }
 }

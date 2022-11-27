@@ -7,7 +7,7 @@ import dev.icerock.moko.resources.format
 
 actual fun StringResource.localized(context: KMMContext, vararg args: Any): String {
     if (args.isNotEmpty()) {
-        return format(args).localized(context)
+        return format(*args).localized(context)
     }
     return desc().localized()
 }
@@ -21,5 +21,9 @@ fun StringResource.localized(args: List<Any>? = null): String {
         return localized(IOSContext())
     }
 
-    return localized(IOSContext(), args)
+    return localized(IOSContext(), *args.toTypedArray())
+}
+
+fun StringResource.localized(): String {
+    return localized(IOSContext())
 }
