@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="app_name">Niseko</string>
+    <string name="app_name">TBIA</string>
 
-    <string name="report_title">Niseko App Report and Feedback</string>
+    <string name="report_title">TBIA App Report and Feedback</string>
 
     <string name="title_activity_settings_eta">Edit Bookmark</string>
     <string name="title_activity_eta_layout">Choose ETA Card Layout</string>

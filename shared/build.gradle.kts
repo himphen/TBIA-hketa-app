@@ -25,7 +25,7 @@ kotlin {
     }
 
     cocoapods {
-        summary = "Niseko"
+        summary = "TBIA"
         homepage = "https://github.com/himphen"
         version = "1.0"
         ios.deploymentTarget = "15.0"
@@ -79,11 +79,6 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
-
-                implementation(project.dependencies.platform("com.google.firebase:firebase-bom:30.5.0"))
-                implementation("com.google.firebase:firebase-analytics-ktx")
-                implementation("com.google.firebase:firebase-crashlytics-ktx")
-                implementation("com.google.firebase:firebase-storage-ktx")
 
                 implementation("com.github.himphen:logger:3.0.1")
 
