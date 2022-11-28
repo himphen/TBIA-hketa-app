@@ -200,8 +200,52 @@ struct R: Rswift.Validatable {
     fileprivate init() {}
   }
 
-  /// This `R.string` struct is generated, and contains static references to 1 localization tables.
+  /// This `R.string` struct is generated, and contains static references to 2 localization tables.
   struct string {
+    /// This `R.string.infoPlist` struct is generated, and contains static references to 2 localization keys.
+    struct infoPlist {
+      /// en translation: TBIA
+      ///
+      /// Locales: en, zh-Hant
+      static let cfBundleDisplayName = Rswift.StringResource(key: "CFBundleDisplayName", tableName: "InfoPlist", bundle: R.hostingBundle, locales: ["en", "zh-Hant"], comment: nil)
+      /// en translation: TBIA
+      ///
+      /// Locales: en, zh-Hant
+      static let cfBundleName = Rswift.StringResource(key: "CFBundleName", tableName: "InfoPlist", bundle: R.hostingBundle, locales: ["en", "zh-Hant"], comment: nil)
+
+      /// en translation: TBIA
+      ///
+      /// Locales: en, zh-Hant
+      static func cfBundleDisplayName(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("CFBundleDisplayName", tableName: "InfoPlist", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "InfoPlist", preferredLanguages: preferredLanguages) else {
+          return "CFBundleDisplayName"
+        }
+
+        return NSLocalizedString("CFBundleDisplayName", tableName: "InfoPlist", bundle: bundle, comment: "")
+      }
+
+      /// en translation: TBIA
+      ///
+      /// Locales: en, zh-Hant
+      static func cfBundleName(preferredLanguages: [String]? = nil) -> String {
+        guard let preferredLanguages = preferredLanguages else {
+          return NSLocalizedString("CFBundleName", tableName: "InfoPlist", bundle: hostingBundle, comment: "")
+        }
+
+        guard let (_, bundle) = localeBundle(tableName: "InfoPlist", preferredLanguages: preferredLanguages) else {
+          return "CFBundleName"
+        }
+
+        return NSLocalizedString("CFBundleName", tableName: "InfoPlist", bundle: bundle, comment: "")
+      }
+
+      fileprivate init() {}
+    }
+
     /// This `R.string.localizable` struct is generated, and contains static references to 2 localization keys.
     struct localizable {
       /// en translation: TBIA

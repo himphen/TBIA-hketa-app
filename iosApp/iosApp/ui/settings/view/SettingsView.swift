@@ -6,6 +6,8 @@
 import SwiftUI
 import shared
 import Rswift
+import FirebaseAnalytics
+import FirebaseCrashlytics
 
 struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -18,7 +20,6 @@ struct SettingsView: View {
     var body: some View {
         List {
             Section(header: Text(MR.strings().settings_category_settings_title.desc().localized())) {
-//                Text(MR.strings().title_settings_language.desc().localized())
                 ItemSettingsRowView(
                     title: MR.strings().title_settings_version.desc().localized(),
                     desc: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
@@ -59,6 +60,28 @@ struct SettingsView: View {
                 } message: {
                     Text(MR.strings().dialog_settings_reset_message.desc().localized())
                 }
+                
+                #if DEBUG
+                    ItemSettingsRowView(title: "Test Crash")
+                    .frame(maxWidth: .infinity)
+                    .onTapGesture {
+                        CommonLoggerUtilsKt.logD(message: "Test Crash")
+                        fatalError("Crash was triggered")
+                    }
+                #endif
+
+                #if DEBUG
+                    ItemSettingsRowView(title: "Test Analytics")
+                    .frame(maxWidth: .infinity)
+                    .onTapGesture {
+                        CommonLoggerUtilsKt.logD(message: "Test Analytics")
+                        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                          AnalyticsParameterItemID: "test ID",
+                          AnalyticsParameterItemName: "test title",
+                          AnalyticsParameterContentType: "test cont",
+                        ])
+                    }
+                #endif
             }
             
             Section(header: Text("")) {

@@ -5,6 +5,8 @@ target 'iosApp' do
   pod("FirebaseAuth")
   pod("FirebaseDatabase")
   pod("FirebaseRemoteConfig")
+  pod("FirebaseCrashlytics")
+  pod("FirebaseAnalytics")
   pod 'lottie-ios'
   pod 'R.swift'
   pod 'AlertToast'
