@@ -50,12 +50,35 @@ import Rswift
                     switch (first) {
                     case FailedCheckType.kmb:
                         DispatchQueue.main.async { [self] in
-                            loadingString = R.string.localizable.test_onboarding_loading_failed_kmb()
+                            loadingString = MR.strings().test_onboarding_loading_failed_kmb.localized()
                         }
-                
+                    case FailedCheckType.ctb:
+                        DispatchQueue.main.async { [self] in
+                            loadingString = MR.strings().test_onboarding_loading_failed_ctb.localized()
+                        }
+                    case FailedCheckType.gmb:
+                        DispatchQueue.main.async { [self] in
+                            loadingString = MR.strings().test_onboarding_loading_failed_gmb.localized()
+                        }
+                    case FailedCheckType.mtr:
+                        DispatchQueue.main.async { [self] in
+                            loadingString = MR.strings().test_onboarding_loading_failed_mtr.localized()
+                        }
+                    case FailedCheckType.lrt:
+                        DispatchQueue.main.async { [self] in
+                            loadingString = MR.strings().test_onboarding_loading_failed_lrt.localized()
+                        }
+                    case FailedCheckType.nlb:
+                        DispatchQueue.main.async { [self] in
+                            loadingString = MR.strings().test_onboarding_loading_failed_nlb.localized()
+                        }
+                    case FailedCheckType.checksum:
+                        DispatchQueue.main.async { [self] in
+                            loadingString = MR.strings().test_onboarding_loading_failed_checksum.localized()
+                        }
                     default:
                         DispatchQueue.main.async { [self] in
-                            loadingString = R.string.localizable.test_onboarding_loading_failed_other()
+                            loadingString = MR.strings().test_onboarding_loading_failed_other.localized()
                         }
                     }
                 } else {
