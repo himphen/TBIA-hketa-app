@@ -51,7 +51,7 @@
                 tools:text="@string/demo_card_stop_name" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <hibernate.v2.sunshine.ui.view.TouchDisabledRecyclerView
+        <hibernate.v2.tbia.ui.view.TouchDisabledRecyclerView
             android:id="@+id/routeNumberRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

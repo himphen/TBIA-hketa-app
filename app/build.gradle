@@ -21,7 +21,7 @@ android {
     loadSigningConfigs()
 
     defaultConfig {
-        applicationId "hibernate.v2.sunshine"
+        applicationId "hibernate.v2.tbia"
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 240100

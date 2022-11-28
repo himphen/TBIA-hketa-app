@@ -133,7 +133,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/etaMinuteTv" />
 
-            <hibernate.v2.sunshine.ui.view.TouchDisabledRecyclerView
+            <hibernate.v2.tbia.ui.view.TouchDisabledRecyclerView
                 android:id="@+id/etaTimeRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

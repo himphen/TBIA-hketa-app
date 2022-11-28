@@ -202,142 +202,45 @@ struct R: Rswift.Validatable {
 
   /// This `R.string` struct is generated, and contains static references to 1 localization tables.
   struct string {
-    /// This `R.string.localizable` struct is generated, and contains static references to 9 localization keys.
+    /// This `R.string.localizable` struct is generated, and contains static references to 2 localization keys.
     struct localizable {
-      /// Value: 檢查數據失敗，請重新再試。（錯誤碼：120）
-      static let test_onboarding_loading_failed_checksum = Rswift.StringResource(key: "test_onboarding_loading_failed_checksum", tableName: "Localizable", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: 無法連接至伺服器，請重新再試。
-      static let test_onboarding_loading_failed_app_token = Rswift.StringResource(key: "test_onboarding_loading_failed_app_token", tableName: "Localizable", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: 載入九巴／龍運路線數據失敗，請重新再試。
-      static let test_onboarding_loading_failed_kmb = Rswift.StringResource(key: "test_onboarding_loading_failed_kmb", tableName: "Localizable", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: 載入專線小巴路線數據失敗，請重新再試。
-      static let test_onboarding_loading_failed_gmb = Rswift.StringResource(key: "test_onboarding_loading_failed_gmb", tableName: "Localizable", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: 載入數據失敗，請重新再試。（錯誤碼：110）
-      static let test_onboarding_loading_failed_other = Rswift.StringResource(key: "test_onboarding_loading_failed_other", tableName: "Localizable", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: 載入新大嶼山巴士路線數據失敗，請重新再試。
-      static let test_onboarding_loading_failed_nlb = Rswift.StringResource(key: "test_onboarding_loading_failed_nlb", tableName: "Localizable", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: 載入新巴／城巴路線數據失敗，請重新再試。
-      static let test_onboarding_loading_failed_ctb = Rswift.StringResource(key: "test_onboarding_loading_failed_ctb", tableName: "Localizable", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: 載入港鐵路線數據失敗，請重新再試。
-      static let test_onboarding_loading_failed_mtr = Rswift.StringResource(key: "test_onboarding_loading_failed_mtr", tableName: "Localizable", bundle: R.hostingBundle, locales: [], comment: nil)
-      /// Value: 載入輕鐵路線數據失敗，請重新再試。
-      static let test_onboarding_loading_failed_lrt = Rswift.StringResource(key: "test_onboarding_loading_failed_lrt", tableName: "Localizable", bundle: R.hostingBundle, locales: [], comment: nil)
+      /// en translation: TBIA
+      ///
+      /// Locales: zh-Hant, en
+      static let cfBundleDisplayName = Rswift.StringResource(key: "CFBundleDisplayName", tableName: "Localizable", bundle: R.hostingBundle, locales: ["zh-Hant", "en"], comment: nil)
+      /// en translation: TBIA
+      ///
+      /// Locales: zh-Hant, en
+      static let cfBundleName = Rswift.StringResource(key: "CFBundleName", tableName: "Localizable", bundle: R.hostingBundle, locales: ["zh-Hant", "en"], comment: nil)
 
-      /// Value: 檢查數據失敗，請重新再試。（錯誤碼：120）
-      static func test_onboarding_loading_failed_checksum(preferredLanguages: [String]? = nil) -> String {
+      /// en translation: TBIA
+      ///
+      /// Locales: zh-Hant, en
+      static func cfBundleDisplayName(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("test_onboarding_loading_failed_checksum", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("CFBundleDisplayName", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
-          return "test_onboarding_loading_failed_checksum"
+          return "CFBundleDisplayName"
         }
 
-        return NSLocalizedString("test_onboarding_loading_failed_checksum", bundle: bundle, comment: "")
+        return NSLocalizedString("CFBundleDisplayName", bundle: bundle, comment: "")
       }
 
-      /// Value: 無法連接至伺服器，請重新再試。
-      static func test_onboarding_loading_failed_app_token(preferredLanguages: [String]? = nil) -> String {
+      /// en translation: TBIA
+      ///
+      /// Locales: zh-Hant, en
+      static func cfBundleName(preferredLanguages: [String]? = nil) -> String {
         guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("test_onboarding_loading_failed_app_token", bundle: hostingBundle, comment: "")
+          return NSLocalizedString("CFBundleName", bundle: hostingBundle, comment: "")
         }
 
         guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
-          return "test_onboarding_loading_failed_app_token"
+          return "CFBundleName"
         }
 
-        return NSLocalizedString("test_onboarding_loading_failed_app_token", bundle: bundle, comment: "")
-      }
-
-      /// Value: 載入九巴／龍運路線數據失敗，請重新再試。
-      static func test_onboarding_loading_failed_kmb(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("test_onboarding_loading_failed_kmb", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
-          return "test_onboarding_loading_failed_kmb"
-        }
-
-        return NSLocalizedString("test_onboarding_loading_failed_kmb", bundle: bundle, comment: "")
-      }
-
-      /// Value: 載入專線小巴路線數據失敗，請重新再試。
-      static func test_onboarding_loading_failed_gmb(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("test_onboarding_loading_failed_gmb", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
-          return "test_onboarding_loading_failed_gmb"
-        }
-
-        return NSLocalizedString("test_onboarding_loading_failed_gmb", bundle: bundle, comment: "")
-      }
-
-      /// Value: 載入數據失敗，請重新再試。（錯誤碼：110）
-      static func test_onboarding_loading_failed_other(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("test_onboarding_loading_failed_other", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
-          return "test_onboarding_loading_failed_other"
-        }
-
-        return NSLocalizedString("test_onboarding_loading_failed_other", bundle: bundle, comment: "")
-      }
-
-      /// Value: 載入新大嶼山巴士路線數據失敗，請重新再試。
-      static func test_onboarding_loading_failed_nlb(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("test_onboarding_loading_failed_nlb", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
-          return "test_onboarding_loading_failed_nlb"
-        }
-
-        return NSLocalizedString("test_onboarding_loading_failed_nlb", bundle: bundle, comment: "")
-      }
-
-      /// Value: 載入新巴／城巴路線數據失敗，請重新再試。
-      static func test_onboarding_loading_failed_ctb(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("test_onboarding_loading_failed_ctb", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
-          return "test_onboarding_loading_failed_ctb"
-        }
-
-        return NSLocalizedString("test_onboarding_loading_failed_ctb", bundle: bundle, comment: "")
-      }
-
-      /// Value: 載入港鐵路線數據失敗，請重新再試。
-      static func test_onboarding_loading_failed_mtr(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("test_onboarding_loading_failed_mtr", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
-          return "test_onboarding_loading_failed_mtr"
-        }
-
-        return NSLocalizedString("test_onboarding_loading_failed_mtr", bundle: bundle, comment: "")
-      }
-
-      /// Value: 載入輕鐵路線數據失敗，請重新再試。
-      static func test_onboarding_loading_failed_lrt(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("test_onboarding_loading_failed_lrt", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
-          return "test_onboarding_loading_failed_lrt"
-        }
-
-        return NSLocalizedString("test_onboarding_loading_failed_lrt", bundle: bundle, comment: "")
+        return NSLocalizedString("CFBundleName", bundle: bundle, comment: "")
       }
 
       fileprivate init() {}

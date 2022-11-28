@@ -31,11 +31,11 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
--keep,includedescriptorclasses class hibernate.v2.sunshine.**$$serializer { *; }
--keepclassmembers class hibernate.v2.sunshine.** {
+-keep,includedescriptorclasses class hibernate.v2.tbia.**$$serializer { *; }
+-keepclassmembers class hibernate.v2.tbia.** {
     *** Companion;
 }
--keepclasseswithmembers class hibernate.v2.sunshine.** {
+-keepclasseswithmembers class hibernate.v2.tbia.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
 
