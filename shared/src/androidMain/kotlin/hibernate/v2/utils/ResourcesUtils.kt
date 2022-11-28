@@ -10,7 +10,7 @@ import dev.icerock.moko.resources.getColor
 
 actual fun StringResource.localized(context: KMMContext, vararg args: Any): String {
     if (args.isNotEmpty()) {
-        return format(args).localized(context)
+        return format(*args).localized(context)
     }
     return desc().toString(context)
 }

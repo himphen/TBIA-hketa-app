@@ -52,7 +52,7 @@ class BookmarkHomeEtaCardAdapter(
                 ).apply {
                     val adView = AdView(context)
                     adView.adUnitId = BuildConfig.ADMOB_BANNER_ID
-                    adView.adSize = AdSize.BANNER
+                    adView.setAdSize(AdSize.BANNER)
                     adView.loadAd(AdRequest.Builder().build())
                     viewBinding.root.addView(adView)
                 }

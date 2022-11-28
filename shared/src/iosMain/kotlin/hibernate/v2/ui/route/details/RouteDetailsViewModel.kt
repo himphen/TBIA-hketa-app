@@ -20,6 +20,8 @@ import hibernate.v2.model.transport.eta.MTRTransportEta
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.model.transport.eta.filterCircularStop
 import hibernate.v2.model.transport.route.TransportRoute
+import hibernate.v2.utils.IOSContext
+import hibernate.v2.utils.getEtaUpdateErrorMessage
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,10 +36,7 @@ class RouteDetailsViewModel(
     val selectedStopUpdated: () -> Unit,
     val isSavedEtaBookmarkUpdated: (Int, Int) -> Unit,
     val isRemovedEtaBookmarkUpdated: (Int) -> Unit,
-    val etaRequested: (Boolean) -> Unit,
     val etaUpdateError: (String) -> Unit,
-    val mapMarkerClicked: (Int) -> Unit,
-    val onChangedTrafficLayerToggle: (Boolean) -> Unit,
 ) : KoinComponent {
 
     private val etaInteractor: EtaInteractor by inject()
@@ -88,6 +87,7 @@ class RouteDetailsViewModel(
         withContext(Dispatchers.Default) { etaInteractor.updateEtaOrderList(entityList) }
     }
 
+    @Throws(Exception::class)
     suspend fun getRouteDetailsStopList() {
         withContext(Dispatchers.Default) {
             var mRouteDetailsStopList = routeDetailsStopList
@@ -171,7 +171,7 @@ class RouteDetailsViewModel(
 
     }
 
-    private suspend fun getGmbStopList(route: TransportRoute): List<TransportStop> {
+    private fun getGmbStopList(route: TransportRoute): List<TransportStop> {
         return try {
             val allRouteList = gmbInteractor.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
@@ -223,6 +223,7 @@ class RouteDetailsViewModel(
         }
     }
 
+    @Throws(Exception::class)
     suspend fun saveBookmark(position: Int, card: Card.RouteStopAddCard) {
         withContext(Dispatchers.Default) {
             val isExisting = hasEtaInDb(
@@ -263,6 +264,7 @@ class RouteDetailsViewModel(
         }
     }
 
+    @Throws(Exception::class)
     suspend fun removeBookmark(position: Int, entityId: Int) {
         withContext(Dispatchers.Default) {
             etaInteractor.clearEta(entityId)
@@ -272,121 +274,125 @@ class RouteDetailsViewModel(
     }
 
     suspend fun updateEtaList() {
-        withContext(Dispatchers.Default) {
-            logLifecycle("getEtaList")
+        try {
+            withContext(Dispatchers.Default) {
+                logLifecycle("getEtaList")
 
-            val selectedStop = selectedStop ?: return@withContext
-            var result: List<TransportEta>? = null
+                val selectedStop = selectedStop ?: return@withContext
+                var result: List<TransportEta>? = null
 
-            when (selectedRoute.company) {
-                Company.KMB -> {
-                    val apiEtaResponse = etaInteractor.getKmbStopEtaApi(
-                        stopId = selectedStop.stopId,
-                        route = selectedRoute.routeId
-                    )
-                    apiEtaResponse.data?.let { etaList ->
-                        val allSeq = etaList.mapNotNull { it.seq }.distinct()
-                        val isCircular = allSeq.size > 1
+                when (selectedRoute.company) {
+                    Company.KMB -> {
+                        val apiEtaResponse = etaInteractor.getKmbStopEtaApi(
+                            stopId = selectedStop.stopId,
+                            route = selectedRoute.routeId
+                        )
+                        apiEtaResponse.data?.let { etaList ->
+                            val allSeq = etaList.mapNotNull { it.seq }.distinct()
+                            val isCircular = allSeq.size > 1
 
-                        result = etaList
-                            .map { TransportEta.fromApiModel(it) }
-                            .filter { it.filterCircularStop(isCircular, selectedStop) }
+                            result = etaList
+                                .map { TransportEta.fromApiModel(it) }
+                                .filter { it.filterCircularStop(isCircular, selectedStop) }
+                        }
                     }
-                }
-                Company.NWFB,
-                Company.CTB -> {
-                    val apiEtaResponse = etaInteractor.getCtbStopEtaApi(
-                        company = selectedRoute.company,
-                        stopId = selectedStop.stopId,
-                        route = selectedRoute.routeId
-                    )
-                    apiEtaResponse.data?.let { etaList ->
-                        val allSeq = etaList.mapNotNull { it.seq }.distinct()
-                        val isCircular = allSeq.size > 1
+                    Company.NWFB,
+                    Company.CTB -> {
+                        val apiEtaResponse = etaInteractor.getCtbStopEtaApi(
+                            company = selectedRoute.company,
+                            stopId = selectedStop.stopId,
+                            route = selectedRoute.routeId
+                        )
+                        apiEtaResponse.data?.let { etaList ->
+                            val allSeq = etaList.mapNotNull { it.seq }.distinct()
+                            val isCircular = allSeq.size > 1
 
-                        result = etaList
-                            .map { TransportEta.fromApiModel(it) }
-                            .filter { it.filterCircularStop(isCircular, selectedStop) }
+                            result = etaList
+                                .map { TransportEta.fromApiModel(it) }
+                                .filter { it.filterCircularStop(isCircular, selectedStop) }
+                        }
                     }
-                }
-                Company.GMB -> {
-                    val apiEtaResponse = etaInteractor.getGmbStopEtaApi(
-                        stopSeq = selectedStop.seq!!,
-                        route = selectedRoute.routeId,
-                        serviceType = selectedRoute.serviceType
-                    )
-                    apiEtaResponse.data?.let { etaRouteStop ->
-                        val allSeq = etaRouteStop.etaList?.mapNotNull { it.seq }?.distinct()
-                        val isCircular = (allSeq?.size ?: 0) > 1
+                    Company.GMB -> {
+                        val apiEtaResponse = etaInteractor.getGmbStopEtaApi(
+                            stopSeq = selectedStop.seq!!,
+                            route = selectedRoute.routeId,
+                            serviceType = selectedRoute.serviceType
+                        )
+                        apiEtaResponse.data?.let { etaRouteStop ->
+                            val allSeq = etaRouteStop.etaList?.mapNotNull { it.seq }?.distinct()
+                            val isCircular = (allSeq?.size ?: 0) > 1
 
-                        result = etaRouteStop.etaList
-                            ?.map { TransportEta.fromApiModel(it) }
-                            ?.filter { it.filterCircularStop(isCircular, selectedStop) }
-                            ?: emptyList()
-                    }
-                }
-                Company.MTR -> {
-                    val apiEtaResponse = etaInteractor.getMTRStopEtaApi(
-                        stopId = selectedStop.stopId,
-                        route = selectedRoute.routeId
-                    )
-                    val matchedIndex = selectedRoute.routeId + "-" + selectedStop.stopId
-                    apiEtaResponse.data?.let { etaRouteStopMap ->
-                        etaRouteStopMap.forEach { (index, etaRouteStop) ->
-                            if (index != matchedIndex) return@forEach
-
-                            result = when (selectedRoute.bound) {
-                                Bound.O -> etaRouteStop.down
-                                Bound.I -> etaRouteStop.up
-                                Bound.UNKNOWN -> null
-                            }
-                                ?.map { MTRTransportEta.fromApiModel(it) }
+                            result = etaRouteStop.etaList
+                                ?.map { TransportEta.fromApiModel(it) }
+                                ?.filter { it.filterCircularStop(isCircular, selectedStop) }
                                 ?: emptyList()
                         }
                     }
-                }
-                Company.LRT -> {
-                    val apiEtaResponse = etaInteractor.getLrtStopEtaApi(
-                        stopId = selectedStop.stopId
-                    )
+                    Company.MTR -> {
+                        val apiEtaResponse = etaInteractor.getMTRStopEtaApi(
+                            stopId = selectedStop.stopId,
+                            route = selectedRoute.routeId
+                        )
+                        val matchedIndex = selectedRoute.routeId + "-" + selectedStop.stopId
+                        apiEtaResponse.data?.let { etaRouteStopMap ->
+                            etaRouteStopMap.forEach { (index, etaRouteStop) ->
+                                if (index != matchedIndex) return@forEach
 
-                    apiEtaResponse.platformList?.let { platformList ->
-                        val temp = mutableListOf<LRTTransportEta>()
-
-                        platformList.forEach platform@{ platform ->
-                            platform.etaList?.forEach eta@{ etaApi ->
-                                if (etaApi.routeNo != selectedRoute.routeNo) return@eta
-                                if (etaApi.destCh != selectedRoute.destTc) return@eta
-
-                                temp.add(
-                                    LRTTransportEta.fromApiModel(
-                                        etaApi,
-                                        platform.platformId.toString(),
-                                        apiEtaResponse.systemTime
-                                    )
-                                )
+                                result = when (selectedRoute.bound) {
+                                    Bound.O -> etaRouteStop.down
+                                    Bound.I -> etaRouteStop.up
+                                    Bound.UNKNOWN -> null
+                                }
+                                    ?.map { MTRTransportEta.fromApiModel(it) }
+                                    ?: emptyList()
                             }
                         }
+                    }
+                    Company.LRT -> {
+                        val apiEtaResponse = etaInteractor.getLrtStopEtaApi(
+                            stopId = selectedStop.stopId
+                        )
 
-                        result = temp
+                        apiEtaResponse.platformList?.let { platformList ->
+                            val temp = mutableListOf<LRTTransportEta>()
+
+                            platformList.forEach platform@{ platform ->
+                                platform.etaList?.forEach eta@{ etaApi ->
+                                    if (etaApi.routeNo != selectedRoute.routeNo) return@eta
+                                    if (etaApi.destCh != selectedRoute.destTc) return@eta
+
+                                    temp.add(
+                                        LRTTransportEta.fromApiModel(
+                                            etaApi,
+                                            platform.platformId.toString(),
+                                            apiEtaResponse.systemTime
+                                        )
+                                    )
+                                }
+                            }
+
+                            result = temp
+                        }
+                    }
+                    Company.NLB -> {
+                        val apiEtaResponse = etaInteractor.getNlbStopEtaApi(
+                            stopId = selectedStop.stopId,
+                            routeId = selectedRoute.routeId
+                        )
+                        apiEtaResponse.data?.let { etaList ->
+                            result = etaList
+                                .map { TransportEta.fromApiModel(it, selectedStop.seq) }
+                        }
+                    }
+                    Company.UNKNOWN -> {
                     }
                 }
-                Company.NLB -> {
-                    val apiEtaResponse = etaInteractor.getNlbStopEtaApi(
-                        stopId = selectedStop.stopId,
-                        routeId = selectedRoute.routeId
-                    )
-                    apiEtaResponse.data?.let { etaList ->
-                        result = etaList
-                            .map { TransportEta.fromApiModel(it, selectedStop.seq) }
-                    }
-                }
-                Company.UNKNOWN -> {
-                }
+
+                logLifecycle("getEtaList done")
+                etaListUpdated(result ?: listOf())
             }
-
-            logLifecycle("getEtaList done")
-            etaListUpdated(result ?: listOf())
+        } catch (e: Exception) {
+            etaUpdateError(getEtaUpdateErrorMessage(e, IOSContext()))
         }
     }
 }

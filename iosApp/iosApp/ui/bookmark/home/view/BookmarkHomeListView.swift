@@ -20,8 +20,8 @@ struct BookmarkHomeListView: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
-                if (viewModel.etaError) {
-                    Text(MR.strings().text_eta_loading_failed.desc().localized())
+                if let etaError = viewModel.etaError {
+                    Text(etaError)
                     .foregroundColor(MR.colors().eta_update_failed_text.toColor())
                 } else {
                     if let lastUpdatedAgo = viewModel.lastUpdatedAgo {

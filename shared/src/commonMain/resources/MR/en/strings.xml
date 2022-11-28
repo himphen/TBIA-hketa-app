@@ -168,10 +168,10 @@
     <string name="settings_hide_ad_title">Hide Banner</string>
     <string name="settings_hide_ad_summary">Ads won\'t show until %s</string>
 
-    <string name="text_eta_loading_ktor_lost_connection">Failed to connect server. Retrying... (Error: 600)</string>
-    <string name="text_eta_loading_ktor_server_error">Failed to connect server. Retrying... (Error: %d)</string>
-    <string name="text_eta_loading_ktor_client_error">Failed to load data. Retrying... (Error: %d)</string>
-    <string name="text_eta_loading_ktor_other_error">Failed to load data. Retrying... (Error: %d)</string>
+    <string name="text_eta_loading_ktor_lost_connection">Failed to connect server. Retry in 10s... (Error: 600)</string>
+    <string name="text_eta_loading_ktor_server_error">Failed to connect server. Retry in 10s... (Error: %d)</string>
+    <string name="text_eta_loading_ktor_client_error">Failed to load data. Retry in 10s... (Error: %d)</string>
+    <string name="text_eta_loading_ktor_other_error">Failed to load data. Retry in 10s... (Error: %d)</string>
 
     <string name="onboarding_retry_btn">Retry</string>
     <string name="onboarding_report_btn">Report</string>

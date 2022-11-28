@@ -3,19 +3,22 @@
 // Copyright (c) 2022. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 import shared
 import Rswift
 import AlertToast
 
 struct RouteDetailsView: View {
+    @Environment(\.scenePhase) var scenePhase
+    
     @Environment(\.presentationMode) var presentationMode
     
     @State var selectedRoute: TransportRoute
     @State var selectedEtaType: EtaType
     @StateObject var viewModel: RouteDetailsVM
     
-    @State var etaUpdateTimer: Timer? = nil
+    @State var etaUpdateTask: Combine.Cancellable? = nil
     
     init(selectedRoute: TransportRoute, selectedEtaType: EtaType) {
         _selectedRoute = State(initialValue: selectedRoute)
@@ -47,7 +50,6 @@ struct RouteDetailsView: View {
                             )
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                print("meow collapse \(index)")
                                 viewModel.collapsedItem()
                                 etaRequested(value: false)
                             }
@@ -63,7 +65,6 @@ struct RouteDetailsView: View {
                             )
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                print("meow expand \(index)")
                                 viewModel.expandedItem(expandedPosition: index, selectedStop: item.item.transportStop)
                                 etaRequested(value: true)
                             }
@@ -88,31 +89,52 @@ struct RouteDetailsView: View {
                 }
             }
         }
-        .task {
-            await viewModel.activate()
+        .onAppear { [self] in
+            Task {
+                await viewModel.getRouteDetailsStopList()
+            }
         }
-        .onDisappear {
-            etaUpdateTimer?.invalidate()
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                etaRequested(value: true)
+            } else if newPhase == .inactive {
+                etaRequested(value: false)
+            }
         }
-        .toast(isPresenting: $viewModel.showSavedEtaBookmarkToast, duration: 3, alert: {
-            AlertToast(displayMode: .banner(.slide), type: .regular, title: "Done")
+        .toast(isPresenting: $viewModel.showSavedEtaBookmarkToast, duration: 5, alert: {
+            AlertToast(displayMode: .banner(.slide), type: .regular, title: MR.strings().toast_eta_added.localized())
         }, completion: {
             viewModel.showSavedEtaBookmarkToast = false
         })
+        .toast(isPresenting: $viewModel.showEtaErrorToast, duration: 5, alert: {
+            AlertToast(displayMode: .banner(.slide), type: .regular, title: viewModel.etaError, style:
+                        AlertToast.AlertStyle.style(backgroundColor: MR.colors().secondary_yellow_light.toColor()))
+        }, completion: {
+            viewModel.showEtaErrorToast = false
+        })
+        .onReceive(viewModel.$etaError) { data in
+            if (data != nil) {
+                etaRequested(value: false)
+                
+                Task {
+                    do {
+                        try await Task.sleep(nanoseconds: 10_000_000_000)
+                        etaRequested(value: true)
+                    } catch {
+                    }
+                }
+            }
+        }
     }
     
     func etaRequested(value: Bool) {
-        etaUpdateTimer?.invalidate()
+        CommonLoggerUtilsKt.logD(
+            message: "etaRequested \(value)"
+        )
+        
+        etaUpdateTask?.cancel()
         if (value) {
-            etaUpdateTimer = Timer.scheduledTimer(
-                withTimeInterval: 60,
-                repeats: true
-            ) { [self] (timer) in
-                viewModel.updateEtaList()
-                
-                print("meow expand \(viewModel.selectedStop?.nameTc)")
-            }
-            etaUpdateTimer?.fire()
+            etaUpdateTask = viewModel.updateEtaList()
         }
     }
     

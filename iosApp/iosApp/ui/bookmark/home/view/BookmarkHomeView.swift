@@ -44,12 +44,12 @@ struct BookmarkHomeView: View {
             }
         }
         .onReceive(viewModel.$etaError) { data in
-            if (data) {
+            if (data != nil) {
                 etaRequested(value: false)
                 
                 Task {
                     do {
-                        try await Task.sleep(nanoseconds: 5_000_000_000)
+                        try await Task.sleep(nanoseconds: 10_000_000_000)
                         etaRequested(value: true)
                     } catch {
                     }

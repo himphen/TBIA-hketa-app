@@ -15,7 +15,7 @@ import Rswift
     @Published var savedEtaCardList: [CardEtaCardItem]?
     @Published var lastUpdatedAgo: Int? = nil
     private var lastUpdatedTime: Int64? = nil
-    @Published var etaError: Bool = false
+    @Published var etaError: String? = nil
     
     private var waitFirstEta: Bool = false
     
@@ -27,7 +27,7 @@ import Rswift
                 )
                 
                 DispatchQueue.main.async { [self] in
-                    etaError = false
+                    etaError = nil
                     lastUpdatedAgo = 0
                     lastUpdatedTime = DateUtilsKt.getCurrentTime().epochSeconds
                 }
@@ -70,21 +70,25 @@ import Rswift
                     }
                 }
             },
-            getEtaListFromDbFailed: { [self] in
+            getEtaListFromDbFailed: { [self] data in
                 CommonLoggerUtilsKt.logD(
                     message: "getEtaListFromDbFailed"
                 )
                 
-                etaError = true
-                lastUpdatedTime = nil
+                DispatchQueue.main.async { [self] in
+                    etaError = data
+                    lastUpdatedTime = nil
+                }
             },
-            updateEtaListFailed: { [self] in
+            updateEtaListFailed: { [self] data in
                 CommonLoggerUtilsKt.logD(
                     message: "updateEtaListFailed"
                 )
                 
-                etaError = true
-                lastUpdatedTime = nil
+                DispatchQueue.main.async { [self] in
+                    etaError = data
+                    lastUpdatedTime = nil
+                }
             }
         )
     }
@@ -122,9 +126,6 @@ import Rswift
         .schedule(after: DispatchQueue.SchedulerTimeType(.now()),
             interval: .seconds(1),
             tolerance: .seconds(1 / 5)) { [self] in
-//            CommonLoggerUtilsKt.logD(
-//                message: "updateLastUpdatedTime: \(lastUpdatedTime), \(DateUtilsKt.getCurrentTime().epochSeconds)"
-//            )
             if let lastUpdatedTime = lastUpdatedTime {
                 DispatchQueue.main.async { [self] in
                     lastUpdatedAgo = Int((DateUtilsKt.getCurrentTime().epochSeconds - lastUpdatedTime))

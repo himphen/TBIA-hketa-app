@@ -3,6 +3,7 @@
 // Copyright (c) 2022. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 import shared
 import Rswift
@@ -13,17 +14,12 @@ import Rswift
     
     var selectedStop: TransportStop? = nil
     
+    @Published var etaError: String? = nil
+    
     init(selectedRoute: TransportRoute, selectedEtaType: EtaType) {
         self.selectedRoute = selectedRoute
         self.selectedEtaType = selectedEtaType
-    }
-    
-    private var viewModel: RouteDetailsViewModel? = nil
-    
-    @Published var routeDetailsStopListUpdated: [RouteDetailsStopItem] = []
-    @Published var showSavedEtaBookmarkToast: Bool = false
-    
-    func activate() async {
+        
         viewModel = RouteDetailsViewModel(
             selectedRoute: selectedRoute,
             selectedEtaType: selectedEtaType,
@@ -35,6 +31,7 @@ import Rswift
                 }
     
                 DispatchQueue.main.async { [self] in
+                    etaError = nil
                     routeDetailsStopListUpdated = routeDetailsStopList.map { item in
                         RouteDetailsStopItem(item: item, isExpanded: false, etaList: [])
                     }
@@ -42,10 +39,16 @@ import Rswift
             },
             etaListUpdated: { [self] data in
                 CommonLoggerUtilsKt.logD(message: "etaListUpdated")
+                DispatchQueue.main.async { [self] in
+                    etaError = nil
+                }
                 setEtaListIntoDataList(etaList: data)
             },
             selectedStopUpdated: { [self] in
                 CommonLoggerUtilsKt.logD(message: "selectedStopUpdated")
+                DispatchQueue.main.async { [self] in
+                    etaError = nil
+                }
                 selectedStop = viewModel?.selectedStop
             },
             isSavedEtaBookmarkUpdated: { [self] data1, data2 in
@@ -66,20 +69,23 @@ import Rswift
                     setSavedBookmark(position: data.intValue, savedEtaId: nil)
                 }
             },
-            etaRequested: { [self] data in
-                CommonLoggerUtilsKt.logD(message: "etaRequested")
-            },
             etaUpdateError: { [self] data in
+                DispatchQueue.main.async { [self] in
+                    etaError = data
+                    showEtaErrorToast = true
+                }
                 CommonLoggerUtilsKt.logD(message: "etaUpdateError")
-            },
-            mapMarkerClicked: { [self] data in
-                CommonLoggerUtilsKt.logD(message: "mapMarkerClicked")
-            },
-            onChangedTrafficLayerToggle: { [self] data in
-                CommonLoggerUtilsKt.logD(message: "onChangedTrafficLayerToggle")
             }
         )
-        
+    }
+    
+    private var viewModel: RouteDetailsViewModel? = nil
+    
+    @Published var routeDetailsStopListUpdated: [RouteDetailsStopItem] = []
+    @Published var showSavedEtaBookmarkToast: Bool = false
+    @Published var showEtaErrorToast: Bool = false
+    
+    func getRouteDetailsStopList() async {
         do {
             try await viewModel?.getRouteDetailsStopList()
         } catch {
@@ -108,10 +114,23 @@ import Rswift
         viewModel?.selectedStop = selectedStop
     }
     
-    func updateEtaList() {
-        viewModel?.updateEtaList(completionHandler: { _ in
-        
-        })
+    func updateEtaList() -> Combine.Cancellable {
+        DispatchQueue
+        .global(qos: .utility)
+        .schedule(after: DispatchQueue.SchedulerTimeType(.now()),
+            interval: .seconds(60),
+            tolerance: .seconds(60 / 5)) { [self] in
+            Task {
+                CommonLoggerUtilsKt.logD(
+                    message: "updateEtaList tickerTask"
+                )
+                do {
+                    try await viewModel?.updateEtaList()
+                } catch {
+                
+                }
+            }
+        }
     }
     
     func saveBookmark(position: Int) {
@@ -131,8 +150,7 @@ import Rswift
         Task {
             do {
                 try await viewModel?.removeBookmark(position: Int32(position), entityId: Int32(savedEtaId))
-            } catch {
-            }
+            } catch {}
         }
     }
     

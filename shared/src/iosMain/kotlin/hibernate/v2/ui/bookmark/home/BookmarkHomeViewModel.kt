@@ -9,6 +9,8 @@ import hibernate.v2.model.transport.eta.MTRTransportEta
 import hibernate.v2.model.transport.eta.TransportEta
 import hibernate.v2.model.transport.eta.filterCircularStop
 import hibernate.v2.utils.CommonLogger
+import hibernate.v2.utils.IOSContext
+import hibernate.v2.utils.getEtaUpdateErrorMessage
 import hibernate.v2.utils.logLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -19,8 +21,8 @@ import org.koin.core.component.inject
 
 class BookmarkHomeViewModel(
     private val savedEtaCardListUpdated: () -> Unit,
-    private val getEtaListFromDbFailed: () -> Unit,
-    private val updateEtaListFailed: () -> Unit
+    private val getEtaListFromDbFailed: (String) -> Unit,
+    private val updateEtaListFailed: (String) -> Unit
 ) : KoinComponent {
 
     private val etaInteractor: EtaInteractor by inject()
@@ -28,8 +30,8 @@ class BookmarkHomeViewModel(
     var savedEtaCardList = mutableListOf<Card.EtaCard>()
 
     suspend fun getEtaListFromDb() {
-        try {
-            withContext(Dispatchers.Default) {
+        withContext(Dispatchers.Default) {
+            try {
                 val convertedEtaCardList = mutableListOf<Card.EtaCard>()
                 convertedEtaCardList.addAll(
                     etaInteractor.getSavedKmbEtaList().map { it.toEtaCard() }
@@ -58,9 +60,9 @@ class BookmarkHomeViewModel(
                     convertedEtaCardList
                 }
                 savedEtaCardListUpdated()
+            } catch (e: Exception) {
+                getEtaListFromDbFailed(getEtaUpdateErrorMessage(e, IOSContext()))
             }
-        } catch (e: Exception) {
-            getEtaListFromDbFailed()
         }
     }
 
@@ -227,7 +229,7 @@ class BookmarkHomeViewModel(
                 savedEtaCardList = result
                 savedEtaCardListUpdated()
             } catch (e: Exception) {
-                updateEtaListFailed()
+                updateEtaListFailed(getEtaUpdateErrorMessage(e, IOSContext()))
             }
         }
     }

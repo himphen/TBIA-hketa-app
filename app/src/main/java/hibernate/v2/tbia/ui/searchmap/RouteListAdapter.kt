@@ -61,7 +61,7 @@ class RouteListAdapter(val onRouteSelected: (Card.EtaCard) -> Unit) :
             viewBinding.apply {
                 applyRouteNumberContainer(card, routeNumberContainer)
 
-                routeDestTv.text = card.route.getDestDirectionText(context)
+                routeDestTv.text = card.route.getLocalisedDest(context)
                 routeOrigTv.text = card.route.getLocalisedOrig(context)
 
                 (etaTimeRv.adapter as EtaTimeAdapter).apply {

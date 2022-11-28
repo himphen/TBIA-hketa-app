@@ -297,7 +297,7 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
                     )
                     .show()
 
-                delay(3.toDuration(DurationUnit.SECONDS))
+                delay(10.toDuration(DurationUnit.SECONDS))
                 viewModel.etaRequested.emit(true)
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
