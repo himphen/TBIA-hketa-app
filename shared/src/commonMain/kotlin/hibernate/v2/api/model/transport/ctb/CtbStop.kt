@@ -21,6 +21,6 @@ data class CtbStop(
     var nameTc: String = "",
     @SerialName("p")
     var stopId: String = "",
-    @SerialName("gh")
+    @SerialName("g")
     var geohash: String = "",
 )

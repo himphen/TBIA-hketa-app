@@ -17,6 +17,6 @@ data class KmbStop(
     var nameTc: String = "",
     @SerialName("p")
     var stopId: String = "",
-    @SerialName("gh")
+    @SerialName("g")
     var geohash: String = "",
 )

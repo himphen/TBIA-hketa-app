@@ -17,6 +17,6 @@ data class GmbStop(
     var nameTc: String = "",
     @SerialName("p")
     var stopId: Long = 0,
-    @SerialName("gh")
+    @SerialName("g")
     var geohash: String = "",
 )
