@@ -27,7 +27,7 @@ data class GmbRoute(
     var routeNo: String = "",
     @SerialName("st")
     var serviceType: Long = 0,
-    @SerialName("region")
+    @SerialName("re")
     var region: GmbRegion = GmbRegion.UNKNOWN,
 ) : Comparable<GmbRoute>, BaseRouteEntity() {
 

@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GmbRouteStop(
     val bound: Bound = Bound.O,
-    @SerialName("region")
+    @SerialName("re")
     var region: GmbRegion = GmbRegion.UNKNOWN,
     @SerialName("r")
     var routeId: Long = 0,
