@@ -52,7 +52,6 @@ struct RouteListView: View {
                         }
                     }
                 }
-                .ignoresSafeArea()
             }
         }
         .onAppear { [self] in
@@ -80,8 +79,6 @@ struct TabRouteListView: View {
                         Divider()
                     }
                 }
-                Spacer()
-                    .frame(height: 200)
             }
             .frame(maxHeight: .infinity)
         }

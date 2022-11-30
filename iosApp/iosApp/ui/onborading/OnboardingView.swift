@@ -34,6 +34,7 @@ struct OnboardingView: View {
                 if (newValue) {
                     resetData = false
                     viewModel.isCompleted = false
+                    viewModel.isFetchTransportDataRequired = false
                 }
             }
         }
