@@ -2,7 +2,6 @@ package hibernate.v2.domain.nlb
 
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.model.transport.nlb.NlbRoute
 import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.database.nlb.NlbDao
 import hibernate.v2.utils.logLifecycle
@@ -26,26 +25,25 @@ class SaveData(
         coroutineScope {
             listOf(
                 async {
+                    logLifecycle("NlbRepository saveRouteList start")
                     data.route?.let { list ->
-                        list.toMutableList()
-                            .apply { sortWith(NlbRoute::compareTo) }
-                            .let {
-                                nlbDao.addRouteList(it)
-                            }
+                        nlbDao.addRouteList(list)
                     }
-                    logLifecycle("NlbInteractor saveRouteList done")
+                    logLifecycle("NlbRepository saveRouteList done")
                 },
                 async {
+                    logLifecycle("NlbRepository saveRouteStopList start")
                     data.routeStop?.let { list ->
                         nlbDao.addRouteStopList(list)
                     }
-                    logLifecycle("NlbInteractor saveRouteStopList done")
+                    logLifecycle("NlbRepository saveRouteStopList done")
                 },
                 async {
+                    logLifecycle("NlbRepository saveStopList start")
                     data.stop?.let { list ->
                         nlbDao.addStopList(list)
                     }
-                    logLifecycle("NlbInteractor saveStopList done")
+                    logLifecycle("NlbRepository saveStopList done")
                 }
             ).awaitAll()
         }

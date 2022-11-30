@@ -2,7 +2,6 @@ package hibernate.v2.domain.gmb
 
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.model.transport.gmb.GmbRoute
 import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.database.gmb.GmbDao
 import hibernate.v2.utils.logLifecycle
@@ -28,11 +27,7 @@ class SaveData(
                 async {
                     logLifecycle("GmbRepository saveRouteList start")
                     data.route?.let { list ->
-                        list.toMutableList()
-                            .apply { sortWith(GmbRoute::compareTo) }
-                            .let {
-                                gmbDao.addRouteList(it)
-                            }
+                        gmbDao.addRouteList(list)
                     }
                     logLifecycle("GmbRepository saveRouteList done")
                 },

@@ -2,7 +2,6 @@ package hibernate.v2.domain.mtr
 
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.model.transport.mtr.MtrRoute
 import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.database.mtr.MtrDao
 import hibernate.v2.utils.logLifecycle
@@ -26,26 +25,25 @@ class SaveData(
         coroutineScope {
             listOf(
                 async {
+                    logLifecycle("GmbRepository saveRouteList start")
                     data.route?.let { list ->
-                        list.toMutableList()
-                            .apply { sortWith(MtrRoute::compareTo) }
-                            .let {
-                                mtrDao.addRouteList(it)
-                            }
+                        mtrDao.addRouteList(list)
                     }
-                    logLifecycle("MtrInteractor saveRouteList done")
+                    logLifecycle("MtrRepository saveRouteList done")
                 },
                 async {
+                    logLifecycle("GmbRepository saveRouteStopList start")
                     data.routeStop?.let { list ->
                         mtrDao.addRouteStopList(list)
                     }
-                    logLifecycle("MtrInteractor saveRouteStopList done")
+                    logLifecycle("MtrRepository saveRouteStopList done")
                 },
                 async {
+                    logLifecycle("MtrRepository saveStopList start")
                     data.stop?.let { list ->
                         mtrDao.addStopList(list)
                     }
-                    logLifecycle("MtrInteractor saveStopList done")
+                    logLifecycle("MtrRepository saveStopList done")
                 }
             ).awaitAll()
         }

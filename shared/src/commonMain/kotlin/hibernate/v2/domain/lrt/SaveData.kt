@@ -2,7 +2,6 @@ package hibernate.v2.domain.lrt
 
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.model.transport.lrt.LrtRoute
 import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.database.lrt.LrtDao
 import hibernate.v2.utils.logLifecycle
@@ -26,26 +25,25 @@ class SaveData(
         coroutineScope {
             listOf(
                 async {
+                    logLifecycle("LrtRepository saveRouteList start")
                     data.route?.let { list ->
-                        list.toMutableList()
-                            .apply { sortWith(LrtRoute::compareTo) }
-                            .let {
-                                lrtDao.addRouteList(it)
-                            }
+                        lrtDao.addRouteList(list)
                     }
-                    logLifecycle("LrtInteractor saveRouteList done")
+                    logLifecycle("LrtRepository saveRouteList done")
                 },
                 async {
+                    logLifecycle("LrtRepository saveRouteList start")
                     data.routeStop?.let { list ->
                         lrtDao.addRouteStopList(list)
                     }
-                    logLifecycle("LrtInteractor saveRouteStopList done")
+                    logLifecycle("LrtRepository saveRouteStopList done")
                 },
                 async {
+                    logLifecycle("LrtRepository saveRouteList start")
                     data.stop?.let { list ->
                         lrtDao.addStopList(list)
                     }
-                    logLifecycle("LrtInteractor saveStopList done")
+                    logLifecycle("LrtRepository saveStopList done")
                 }
             ).awaitAll()
         }

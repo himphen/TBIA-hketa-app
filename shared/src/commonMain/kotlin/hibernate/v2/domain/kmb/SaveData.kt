@@ -2,7 +2,6 @@ package hibernate.v2.domain.kmb
 
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.model.transport.kmb.KmbRoute
 import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.database.kmb.KmbDao
 import hibernate.v2.utils.logLifecycle
@@ -26,22 +25,21 @@ class SaveData(
         coroutineScope {
             listOf(
                 async {
+                    logLifecycle("KmbRepository saveRouteList start")
                     data.route?.let { list ->
-                        list.toMutableList()
-                            .apply { sortWith(KmbRoute::compareTo) }
-                            .let {
-                                kmbDao.addRouteList(it)
-                            }
+                        kmbDao.addRouteList(list)
                     }
                     logLifecycle("KmbRepository saveRouteList done")
                 },
                 async {
+                    logLifecycle("KmbRepository saveRouteStopList start")
                     data.routeStop?.let { list ->
                         kmbDao.addRouteStopList(list)
                     }
                     logLifecycle("KmbRepository saveRouteStopList done")
                 },
                 async {
+                    logLifecycle("KmbRepository saveStopList start")
                     data.stop?.let { list ->
                         kmbDao.addStopList(list)
                     }

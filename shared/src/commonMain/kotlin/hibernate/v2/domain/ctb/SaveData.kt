@@ -2,7 +2,6 @@ package hibernate.v2.domain.ctb
 
 import hibernate.v2.api.core.ApiSafeCall
 import hibernate.v2.api.core.Resource
-import hibernate.v2.api.model.transport.ctb.CtbRoute
 import hibernate.v2.api.repository.DataRepository
 import hibernate.v2.database.ctb.CtbDao
 import hibernate.v2.utils.logLifecycle
@@ -26,22 +25,21 @@ class SaveData(
         coroutineScope {
             listOf(
                 async {
+                    logLifecycle("NCRepository saveRouteList start")
                     data.route?.let { list ->
-                        list.toMutableList()
-                            .apply { sortWith(CtbRoute::compareTo) }
-                            .let {
-                                ctbDao.addRouteList(it)
-                            }
+                        ctbDao.addRouteList(list)
                     }
                     logLifecycle("NCRepository saveRouteList done")
                 },
                 async {
+                    logLifecycle("NCRepository saveRouteStopList start")
                     data.routeStop?.let { list ->
                         ctbDao.addRouteStopList(list)
                     }
                     logLifecycle("NCRepository saveRouteStopList done")
                 },
                 async {
+                    logLifecycle("NCRepository saveStopList start")
                     data.stop?.let { list ->
                         ctbDao.addStopList(list)
                     }

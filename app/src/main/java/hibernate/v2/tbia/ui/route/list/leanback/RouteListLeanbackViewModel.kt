@@ -411,9 +411,9 @@ class RouteListLeanbackViewModel(
             }
 
             val transportRouteStopList = transportRouteStopHashMap.values.toMutableList()
-            transportRouteStopList.sortWith { o1, o2 ->
-                o1.compareTo(o2)
-            }
+//            transportRouteStopList.sortWith { o1, o2 ->
+//                o1.compareTo(o2)
+//            }
 
             val transportRouteList =
                 transportRouteStopList.map { routeAndStopList ->
