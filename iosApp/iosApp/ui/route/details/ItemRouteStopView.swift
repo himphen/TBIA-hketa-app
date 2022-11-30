@@ -53,7 +53,7 @@ struct ItemRouteStopView: View {
                 .font(.system(size: 12, weight: .bold))
                 .foregroundColor(MR.colors().common_text_secondary.toColor())
                 
-                Text(routeDetailsStop.transportStop.nameTc)
+                Text(routeDetailsStop.transportStop.getLocalisedName(context: IOSContext()))
                 .font(.system(size: 16, weight: .bold))
                 .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
             }
