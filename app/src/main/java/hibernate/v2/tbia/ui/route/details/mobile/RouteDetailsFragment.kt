@@ -241,11 +241,16 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
                         val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
 
                         if (expandedPosition < firstVisiblePosition || expandedPosition > lastVisiblePosition) {
-                            viewBinding?.recyclerView?.scrollToPosition(expandedPosition)
+                            viewBinding?.recyclerView?.smoothSnapToPosition(
+                                expandedPosition,
+                                LinearSmoothScroller.SNAP_TO_START
+                            )
+
+                            // viewBinding?.recyclerView?.scrollToPosition(expandedPosition)
                         } else if (expandedPosition == firstVisiblePosition || expandedPosition == lastVisiblePosition) {
                             viewBinding?.recyclerView?.smoothSnapToPosition(
                                 expandedPosition,
-                                LinearSmoothScroller.SNAP_TO_ANY
+                                LinearSmoothScroller.SNAP_TO_START
                             )
                         }
                     }
@@ -262,7 +267,8 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
         viewModel.isSavedEtaBookmark.onEach {
             adapter.setSavedBookmark(it.first, it.second)
             activity?.setResult(MainActivity.ACTIVITY_RESULT_SAVED_BOOKMARK)
-            Snackbar.make(requireView(), getString(R.string.toast_eta_added), Snackbar.LENGTH_LONG).show()
+            Snackbar.make(requireView(), getString(R.string.toast_eta_added), Snackbar.LENGTH_LONG)
+                .show()
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.isRemovedEtaBookmark.onEach {
