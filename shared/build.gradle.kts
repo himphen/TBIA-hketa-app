@@ -1,3 +1,7 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import org.jetbrains.kotlin.konan.properties.Properties
+import org.jetbrains.kotlin.konan.properties.loadProperties
+
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
@@ -6,6 +10,7 @@ plugins {
     id("com.squareup.sqldelight")
     id("kotlin-parcelize")
     id("dev.icerock.mobile.multiplatform-resources")
+    id("com.codingfeline.buildkonfig")
 }
 
 val coroutinesVersion = "1.6.4"
@@ -152,4 +157,15 @@ multiplatformResources {
     multiplatformResourcesPackage = "hibernate.v2"
     iosBaseLocalizationRegion = "zh-TW"
     disableStaticFrameworkWarning = true
+}
+
+buildkonfig {
+    packageName = "hibernate.v2.tbia"
+
+    val configFilename = rootDir.toString() + File.separator + "secrets.properties"
+    val properties: Properties = loadProperties(configFilename)
+
+    defaultConfigs {
+        buildConfigField(STRING, "CONTACT_EMAIL", properties.getProperty("key.contact_email"))
+    }
 }

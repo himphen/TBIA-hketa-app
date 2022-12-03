@@ -85,6 +85,7 @@ PODS:
     - R.swift.Library (~> 5.3.0)
   - R.swift.Library (5.3.0)
   - shared (1.0)
+  - ThirdPartyMailer (2.1.0)
 
 DEPENDENCIES:
   - AlertToast
@@ -96,6 +97,7 @@ DEPENDENCIES:
   - lottie-ios
   - R.swift
   - shared (from `../shared`)
+  - ThirdPartyMailer
 
 SPEC REPOS:
   trunk:
@@ -119,6 +121,7 @@ SPEC REPOS:
     - PromisesObjC
     - R.swift
     - R.swift.Library
+    - ThirdPartyMailer
 
 EXTERNAL SOURCES:
   shared:
@@ -146,7 +149,8 @@ SPEC CHECKSUMS:
   R.swift: 56ec7e3aef34b9eee47a659e42462db2c1cc5ac3
   R.swift.Library: 0fc583cb55a99e28901299cc451614cad1161962
   shared: 7647c83269d8f8d5f83c9a3abbd6a70965606a72
+  ThirdPartyMailer: 25ded36f716dcd61a5e3374f07d09c3368c59a16
 
-PODFILE CHECKSUM: 7c193688903ad06671fbee2ce9d9d8d27cc26f27
+PODFILE CHECKSUM: cfab289eae583b2d199f2b30e29375e66e4bfc7e
 
 COCOAPODS: 1.11.3

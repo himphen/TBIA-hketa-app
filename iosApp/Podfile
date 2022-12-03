@@ -10,4 +10,5 @@ target 'iosApp' do
   pod 'lottie-ios'
   pod 'R.swift'
   pod 'AlertToast'
+  pod 'ThirdPartyMailer'
 end

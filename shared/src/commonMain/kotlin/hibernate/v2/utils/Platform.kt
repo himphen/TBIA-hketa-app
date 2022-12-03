@@ -1,5 +1,7 @@
 package hibernate.v2.utils
 
+import hibernate.v2.tbia.BuildKonfig
+
 expect fun isDebugBuild(): Boolean
 
 expect abstract class KMMContext
@@ -15,3 +17,7 @@ enum class TransportationLanguage {
 }
 
 data class LatLng(val latitude: Double, val longitude: Double)
+
+fun reportEmailAddress(): String {
+    return BuildKonfig.CONTACT_EMAIL
+}

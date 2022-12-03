@@ -8,9 +8,9 @@ import android.os.Build
 import android.provider.Settings
 import hibernate.v2.MR
 import hibernate.v2.core.SharedPreferencesManager
-import hibernate.v2.tbia.BuildConfig
 import hibernate.v2.utils.TransportationLanguage
 import hibernate.v2.utils.localized
+import hibernate.v2.utils.reportEmailAddress
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.math.BigInteger
@@ -93,7 +93,7 @@ object GeneralUtils : KoinComponent {
         text += "Brand: " + Build.BRAND + "\n"
         text += "Model: " + Build.MODEL + "\n\n\n"
         intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(BuildConfig.CONTACT_EMAIL))
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(reportEmailAddress()))
         intent.putExtra(Intent.EXTRA_SUBJECT, MR.strings.report_title.localized(context))
         intent.putExtra(Intent.EXTRA_TEXT, text)
         context.startActivity(intent)

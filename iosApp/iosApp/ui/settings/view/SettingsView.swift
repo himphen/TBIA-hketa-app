@@ -8,6 +8,7 @@ import shared
 import Rswift
 import FirebaseAnalytics
 import FirebaseCrashlytics
+import ThirdPartyMailer
 
 struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -42,8 +43,16 @@ struct SettingsView: View {
             }
             
             Section(header: Text(MR.strings().settings_category_debug_title.desc().localized())) {
+                ItemSettingsRowView(
+                    title: MR.strings().title_settings_report.desc().localized()
+                )
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    openMail()
+                }
+                
                 ItemSettingsRowView(title: MR.strings().title_settings_reset.desc().localized())
-                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
                 .onTapGesture {
                     showingResetConfirmation = true
                 }
@@ -64,6 +73,7 @@ struct SettingsView: View {
                 #if DEBUG
                     ItemSettingsRowView(title: "Test Crash")
                     .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         CommonLoggerUtilsKt.logD(message: "Test Crash")
                         fatalError("Crash was triggered")
@@ -73,6 +83,7 @@ struct SettingsView: View {
                 #if DEBUG
                     ItemSettingsRowView(title: "Test Analytics")
                     .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
                     .onTapGesture {
                         CommonLoggerUtilsKt.logD(message: "Test Analytics")
                         Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
@@ -92,6 +103,23 @@ struct SettingsView: View {
         }
         .listStyle(.grouped)
         .preferredColorScheme(.light)
+    }
+    
+    func openMail() {
+        let body = IOSPlatformKt.reportEmailContent()
+        let to = PlatformKt.reportEmailAddress()
+        let subject = MR.strings().report_title.localized()
+        
+        let client = ThirdPartyMailClient.clients
+        
+        if ThirdPartyMailer.isMailClientAvailable(client[1]) {
+            ThirdPartyMailer.openCompose(client[1], recipient: to, subject: subject, body: body)
+        } else if ThirdPartyMailer.isMailClientAvailable(client[5]) {
+            ThirdPartyMailer.openCompose(client[5], recipient: to, subject: subject, body: body)
+        } else {
+            ThirdPartyMailer.openCompose(recipient: to, subject: subject, body: body)
+        }
+        
     }
 }
 

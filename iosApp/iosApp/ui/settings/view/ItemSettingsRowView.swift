@@ -17,11 +17,14 @@ struct ItemSettingsRowView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
+                .frame(maxWidth: .infinity, alignment: .leading)
             if let desc {
                 Text(desc)
                 .font(.system(size: 14))
                 .foregroundColor(Color.gray)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-        }.padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+        }
+        .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
     }
 }
