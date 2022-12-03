@@ -12,6 +12,7 @@ data class GmbRouteStop(
     var region: GmbRegion = GmbRegion.UNKNOWN,
     @SerialName("r")
     var routeId: Long = 0,
+    @SerialName("s")
     var seq: Int = 0,
     @SerialName("p")
     var stopId: Long = 0,
