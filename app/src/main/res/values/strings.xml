@@ -18,9 +18,9 @@
     </string-array>
 
     <string-array name="language_choose" translatable="false">
-        <item>System Default</item>
-        <item>English</item>
-        <item>中文（正體）</item>
+        <item>@string/settings_lang_option_default</item>
+        <item>@string/settings_lang_option_en</item>
+        <item>@string/settings_lang_option_zh_tw</item>
     </string-array>
 
     <string-array name="language_locale_code" translatable="false">

@@ -1,13 +1,27 @@
 package hibernate.v2.utils
 
+import dev.icerock.moko.resources.desc.StringDesc
+import hibernate.v2.core.SharedPreferencesManager
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import platform.Foundation.NSLocale
 import platform.Foundation.currentLocale
 import platform.Foundation.languageCode
 
-actual object LanguageUtils {
+actual object LanguageUtils : KoinComponent {
 
-    actual fun getLanguage(context: KMMContext): KMMLocale? {
-        return KMMLocale()
+    private val sharedPreferencesManager: SharedPreferencesManager by inject()
+
+    actual fun getLanguage(context: KMMContext): KMMLocale {
+        val language = sharedPreferencesManager.language
+
+        val iosLanguage = if (language.isNotEmpty()) {
+            IOSLanguage.Code.from(language).toIOSLanguage()
+        } else {
+            IOSLanguage.Code.from(NSLocale.currentLocale.languageCode.lowercase()).toIOSLanguage()
+        }
+
+        return iosLanguage
     }
 
     actual fun getTransportationLanguage(context: KMMContext): TransportationLanguage {
@@ -19,10 +33,21 @@ actual object LanguageUtils {
     }
 
     actual fun isLangEnglish(context: KMMContext): Boolean {
-        return NSLocale.currentLocale.languageCode.lowercase() == "en"
+        val code = getLanguage(context).code
+        return code.moko == "en"
     }
 
     actual fun isLangTC(context: KMMContext): Boolean {
-        return NSLocale.currentLocale.languageCode.lowercase() == "zh_TW"
+        return getLanguage(context).code.moko == "zh_tw"
+    }
+
+    fun initLanguage() {
+        val moko = getLanguage(IOSContext()).code.moko
+        if (moko.isNotEmpty()) {
+            StringDesc.localeType = StringDesc.LocaleType.Custom(moko)
+        } else {
+            StringDesc.localeType = StringDesc.LocaleType.System
+        }
+
     }
 }

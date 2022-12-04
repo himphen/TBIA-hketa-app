@@ -16,7 +16,7 @@ abstract class BaseLeanbackActivity<T : ViewBinding> : FragmentActivity() {
     open var titleString: String? = null
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(GeneralUtils.updateLanguage(newBase))
+        super.attachBaseContext(GeneralUtils.initLanguage(newBase))
     }
 
     abstract fun getActivityViewBinding(): T

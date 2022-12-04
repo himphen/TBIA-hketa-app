@@ -167,5 +167,7 @@ buildkonfig {
 
     defaultConfigs {
         buildConfigField(STRING, "CONTACT_EMAIL", properties.getProperty("key.contact_email"))
+        buildConfigField(STRING, "GOOGLE_MAP_ANDROID_API_KEY", properties.getProperty("google_map.android.api_key"))
+        buildConfigField(STRING, "GOOGLE_MAP_IOS_API_KEY", properties.getProperty("google_map.ios.api_key"))
     }
 }

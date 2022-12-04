@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import hibernate.v2.tbia.R
 import hibernate.v2.tbia.databinding.ActivityContainerBinding
-import hibernate.v2.tbia.util.GeneralUtils.updateLanguage
+import hibernate.v2.tbia.util.GeneralUtils.initLanguage
 
 abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     lateinit var viewBinding: T
@@ -20,7 +20,7 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     abstract fun getActivityViewBinding(): T
 
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(updateLanguage(newBase))
+        super.attachBaseContext(initLanguage(newBase))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

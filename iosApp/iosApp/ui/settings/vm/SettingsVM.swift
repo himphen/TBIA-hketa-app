@@ -20,4 +20,8 @@ import Rswift
         } catch {
         }
     }
+    
+    func updateLang(code: IOSLanguage.Code) {
+        viewModel.updateLang(code: code)
+    }
 }

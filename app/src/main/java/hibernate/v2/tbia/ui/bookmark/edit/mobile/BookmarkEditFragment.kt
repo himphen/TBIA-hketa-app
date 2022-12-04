@@ -23,11 +23,11 @@ import hibernate.v2.tbia.ui.base.BaseFragment
 import hibernate.v2.tbia.ui.base.ItemTouchHelperCallback
 import hibernate.v2.tbia.ui.bookmark.edit.BookmarkEditViewModel
 import hibernate.v2.tbia.ui.main.mobile.MainActivity
-import hibernate.v2.tbia.util.GeneralUtils
 import hibernate.v2.tbia.util.gone
 import hibernate.v2.tbia.util.swap
 import hibernate.v2.tbia.util.toggleSlideUp
 import hibernate.v2.tbia.util.visible
+import hibernate.v2.utils.LanguageUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -78,9 +78,7 @@ class BookmarkEditFragment : BaseFragment<FragmentBookmarkEditBinding>() {
                             getString(
                                 R.string.dialog_settings_eta_remove_mtr_message,
                                 route.routeInfo.getLocalisedName(
-                                    GeneralUtils.getTransportationLanguage(
-                                        context
-                                    )
+                                    LanguageUtils.getTransportationLanguage(context)
                                 ),
                                 card.stop.getLocalisedName(context)
                             )

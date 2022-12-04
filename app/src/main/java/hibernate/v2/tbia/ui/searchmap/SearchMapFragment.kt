@@ -55,6 +55,7 @@ import hibernate.v2.tbia.util.gone
 import hibernate.v2.tbia.util.launchPeriodicAsync
 import hibernate.v2.tbia.util.tickerFlow
 import hibernate.v2.tbia.util.visible
+import hibernate.v2.utils.LanguageUtils
 import hibernate.v2.utils.getEtaUpdateErrorMessage
 import hibernate.v2.utils.getTimeDiffFromNowInMin
 import hibernate.v2.utils.logLifecycle
@@ -579,7 +580,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
 
         viewBinding?.let {
             it.layoutRouteList.stopNameTv.text =
-                stop.getLocalisedName(getTransportationLanguage(it.root.context))
+                stop.getLocalisedName(LanguageUtils.getTransportationLanguage(it.root.context))
         }
         routeListAdapter.setData(mutableListOf())
         routeListBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED

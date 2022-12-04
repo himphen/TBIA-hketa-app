@@ -16,58 +16,83 @@ struct SettingsView: View {
     
     @StateObject var viewModel: SettingsVM = SettingsVM()
     @State var showingResetConfirmation = false
+    @State var showingLangConfirmation = false
     @Binding var resetData: Bool
     
     var body: some View {
         List {
-            Section(header: Text(MR.strings().settings_category_settings_title.desc().localized())) {
+            Section(header: Text(MR.strings().settings_category_settings_title.localized())) {
+                ItemSettingsRowView(title: MR.strings().title_settings_language.localized())
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    showingLangConfirmation = true
+                }
+                .confirmationDialog(MR.strings().title_settings_language.localized(), isPresented: $showingLangConfirmation) {
+                    Button(MR.strings().settings_lang_option_default.localized(), role: .destructive) { [self] in
+                        viewModel.updateLang(code: IOSLanguage.Code.default_)
+                        
+                        resetData = true
+                    }
+                    Button(MR.strings().settings_lang_option_en.localized(), role: .destructive) { [self] in
+                        viewModel.updateLang(code: IOSLanguage.Code.en)
+                        
+                        resetData = true
+                    }
+                    Button(MR.strings().settings_lang_option_zh_tw.localized(), role: .destructive) { [self] in
+                        viewModel.updateLang(code: IOSLanguage.Code.zhTw)
+                        
+                        resetData = true
+                    }
+                    Button(MR.strings().dialog_cancel_btn.localized(), role: .cancel) {
+                    }
+                }
                 ItemSettingsRowView(
-                    title: MR.strings().title_settings_version.desc().localized(),
+                    title: MR.strings().title_settings_version.localized(),
                     desc: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
                 )
             }
             
-            Section(header: Text(MR.strings().settings_category_notices_title.desc().localized())) {
+            Section(header: Text(MR.strings().settings_category_notices_title.localized())) {
                 ItemSettingsRowView(
-                    title: MR.strings().settings_acknowledgement_title1.desc().localized(),
-                    desc: MR.strings().settings_acknowledgement_summary1.desc().localized()
+                    title: MR.strings().settings_acknowledgement_title1.localized(),
+                    desc: MR.strings().settings_acknowledgement_summary1.localized()
                 )
                 ItemSettingsRowView(
-                    title: MR.strings().settings_acknowledgement_title2.desc().localized(),
-                    desc: MR.strings().settings_acknowledgement_summary2.desc().localized()
+                    title: MR.strings().settings_acknowledgement_title2.localized(),
+                    desc: MR.strings().settings_acknowledgement_summary2.localized()
                 )
                 ItemSettingsRowView(
-                    title: MR.strings().settings_acknowledgement_title3.desc().localized(),
-                    desc: MR.strings().settings_acknowledgement_summary3.desc().localized()
+                    title: MR.strings().settings_acknowledgement_title3.localized(),
+                    desc: MR.strings().settings_acknowledgement_summary3.localized()
                 )
             }
             
-            Section(header: Text(MR.strings().settings_category_debug_title.desc().localized())) {
+            Section(header: Text(MR.strings().settings_category_debug_title.localized())) {
                 ItemSettingsRowView(
-                    title: MR.strings().title_settings_report.desc().localized()
+                    title: MR.strings().title_settings_report.localized()
                 )
                 .contentShape(Rectangle())
                 .onTapGesture {
                     openMail()
                 }
                 
-                ItemSettingsRowView(title: MR.strings().title_settings_reset.desc().localized())
+                ItemSettingsRowView(title: MR.strings().title_settings_reset.localized())
                 .contentShape(Rectangle())
                 .onTapGesture {
                     showingResetConfirmation = true
                 }
-                .confirmationDialog(MR.strings().title_settings_reset.desc().localized(), isPresented: $showingResetConfirmation) {
-                    Button(MR.strings().dialog_confirm_btn.desc().localized(), role: .destructive) {
+                .confirmationDialog(MR.strings().title_settings_reset.localized(), isPresented: $showingResetConfirmation) {
+                    Button(MR.strings().dialog_confirm_btn.localized(), role: .destructive) {
                         Task {
                             await viewModel.resetTransportData()
                             
                             resetData = true
                         }
                     }
-                    Button(MR.strings().dialog_cancel_btn.desc().localized(), role: .cancel) {
+                    Button(MR.strings().dialog_cancel_btn.localized(), role: .cancel) {
                     }
                 } message: {
-                    Text(MR.strings().dialog_settings_reset_message.desc().localized())
+                    Text(MR.strings().dialog_settings_reset_message.localized())
                 }
                 
                 #if DEBUG

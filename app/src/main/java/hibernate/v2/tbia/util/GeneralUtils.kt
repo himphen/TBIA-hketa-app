@@ -8,7 +8,6 @@ import android.os.Build
 import android.provider.Settings
 import hibernate.v2.MR
 import hibernate.v2.core.SharedPreferencesManager
-import hibernate.v2.utils.TransportationLanguage
 import hibernate.v2.utils.localized
 import hibernate.v2.utils.reportEmailAddress
 import org.koin.core.component.KoinComponent
@@ -35,7 +34,7 @@ object GeneralUtils : KoinComponent {
         }
     }
 
-    fun updateLanguage(context: Context): Context {
+    fun initLanguage(context: Context): Context {
         val language = sharedPreferencesManager.language
         if (language.isNotEmpty()) {
             val config = context.resources.configuration
@@ -58,31 +57,6 @@ object GeneralUtils : KoinComponent {
 
             return context.createConfigurationContext(config)
         }
-    }
-
-    fun getLanguage(context: Context): Locale? {
-        val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            context.resources.configuration.locales.get(0)
-        else
-            context.resources.configuration.locale
-
-        return locale
-    }
-
-    fun getTransportationLanguage(context: Context): TransportationLanguage {
-        return if (isLangEnglish(context)) {
-            TransportationLanguage.EN
-        } else {
-            TransportationLanguage.TC
-        }
-    }
-
-    fun isLangEnglish(context: Context): Boolean {
-        return getLanguage(context)?.language == Locale.ENGLISH.language
-    }
-
-    fun isLangTC(context: Context): Boolean {
-        return getLanguage(context)?.language == Locale.TRADITIONAL_CHINESE.language
     }
 
     fun report(context: Context) {

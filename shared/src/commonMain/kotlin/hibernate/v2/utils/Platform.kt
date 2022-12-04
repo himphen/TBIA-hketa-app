@@ -21,3 +21,5 @@ data class LatLng(val latitude: Double, val longitude: Double)
 fun reportEmailAddress(): String {
     return BuildKonfig.CONTACT_EMAIL
 }
+
+expect fun gmsApiKey(): String

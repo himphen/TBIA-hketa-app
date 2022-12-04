@@ -14,8 +14,8 @@ import hibernate.v2.tbia.databinding.ItemRouteBadgeBinding
 import hibernate.v2.tbia.ui.base.BaseViewHolder
 import hibernate.v2.tbia.ui.searchmap.item.RouteBadge
 import hibernate.v2.tbia.ui.view.setStopRouteBadgeFlexManager
-import hibernate.v2.tbia.util.GeneralUtils.getTransportationLanguage
 import hibernate.v2.tbia.util.updateBackgroundColor
+import hibernate.v2.utils.LanguageUtils
 
 class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
     ListAdapter<SearchMapStop, StopListAdapter.ItemVH>(DiffCallback()) {
@@ -50,7 +50,8 @@ class StopListAdapter(val onStopSelected: (SearchMapStop) -> Unit) :
         val item = getItem(position)
         holder.viewBinding.apply {
             stopCompanyColor.setBackgroundColor(item.etaType.color().colorInt())
-            stopNameTv.text = item.getLocalisedName(getTransportationLanguage(holder.context))
+            stopNameTv.text =
+                item.getLocalisedName(LanguageUtils.getTransportationLanguage(holder.context))
 
             (routeNumberRecyclerView.adapter as RouteBadgeAdapter).apply {
                 setData(

@@ -1,8 +1,10 @@
 package hibernate.v2.utils
 
-expect object LanguageUtils {
+import org.koin.core.component.KoinComponent
 
-    fun getLanguage(context: KMMContext): KMMLocale?
+expect object LanguageUtils : KoinComponent {
+
+    fun getLanguage(context: KMMContext): KMMLocale
 
     fun getTransportationLanguage(context: KMMContext): TransportationLanguage
 

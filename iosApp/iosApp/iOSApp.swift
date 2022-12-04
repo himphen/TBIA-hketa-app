@@ -9,6 +9,7 @@ struct iOSApp: App {
     init() {
         IOSCommonLoggerKt.doInitLogger()
         KoinModuleKt.doInitKoin()
+        LanguageUtils().doInitLanguage()
     }
     
     var body: some Scene {
