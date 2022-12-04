@@ -49,7 +49,6 @@ import hibernate.v2.tbia.ui.bookmark.BookmarkSaveViewModel
 import hibernate.v2.tbia.ui.main.mobile.MainViewModel
 import hibernate.v2.tbia.util.GeneralUtils
 import hibernate.v2.tbia.util.GeneralUtils.ETA_LAST_UPDATED_REFRESH_TIME
-import hibernate.v2.tbia.util.GeneralUtils.getTransportationLanguage
 import hibernate.v2.tbia.util.dpToPx
 import hibernate.v2.tbia.util.gone
 import hibernate.v2.tbia.util.launchPeriodicAsync

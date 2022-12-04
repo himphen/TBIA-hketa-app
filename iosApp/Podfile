@@ -11,4 +11,5 @@ target 'iosApp' do
   pod 'R.swift'
   pod 'AlertToast'
   pod 'ThirdPartyMailer'
+  pod 'GoogleMaps'
 end

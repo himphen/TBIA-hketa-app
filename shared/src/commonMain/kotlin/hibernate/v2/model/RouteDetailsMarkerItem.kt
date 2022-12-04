@@ -1,3 +1,3 @@
-package hibernate.v2.tbia.model
+package hibernate.v2.model
 
 data class RouteDetailsMarkerItem(val position: Int)

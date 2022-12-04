@@ -53,6 +53,11 @@ PODS:
     - nanopb (~> 2.30907.0)
   - GoogleDataTransport (8.2.0):
     - nanopb (~> 2.30907.0)
+  - GoogleMaps (7.2.0):
+    - GoogleMaps/Maps (= 7.2.0)
+  - GoogleMaps/Base (7.2.0)
+  - GoogleMaps/Maps (7.2.0):
+    - GoogleMaps/Base
   - GoogleUtilities/AppDelegateSwizzler (7.2.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -94,6 +99,7 @@ DEPENDENCIES:
   - FirebaseCrashlytics
   - FirebaseDatabase
   - FirebaseRemoteConfig
+  - GoogleMaps
   - lottie-ios
   - R.swift
   - shared (from `../shared`)
@@ -113,6 +119,7 @@ SPEC REPOS:
     - FirebaseRemoteConfig
     - GoogleAppMeasurement
     - GoogleDataTransport
+    - GoogleMaps
     - GoogleUtilities
     - GTMSessionFetcher
     - leveldb-library
@@ -140,6 +147,7 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfig: 0ea30de5fb0231df8c1bdcdf3b6c23bdc5066131
   GoogleAppMeasurement: 120eec8803fe65a4a7475fb3d3d59a61d0e1a866
   GoogleDataTransport: 1024b1a4dfbd7a0e92cb20d7e0a6f1fb66b449a4
+  GoogleMaps: 65ce5426e2398bb81433c8076f2ab6419c2c5537
   GoogleUtilities: d866834472f1324d080496bc67ab3ce5d0d46027
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
@@ -151,6 +159,6 @@ SPEC CHECKSUMS:
   shared: 7647c83269d8f8d5f83c9a3abbd6a70965606a72
   ThirdPartyMailer: 25ded36f716dcd61a5e3374f07d09c3368c59a16
 
-PODFILE CHECKSUM: cfab289eae583b2d199f2b30e29375e66e4bfc7e
+PODFILE CHECKSUM: 82a730cc2625c15e029d91eb27cb95634e87bcbf
 
 COCOAPODS: 1.11.3
