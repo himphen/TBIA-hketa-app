@@ -12,6 +12,7 @@ import hibernate.v2.tbia.databinding.FragmentOnboardingBinding
 import hibernate.v2.tbia.ui.base.BaseFragment
 import hibernate.v2.tbia.ui.main.mobile.MainActivity
 import hibernate.v2.tbia.ui.onboarding.OnboardingViewModel
+import hibernate.v2.tbia.util.GeneralUtils
 import hibernate.v2.tbia.util.gone
 import hibernate.v2.tbia.util.visible
 import kotlinx.coroutines.Dispatchers
@@ -122,7 +123,7 @@ class OnboardingFragment : BaseFragment<FragmentOnboardingBinding>() {
         }
 
         viewBinding?.reportButton?.setOnClickListener {
-            // TODO
+            GeneralUtils.report(it.context)
         }
     }
 
