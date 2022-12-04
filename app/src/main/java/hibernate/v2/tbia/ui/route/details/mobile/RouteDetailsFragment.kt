@@ -36,12 +36,12 @@ import com.himphen.logger.Logger
 import dev.icerock.moko.graphics.colorInt
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.core.SharedPreferencesManager
+import hibernate.v2.model.RouteDetailsMarkerItem
 import hibernate.v2.model.transport.RouteDetailsStop
 import hibernate.v2.model.transport.TransportStop
 import hibernate.v2.model.transport.eta.EtaType
 import hibernate.v2.tbia.R
 import hibernate.v2.tbia.databinding.FragmentRouteDetailsBinding
-import hibernate.v2.tbia.model.RouteDetailsMarkerItem
 import hibernate.v2.tbia.ui.base.BaseFragment
 import hibernate.v2.tbia.ui.main.mobile.MainActivity
 import hibernate.v2.tbia.util.GeneralUtils

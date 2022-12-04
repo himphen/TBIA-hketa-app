@@ -29,4 +29,13 @@ extension GraphicsColor {
             blue: (Double(blue) / 255)
         )
     }
+    
+    func toUIColor() -> UIColor {
+        UIColor(
+            red: (Double(red) / 255),
+            green: (Double(green) / 255),
+            blue: (Double(blue) / 255),
+            alpha: 1
+        )
+    }
 }

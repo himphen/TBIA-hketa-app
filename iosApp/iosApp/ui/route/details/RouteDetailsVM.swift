@@ -7,6 +7,7 @@ import Combine
 import SwiftUI
 import shared
 import Rswift
+import GoogleMaps
 
 @MainActor class RouteDetailsVM: ObservableObject {
     var selectedRoute: TransportRoute
@@ -32,8 +33,29 @@ import Rswift
     
                 DispatchQueue.main.async { [self] in
                     etaError = nil
-                    routeDetailsStopListUpdated = routeDetailsStopList.map { item in
-                        RouteDetailsStopItem(item: item, isExpanded: false, etaList: [])
+                    if (markers.isEmpty) {
+                        var bounds = GMSCoordinateBounds()
+                        markers = routeDetailsStopList.enumerated().map { (index, routeDetailsStop) in
+                            let coordinate2D = CLLocationCoordinate2D(
+                                latitude: routeDetailsStop.transportStop.lat,
+                                longitude: routeDetailsStop.transportStop.lng
+                            )
+                            let marker = GMSMarker(position: coordinate2D)
+                            marker.userData = RouteDetailsMarkerItem(position: Int32(index))
+                            bounds = bounds.includingCoordinate(coordinate2D)
+                            let bus = R.image.ic_bus_24()!.withRenderingMode(.alwaysTemplate)
+                            let markerView = UIImageView(image: bus)
+                            markerView.backgroundColor = selectedRoute.getColor(combineNC: false).toUIColor()
+                            markerView.tintColor = .white
+                            markerView.layer.cornerRadius = 4
+                            markerView.clipsToBounds = true
+                            marker.iconView = markerView
+                            return marker
+                        }
+                        self.bounds = bounds
+                    }
+                    routeDetailsStopListUpdated = routeDetailsStopList.map { routeDetailsStop in
+                        RouteDetailsStopItem(item: routeDetailsStop, isExpanded: false, etaList: [])
                     }
                 }
             },
@@ -50,6 +72,15 @@ import Rswift
                     etaError = nil
                 }
                 selectedStop = viewModel?.selectedStop
+                
+                if let selectedStop = selectedStop {
+                    DispatchQueue.main.async { [self] in
+                        coordianteForZooming = CLLocationCoordinate2D(
+                            latitude: selectedStop.lat,
+                            longitude: selectedStop.lng
+                        )
+                    }
+                }
             },
             isSavedEtaBookmarkUpdated: { [self] data1, data2 in
                 CommonLoggerUtilsKt.logD(message: "isSavedEtaBookmarkUpdated")
@@ -82,6 +113,9 @@ import Rswift
     private var viewModel: RouteDetailsViewModel? = nil
     
     @Published var routeDetailsStopListUpdated: [RouteDetailsStopItem] = []
+    @Published var markers: [GMSMarker] = []
+    @Published var coordianteForZooming: CLLocationCoordinate2D? = nil
+    @Published var bounds: GMSCoordinateBounds? = nil
     @Published var showSavedEtaBookmarkToast: Bool = false
     @Published var showEtaErrorToast: Bool = false
     
@@ -103,7 +137,9 @@ import Rswift
         viewModel?.selectedStop = nil
     }
     
-    func expandedItem(expandedPosition: Int, selectedStop: TransportStop) {
+    func expandedItem(expandedPosition: Int) {
+        let selectedStop = routeDetailsStopListUpdated[expandedPosition].item.transportStop
+        
         routeDetailsStopListUpdated = routeDetailsStopListUpdated.enumerated().map { (index, element) in
             RouteDetailsStopItem(
                 item: element.item,

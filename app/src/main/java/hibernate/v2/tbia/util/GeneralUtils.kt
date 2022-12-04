@@ -19,7 +19,7 @@ import java.util.Locale
 
 object GeneralUtils : KoinComponent {
 
-    const val ETA_REFRESH_TIME = 10 * 1000L
+    const val ETA_REFRESH_TIME = 60 * 1000L
     const val ETA_LAST_UPDATED_REFRESH_TIME = 1 * 1000L
 
     private val sharedPreferencesManager: SharedPreferencesManager by inject()

@@ -30,7 +30,7 @@ struct BookmarkHomeListView: View {
                         ))
                         .foregroundColor(MR.colors().eta_update_failed_text.toColor())
                     } else {
-                        Text(MR.strings().eta_last_updated_at_init.desc().localized())
+                        Text(MR.strings().eta_last_updated_at_init.localized())
                         .foregroundColor(MR.colors().eta_update_failed_text.toColor())
                     }
                 }

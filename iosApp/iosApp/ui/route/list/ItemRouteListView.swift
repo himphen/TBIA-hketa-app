@@ -37,7 +37,7 @@ struct ItemRouteListView: View {
                 
                 VStack {
                     HStack {
-                        Text(MR.strings().add_card_route_to_text.desc().localized())
+                        Text(MR.strings().add_card_route_to_text.localized())
                         .font(.system(size: 16, weight: .bold))
                         Text(route.getLocalisedDest(context: IOSContext())).font(.system(size: 16, weight: .bold))
                         
@@ -48,7 +48,7 @@ struct ItemRouteListView: View {
                     )
                     
                     HStack {
-                        Text(MR.strings().add_card_route_from_text.desc().localized())
+                        Text(MR.strings().add_card_route_from_text.localized())
                         .font(.system(size: 12))
                         Text(route.getLocalisedOrig(context: IOSContext()))
                         .font(.system(size: 12))

@@ -115,7 +115,7 @@ struct SearchBar: View {
     
     var body: some View {
         HStack {
-            TextField(MR.strings().placeholder_search_route.desc().localized(), text: $debounceObject.text)
+            TextField(MR.strings().placeholder_search_route.localized(), text: $debounceObject.text)
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
             .background(Color(.systemGray6))
@@ -135,7 +135,7 @@ struct SearchBar: View {
                     self.isEditing = false
                     self.text = ""
                 }) {
-                    Text(MR.strings().dialog_cancel_btn.desc().localized())
+                    Text(MR.strings().dialog_cancel_btn.localized())
                 }
                 .padding(.trailing, 10)
                 .transition(.move(edge: .trailing))
