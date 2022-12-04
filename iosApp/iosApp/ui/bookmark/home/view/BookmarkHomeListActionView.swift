@@ -36,7 +36,7 @@ struct BookmarkHomeListActionView: View {
                 HStack {
                     Image("ic_search_24")
                     .foregroundColor(Color.blue)
-                    Text(MR.strings().eta_button_add.desc().localized())
+                    Text(MR.strings().eta_button_add.localized())
                     .font(.system(size: 18))
                     .foregroundColor(Color.blue)
                 }
@@ -58,7 +58,7 @@ struct BookmarkHomeListActionView: View {
                 HStack {
                     Image("ic_edit_24")
                     .foregroundColor(Color.blue)
-                    Text(MR.strings().eta_button_edit.desc().localized())
+                    Text(MR.strings().eta_button_edit.localized())
                     .font(.system(size: 18))
                     .foregroundColor(Color.blue)
                 }

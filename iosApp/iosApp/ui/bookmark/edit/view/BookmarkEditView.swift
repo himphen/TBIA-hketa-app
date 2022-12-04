@@ -39,7 +39,7 @@ struct BookmarkEditView: View {
                                     viewModel.savedEtaCardList.remove(at: index)
                                 }
                             } ) {
-                                Text(MR.strings().eta_button_remove.desc().localized())
+                                Text(MR.strings().eta_button_remove.localized())
                             }
                             .tint(Color(UIColor.systemOrange))
                         }
@@ -71,7 +71,7 @@ struct BookmarkEditView: View {
             }
         }
         .navigationBarTitle(
-            MR.strings.shared.eta_button_edit.desc().localized(),
+            MR.strings.shared.eta_button_edit.localized(),
             displayMode: .inline
         )
         .navigationBarBackButtonHidden(true)
@@ -85,7 +85,7 @@ struct BookmarkEditView: View {
                 } label: {
                     HStack {
                         Image(systemName: "chevron.left")
-                        Text(MR.strings().dialog_check_edit_eta_order_save_btn.desc().localized())
+                        Text(MR.strings().dialog_check_edit_eta_order_save_btn.localized())
                     }
                 }
             }

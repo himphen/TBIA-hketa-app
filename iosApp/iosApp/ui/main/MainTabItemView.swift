@@ -36,19 +36,19 @@ enum MainTabType: Int, CaseIterable {
             return MainTabItem.init(
                 icon: R.image.ic_bus_24.image,
                 selectedIcon: R.image.ic_bus_24.image,
-                title: MR.strings().main_tab_title_bookmark.desc().localized()
+                title: MR.strings().main_tab_title_bookmark.localized()
             )
         case .settings:
             return MainTabItem.init(
                 icon: R.image.ic_settings_24.image,
                 selectedIcon: R.image.ic_settings_24.image,
-                title: MR.strings().main_tab_title_settings.desc().localized()
+                title: MR.strings().main_tab_title_settings.localized()
             )
         case .search:
             return MainTabItem.init(
                 icon: R.image.ic_search_24.image,
                 selectedIcon: R.image.ic_search_24.image,
-                title: MR.strings().main_tab_title_search.desc().localized()
+                title: MR.strings().main_tab_title_search.localized()
             )
         }
     }

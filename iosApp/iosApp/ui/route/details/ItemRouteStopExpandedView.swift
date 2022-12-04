@@ -53,7 +53,7 @@ struct ItemRouteStopExpandedView: View {
                         }) {
                             HStack {
                                 Image("ic_bookmark_add")
-                                Text(MR.strings().eta_button_add.desc().localized())
+                                Text(MR.strings().eta_button_add.localized())
                             }
                             .padding()
                             .foregroundColor(.white)

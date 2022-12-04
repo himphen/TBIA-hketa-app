@@ -20,7 +20,7 @@ struct EtaListView: View {
                     .foregroundColor(MR.colors().eta_card_minutes_text.toColor())
                     
                     if (value.first == true) {
-                        Text(MR.strings().demo_card_eta_minute_classic_unit.desc().localized())
+                        Text(MR.strings().demo_card_eta_minute_classic_unit.localized())
                         .font(.system(size: 12))
                         .padding(.leading, 2)
                     }
@@ -44,11 +44,11 @@ struct EtaListView: View {
                         }
                         
                         if (index == etaListWithoutFirst.count - 1) {
-                            Text(MR.strings().demo_card_eta_minute_classic_unit.desc().localized())
+                            Text(MR.strings().demo_card_eta_minute_classic_unit.localized())
                             .font(.system(size: 12))
                             .padding(.leading, 2)
                         } else {
-                            Text(MR.strings().demo_card_eta_minute_classic_comma.desc().localized())
+                            Text(MR.strings().demo_card_eta_minute_classic_comma.localized())
                             .font(.system(size: 12))
                             .padding(.leading, 2)
                         }

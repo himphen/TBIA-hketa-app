@@ -88,7 +88,7 @@ struct BookmarkHomeEmptyListView: View {
             .aspectRatio(contentMode: .fill)
             .frame(width: 96, height: 96)
             
-            Text(MR.strings().empty_eta_list.desc().localized())
+            Text(MR.strings().empty_eta_list.localized())
             
             Spacer().frame(height: 40)
             Button {
@@ -96,7 +96,7 @@ struct BookmarkHomeEmptyListView: View {
             } label: {
                 HStack {
                     Image(systemName: "magnifyingglass")
-                    Text(MR.strings().eta_button_add.desc().localized())
+                    Text(MR.strings().eta_button_add.localized())
                 }
             }
             .frame(width: 100)
