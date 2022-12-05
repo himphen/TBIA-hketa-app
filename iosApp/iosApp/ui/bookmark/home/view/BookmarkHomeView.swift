@@ -6,7 +6,7 @@
 import Combine
 import SwiftUI
 import shared
-import Rswift
+import RswiftResources
 
 struct BookmarkHomeView: View {
     @Environment(\.scenePhase) var scenePhase

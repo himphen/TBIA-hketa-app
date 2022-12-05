@@ -4,7 +4,7 @@
 //
 
 import SwiftUI
-import Rswift
+import RswiftResources
 
 // MARK: - ImageResource
 
@@ -19,13 +19,5 @@ extension ImageResource {
 extension ColorResource {
     var color: Color {
         Color(name)
-    }
-}
-
-// MARK: - FontResource
-
-extension FontResource {
-    func font(size: CGFloat) -> Font {
-        Font.custom(fontName, size: size)
     }
 }

@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 import shared
-import Rswift
+import RswiftResources
 
 struct BookmarkHomeListActionView: View {
     @State private var action: Int? = 0

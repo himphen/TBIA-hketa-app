@@ -37,12 +37,15 @@ class OnboardingViewModel(
 
     @Suppress("MemberVisibilityCanBePrivate")
     val fetchTransportDataFailedList = mutableListOf<FailedCheckType>()
+    var fetchTransportDataRequiredCount = 0
 
     suspend fun checkDbTransportData() {
         withContext(Dispatchers.Default) {
             try {
                 var dataLoadingCount = 0
                 var fetchTransportDataCompletedCountSum = 0
+
+                fetchTransportDataFailedList.clear()
 
                 val serverChecksum = try {
                     coreRepository.getChecksum()
@@ -88,6 +91,7 @@ class OnboardingViewModel(
                     dataLoadingCount = 6
                 }
 
+                fetchTransportDataRequiredCount = dataLoadingCount
                 fetchTransportDataRequired(dataLoadingCount)
                 fetchTransportDataCompletedCount(0)
 

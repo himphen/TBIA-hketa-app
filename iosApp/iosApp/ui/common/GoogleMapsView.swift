@@ -28,7 +28,7 @@ struct GoogleMapsView: UIViewRepresentable {
          
          gmsMapView.delegate = context.coordinator
          gmsMapView.camera = camera
-         gmsMapView.setMinZoom(14, maxZoom: 20)
+         gmsMapView.setMinZoom(11, maxZoom: 20)
          return gmsMapView
      }
      
@@ -57,7 +57,7 @@ struct GoogleMapsView: UIViewRepresentable {
         
         if let coordianteForZooming = coordianteForZooming {
             CATransaction.begin()
-            CATransaction.setValue(1.5, forKey: kCATransactionAnimationDuration)
+            CATransaction.setValue(1.1, forKey: kCATransactionAnimationDuration)
             let camera = GMSCameraUpdate.setTarget(coordianteForZooming, zoom: 16)
             uiView.animate(with: camera)
             CATransaction.commit()
@@ -84,7 +84,7 @@ struct GoogleMapsView: UIViewRepresentable {
             if let item = marker.userData as? RouteDetailsMarkerItem {
                 self.owner.mapMarkerClicked(item)
                 CATransaction.begin()
-                CATransaction.setValue(1.5, forKey: kCATransactionAnimationDuration)
+                CATransaction.setValue(1.1, forKey: kCATransactionAnimationDuration)
                 let camera = GMSCameraUpdate.setTarget(marker.position, zoom: 16)
                 self.owner.gmsMapView.animate(with: camera)
                 CATransaction.commit()
@@ -98,5 +98,5 @@ struct GoogleMapsView: UIViewRepresentable {
  }
 
 extension GMSCameraPosition  {
-     static var hongKong = GMSCameraPosition.camera(withLatitude: 22.3112, longitude: 114.1688, zoom: 10)
+     static var hongKong = GMSCameraPosition.camera(withLatitude: 22.3112, longitude: 114.1688, zoom: 11)
  }

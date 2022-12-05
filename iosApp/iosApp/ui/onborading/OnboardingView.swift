@@ -9,10 +9,26 @@ struct OnboardingView: View {
     var body: some View {
         if (!viewModel.isCompleted) {
             VStack {
-                if viewModel.isFetchTransportDataRequired {
+                if (viewModel.isFetchTransportDataRequired || viewModel.isFailed) {
                     LottieView(name: "lottie_spaghetti_loader")
                     .frame(width: 200, height: 200)
                     Text("\(viewModel.loadingString)")
+                        .padding(EdgeInsets(top: 12, leading: 24, bottom: 12, trailing: 24))
+                    
+                    if (viewModel.isFailed) {
+                        HStack(spacing: 0) {
+                            Button(action: {
+                                viewModel.isFetchTransportDataRequired = false
+                                viewModel.isFailed = false
+                            } ) {
+                                Text(MR.strings().onboarding_retry_btn.localized())
+                            }
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(MR.colors().primary.toColor())
+                            .cornerRadius(40)
+                        }
+                    }
                 } else {
                     R.image.app_icon.image
                     .resizable()
@@ -23,7 +39,7 @@ struct OnboardingView: View {
                     )
                     .onAppear {
                         Task {
-                            await viewModel.activate()
+                            await viewModel.checkDbTransportData()
                         }
                     }
                 }

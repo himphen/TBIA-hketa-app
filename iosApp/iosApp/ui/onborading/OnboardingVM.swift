@@ -1,6 +1,6 @@
 import SwiftUI
 import shared
-import Rswift
+import RswiftResources
 
 @MainActor class OnboardingVM: ObservableObject {
     private var viewModel: OnboardingViewModel? = nil
@@ -9,6 +9,7 @@ import Rswift
     @Published var isFetchTransportDataRequired = false
     @Published var isFetchTransportDataCompleted = false
     @Published var isCompleted = false
+    @Published var isFailed = false
     
     init() {
         viewModel = OnboardingViewModel(
@@ -16,6 +17,11 @@ import Rswift
                 CommonLoggerUtilsKt.logD(
                     message: "fetchTransportDataRequired"
                 )
+                
+                DispatchQueue.main.async { [self] in
+                    isCompleted = false
+                    isFailed = false
+                }
             
                 if (data.intValue < 0) {
                     return
@@ -41,6 +47,9 @@ import Rswift
                 let list = viewModel!.fetchTransportDataFailedList as NSArray as! [FailedCheckType]
             
                 if (!list.isEmpty) {
+                    DispatchQueue.main.async { [self] in
+                        isFailed = true
+                    }
                     let first: FailedCheckType = list.first!
                     switch (first) {
                     case FailedCheckType.kmb:
@@ -97,10 +106,13 @@ import Rswift
         )
     }
     
-    func activate() async {
+    func checkDbTransportData() async {
         do {
             try await viewModel?.checkDbTransportData()
         } catch {
+            CommonLoggerUtilsKt.logD(message:
+            "checkDbTransportData catch"
+            )
         }
     }
 }

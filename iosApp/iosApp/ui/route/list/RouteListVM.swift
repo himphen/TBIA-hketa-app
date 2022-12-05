@@ -5,7 +5,7 @@
 
 import SwiftUI
 import shared
-import Rswift
+import RswiftResources
 
 @MainActor class RouteListVM: ObservableObject {
     private var viewModel: RouteListViewModel? = nil

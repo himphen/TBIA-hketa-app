@@ -5,7 +5,7 @@
 
 import SwiftUI
 import shared
-import Rswift
+import RswiftResources
 
 struct MainTabItemView: View {
     let data: MainTabItem

@@ -4,308 +4,160 @@
 //
 
 import Foundation
-import Rswift
-import UIKit
+import RswiftResources
 
-/// This `R` struct is generated and contains references to static resources.
-struct R: Rswift.Validatable {
-  fileprivate static let applicationLocale = hostingBundle.preferredLocalizations.first.flatMap { Locale(identifier: $0) } ?? Locale.current
-  fileprivate static let hostingBundle = Bundle(for: R.Class.self)
-
-  /// Find first language and bundle for which the table exists
-  fileprivate static func localeBundle(tableName: String, preferredLanguages: [String]) -> (Foundation.Locale, Foundation.Bundle)? {
-    // Filter preferredLanguages to localizations, use first locale
-    var languages = preferredLanguages
-      .map { Locale(identifier: $0) }
-      .prefix(1)
-      .flatMap { locale -> [String] in
-        if hostingBundle.localizations.contains(locale.identifier) {
-          if let language = locale.languageCode, hostingBundle.localizations.contains(language) {
-            return [locale.identifier, language]
-          } else {
-            return [locale.identifier]
-          }
-        } else if let language = locale.languageCode, hostingBundle.localizations.contains(language) {
-          return [language]
-        } else {
-          return []
-        }
-      }
-
-    // If there's no languages, use development language as backstop
-    if languages.isEmpty {
-      if let developmentLocalization = hostingBundle.developmentLocalization {
-        languages = [developmentLocalization]
-      }
-    } else {
-      // Insert Base as second item (between locale identifier and languageCode)
-      languages.insert("Base", at: 1)
-
-      // Add development language as backstop
-      if let developmentLocalization = hostingBundle.developmentLocalization {
-        languages.append(developmentLocalization)
-      }
-    }
-
-    // Find first language for which table exists
-    // Note: key might not exist in chosen language (in that case, key will be shown)
-    for language in languages {
-      if let lproj = hostingBundle.url(forResource: language, withExtension: "lproj"),
-         let lbundle = Bundle(url: lproj)
-      {
-        let strings = lbundle.url(forResource: tableName, withExtension: "strings")
-        let stringsdict = lbundle.url(forResource: tableName, withExtension: "stringsdict")
-
-        if strings != nil || stringsdict != nil {
-          return (Locale(identifier: language), lbundle)
-        }
-      }
-    }
-
-    // If table is available in main bundle, don't look for localized resources
-    let strings = hostingBundle.url(forResource: tableName, withExtension: "strings", subdirectory: nil, localization: nil)
-    let stringsdict = hostingBundle.url(forResource: tableName, withExtension: "stringsdict", subdirectory: nil, localization: nil)
-
-    if strings != nil || stringsdict != nil {
-      return (applicationLocale, hostingBundle)
-    }
-
-    // If table is not found for requested languages, key will be shown
-    return nil
-  }
-
-  /// Load string from Info.plist file
-  fileprivate static func infoPlistString(path: [String], key: String) -> String? {
-    var dict = hostingBundle.infoDictionary
-    for step in path {
-      guard let obj = dict?[step] as? [String: Any] else { return nil }
-      dict = obj
-    }
-    return dict?[key] as? String
-  }
-
-  static func validate() throws {
-    try intern.validate()
-  }
-
-  /// This `R.file` struct is generated, and contains static references to 2 files.
-  struct file {
-    /// Resource file `GoogleService-Info.plist`.
-    static let googleServiceInfoPlist = Rswift.FileResource(bundle: R.hostingBundle, name: "GoogleService-Info", pathExtension: "plist")
-    /// Resource file `lottie_spaghetti_loader.json`.
-    static let lottie_spaghetti_loaderJson = Rswift.FileResource(bundle: R.hostingBundle, name: "lottie_spaghetti_loader", pathExtension: "json")
-
-    /// `bundle.url(forResource: "GoogleService-Info", withExtension: "plist")`
-    static func googleServiceInfoPlist(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.googleServiceInfoPlist
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    /// `bundle.url(forResource: "lottie_spaghetti_loader", withExtension: "json")`
-    static func lottie_spaghetti_loaderJson(_: Void = ()) -> Foundation.URL? {
-      let fileResource = R.file.lottie_spaghetti_loaderJson
-      return fileResource.bundle.url(forResource: fileResource)
-    }
-
-    fileprivate init() {}
-  }
-
-  /// This `R.image` struct is generated, and contains static references to 8 images.
-  struct image {
-    /// Image `app_icon`.
-    static let app_icon = Rswift.ImageResource(bundle: R.hostingBundle, name: "app_icon")
-    /// Image `ic_bus_24`.
-    static let ic_bus_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_bus_24")
-    /// Image `ic_edit_24`.
-    static let ic_edit_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_edit_24")
-    /// Image `ic_empty_list`.
-    static let ic_empty_list = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_empty_list")
-    /// Image `ic_order_24`.
-    static let ic_order_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_order_24")
-    /// Image `ic_search_24`.
-    static let ic_search_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_search_24")
-    /// Image `ic_settings_24`.
-    static let ic_settings_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_settings_24")
-    /// Image `ic_streetview_24`.
-    static let ic_streetview_24 = Rswift.ImageResource(bundle: R.hostingBundle, name: "ic_streetview_24")
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "app_icon", bundle: ..., traitCollection: ...)`
-    static func app_icon(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.app_icon, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "ic_bus_24", bundle: ..., traitCollection: ...)`
-    static func ic_bus_24(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.ic_bus_24, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "ic_edit_24", bundle: ..., traitCollection: ...)`
-    static func ic_edit_24(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.ic_edit_24, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "ic_empty_list", bundle: ..., traitCollection: ...)`
-    static func ic_empty_list(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.ic_empty_list, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "ic_order_24", bundle: ..., traitCollection: ...)`
-    static func ic_order_24(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.ic_order_24, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "ic_search_24", bundle: ..., traitCollection: ...)`
-    static func ic_search_24(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.ic_search_24, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "ic_settings_24", bundle: ..., traitCollection: ...)`
-    static func ic_settings_24(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.ic_settings_24, compatibleWith: traitCollection)
-    }
-    #endif
-
-    #if os(iOS) || os(tvOS)
-    /// `UIImage(named: "ic_streetview_24", bundle: ..., traitCollection: ...)`
-    static func ic_streetview_24(compatibleWith traitCollection: UIKit.UITraitCollection? = nil) -> UIKit.UIImage? {
-      return UIKit.UIImage(resource: R.image.ic_streetview_24, compatibleWith: traitCollection)
-    }
-    #endif
-
-    fileprivate init() {}
-  }
-
-  /// This `R.info` struct is generated, and contains static references to 1 properties.
-  struct info {
-    struct uiApplicationSceneManifest {
-      static let _key = "UIApplicationSceneManifest"
-      static let uiApplicationSupportsMultipleScenes = false
-
-      fileprivate init() {}
-    }
-
-    fileprivate init() {}
-  }
-
-  /// This `R.string` struct is generated, and contains static references to 2 localization tables.
-  struct string {
-    /// This `R.string.infoPlist` struct is generated, and contains static references to 2 localization keys.
-    struct infoPlist {
-      /// en translation: TBIA
-      ///
-      /// Locales: en, zh-Hant
-      static let cfBundleDisplayName = Rswift.StringResource(key: "CFBundleDisplayName", tableName: "InfoPlist", bundle: R.hostingBundle, locales: ["en", "zh-Hant"], comment: nil)
-      /// en translation: TBIA
-      ///
-      /// Locales: en, zh-Hant
-      static let cfBundleName = Rswift.StringResource(key: "CFBundleName", tableName: "InfoPlist", bundle: R.hostingBundle, locales: ["en", "zh-Hant"], comment: nil)
-
-      /// en translation: TBIA
-      ///
-      /// Locales: en, zh-Hant
-      static func cfBundleDisplayName(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("CFBundleDisplayName", tableName: "InfoPlist", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "InfoPlist", preferredLanguages: preferredLanguages) else {
-          return "CFBundleDisplayName"
-        }
-
-        return NSLocalizedString("CFBundleDisplayName", tableName: "InfoPlist", bundle: bundle, comment: "")
-      }
-
-      /// en translation: TBIA
-      ///
-      /// Locales: en, zh-Hant
-      static func cfBundleName(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("CFBundleName", tableName: "InfoPlist", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "InfoPlist", preferredLanguages: preferredLanguages) else {
-          return "CFBundleName"
-        }
-
-        return NSLocalizedString("CFBundleName", tableName: "InfoPlist", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
-    }
-
-    /// This `R.string.localizable` struct is generated, and contains static references to 2 localization keys.
-    struct localizable {
-      /// en translation: TBIA
-      ///
-      /// Locales: zh-Hant, en
-      static let cfBundleDisplayName = Rswift.StringResource(key: "CFBundleDisplayName", tableName: "Localizable", bundle: R.hostingBundle, locales: ["zh-Hant", "en"], comment: nil)
-      /// en translation: TBIA
-      ///
-      /// Locales: zh-Hant, en
-      static let cfBundleName = Rswift.StringResource(key: "CFBundleName", tableName: "Localizable", bundle: R.hostingBundle, locales: ["zh-Hant", "en"], comment: nil)
-
-      /// en translation: TBIA
-      ///
-      /// Locales: zh-Hant, en
-      static func cfBundleDisplayName(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("CFBundleDisplayName", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
-          return "CFBundleDisplayName"
-        }
-
-        return NSLocalizedString("CFBundleDisplayName", bundle: bundle, comment: "")
-      }
-
-      /// en translation: TBIA
-      ///
-      /// Locales: zh-Hant, en
-      static func cfBundleName(preferredLanguages: [String]? = nil) -> String {
-        guard let preferredLanguages = preferredLanguages else {
-          return NSLocalizedString("CFBundleName", bundle: hostingBundle, comment: "")
-        }
-
-        guard let (_, bundle) = localeBundle(tableName: "Localizable", preferredLanguages: preferredLanguages) else {
-          return "CFBundleName"
-        }
-
-        return NSLocalizedString("CFBundleName", bundle: bundle, comment: "")
-      }
-
-      fileprivate init() {}
-    }
-
-    fileprivate init() {}
-  }
-
-  fileprivate struct intern: Rswift.Validatable {
-    fileprivate static func validate() throws {
-      // There are no resources to validate
-    }
-
-    fileprivate init() {}
-  }
-
-  fileprivate class Class {}
-
-  fileprivate init() {}
-}
+private class BundleFinder {}
+let R = _R(bundle: Bundle(for: BundleFinder.self))
 
 struct _R {
-  fileprivate init() {}
+  let bundle: Foundation.Bundle
+  var string: string { .init(bundle: bundle, preferredLanguages: nil, locale: nil) }
+  var image: image { .init(bundle: bundle) }
+  var info: info { .init(bundle: bundle) }
+  var file: file { .init(bundle: bundle) }
+
+  func string(bundle: Foundation.Bundle) -> string {
+    .init(bundle: bundle, preferredLanguages: nil, locale: nil)
+  }
+  func string(locale: Foundation.Locale) -> string {
+    .init(bundle: bundle, preferredLanguages: nil, locale: locale)
+  }
+  func string(preferredLanguages: [String], locale: Locale? = nil) -> string {
+    .init(bundle: bundle, preferredLanguages: preferredLanguages, locale: locale)
+  }
+  func image(bundle: Foundation.Bundle) -> image {
+    .init(bundle: bundle)
+  }
+  func info(bundle: Foundation.Bundle) -> info {
+    .init(bundle: bundle)
+  }
+  func file(bundle: Foundation.Bundle) -> file {
+    .init(bundle: bundle)
+  }
+  func validate() throws {
+
+  }
+
+  struct project {
+    let developmentRegion = "en"
+  }
+
+  /// This `_R.string` struct is generated, and contains static references to 2 localization tables.
+  struct string {
+    let bundle: Foundation.Bundle
+    let preferredLanguages: [String]?
+    let locale: Locale?
+    var infoPlist: infoPlist { .init(source: .init(bundle: bundle, tableName: "InfoPlist", preferredLanguages: preferredLanguages, locale: locale)) }
+    var localizable: localizable { .init(source: .init(bundle: bundle, tableName: "Localizable", preferredLanguages: preferredLanguages, locale: locale)) }
+
+    func infoPlist(preferredLanguages: [String]) -> infoPlist {
+      .init(source: .init(bundle: bundle, tableName: "InfoPlist", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func localizable(preferredLanguages: [String]) -> localizable {
+      .init(source: .init(bundle: bundle, tableName: "Localizable", preferredLanguages: preferredLanguages, locale: locale))
+    }
+
+
+    /// This `_R.string.infoPlist` struct is generated, and contains static references to 2 localization keys.
+    struct infoPlist {
+      let source: RswiftResources.StringResource.Source
+
+      /// en translation: TBIA
+      ///
+      /// Key: CFBundleDisplayName
+      ///
+      /// Locales: en, zh-Hant
+      var cfBundleDisplayName: RswiftResources.StringResource { .init(key: "CFBundleDisplayName", tableName: "InfoPlist", source: source, developmentValue: "TBIA", comment: nil) }
+
+      /// en translation: TBIA
+      ///
+      /// Key: CFBundleName
+      ///
+      /// Locales: en, zh-Hant
+      var cfBundleName: RswiftResources.StringResource { .init(key: "CFBundleName", tableName: "InfoPlist", source: source, developmentValue: "TBIA", comment: nil) }
+    }
+
+    /// This `_R.string.localizable` struct is generated, and contains static references to 2 localization keys.
+    struct localizable {
+      let source: RswiftResources.StringResource.Source
+
+      /// en translation: TBIA
+      ///
+      /// Key: CFBundleDisplayName
+      ///
+      /// Locales: zh-Hant, en
+      var cfBundleDisplayName: RswiftResources.StringResource { .init(key: "CFBundleDisplayName", tableName: "Localizable", source: source, developmentValue: "TBIA", comment: nil) }
+
+      /// en translation: TBIA
+      ///
+      /// Key: CFBundleName
+      ///
+      /// Locales: zh-Hant, en
+      var cfBundleName: RswiftResources.StringResource { .init(key: "CFBundleName", tableName: "Localizable", source: source, developmentValue: "TBIA", comment: nil) }
+    }
+  }
+
+  /// This `_R.image` struct is generated, and contains static references to 10 images.
+  struct image {
+    let bundle: Foundation.Bundle
+
+    /// Image `app_icon`.
+    var app_icon: ImageResource { .init(name: "app_icon", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `ic_bookmark_add`.
+    var ic_bookmark_add: ImageResource { .init(name: "ic_bookmark_add", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `ic_bookmark_remove`.
+    var ic_bookmark_remove: ImageResource { .init(name: "ic_bookmark_remove", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `ic_bus_24`.
+    var ic_bus_24: ImageResource { .init(name: "ic_bus_24", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `ic_edit_24`.
+    var ic_edit_24: ImageResource { .init(name: "ic_edit_24", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `ic_empty_list`.
+    var ic_empty_list: ImageResource { .init(name: "ic_empty_list", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `ic_order_24`.
+    var ic_order_24: ImageResource { .init(name: "ic_order_24", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `ic_search_24`.
+    var ic_search_24: ImageResource { .init(name: "ic_search_24", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `ic_settings_24`.
+    var ic_settings_24: ImageResource { .init(name: "ic_settings_24", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `ic_streetview_24`.
+    var ic_streetview_24: ImageResource { .init(name: "ic_streetview_24", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+  }
+
+  /// This `_R.info` struct is generated, and contains static references to 1 properties.
+  struct info {
+    let bundle: Foundation.Bundle
+    var uiApplicationSceneManifest: uiApplicationSceneManifest { .init(bundle: bundle) }
+
+    func uiApplicationSceneManifest(bundle: Foundation.Bundle) -> uiApplicationSceneManifest {
+      .init(bundle: bundle)
+    }
+
+    struct uiApplicationSceneManifest {
+      let bundle: Foundation.Bundle
+
+      let uiApplicationSupportsMultipleScenes: Bool = false
+
+      var _key: String { bundle.infoDictionaryString(path: ["UIApplicationSceneManifest"], key: "_key") ?? "UIApplicationSceneManifest" }
+    }
+  }
+
+  /// This `_R.file` struct is generated, and contains static references to 2 resource files.
+  struct file {
+    let bundle: Foundation.Bundle
+
+    /// Resource file `GoogleService-Info.plist`.
+    var googleServiceInfoPlist: RswiftResources.FileResource { .init(name: "GoogleService-Info", pathExtension: "plist", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `lottie_spaghetti_loader.json`.
+    var lottie_spaghetti_loaderJson: RswiftResources.FileResource { .init(name: "lottie_spaghetti_loader", pathExtension: "json", bundle: bundle, locale: LocaleReference.none) }
+  }
 }

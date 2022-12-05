@@ -5,7 +5,7 @@
 
 import SwiftUI
 import shared
-import Rswift
+import RswiftResources
 
 struct MainView: View {
     @Environment(\.scenePhase) var scenePhase

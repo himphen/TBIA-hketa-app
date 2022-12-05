@@ -5,7 +5,7 @@
 
 import SwiftUI
 import shared
-import Rswift
+import RswiftResources
 import FirebaseAnalytics
 import FirebaseCrashlytics
 import ThirdPartyMailer

@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 import shared
-import Rswift
+import RswiftResources
 import UniformTypeIdentifiers
 
 struct BookmarkEditView: View {

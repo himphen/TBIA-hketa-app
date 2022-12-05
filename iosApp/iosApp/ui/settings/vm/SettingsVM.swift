@@ -5,7 +5,7 @@
 
 import SwiftUI
 import shared
-import Rswift
+import RswiftResources
 
 @MainActor class SettingsVM: ObservableObject {
     private var viewModel: SettingsViewModel
