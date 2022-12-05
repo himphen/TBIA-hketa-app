@@ -225,7 +225,7 @@ class BookmarkEditFragment : BaseFragment<FragmentBookmarkEditBinding>() {
         if (!isEditingOrdering) return
         val context = context ?: return
 
-        val result = suspendCancellableCoroutine<Boolean> { cont ->
+        val result = suspendCancellableCoroutine { cont ->
             MaterialAlertDialogBuilder(context)
                 .setMessage(R.string.dialog_check_edit_eta_order_description)
                 .setPositiveButton(R.string.dialog_check_edit_eta_order_save_btn) { _, _ ->

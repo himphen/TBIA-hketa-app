@@ -7,10 +7,10 @@ class GetRouteStopComponentListDb(
     private val mtrDao: MtrDao
 ) {
 
-    suspend operator fun invoke() =
+    operator fun invoke() =
         mtrDao.getRouteStopComponentList()
 
-    suspend operator fun invoke(
+    operator fun invoke(
         route: TransportRoute,
     ) = mtrDao.getRouteStopComponentList(
         route.routeId,

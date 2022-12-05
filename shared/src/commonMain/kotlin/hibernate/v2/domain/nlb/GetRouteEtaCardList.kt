@@ -7,7 +7,7 @@ import hibernate.v2.model.searchmap.SearchMapStop
 class GetRouteEtaCardList(
     private val nlbDao: NlbDao
 ) {
-    suspend operator fun invoke(stop: SearchMapStop): List<Card.EtaCard> {
+    operator fun invoke(stop: SearchMapStop): List<Card.EtaCard> {
         val routeStopList = nlbDao.getRouteStopListFromStopId(stop.stopId)
         val routeList = nlbDao.getRouteListFromRouteId(routeStopList)
         val routeHashMap = routeList.associateBy {

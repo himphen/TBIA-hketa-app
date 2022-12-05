@@ -5,6 +5,6 @@ import hibernate.v2.database.kmb.KmbDao
 class GetRouteListDb(
     private val kmbDao: KmbDao
 ) {
-    suspend operator fun invoke() =
+    operator fun invoke() =
         kmbDao.getRouteList()
 }

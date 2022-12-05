@@ -49,7 +49,7 @@ class RouteListViewModel(
         }
     }
 
-    private suspend fun getKmbRouteList() {
+    private fun getKmbRouteList() {
         val etaType = EtaType.KMB
         if (RouteListDataHolder.hasData(etaType)) {
             logLifecycle("getKmbRouteList hasData")
@@ -113,7 +113,7 @@ class RouteListViewModel(
         }
     }
 
-    private suspend fun getMTRRouteList() {
+    private fun getMTRRouteList() {
         val etaType = EtaType.MTR
         if (RouteListDataHolder.hasData(etaType)) {
             logLifecycle("getMTRRouteList hasData")
@@ -151,7 +151,7 @@ class RouteListViewModel(
         }
     }
 
-    private suspend fun getNlbRouteList() {
+    private fun getNlbRouteList() {
         val etaType = EtaType.NLB
         if (RouteListDataHolder.hasData(etaType)) {
             logLifecycle("getNLBRouteList hasData")

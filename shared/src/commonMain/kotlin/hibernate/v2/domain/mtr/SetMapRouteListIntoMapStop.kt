@@ -3,7 +3,7 @@ package hibernate.v2.domain.mtr
 import hibernate.v2.model.searchmap.SearchMapStop
 
 class SetMapRouteListIntoMapStop {
-    suspend operator fun invoke(
+    operator fun invoke(
         stopList: List<SearchMapStop>,
         getRouteEtaCardList: GetRouteEtaCardList
     ): List<SearchMapStop> {

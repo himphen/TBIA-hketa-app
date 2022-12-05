@@ -236,12 +236,14 @@ class OnboardingViewModel(
     }
 
     suspend fun resetTransportData() {
-        sharedPreferencesManager.transportDataChecksum = null
-        kmbInteractor.initDatabase()
-        ctbInteractor.initDatabase()
-        gmbInteractor.initDatabase()
-        mtrInteractor.initDatabase()
-        lrtInteractor.initDatabase()
-        nlbRepository.initDatabase()
+        withContext(Dispatchers.Default) {
+            sharedPreferencesManager.transportDataChecksum = null
+            kmbInteractor.initDatabase()
+            ctbInteractor.initDatabase()
+            gmbInteractor.initDatabase()
+            mtrInteractor.initDatabase()
+            lrtInteractor.initDatabase()
+            nlbRepository.initDatabase()
+        }
     }
 }

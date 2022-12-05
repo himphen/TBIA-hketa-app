@@ -114,7 +114,7 @@ class RouteDetailsViewModel(
         }
     }
 
-    private suspend fun getTransportStopList(): List<TransportStop> {
+    private fun getTransportStopList(): List<TransportStop> {
         val route = selectedRoute
 
         return when (selectedEtaType) {
@@ -184,7 +184,7 @@ class RouteDetailsViewModel(
 
     }
 
-    private suspend fun getMtrStopList(route: TransportRoute): List<TransportStop> {
+    private fun getMtrStopList(route: TransportRoute): List<TransportStop> {
         return try {
             val allRouteList = mtrRepository.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
@@ -197,7 +197,7 @@ class RouteDetailsViewModel(
 
     }
 
-    private suspend fun getLrtStopList(route: TransportRoute): List<TransportStop> {
+    private fun getLrtStopList(route: TransportRoute): List<TransportStop> {
         return try {
             val allRouteList = lrtInteractor.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }
@@ -210,7 +210,7 @@ class RouteDetailsViewModel(
 
     }
 
-    private suspend fun getNlbStopList(route: TransportRoute): List<TransportStop> {
+    private fun getNlbStopList(route: TransportRoute): List<TransportStop> {
         return try {
             val allRouteList = nlbRepository.getRouteStopComponentListDb(route)
                 .mapNotNull { it.stopEntity?.toTransportModelWithSeq(it.routeStopEntity.seq) }

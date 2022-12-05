@@ -90,7 +90,7 @@ class RouteListLeanbackViewModel(
         }
     }
 
-    private suspend fun getKmbRouteList(context: Context) {
+    private fun getKmbRouteList(context: Context) {
         val etaType = EtaType.KMB
         if (RouteAndStopListDataHolder.hasData(etaType)) {
             return
@@ -142,7 +142,7 @@ class RouteListLeanbackViewModel(
         }
     }
 
-    private suspend fun getCtbRouteList(context: Context, etaType: EtaType) {
+    private fun getCtbRouteList(context: Context, etaType: EtaType) {
         if (RouteAndStopListDataHolder.hasData(etaType)) {
             return
         }
@@ -196,7 +196,7 @@ class RouteListLeanbackViewModel(
         }
     }
 
-    private suspend fun getGmbRouteList(context: Context, etaType: EtaType) {
+    private fun getGmbRouteList(context: Context, etaType: EtaType) {
         if (RouteAndStopListDataHolder.hasData(etaType)) {
             return
         }
@@ -260,7 +260,7 @@ class RouteListLeanbackViewModel(
         }
     }
 
-    private suspend fun getMTRRouteList(context: Context) {
+    private fun getMTRRouteList(context: Context) {
         val etaType = EtaType.MTR
         if (RouteAndStopListDataHolder.hasData(etaType)) {
             return
@@ -321,7 +321,7 @@ class RouteListLeanbackViewModel(
         }
     }
 
-    private suspend fun getLRTRouteList(context: Context) {
+    private fun getLRTRouteList(context: Context) {
         val etaType = EtaType.LRT
         if (RouteAndStopListDataHolder.hasData(etaType)) {
             return
@@ -382,7 +382,7 @@ class RouteListLeanbackViewModel(
         }
     }
 
-    private suspend fun getNlbRouteList(context: Context) {
+    private fun getNlbRouteList(context: Context) {
         val etaType = EtaType.NLB
         if (RouteAndStopListDataHolder.hasData(etaType)) {
             return
