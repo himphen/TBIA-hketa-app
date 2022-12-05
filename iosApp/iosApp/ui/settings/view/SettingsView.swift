@@ -18,6 +18,7 @@ struct SettingsView: View {
     @State var showingResetConfirmation = false
     @State var showingLangConfirmation = false
     @Binding var resetData: Bool
+    @State private var showingLangChangeAlert = false
     
     var body: some View {
         List {
@@ -28,22 +29,28 @@ struct SettingsView: View {
                     showingLangConfirmation = true
                 }
                 .confirmationDialog(MR.strings().title_settings_language.localized(), isPresented: $showingLangConfirmation) {
-                    Button(MR.strings().settings_lang_option_default.localized(), role: .destructive) { [self] in
+                    Button(MR.strings().settings_lang_option_default.localized()) { [self] in
                         viewModel.updateLang(code: IOSLanguage.Code.default_)
                         
-                        resetData = true
+                        showingLangChangeAlert = true
                     }
-                    Button(MR.strings().settings_lang_option_en.localized(), role: .destructive) { [self] in
+                    Button(MR.strings().settings_lang_option_en.localized()) { [self] in
                         viewModel.updateLang(code: IOSLanguage.Code.en)
                         
-                        resetData = true
+                        showingLangChangeAlert = true
                     }
-                    Button(MR.strings().settings_lang_option_zh_tw.localized(), role: .destructive) { [self] in
+                    Button(MR.strings().settings_lang_option_zh_tw.localized()) { [self] in
                         viewModel.updateLang(code: IOSLanguage.Code.zhTw)
                         
-                        resetData = true
+                        showingLangChangeAlert = true
                     }
                     Button(MR.strings().dialog_cancel_btn.localized(), role: .cancel) {
+                    }
+                }
+                .alert(MR.strings().settings_lang_restart_toast_message.localized(), isPresented: $showingLangChangeAlert) {
+                    Button(MR.strings().dialog_confirm_btn.localized(), role: .cancel) {
+                        showingLangChangeAlert = false
+                        resetData = true
                     }
                 }
                 ItemSettingsRowView(
