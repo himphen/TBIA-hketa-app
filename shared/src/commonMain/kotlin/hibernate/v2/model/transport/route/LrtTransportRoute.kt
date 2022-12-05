@@ -1,9 +1,12 @@
 package hibernate.v2.model.transport.route
 
 import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.parcelize.Parcelize
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 
+@Parcelize
 data class LrtTransportRoute(
     override val routeId: String,
     override val routeNo: String,
@@ -30,10 +33,14 @@ data class LrtTransportRoute(
     destSc,
     company,
 ) {
-
     override fun isSpecialRoute(): Boolean = false
 }
 
+@Parcelize
 data class LrtRouteInfo(
-    var color: Color,
-)
+    var colorRgba: Long,
+) : Parcelable {
+    fun getColor(): Color {
+        return Color(colorRgba)
+    }
+}

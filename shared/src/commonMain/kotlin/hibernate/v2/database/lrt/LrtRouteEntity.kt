@@ -55,10 +55,10 @@ data class LrtRouteEntity(
             destSc = destSc,
             company = Company.LRT,
             routeInfo = LrtRouteInfo(
-                color = try {
-                    Color.parseColor(routeInfoColor)
+                colorRgba = try {
+                    Color.parseColor(routeInfoColor).rgba
                 } catch (e: IllegalArgumentException) {
-                    Color.parseColor("#2979FF")
+                    Color.parseColor("#2979FF").rgba
                 }
             )
         )

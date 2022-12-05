@@ -1,10 +1,13 @@
 package hibernate.v2.model.transport.route
 
 import dev.icerock.moko.graphics.Color
+import dev.icerock.moko.parcelize.Parcelable
+import dev.icerock.moko.parcelize.Parcelize
 import hibernate.v2.api.model.transport.Bound
 import hibernate.v2.api.model.transport.Company
 import hibernate.v2.utils.TransportationLanguage
 
+@Parcelize
 data class MtrTransportRoute(
     override val routeId: String,
     override val routeNo: String,
@@ -48,11 +51,16 @@ data class MtrTransportRoute(
     override fun getCardRouteText(): String = routeInfo.nameTc
 }
 
+@Parcelize
 data class MTRRouteInfo(
     var nameEn: String,
     var nameTc: String,
-    var color: Color,
-) {
+    var colorRgba: Long,
+) : Parcelable {
+    fun getColor(): Color {
+        return Color(colorRgba)
+    }
+
     fun getLocalisedName(language: TransportationLanguage): String {
         val localisedName = when (language) {
             TransportationLanguage.EN -> nameEn

@@ -6,6 +6,7 @@ import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import dev.icerock.moko.graphics.colorInt
@@ -51,10 +52,9 @@ class RouteListRouteItemAdapter(
                         newLayoutParams.width = dpToPx(100)
                         root.requestLayout()
 
-                        routeCompanyColor.visible()
-                        routeBusNumberLl.visible()
-                        routeBusNumberTv.textSize = 16f
-                        routeMTRNumberLl.gone()
+                        routeCompanyColor.gone()
+                        routeBusNumberLl.gone()
+                        routeMTRNumberLl.visible()
                         routeLRTNumberLl.gone()
                     }
                     EtaType.LRT -> {
@@ -92,7 +92,6 @@ class RouteListRouteItemAdapter(
                             val color = route.getColor(false).colorInt()
                             routeLRTNumberTv.apply {
                                 text = route.routeNo
-                                visible()
 
                                 (background as? LayerDrawable)?.apply {
                                     mutate()
@@ -104,16 +103,20 @@ class RouteListRouteItemAdapter(
                         }
                         is MtrTransportRoute -> {
                             val color = route.getColor(false).colorInt()
-                            routeCompanyColor.setBackgroundColor(color)
-                            routeBusNumberTv.apply {
-                                text = route.getCardRouteText()
-                                visible()
+
+                            val gradientDrawable = ContextCompat.getDrawable(
+                                context,
+                                R.drawable.bg_route_badge_mtr
+                            ) as? GradientDrawable?
+                            gradientDrawable?.let {
+                                gradientDrawable.mutate()
+                                gradientDrawable.setColor(color)
+                                routeMTRNumberIv.background = gradientDrawable
                             }
                         }
                         else -> {
                             routeBusNumberTv.apply {
                                 text = route.getCardRouteText()
-                                visible()
                             }
                         }
                     }
