@@ -22,7 +22,6 @@ import org.koin.core.component.inject
 
 class OnboardingViewModel(
     private val fetchTransportDataRequired: (Int) -> Unit,
-    private val fetchTransportDataCannotInit: () -> Unit,
     private val fetchTransportDataCompleted: () -> Unit,
     private val fetchTransportDataCompletedCount: (Int) -> Unit
 ) : KoinComponent {
@@ -36,14 +35,14 @@ class OnboardingViewModel(
     private val lrtInteractor: LrtInteractor by inject()
     private val nlbRepository: NlbInteractor by inject()
 
+    @Suppress("MemberVisibilityCanBePrivate")
     val fetchTransportDataFailedList = mutableListOf<FailedCheckType>()
-    var fetchTransportDataCompletedCountSum = 0
-    var fetchTransportDataRequiredCount = 0
 
     suspend fun checkDbTransportData() {
         withContext(Dispatchers.Default) {
             try {
                 var dataLoadingCount = 0
+                var fetchTransportDataCompletedCountSum = 0
 
                 val serverChecksum = try {
                     coreRepository.getChecksum()
@@ -89,7 +88,6 @@ class OnboardingViewModel(
                     dataLoadingCount = 6
                 }
 
-                fetchTransportDataRequiredCount = dataLoadingCount
                 fetchTransportDataRequired(dataLoadingCount)
                 fetchTransportDataCompletedCount(0)
 
