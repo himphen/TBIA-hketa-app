@@ -6,7 +6,6 @@ import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import dev.icerock.moko.graphics.colorInt
@@ -104,14 +103,9 @@ class RouteListRouteItemAdapter(
                         is MtrTransportRoute -> {
                             val color = route.getColor(false).colorInt()
 
-                            val gradientDrawable = ContextCompat.getDrawable(
-                                context,
-                                R.drawable.bg_route_badge_mtr
-                            ) as? GradientDrawable?
-                            gradientDrawable?.let {
-                                gradientDrawable.mutate()
-                                gradientDrawable.setColor(color)
-                                routeMTRNumberIv.background = gradientDrawable
+                            (routeMTRNumberIv.background as? GradientDrawable)?.apply {
+                                mutate()
+                                setColor(color)
                             }
                         }
                         else -> {

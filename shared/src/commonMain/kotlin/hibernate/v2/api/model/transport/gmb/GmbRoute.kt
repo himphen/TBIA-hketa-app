@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GmbRoute(
+    @SerialName("b")
     val bound: Bound = Bound.O,
     @SerialName("de")
     var destEn: String = "",
