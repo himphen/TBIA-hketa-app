@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class OnboardingViewModel(
     private val sharedPreferencesManager: SharedPreferencesManager,
@@ -227,12 +228,14 @@ class OnboardingViewModel(
     }
 
     suspend fun resetTransportData() {
-        sharedPreferencesManager.transportDataChecksum = null
-        kmbInteractor.initDatabase()
-        ctbInteractor.initDatabase()
-        gmbInteractor.initDatabase()
-        mtrInteractor.initDatabase()
-        lrtInteractor.initDatabase()
-        nlbRepository.initDatabase()
+        withContext(Dispatchers.IO) {
+            sharedPreferencesManager.transportDataChecksum = null
+            kmbInteractor.initDatabase()
+            ctbInteractor.initDatabase()
+            gmbInteractor.initDatabase()
+            mtrInteractor.initDatabase()
+            lrtInteractor.initDatabase()
+            nlbRepository.initDatabase()
+        }
     }
 }

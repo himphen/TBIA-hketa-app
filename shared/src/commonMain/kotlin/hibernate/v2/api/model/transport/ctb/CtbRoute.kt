@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
 data class CtbRoute(
     @SerialName("c")
     var company: Company = Company.UNKNOWN,
+    @SerialName("b")
     var bound: Bound = Bound.UNKNOWN,
     @SerialName("de")
     var destEn: String = "",

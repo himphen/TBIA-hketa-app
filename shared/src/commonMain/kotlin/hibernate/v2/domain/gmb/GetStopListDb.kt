@@ -6,6 +6,6 @@ import hibernate.v2.geohash.GeoHash
 class GetStopListDb(
     private val gmbDao: GmbDao
 ) {
-    suspend operator fun invoke(list: List<GeoHash>) =
+    operator fun invoke(list: List<GeoHash>) =
         gmbDao.getStopList(list.map { it.toString() })
 }

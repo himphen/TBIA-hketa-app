@@ -98,7 +98,7 @@ class SearchMapFragment : BaseFragment<FragmentSearchMapBinding>() {
     private val routeListAdapter = RouteListAdapter { card: Card.EtaCard ->
         viewLifecycleOwner.lifecycleScope.launch {
             val context = context ?: return@launch
-            val result = suspendCancellableCoroutine<Boolean> { cont ->
+            val result = suspendCancellableCoroutine { cont ->
                 MaterialAlertDialogBuilder(context)
                     .setMessage(
                         getString(

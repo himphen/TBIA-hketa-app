@@ -159,11 +159,11 @@ open class TransportRoute(
 
     fun getColor(combineNC: Boolean = false): Color {
         if (this is MtrTransportRoute) {
-            return routeInfo.color
+            return routeInfo.getColor()
         }
 
         if (this is LrtTransportRoute) {
-            return routeInfo.color
+            return routeInfo.getColor()
         }
 
         return when (company) {

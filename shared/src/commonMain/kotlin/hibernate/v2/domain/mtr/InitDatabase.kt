@@ -5,7 +5,7 @@ import hibernate.v2.database.mtr.MtrDao
 class InitDatabase(
     private val mtrDao: MtrDao
 ) {
-    suspend operator fun invoke() {
+    operator fun invoke() {
         mtrDao.clearRouteList()
         mtrDao.clearStopList()
         mtrDao.clearRouteStopList()

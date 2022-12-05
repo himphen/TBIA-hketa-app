@@ -21,7 +21,7 @@ actual typealias KtorUnknownHostException = NSObject
 class IOSLanguage(val code: Code = Code.ZH_TW) {
     enum class Code(val base: String, val moko: String) {
         DEFAULT("", ""),
-        ZH_TW("zh_tw", "zh-tw"),
+        ZH_TW("zh_tw", "zh-TW"),
         EN("en", "en");
 
         companion object {

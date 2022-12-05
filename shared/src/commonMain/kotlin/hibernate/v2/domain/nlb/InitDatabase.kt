@@ -5,7 +5,7 @@ import hibernate.v2.database.nlb.NlbDao
 class InitDatabase(
     private val nlbDao: NlbDao
 ) {
-    suspend operator fun invoke() {
+    operator fun invoke() {
         nlbDao.clearRouteList()
         nlbDao.clearStopList()
         nlbDao.clearRouteStopList()

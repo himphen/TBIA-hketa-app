@@ -5,6 +5,6 @@ import hibernate.v2.database.lrt.LrtDao
 class GetStopListDb(
     private val lrtDao: LrtDao
 ) {
-    suspend operator fun invoke(): List<Any> =
+    operator fun invoke(): List<Any> =
         lrtDao.getStopList()
 }

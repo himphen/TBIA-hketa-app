@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class SettingsViewModel() : KoinComponent {
+class SettingsViewModel : KoinComponent {
 
     private val sharedPreferencesManager: SharedPreferencesManager by inject()
     private val kmbInteractor: KmbInteractor by inject()

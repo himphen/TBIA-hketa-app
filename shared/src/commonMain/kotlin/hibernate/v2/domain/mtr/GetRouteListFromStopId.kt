@@ -6,7 +6,7 @@ import hibernate.v2.model.transport.route.TransportRoute
 class GetRouteListFromStopId(
     private val mtrDao: MtrDao
 ) {
-    suspend operator fun invoke(stopId: String): List<TransportRoute> {
+    operator fun invoke(stopId: String): List<TransportRoute> {
         val routeStopList = mtrDao.getRouteStopListFromStopId(stopId)
         val routeList = mtrDao.getRouteListFromRouteId(routeStopList)
 

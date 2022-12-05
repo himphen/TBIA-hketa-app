@@ -51,10 +51,9 @@ class RouteListRouteItemAdapter(
                         newLayoutParams.width = dpToPx(100)
                         root.requestLayout()
 
-                        routeCompanyColor.visible()
-                        routeBusNumberLl.visible()
-                        routeBusNumberTv.textSize = 16f
-                        routeMTRNumberLl.gone()
+                        routeCompanyColor.gone()
+                        routeBusNumberLl.gone()
+                        routeMTRNumberLl.visible()
                         routeLRTNumberLl.gone()
                     }
                     EtaType.LRT -> {
@@ -92,7 +91,6 @@ class RouteListRouteItemAdapter(
                             val color = route.getColor(false).colorInt()
                             routeLRTNumberTv.apply {
                                 text = route.routeNo
-                                visible()
 
                                 (background as? LayerDrawable)?.apply {
                                     mutate()
@@ -104,16 +102,15 @@ class RouteListRouteItemAdapter(
                         }
                         is MtrTransportRoute -> {
                             val color = route.getColor(false).colorInt()
-                            routeCompanyColor.setBackgroundColor(color)
-                            routeBusNumberTv.apply {
-                                text = route.getCardRouteText()
-                                visible()
+
+                            (routeMTRNumberIv.background as? GradientDrawable)?.apply {
+                                mutate()
+                                setColor(color)
                             }
                         }
                         else -> {
                             routeBusNumberTv.apply {
                                 text = route.getCardRouteText()
-                                visible()
                             }
                         }
                     }

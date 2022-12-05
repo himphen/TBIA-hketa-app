@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MtrRoute(
+    @SerialName("b")
     var bound: Bound = Bound.UNKNOWN,
     @SerialName("de")
     var destEn: String = "",

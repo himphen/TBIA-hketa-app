@@ -33,11 +33,6 @@ import Rswift
                     }
                 }
             },
-            fetchTransportDataCannotInit: { [self] in
-                CommonLoggerUtilsKt.logD(message:
-                "fetchTransportDataCannotInit"
-                )
-            },
             fetchTransportDataCompleted: { [self] in
                 CommonLoggerUtilsKt.logD(message:
                 "fetchTransportDataCompleted"

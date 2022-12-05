@@ -34,11 +34,11 @@ actual object LanguageUtils : KoinComponent {
 
     actual fun isLangEnglish(context: KMMContext): Boolean {
         val code = getLanguage(context).code
-        return code.moko == "en"
+        return code == IOSLanguage.Code.EN
     }
 
     actual fun isLangTC(context: KMMContext): Boolean {
-        return getLanguage(context).code.moko == "zh_tw"
+        return getLanguage(context).code == IOSLanguage.Code.ZH_TW
     }
 
     fun initLanguage() {

@@ -63,10 +63,10 @@ data class MtrRouteEntity(
             routeInfo = MTRRouteInfo(
                 nameEn = routeInfoNameEn,
                 nameTc = routeInfoNameTc,
-                color = try {
-                    Color.parseColor(routeInfoColor)
+                colorRgba = try {
+                    Color.parseColor(routeInfoColor).rgba
                 } catch (e: IllegalArgumentException) {
-                    Color.parseColor("#2979FF")
+                    Color.parseColor("#2979FF").rgba
                 }
             )
         )
