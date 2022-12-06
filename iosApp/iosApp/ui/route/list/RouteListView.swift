@@ -107,7 +107,6 @@ struct TabRouteListView: View {
 
 struct SearchBar: View {
     @Binding var text: String
-    @State var isEditing: Bool = false
     
     @StateObject var debounceObject = DebounceObject()
     
@@ -122,25 +121,11 @@ struct SearchBar: View {
             .cornerRadius(22)
             .onTapGesture {
                 self.searchIsFocused = true
-                self.isEditing = true
             }
             .onChange(of: debounceObject.debouncedText) { newText in
                 text = newText
             }
             .focused($searchIsFocused)
-            
-            if isEditing {
-                Button(action: {
-                    self.searchIsFocused = false
-                    self.isEditing = false
-                    self.text = ""
-                }) {
-                    Text(MR.strings().dialog_cancel_btn.localized())
-                }
-                .padding(.trailing, 10)
-                .transition(.move(edge: .trailing))
-                .animation(.default)
-            }
         }
         .padding(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12))
     }
