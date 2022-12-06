@@ -1,0 +1,92 @@
+import hibernate.v2.api.model.transport.Bound;
+import hibernate.v2.api.model.transport.Company;
+
+CREATE TABLE saved_eta (
+    saved_eta_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    saved_eta_company     TEXT AS Company NOT NULL,
+    saved_eta_stop_id     TEXT NOT NULL,
+    saved_eta_route_id     TEXT NOT NULL,
+    saved_eta_route_bound         TEXT AS Bound NOT NULL,
+    saved_eta_service_type         TEXT NOT NULL,
+    saved_eta_seq     INTEGER NOT NULL
+);
+
+CREATE TABLE saved_eta_order (
+    saved_eta_order_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    position     INTEGER NOT NULL
+);
+
+getAllKmbEtaWithOrdering:
+SELECT * FROM saved_eta
+INNER JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id
+LEFT JOIN kmb_route ON saved_eta_route_bound = kmb_route_bound AND saved_eta_service_type = kmb_route_service_type AND saved_eta_route_id = kmb_route_id
+LEFT JOIN kmb_stop ON saved_eta_stop_id = kmb_stop_id
+LEFT JOIN kmb_route_stop ON saved_eta_stop_id = kmb_route_stop_stop_id AND saved_eta_route_id = kmb_route_stop_route_id AND saved_eta_seq = kmb_route_stop_seq
+WHERE saved_eta_company = 'KMB';
+
+getAllCtbEtaWithOrdering:
+SELECT * FROM saved_eta
+INNER JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id
+LEFT JOIN ctb_route ON saved_eta_route_bound = ctb_route_bound AND saved_eta_route_id = ctb_route_id
+LEFT JOIN ctb_stop ON saved_eta_stop_id = ctb_stop_id
+-- LEFT JOIN ctb_route_stop ON saved_eta_stop_id = ctb_route_stop_stop_id AND saved_eta_route_id = ctb_route_stop_route_id AND saved_eta_seq = ctb_route_stop_seq
+WHERE saved_eta_company = 'NWFB' OR saved_eta_company = 'CTB';
+
+getAllGmbEtaWithOrdering:
+SELECT * FROM saved_eta
+INNER JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id
+LEFT JOIN gmb_route ON saved_eta_route_bound = gmb_route_bound AND saved_eta_service_type = gmb_route_service_type AND saved_eta_route_id = gmb_route_id
+LEFT JOIN gmb_stop ON saved_eta_stop_id = gmb_stop_id
+-- LEFT JOIN gmb_route_stop ON saved_eta_stop_id = gmb_route_stop_stop_id AND saved_eta_route_id = gmb_route_stop_route_id AND saved_eta_seq = gmb_route_stop_seq
+WHERE saved_eta_company = 'GMB';
+
+getAllMtrEtaWithOrdering:
+SELECT * FROM saved_eta
+INNER JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id
+LEFT JOIN mtr_route ON saved_eta_route_bound = mtr_route_bound AND saved_eta_service_type = mtr_route_service_type AND saved_eta_route_id = mtr_route_id
+LEFT JOIN mtr_stop ON saved_eta_stop_id = mtr_stop_id
+-- LEFT JOIN mtr_route_stop ON saved_eta_stop_id = mtr_route_stop_stop_id AND saved_eta_route_id = mtr_route_stop_route_id AND saved_eta_seq = mtr_route_stop_seq
+WHERE saved_eta_company = 'MTR';
+
+getAllLrtEtaWithOrdering:
+SELECT * FROM saved_eta
+INNER JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id
+LEFT JOIN lrt_route ON saved_eta_route_bound = lrt_route_bound AND saved_eta_service_type = lrt_route_service_type AND saved_eta_route_id = lrt_route_id
+LEFT JOIN lrt_stop ON saved_eta_stop_id = lrt_stop_id
+-- LEFT JOIN lrt_route_stop ON saved_eta_stop_id = lrt_route_stop_stop_id AND saved_eta_route_id = lrt_route_stop_route_id AND saved_eta_seq = lrt_route_stop_seq
+WHERE saved_eta_company = 'LRT';
+
+getAllNlbEtaWithOrdering:
+SELECT * FROM saved_eta
+INNER JOIN saved_eta_order ON saved_eta_id = saved_eta_order_id
+LEFT JOIN nlb_route ON saved_eta_route_id = nlb_route_id
+LEFT JOIN nlb_stop ON saved_eta_stop_id = nlb_stop_id
+-- LEFT JOIN nlb_route_stop ON saved_eta_stop_id = nlb_route_stop_stop_id AND saved_eta_route_id = nlb_route_stop_route_id AND saved_eta_seq = nlb_route_stop_seq
+WHERE saved_eta_company = 'NLB';
+
+getSingleEta:
+SELECT * FROM saved_eta WHERE saved_eta_stop_id=(:stopId) AND saved_eta_route_id=(:routeId) AND saved_eta_route_bound=(:bound) AND saved_eta_service_type=(:serviceType) AND saved_eta_seq=(:seq) AND saved_eta_company=(:company) LIMIT 1;
+
+addEta:
+INSERT INTO saved_eta(saved_eta_id, saved_eta_company, saved_eta_stop_id, saved_eta_route_id, saved_eta_route_bound, saved_eta_service_type, saved_eta_seq)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+clearEtaById:
+DELETE FROM saved_eta WHERE saved_eta_id = (:entityId);
+
+clearEta:
+DELETE FROM saved_eta WHERE saved_eta_stop_id=(:stopId) AND saved_eta_route_id=(:routeId) AND saved_eta_route_bound=(:bound) AND saved_eta_service_type=(:serviceType) AND saved_eta_seq=(:seq);
+
+clearAllEta:
+DELETE FROM saved_eta;
+
+getAllEtaOrder:
+SELECT * FROM saved_eta_order ORDER BY position ASC;
+
+addEtaOrder:
+INSERT INTO saved_eta_order(saved_eta_order_id, position)
+VALUES (?, ?);
+
+clearAllEtaOrder:
+DELETE FROM saved_eta_order;
+

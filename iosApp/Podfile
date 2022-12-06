@@ -1,0 +1,16 @@
+target 'iosApp' do
+  use_frameworks!
+  platform :ios, '15.0'
+  pod 'shared', :path => '../shared'
+  pod 'Firebase'
+  pod 'FirebaseAnalytics'
+  pod 'FirebaseAuth'
+  pod 'FirebaseCrashlytics'
+  pod 'FirebaseDatabase'
+  pod 'FirebaseRemoteConfig'
+  pod 'lottie-ios'
+  pod 'R.swift'
+  pod 'AlertToast'
+  pod 'ThirdPartyMailer'
+  pod 'GoogleMaps'
+end

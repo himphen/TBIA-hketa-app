@@ -34,7 +34,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible">
 
-            <hibernate.v2.sunshine.ui.view.OutlineTextView
+            <hibernate.v2.tbia.ui.view.OutlineTextView
                 android:id="@+id/currentMarkerText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -78,11 +78,12 @@
 
             <TextView
                 android:id="@+id/stopNameTv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="344dp"
+                android:layout_height="21dp"
                 android:layout_marginStart="8dp"
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
+                android:textColor="@color/common_text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"

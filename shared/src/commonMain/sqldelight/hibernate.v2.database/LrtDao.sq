@@ -1,0 +1,86 @@
+import hibernate.v2.api.model.transport.Bound;
+
+CREATE TABLE lrt_stop (
+    lrt_stop_id TEXT NOT NULL,
+    name_en     TEXT NOT NULL,
+    name_tc     TEXT NOT NULL,
+    name_sc     TEXT NOT NULL,
+    lat         REAL NOT NULL,
+    lng         REAL NOT NULL,
+    geohash     TEXT NOT NULL
+);
+
+getAllStopList:
+SELECT * FROM lrt_stop;
+
+addStopList:
+INSERT INTO lrt_stop(lrt_stop_id, name_en, name_tc, name_sc, lat, lng, geohash)
+VALUES ?;
+
+clearStopList:
+DELETE FROM lrt_stop;
+
+CREATE TABLE lrt_route (
+    lrt_route_id TEXT NOT NULL,
+    lrt_route_bound     TEXT AS Bound NOT NULL,
+    lrt_route_service_type     TEXT NOT NULL,
+    orig_en     TEXT NOT NULL,
+    orig_tc     TEXT NOT NULL,
+    orig_sc     TEXT NOT NULL,
+    dest_en     TEXT NOT NULL,
+    dest_tc     TEXT NOT NULL,
+    dest_sc     TEXT NOT NULL,
+    route_info_name_color     TEXT NOT NULL,
+    route_info_is_enabled     INTEGER AS Boolean NOT NULL
+);
+
+CREATE INDEX lrt_route_1 ON lrt_route(lrt_route_id, lrt_route_bound, lrt_route_service_type);
+
+getRoute:
+SELECT * FROM lrt_route WHERE lrt_route_id = (:route) AND lrt_route_bound = (:bound) AND lrt_route_service_type = (:serviceType);
+
+getAllRouteList:
+SELECT * FROM lrt_route;
+
+getAllEnabledRouteList:
+SELECT * FROM lrt_route WHERE route_info_is_enabled != 0;
+
+addRouteList:
+INSERT INTO lrt_route(lrt_route_id, lrt_route_bound, lrt_route_service_type, orig_en, orig_tc, orig_sc, dest_en, dest_tc, dest_sc, route_info_name_color, route_info_is_enabled)
+VALUES ?;
+
+clearRouteList:
+DELETE FROM lrt_route;
+
+CREATE TABLE lrt_route_stop (
+    lrt_route_stop_route_id TEXT NOT NULL,
+    lrt_route_stop_bound     TEXT AS Bound NOT NULL,
+    lrt_route_stop_service_type     TEXT NOT NULL,
+    lrt_route_stop_seq     INTEGER NOT NULL,
+    lrt_route_stop_stop_id         TEXT NOT NULL
+);
+
+CREATE INDEX lrt_route_stop_1 ON lrt_route_stop(lrt_route_stop_stop_id);
+CREATE INDEX lrt_route_stop_2 ON lrt_route_stop(lrt_route_stop_route_id, lrt_route_stop_bound, lrt_route_stop_service_type);
+
+getRouteStopListFromStopId:
+SELECT * FROM lrt_route_stop WHERE lrt_route_stop_stop_id = (:stopId);
+
+getRouteStopComponentAllList:
+SELECT *
+FROM lrt_route_stop
+INNER JOIN lrt_stop ON lrt_route_stop.lrt_route_stop_stop_id = lrt_stop.lrt_stop_id;
+
+getRouteStopComponentList:
+SELECT *
+FROM lrt_route_stop
+INNER JOIN lrt_stop ON lrt_route_stop.lrt_route_stop_stop_id = lrt_stop.lrt_stop_id
+WHERE lrt_route_stop_route_id = (:route) AND lrt_route_stop_bound = (:bound) AND lrt_route_stop_service_type = (:serviceType);
+
+
+addRouteStopList:
+INSERT INTO lrt_route_stop(lrt_route_stop_route_id, lrt_route_stop_bound, lrt_route_stop_service_type, lrt_route_stop_seq, lrt_route_stop_stop_id)
+VALUES ?;
+
+clearRouteStopList:
+DELETE FROM lrt_route_stop;

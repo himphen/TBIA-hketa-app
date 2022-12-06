@@ -1,0 +1,87 @@
+import hibernate.v2.api.model.transport.Bound;
+import hibernate.v2.api.model.transport.Company;
+
+CREATE TABLE ctb_stop (
+    ctb_stop_id TEXT NOT NULL,
+    name_en     TEXT NOT NULL,
+    name_tc     TEXT NOT NULL,
+    name_sc     TEXT NOT NULL,
+    lat         REAL NOT NULL,
+    lng         REAL NOT NULL,
+    geohash     TEXT NOT NULL
+);
+
+getAllStopList:
+SELECT * FROM ctb_stop;
+
+getStopList:
+SELECT * FROM ctb_stop WHERE geohash IN ?;
+
+addStopList:
+INSERT INTO ctb_stop(ctb_stop_id, name_en, name_tc, name_sc, lat, lng, geohash)
+VALUES ?;
+
+clearStopList:
+DELETE FROM ctb_stop;
+
+CREATE TABLE ctb_route (
+    ctb_route_id TEXT NOT NULL,
+    ctb_route_bound     TEXT AS Bound NOT NULL,
+    ctb_route_company     TEXT AS Company NOT NULL,
+    orig_en     TEXT NOT NULL,
+    orig_tc     TEXT NOT NULL,
+    orig_sc     TEXT NOT NULL,
+    dest_en     TEXT NOT NULL,
+    dest_tc     TEXT NOT NULL,
+    dest_sc     TEXT NOT NULL
+);
+
+getRoute:
+SELECT * FROM ctb_route WHERE ctb_route_id = (:route) AND ctb_route_bound = (:bound);
+
+getAllRouteListByCompany:
+SELECT * FROM ctb_route WHERE ctb_route_company = (:company);
+
+getAllRouteList:
+SELECT * FROM ctb_route;
+
+addRouteList:
+INSERT INTO ctb_route(ctb_route_id, ctb_route_bound, ctb_route_company, orig_en, orig_tc, orig_sc, dest_en, dest_tc, dest_sc)
+VALUES ?;
+
+clearRouteList:
+DELETE FROM ctb_route;
+
+CREATE TABLE ctb_route_stop (
+    ctb_route_stop_route_id TEXT NOT NULL,
+    ctb_route_stop_bound     TEXT AS Bound NOT NULL,
+    ctb_route_stop_company     TEXT AS Company NOT NULL,
+    ctb_route_stop_seq     INTEGER NOT NULL,
+    ctb_route_stop_stop_id         TEXT NOT NULL
+);
+
+CREATE INDEX ctb_route_stop_1 ON ctb_route_stop(ctb_route_stop_stop_id);
+CREATE INDEX ctb_route_stop_2 ON ctb_route_stop(ctb_route_stop_route_id, ctb_route_stop_bound, ctb_route_stop_company);
+
+getRouteStopListFromStopId:
+SELECT * FROM ctb_route_stop WHERE ctb_route_stop_stop_id = (:stopId);
+
+getRouteStopComponentAllList:
+SELECT *
+FROM ctb_route_stop
+INNER JOIN ctb_stop ON ctb_route_stop.ctb_route_stop_stop_id = ctb_stop.ctb_stop_id
+WHERE ctb_route_stop_company = (:company);
+
+getRouteStopComponentList:
+SELECT *
+FROM ctb_route_stop
+INNER JOIN ctb_stop ON ctb_route_stop.ctb_route_stop_stop_id = ctb_stop.ctb_stop_id
+WHERE ctb_route_stop_company = (:company) AND ctb_route_stop_route_id = (:route) AND ctb_route_stop_bound = (:bound);
+
+
+addRouteStopList:
+INSERT INTO ctb_route_stop(ctb_route_stop_route_id, ctb_route_stop_bound, ctb_route_stop_company, ctb_route_stop_seq, ctb_route_stop_stop_id)
+VALUES ?;
+
+clearRouteStopList:
+DELETE FROM ctb_route_stop;

@@ -40,19 +40,61 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/routeDirectionTv"
+                android:id="@+id/routeOrigToTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/add_card_route_to_text"
+                android:textColor="@color/common_text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/routeOrigFromTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/add_card_route_from_text"
+                android:textColor="@color/common_text_secondary"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="end"
+                app:barrierMargin="4dp"
+                app:constraint_referenced_ids="routeOrigToTv,routeOrigFromTv" />
+
+            <TextView
+                android:id="@+id/routeDestTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ellipsize="marquee"
                 android:gravity="center_vertical"
-                android:maxLines="2"
-                android:textSize="20sp"
+                android:textColor="@color/common_text_primary"
+                android:textSize="16sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/barrier"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/add_card_route_text" />
+
+            <TextView
+                android:id="@+id/routeOrigTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textColor="@color/common_text_secondary"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/demo_card_route_desc_classic" />
+                app:layout_constraintStart_toEndOf="@id/barrier"
+                app:layout_constraintTop_toBottomOf="@id/routeDestTv"
+                tools:text="@string/add_card_route_text" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,7 +133,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/etaMinuteTv" />
 
-            <hibernate.v2.sunshine.ui.view.TouchDisabledRecyclerView
+            <hibernate.v2.tbia.ui.view.TouchDisabledRecyclerView
                 android:id="@+id/etaTimeRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="app_name">TBIA</string>
+
+    <string name="report_title">TBIA App Report and Feedback</string>
+
+    <string name="title_activity_settings_eta">Edit Bookmark</string>
+    <string name="title_activity_eta_layout">Choose ETA Card Layout</string>
+    <string name="title_settings_version_leanback">Version %1$s</string>
+    <string name="title_settings_default_company">Choose Default Public Transport Company</string>
+    <string name="title_settings_version">Version</string>
+    <string name="title_settings_language">語言 Language</string>
+    <string name="title_settings_maps_traffic_toggle">Show Traffic on Google Maps</string>
+    <string name="title_settings_reset">Reset Data</string>
+    <string name="title_settings_report">Report and Feedback</string>
+    <string name="title_activity_add_eta">Route List</string>
+    <string name="title_activity_add_eta_with_company_name">%s Route List</string>
+    <string name="settings_acknowledgement_title1">Acknowledgement 1</string>
+    <string name="settings_acknowledgement_summary1">Most of the icons are from Material Icons and Flaticon</string>
+    <string name="settings_acknowledgement_title2">Acknowledgement 2</string>
+    <string name="settings_acknowledgement_summary2">Real-time arrival data are provided by DATA.GOV.HK.</string>
+    <string name="settings_acknowledgement_title3">Acknowledgement 3</string>
+    <string name="settings_acknowledgement_summary3">It is currently not possible to automatically merge the Joint-Operated Routes due to the inconsistent data formats of transport companies.</string>
+
+    <string name="test_onboarding_loading">Loading data (%1$s/%2$s)</string>
+
+    <string name="test_onboarding_loading_failed_kmb">Failed to load Kowloon Motor Bus/Long Win Bus data. Please try again later.</string>
+    <string name="test_onboarding_loading_failed_ctb">Failed to load Citybus/New World First Bus data. Please try again later.</string>
+    <string name="test_onboarding_loading_failed_gmb">Failed to load Minibus data. Please try again later.</string>
+    <string name="test_onboarding_loading_failed_mtr">Failed to load MTR data. Please try again later.</string>
+    <string name="test_onboarding_loading_failed_lrt">Failed to load Light Rail data. Please try again later.</string>
+    <string name="test_onboarding_loading_failed_nlb">Failed to load New Lantao Bus data. Please try again later.</string>
+    <string name="test_onboarding_loading_failed_checksum">Failed to load data. Please try again later. (Error code: 120)</string>
+    <string name="test_onboarding_loading_failed_other">Failed to load data. Please try again later. (Error code: 110)</string>
+    <string name="test_onboarding_loading_failed_app_token">Cannot connect to server. Please try again later.</string>
+
+    <string name="text_eta_card_classic_mtr_station">%1$s</string>
+
+    <string name="text_settings_eta_destination">➔ %1$s</string>
+    <string name="text_settings_eta_destination_with_sp">➔ %1$s (%2$s)</string>
+
+    <string name="text_add_eta_destination">No. %1$s - %2$s ➔ %3$s</string>
+    <string name="text_add_eta_destination_with_sp">No. %1$s (Special %2$s) - %3$s ➔ %4$s</string>
+    <string name="text_add_eta_destination_train">%1$s - %2$s ➔ %3$s</string>
+    <string name="text_add_eta_destination_subtitle">%1$s ➔ %2$s</string>
+    <string name="text_add_eta_destination_subtitle_with_sp">(Special %1$s) - %2$s ➔ %3$s</string>
+    <string name="text_add_eta_destination_subtitle_train">%1$s ➔ %2$s</string>
+
+    <string name="text_add_eta_destination_mobile">%1$s ➔ %2$s</string>
+    <string name="text_add_eta_destination_sp_mobile">Special %1$s</string>
+
+    <string name="add_eta_brand_selection_title">Choose Public Transport Company</string>
+    <string name="add_eta_brand_selection_kmb_btn">KMB/LWB</string>
+    <string name="add_eta_brand_selection_nwfb_btn">NWFB</string>
+    <string name="add_eta_brand_selection_ctb_btn">Citybus</string>
+    <string name="add_eta_brand_selection_gmb_btn">Minibus</string>
+    <string name="add_eta_brand_selection_gmb_hki_btn">Minibus - HKI</string>
+    <string name="add_eta_brand_selection_gmb_kln_btn">Minibus - KL</string>
+    <string name="add_eta_brand_selection_gmb_nt_btn">Minibus - NT</string>
+    <string name="add_eta_brand_selection_mtr_btn">MTR</string>
+    <string name="add_eta_brand_selection_lrt_btn">Light Rail</string>
+    <string name="add_eta_brand_selection_nlb_btn">New Lantao Bus</string>
+
+    <string name="text_eta_loading_failed_retry">Failed to load data. Click to retry. (Error code: %d)</string>
+    <string name="text_eta_loading_failed">Failed to load data. Please try again later. (Error code: %d)</string>
+    <string name="text_edit_eta_invalid_hint">Removed invalid bookmark.</string>
+
+    <string name="text_add_eta_hint_stop">%1$s</string>
+
+    <string name="leanback_main_tab_title_home">Bookmark</string>
+    <string name="leanback_main_tab_title_settings">Settings</string>
+
+    <string name="menu_edit_eta_action_save_order">Save</string>
+    <string name="dialog_settings_eta_remove_title">Caution</string>
+    <string name="dialog_settings_eta_remove_message">Are you sure to remove %2$s of Route %1$s?</string>
+    <string name="dialog_settings_eta_remove_mtr_message">Are you sure to remove %2$s of Route %1$s?</string>
+    <string name="dialog_settings_eta_remove_pos_btn">Remove</string>
+    <string name="dialog_settings_reset_message">Are you sure to reset all data?</string>
+
+    <string name="dialog_confirm_btn">Yes</string>
+    <string name="dialog_cancel_btn">Cancel</string>
+
+    <string name="text_gmb_region_hki">Minibus - Hong Kong Island</string>
+    <string name="text_gmb_region_kln">Minibus - Kowloon</string>
+    <string name="text_gmb_region_nt">Minibus - New Territories</string>
+
+    <string name="dialog_edit_eta_title">Edit %2$s of Route %1$s</string>
+    <string name="dialog_edit_eta_description" />
+    <string name="dialog_edit_eta_move_up_btn">Move Up</string>
+    <string name="dialog_edit_eta_move_down_btn">Move Down</string>
+    <string name="dialog_edit_eta_remove_btn">Remove</string>
+    <string name="dialog_edit_eta_cancel_btn">Cancel</string>
+    <string name="toast_eta_already_added">Bookmark Added</string>
+    <string name="toast_eta_added">Bookmark Added</string>
+    <string name="toast_eta_removed">Bookmark Removed</string>
+    <string name="eta_card_minute_unit">min</string>
+
+    <string name="dialog_add_eta_in_search_map_description_bus">Do you confirm to add %2$s of Route %1$s to bookmark?</string>
+    <string name="dialog_add_eta_in_search_map_confirm_btn">Yes</string>
+    <string name="dialog_add_eta_in_search_map_cancel_btn">No</string>
+
+    <string name="dialog_check_edit_eta_order_description">Do you confirm to save new ordering?</string>
+    <string name="dialog_check_edit_eta_order_leave_btn">No</string>
+    <string name="dialog_check_edit_eta_order_save_btn">Save</string>
+
+    <string name="dialog_eta_layout_title">Choose ETA Card Layout</string>
+    <string name="dialog_eta_layout_standard_btn">Standard</string>
+    <string name="dialog_eta_layout_compact_btn">Compact</string>
+    <string name="dialog_eta_layout_classic_btn">Classic</string>
+    <string name="dialog_eta_layout_cancel_btn">Cancel</string>
+
+    <string name="dialog_lang_title">@string/title_settings_language</string>
+
+    <string name="add_card_route_text">Sheung Tak</string>
+    <string name="add_card_route_to_text">➔</string>
+    <string name="add_card_route_from_text">From</string>
+
+    <string name="demo_card_route_number">296A</string>
+    <string name="demo_card_stop_name">Kwun Tong Town Centre (T4)</string>
+    <string name="demo_card_route_desc">➔ Sheung Tak</string>
+    <string name="demo_card_route_desc_classic">➔ Sheung Tak</string>
+    <string name="demo_card_eta_minute_compact_1">3</string>
+    <string name="demo_card_eta_minute_compact_2">13</string>
+    <string name="demo_card_eta_minute_compact_3">23</string>
+    <string name="demo_card_eta_minute_classic">3</string>
+    <string name="demo_card_eta_minute_classic_comma">,</string>
+    <string name="demo_card_eta_minute_classic_unit">min</string>
+    <string name="demo_card_eta_minute_classic_time">07:30</string>
+    <string name="demo_card_eta_minute_na">-</string>
+
+    <string name="stop_list_bottom_sheet_title">Choose a stop/station</string>
+    <string name="route_list_bottom_sheet_title">Kwun Tong Town Centre (T4)</string>
+
+    <string name="main_tab_title_bookmark">Bookmark</string>
+    <string name="main_tab_title_settings">Settings</string>
+    <string name="main_tab_title_search">Search</string>
+    <string name="main_tab_title_map">Maps</string>
+
+    <string name="placeholder_search_route">Search by Route Number</string>
+    <string name="placeholder_search_stop">Search by Stop</string>
+    <string name="empty_eta_list">No added stop/station yet</string>
+    <string name="empty_route_list">No Route Found</string>
+    <string name="map_marker_distance_5">5 min</string>
+    <string name="map_marker_distance_10">10 min</string>
+    <string name="map_marker_distance_15">15 min</string>
+    <string name="button_street_view_text">Street View</string>
+    <string name="button_navigation_text">Navigation</string>
+    <string name="eta_button_edit">Edit</string>
+    <string name="eta_button_add">Add</string>
+    <string name="eta_button_remove">Remove Bookmark</string>
+
+    <string name="eta_edit_order_button">Edit ordering</string>
+    <string name="eta_edit_order_button_done">Done</string>
+
+    <string name="eta_last_updated_at">Departures updated %ds ago</string>
+    <string name="eta_last_updated_at_init">Loading departures…</string>
+
+    <string name="dialog_location_permission_title">Caution</string>
+    <string name="dialog_location_permission_message">Location permission is required.</string>
+    <string name="dialog_location_permission_pos_btn">Go Settings</string>
+
+    <string name="settings_category_debug_title">Debug</string>
+    <string name="settings_category_ad_title">Advertisement</string>
+    <string name="settings_category_notices_title">Acknowledgement</string>
+    <string name="settings_category_settings_title">Settings</string>
+
+    <string name="settings_hide_ad_toast_message">Restart the app to apply the changes.</string>
+    <string name="settings_hide_ad_title">Hide Banner</string>
+    <string name="settings_hide_ad_summary">Ads won\'t show until %s</string>
+
+    <string name="settings_lang_option_default">System Default</string>
+    <string name="settings_lang_option_en">English</string>
+    <string name="settings_lang_option_zh_tw">繁體中文</string>
+    <string name="settings_lang_restart_toast_message">Restart the app to apply the changes.</string>
+
+    <string name="text_eta_loading_ktor_lost_connection">Failed to connect server. Retry in 10s... (Error: 600)</string>
+    <string name="text_eta_loading_ktor_server_error">Failed to connect server. Retry in 10s... (Error: %d)</string>
+    <string name="text_eta_loading_ktor_client_error">Failed to load data. Retry in 10s... (Error: %d)</string>
+    <string name="text_eta_loading_ktor_other_error">Failed to load data. Retry in 10s... (Error: %d)</string>
+
+    <string name="onboarding_retry_btn">Retry</string>
+    <string name="onboarding_report_btn">Report</string>
+
+</resources>
