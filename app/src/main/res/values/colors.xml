@@ -63,7 +63,6 @@
     <color name="white">@color/md_white_1000</color>
     <color name="brand_color_kmb">#D32F2F</color>
     <color name="brand_color_ctb">#F47920</color>
-    <color name="brand_color_nwfb">#F47920</color>
     <color name="brand_color_gmb">#2E7D32</color>
     <color name="brand_color_mtr">#00234F</color>
     <color name="brand_color_lrt">#997000</color>

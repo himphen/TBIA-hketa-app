@@ -9,7 +9,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class EtaType {
     KMB,
-    NWFB,
     CTB,
     GMB_HKI,
     GMB_KLN,
@@ -20,7 +19,6 @@ enum class EtaType {
 
     fun company(): Company = when (this) {
         KMB -> Company.KMB
-        NWFB -> Company.NWFB
         CTB -> Company.CTB
         GMB_HKI, GMB_KLN, GMB_NT -> Company.GMB
         MTR -> Company.MTR
@@ -31,7 +29,6 @@ enum class EtaType {
     fun name(): StringResource {
         return when (this) {
             KMB -> MR.strings.add_eta_brand_selection_kmb_btn
-            NWFB -> MR.strings.add_eta_brand_selection_nwfb_btn
             CTB -> MR.strings.add_eta_brand_selection_ctb_btn
             GMB_HKI -> MR.strings.add_eta_brand_selection_gmb_hki_btn
             GMB_KLN -> MR.strings.add_eta_brand_selection_gmb_kln_btn
@@ -44,7 +41,6 @@ enum class EtaType {
 
     fun color(): Color = when (this) {
         KMB -> MR.colors.brand_color_kmb.color
-        NWFB -> MR.colors.brand_color_nwfb.color
         GMB_HKI,
         GMB_KLN,
         GMB_NT -> MR.colors.brand_color_gmb.color

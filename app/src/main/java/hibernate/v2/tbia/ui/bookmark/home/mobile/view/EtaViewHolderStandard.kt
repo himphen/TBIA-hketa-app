@@ -18,7 +18,7 @@ class EtaViewHolderStandard(viewBinding: ItemEtaCardStandardBinding) :
     override fun onBind(card: Card.EtaCard) {
         viewBinding.content.apply {
             val route = card.route
-            val color = route.getColor(false).colorInt()
+            val color = route.getColor().colorInt()
 
             val arrowDrawable = ContextCompat.getDrawable(
                 context,

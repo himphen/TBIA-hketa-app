@@ -53,7 +53,7 @@ actual data class SearchMapStop(
                 nameSc = it.nameSc,
                 nameTc = it.nameTc,
                 stopId = it.stopId,
-                etaType = EtaType.NWFB
+                etaType = EtaType.CTB
             )
         }
 

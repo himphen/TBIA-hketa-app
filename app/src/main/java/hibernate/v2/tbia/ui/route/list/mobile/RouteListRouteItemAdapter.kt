@@ -88,7 +88,7 @@ class RouteListRouteItemAdapter(
                 routeNumberContainer.apply {
                     when (route) {
                         is LrtTransportRoute -> {
-                            val color = route.getColor(false).colorInt()
+                            val color = route.getColor().colorInt()
                             routeLRTNumberTv.apply {
                                 text = route.routeNo
 
@@ -101,7 +101,7 @@ class RouteListRouteItemAdapter(
                             }
                         }
                         is MtrTransportRoute -> {
-                            val color = route.getColor(false).colorInt()
+                            val color = route.getColor().colorInt()
 
                             (routeMTRNumberIv.background as? GradientDrawable)?.apply {
                                 mutate()

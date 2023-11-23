@@ -7,7 +7,6 @@
 
     <string-array name="add_eta_brand_selections">
         <item>@string/add_eta_brand_selection_kmb_btn</item>
-        <item>@string/add_eta_brand_selection_nwfb_btn</item>
         <item>@string/add_eta_brand_selection_ctb_btn</item>
         <item>@string/add_eta_brand_selection_nlb_btn</item>
         <item>@string/add_eta_brand_selection_gmb_hki_btn</item>

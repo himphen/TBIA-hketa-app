@@ -97,7 +97,6 @@ class BookmarkHomeViewModel(
                                     }
                                 }
                             }
-                            Company.NWFB,
                             Company.CTB -> {
                                 val apiEtaResponse = etaInteractor.getCtbStopEtaApi(
                                     company = etaCard.route.company,

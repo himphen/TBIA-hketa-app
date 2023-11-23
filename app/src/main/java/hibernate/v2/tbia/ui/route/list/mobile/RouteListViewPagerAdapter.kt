@@ -17,7 +17,6 @@ class RouteListViewPagerAdapter(
 
     val list = listOf(
         EtaType.KMB,
-        EtaType.NWFB,
         EtaType.CTB,
         EtaType.NLB,
         EtaType.GMB_HKI,
@@ -47,7 +46,6 @@ class RouteListViewPagerAdapter(
 
         when (etaType) {
             EtaType.KMB,
-            EtaType.NWFB,
             EtaType.CTB,
             EtaType.NLB -> ContextCompat.getDrawable(context, R.drawable.ic_bus_24)
             EtaType.GMB_HKI,

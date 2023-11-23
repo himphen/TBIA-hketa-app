@@ -44,7 +44,6 @@ class RouteListLeanbackViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             when (etaType) {
                 EtaType.KMB -> getKmbRouteList(context)
-                EtaType.NWFB,
                 EtaType.CTB -> getCtbRouteList(context, etaType)
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,

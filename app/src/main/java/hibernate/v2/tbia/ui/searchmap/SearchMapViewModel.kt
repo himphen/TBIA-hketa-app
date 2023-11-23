@@ -68,7 +68,6 @@ class SearchMapViewModel(
             val stop = selectedStop.value ?: return@launch
             val result = when (stop.etaType) {
                 EtaType.KMB -> kmbInteractor.getRouteEtaCardList(stop)
-                EtaType.NWFB -> ctbInteractor.getRouteEtaCardList(stop)
                 EtaType.CTB -> ctbInteractor.getRouteEtaCardList(stop)
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
@@ -90,10 +89,6 @@ class SearchMapViewModel(
                     EtaType.KMB -> kmbInteractor.setMapRouteListIntoMapStop(
                         stopMapList,
                         kmbInteractor.getRouteEtaCardList
-                    )
-                    EtaType.NWFB -> ctbInteractor.setMapRouteListIntoMapStop(
-                        stopMapList,
-                        ctbInteractor.getRouteEtaCardList
                     )
                     EtaType.CTB -> ctbInteractor.setMapRouteListIntoMapStop(
                         stopMapList,
@@ -183,7 +178,6 @@ class SearchMapViewModel(
 
                             result[index] = etaCard
                         }
-                        Company.NWFB,
                         Company.CTB -> {
                             val apiEtaResponse = etaInteractor.getCtbStopEtaApi(
                                 company = etaCard.route.company,

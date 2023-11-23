@@ -14,7 +14,6 @@ import RswiftResources
     
     let list: [EtaType] = [
         EtaType.kmb,
-        EtaType.nwfb,
         EtaType.ctb,
         EtaType.nlb,
         EtaType.gmbHki,

@@ -21,7 +21,7 @@ interface EtaRouteView {
         routeNumberContainer: ContentEtaClassicRouteNumberBinding
     ) {
         val route = card.route
-        val color = route.getColor(false).colorInt()
+        val color = route.getColor().colorInt()
 
         routeNumberContainer.apply {
             when (route) {
@@ -75,7 +75,7 @@ interface EtaRouteView {
         routeNumberContainer: ContentEtaCompactRouteNumberBinding
     ) {
         val route = card.route
-        val color = route.getColor(false).colorInt()
+        val color = route.getColor().colorInt()
 
         routeNumberContainer.apply {
             when (route) {
@@ -125,7 +125,7 @@ interface EtaRouteView {
         routeNumberContainer: ContentEtaStandardRouteNumberBinding
     ) {
         val route = card.route
-        val color = route.getColor(false).colorInt()
+        val color = route.getColor().colorInt()
 
         routeNumberContainer.apply {
             when (route) {
@@ -175,7 +175,7 @@ interface EtaRouteView {
         routeNumberContainer: ContentEtaClassicRouteNumberBinding
     ) {
         val route = card.route
-        val color = route.getColor(false).colorInt()
+        val color = route.getColor().colorInt()
 
         routeNumberContainer.apply {
             when (route) {

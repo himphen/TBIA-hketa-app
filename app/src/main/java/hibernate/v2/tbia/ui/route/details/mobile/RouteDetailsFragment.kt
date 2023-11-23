@@ -365,7 +365,6 @@ class RouteDetailsFragment : BaseFragment<FragmentRouteDetailsBinding>() {
                         context,
                         when (viewModel.selectedEtaType) {
                             EtaType.KMB -> R.drawable.map_marker_bus_stop_kmb
-                            EtaType.NWFB -> R.drawable.map_marker_bus_stop_nc
                             EtaType.CTB -> R.drawable.map_marker_bus_stop_ctb
                             EtaType.GMB_HKI,
                             EtaType.GMB_KLN,

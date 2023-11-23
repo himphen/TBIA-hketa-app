@@ -102,7 +102,6 @@ class BookmarkHomeViewModel(
 
                             result[index] = etaCard
                         }
-                        Company.NWFB,
                         Company.CTB -> {
                             val apiEtaResponse = etaInteractor.getCtbStopEtaApi(
                                 company = etaCard.route.company,

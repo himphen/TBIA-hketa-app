@@ -35,7 +35,6 @@ class RouteListViewModel(
         withContext(Dispatchers.Default) {
             when (etaType) {
                 EtaType.KMB -> getKmbRouteList()
-                EtaType.NWFB,
                 EtaType.CTB -> getCtbRouteList(etaType)
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,

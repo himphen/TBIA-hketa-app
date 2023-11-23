@@ -51,7 +51,6 @@
 
     <string name="add_eta_brand_selection_title">Choose Public Transport Company</string>
     <string name="add_eta_brand_selection_kmb_btn">KMB/LWB</string>
-    <string name="add_eta_brand_selection_nwfb_btn">NWFB</string>
     <string name="add_eta_brand_selection_ctb_btn">Citybus</string>
     <string name="add_eta_brand_selection_gmb_btn">Minibus</string>
     <string name="add_eta_brand_selection_gmb_hki_btn">Minibus - HKI</string>

@@ -57,7 +57,7 @@ object TransportRepository {
     }
 
     @Serializable
-    @Resource("v1/transport/citybus-nwfb/eta/{company}/{stopId}/{route}")
+    @Resource("v2/transport/citybus/eta/{company}/{stopId}/{route}")
     class GetCtbStopEta(
         val company: String,
         val stopId: String,

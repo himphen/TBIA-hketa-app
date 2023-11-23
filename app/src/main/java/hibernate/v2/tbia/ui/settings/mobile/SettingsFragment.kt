@@ -42,7 +42,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val defaultCompanyArray: Array<String> by lazy {
         arrayListOf(
             MR.strings.add_eta_brand_selection_kmb_btn,
-            MR.strings.add_eta_brand_selection_nwfb_btn,
             MR.strings.add_eta_brand_selection_ctb_btn,
             MR.strings.add_eta_brand_selection_gmb_btn,
             MR.strings.add_eta_brand_selection_gmb_hki_btn,

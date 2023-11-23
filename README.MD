@@ -1,6 +1,6 @@
-# TBIA (The Bus Is Arriving)
+# ETA Go
 
-TBIA provides the real-time schedule (ETA) for KMB, NWFB/CityBus, NLB and minibus, as well as MTR
+ETA Go provides the real-time schedule (ETA) for KMB, Citybus, NLB and minibus, as well as MTR
 and Light rail transit.
 
 ## About
@@ -23,7 +23,7 @@ Apple App Store link: TBA
 
 ## Architecture
 
-This is the code repository for TBIA. I originally built it as Android mobile and Android TV app,
+This is the code repository for ETA Go. I originally built it as Android mobile and Android TV app,
 and thanks to Kotlin Multiplatform Mobile (KMM) that helps developers share code between Android and
 iOS in a flexible way, it allows me to port the app in iOS within a month.
 

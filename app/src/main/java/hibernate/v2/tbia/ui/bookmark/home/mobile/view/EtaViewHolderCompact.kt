@@ -18,7 +18,7 @@ class EtaViewHolderCompact(viewBinding: ItemEtaCardCompactBinding) :
     override fun onBind(card: Card.EtaCard) {
         viewBinding.content.apply {
             val route = card.route
-            val color = route.getColor(false).colorInt()
+            val color = route.getColor().colorInt()
 
             (
                 ContextCompat.getDrawable(

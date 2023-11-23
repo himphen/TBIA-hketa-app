@@ -28,9 +28,6 @@ enum class Company(val value: String) : Parcelable {
     @SerialName("KMB")
     KMB("KMB"),
 
-    @SerialName("NWFB")
-    NWFB("NWFB"),
-
     @SerialName("CTB")
     CTB("CTB"),
 

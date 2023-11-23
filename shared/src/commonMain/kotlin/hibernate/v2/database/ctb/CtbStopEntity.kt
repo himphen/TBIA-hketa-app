@@ -27,7 +27,7 @@ data class CtbStopEntity(
 
     fun toTransportModel(): TransportStop {
         return TransportStop(
-            company = Company.NWFB,
+            company = Company.CTB,
             stopId = stopId,
             nameEn = nameEn,
             nameTc = nameTc,
@@ -40,7 +40,7 @@ data class CtbStopEntity(
 
     fun toTransportModelWithSeq(seq: Int): TransportStop {
         return TransportStop(
-            company = Company.NWFB,
+            company = Company.CTB,
             stopId = stopId,
             nameEn = nameEn,
             nameTc = nameTc,

@@ -157,7 +157,7 @@ open class TransportRoute(
         return directionWithRouteText!!
     }
 
-    fun getColor(combineNC: Boolean = false): Color {
+    fun getColor(): Color {
         if (this is MtrTransportRoute) {
             return routeInfo.getColor()
         }
@@ -168,13 +168,7 @@ open class TransportRoute(
 
         return when (company) {
             Company.KMB -> MR.colors.brand_color_kmb.color
-            Company.NWFB -> MR.colors.brand_color_nwfb.color
-            Company.CTB ->
-                if (combineNC) {
-                    MR.colors.brand_color_nwfb.color
-                } else {
-                    MR.colors.brand_color_ctb.color
-                }
+            Company.CTB -> MR.colors.brand_color_ctb.color
             Company.GMB -> MR.colors.brand_color_gmb.color
             Company.MTR -> MR.colors.brand_color_mtr.color
             Company.LRT -> MR.colors.brand_color_lrt.color

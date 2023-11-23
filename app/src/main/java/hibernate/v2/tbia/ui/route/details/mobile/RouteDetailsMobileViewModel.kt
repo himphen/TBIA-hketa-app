@@ -133,7 +133,6 @@ class RouteDetailsMobileViewModel(
 
             return@withContext when (selectedEtaType) {
                 EtaType.KMB -> getKmbStopList(route)
-                EtaType.NWFB,
                 EtaType.CTB -> getCtbStopList(route)
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
@@ -149,7 +148,6 @@ class RouteDetailsMobileViewModel(
         return withContext(Dispatchers.IO) {
             return@withContext when (selectedEtaType) {
                 EtaType.KMB -> etaInteractor.getSavedKmbEtaList().map { it.savedEta }
-                EtaType.NWFB,
                 EtaType.CTB -> etaInteractor.getSavedNCEtaList().map { it.savedEta }
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
@@ -315,7 +313,6 @@ class RouteDetailsMobileViewModel(
                             .filter { it.filterCircularStop(isCircular, selectedStop) }
                     }
                 }
-                Company.NWFB,
                 Company.CTB -> {
                     val apiEtaResponse = etaInteractor.getCtbStopEtaApi(
                         company = selectedRoute.company,

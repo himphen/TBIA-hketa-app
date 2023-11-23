@@ -14,7 +14,6 @@ class RouteListBrandSelectionFragment : GuidedStepSupportFragment() {
 
     val list = listOf(
         EtaType.KMB,
-        EtaType.NWFB,
         EtaType.CTB,
         EtaType.GMB_HKI,
         EtaType.GMB_KLN,

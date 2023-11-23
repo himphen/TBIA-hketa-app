@@ -41,7 +41,6 @@ class RouteListMobileViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             when (etaType) {
                 EtaType.KMB -> getKmbRouteList()
-                EtaType.NWFB,
                 EtaType.CTB -> getCtbRouteList(etaType)
                 EtaType.GMB_HKI,
                 EtaType.GMB_KLN,
