@@ -1,11 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = '1.7.20'
-        lifecycle_version = '2.4.1'
+        kotlin_version = '1.9.10'
+        lifecycle_version = '2.6.2'
         koin_version = '3.1.6'
-        leanback_version = '1.2.0-alpha02'
-        leanback_preference_version = '1.2.0-alpha02'
+        leanback_version = '1.2.0-alpha03'
+        leanback_preference_version = '1.2.0-alpha03'
+        agp_version = '8.1.2'
     }
 
     repositories {
@@ -13,11 +14,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath "com.android.tools.build:gradle:$agp_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.14'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
+        classpath 'com.google.gms:google-services:4.4.0'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
         classpath 'com.squareup.sqldelight:gradle-plugin:1.5.3'
         classpath "dev.icerock.moko:resources-generator:0.20.1"
         classpath 'com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.13.3'
@@ -26,8 +27,8 @@ buildscript {
 
 plugins {
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
-    id 'org.jetbrains.kotlin.android' version '1.6.21' apply false
-    id 'org.jetbrains.kotlin.jvm' version '1.7.20' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.20' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.9.20' apply false
 }
 
 allprojects {

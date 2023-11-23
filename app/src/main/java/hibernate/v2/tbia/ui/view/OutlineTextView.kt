@@ -89,7 +89,7 @@ class OutlineTextView @JvmOverloads constructor(context: Context, attrs: Attribu
         mOutlineColor = color
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         setPaintToOutline()
         super.onDraw(canvas)
         setPaintToRegular()

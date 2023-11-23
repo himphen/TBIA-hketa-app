@@ -18,7 +18,14 @@ val ktorVersion = "2.1.2"
 val sqlDelightVersion = "1.5.4"
 
 kotlin {
-    android()
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
+
     listOf(
         iosX64(), // If run app in simulator, we need this
         iosArm64(),
@@ -60,9 +67,10 @@ kotlin {
                 // https://github.com/InsertKoinIO/koin
                 implementation("io.insert-koin:koin-core:3.1.6")
 
-                implementation("dev.gitlive:firebase-auth:1.6.2")
-                implementation("dev.gitlive:firebase-database:1.6.2")
-                implementation("dev.gitlive:firebase-config:1.6.2")
+                implementation("dev.gitlive:firebase-auth:1.8.0")
+                implementation("dev.gitlive:firebase-database:1.8.0")
+                implementation("dev.gitlive:firebase-config:1.8.0")
+                implementation("dev.gitlive:firebase-crashlytics:1.8.0")
 
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
                 implementation("com.squareup.sqldelight:coroutines-extensions:$sqlDelightVersion")
@@ -83,6 +91,7 @@ kotlin {
             }
         }
         val androidMain by getting {
+            dependsOn(commonMain)
             dependencies {
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
@@ -94,10 +103,9 @@ kotlin {
                 implementation("com.google.maps.android:maps-ktx:3.3.0")
                 implementation("com.google.maps.android:maps-utils-ktx:3.3.0")
 
-                implementation("androidx.preference:preference-ktx:1.2.0")
+                implementation("androidx.preference:preference-ktx:1.2.1")
             }
         }
-        val androidTest by getting
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -136,14 +144,17 @@ kotlin {
 
 android {
     namespace = "hibernate.v2"
-    compileSdk = 31
+    compileSdk = 34
     defaultConfig {
         minSdk = 24
-        targetSdk = 31
     }
     sourceSets["main"].apply {
         assets.srcDir(File(buildDir, "generated/moko/androidMain/assets"))
         res.srcDir(File(buildDir, "generated/moko/androidMain/res"))
+    }
+    compileOptions {
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
     }
 }
 

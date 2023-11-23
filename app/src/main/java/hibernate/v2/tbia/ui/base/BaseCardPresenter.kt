@@ -15,7 +15,7 @@ abstract class BaseCardPresenter<T : BaseCardView, U : Card>(
         return ViewHolder(cardView)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, item: Any?) {
         @Suppress("UNCHECKED_CAST")
         val card = item as U
         @Suppress("UNCHECKED_CAST")

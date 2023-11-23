@@ -31,8 +31,8 @@ class EtaLayoutSelectionFragment : GuidedStepSupportFragment() {
 
             override fun onCreateView(
                 inflater: LayoutInflater,
-                container: ViewGroup,
-                guidance: Guidance?
+                container: ViewGroup?,
+                guidance: Guidance
             ): View {
                 val view = super.onCreateView(inflater, container, guidance)
                 etaDemoClassic = view.findViewById(R.id.eta_demo_classic)

@@ -81,7 +81,8 @@ class BookmarkHomeFragment : VerticalGridSupportFragment() {
                 etaCardList.addAll(it)
                 processEtaList()
             } ?: run {
-                etaCardList = it.toMutableList()
+                val etaCardList = it.toMutableList()
+                this.etaCardList = etaCardList
                 mAdapter?.addAll(0, etaCardList)
                 processEtaList()
 
