@@ -107,7 +107,13 @@ class RouteDetailsMobileViewModel(
                     }
             }
 
-            val etaList = getSavedEtaListFromDb()
+            val etaList = getSavedEtaListFromDb().filter {
+                if (it.routeId == selectedRoute.routeId && it.bound == selectedRoute.bound) {
+                    return@filter true
+                }
+
+                return@filter false
+            }
             val etaHashMap = etaList.associate {
                 it.stopId to it.id
             }
